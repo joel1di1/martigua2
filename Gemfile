@@ -14,6 +14,12 @@ gem 'devise'
 gem 'haml-rails'
 gem 'pg'
 gem 'simple_form'
+gem 'activeadmin', github: 'gregbell/active_admin'
+gem 'polyamorous', github: 'activerecord-hackery/polyamorous'
+gem 'ransack', github: 'activerecord-hackery/ransack'
+gem 'formtastic', github: 'justinfrench/formtastic'
+
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]

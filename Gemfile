@@ -19,7 +19,6 @@ gem 'polyamorous', github: 'activerecord-hackery/polyamorous'
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'formtastic', github: 'justinfrench/formtastic'
 
-
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]
@@ -41,6 +40,7 @@ group :development, :test do
 end
 group :production do
   gem 'puma'
+  gem 'rails_12factor'
 end
 group :test do
   gem 'capybara'

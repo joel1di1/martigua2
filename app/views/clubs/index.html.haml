@@ -1,0 +1,19 @@
+%h1 Listing clubs
+
+%table
+  %tr
+    %th Name
+    %th
+    %th
+    %th
+
+  - @clubs.each do |club|
+    %tr
+      %td= club.name
+      %td= link_to 'Show', club
+      %td= link_to 'Edit', edit_club_path(club)
+      %td= link_to 'Destroy', club, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Club', new_club_path

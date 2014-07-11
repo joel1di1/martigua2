@@ -16,5 +16,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def filter_params params
+    filters = Rails.application.config.filter_parameters
+    f = ActionDispatch::Http::ParameterFilter.new filters
+    f.filter params
+  end
 
 end

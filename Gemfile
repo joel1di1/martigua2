@@ -32,10 +32,8 @@ group :development do
   gem 'rb-inotify', :require=>false
 end
 group :development, :test do
-  gem 'factory_girl_rails'
   gem 'pry-rails'
   gem 'pry-rescue'
-  gem 'rspec-rails'
   gem 'thin'
 end
 group :production do
@@ -43,6 +41,9 @@ group :production do
   gem 'rails_12factor'
 end
 group :test do
+  gem 'factory_girl_rails'
+  gem 'rspec-rails'
+  gem 'rspec-its'
   gem 'capybara'
   gem 'database_cleaner'
   gem 'faker'

@@ -1,13 +1,9 @@
 describe User do
 
-  before(:each) { @user = User.new(email: 'user@example.com') }
-
-  subject { @user }
-
-  it { should respond_to(:email) }
-
-  it "#email returns a string" do
-    expect(@user.email).to match 'user@example.com'
-  end
+  it { should validate_presence_of :email }
+  it { should have_db_column :first_name }
+  it { should have_db_column :last_name }
+  it { should have_db_column :nickname }
+  it { should have_db_column :phone_number }
 
 end

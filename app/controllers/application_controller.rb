@@ -9,9 +9,9 @@ class ApplicationController < ActionController::Base
     request_string = "--REQ-- #{Rails.env};#{current_user.try(:id)};#{current_user.try(:email)};#{request.url};#{request.host};#{request.query_string};#{filter_params(params)}"
     begin
       yield
-      p "#{request_string}\n--RESP-- #{response.status};#{response.redirect_url}" unless Rails.env.test?
+      p "#{request_string} --RESP-- #{response.status};#{response.redirect_url}" unless Rails.env.test?
     rescue Exception => ex
-      p "#{request_string}\n--RESP-- 500;#{ex.message};#{ex.backtrace}" unless Rails.env.test?
+      p "#{request_string} --RESP-- 500;#{ex.message};#{ex.backtrace}" unless Rails.env.test?
       raise
     end
   end

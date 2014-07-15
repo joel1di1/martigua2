@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :sections
+
   resources :club_admin_roles
 
   resources :teams

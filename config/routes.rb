@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :teams
+
   resources :ping, only: :index, :constraints => {:format => :json }
 
   resources :clubs

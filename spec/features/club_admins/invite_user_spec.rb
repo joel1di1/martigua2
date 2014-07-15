@@ -10,6 +10,7 @@ feature 'Invite User', :devise do
   #   Then I see members page
   #   And I can invite new users
   scenario 'Admin sign in and see invitation form' do
+    pending 'pas encore implémenté'
     club_admin = create :user, :club_admin
     signin club_admin.email, club_admin.password
     expect(page).to have_link 'Members'

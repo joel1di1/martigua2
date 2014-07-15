@@ -12,7 +12,7 @@ feature 'Navigation links', :devise do
     visit root_path
     expect(page).to have_content 'Home'
     expect(page).to have_content 'Sign in'
-    expect(page).to have_content 'Sign up'
+    # expect(page).to have_content 'Sign up'
   end
 
 end

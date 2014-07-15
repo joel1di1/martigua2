@@ -4,9 +4,13 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :club_admin_roles
+
+
   validates_presence_of :authentication_token
 
   before_validation :ensure_authentication_token
+
 
   protected 
     def ensure_authentication_token

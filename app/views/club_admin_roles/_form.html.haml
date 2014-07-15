@@ -1,0 +1,10 @@
+= simple_form_for(@club_admin_role) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.association :club
+    = f.association :user
+    = f.input :name
+
+  .form-actions
+    = f.button :submit

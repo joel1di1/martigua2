@@ -5,6 +5,7 @@ describe User do
   it { should have_db_column :last_name }
   it { should have_db_column :nickname }
   it { should have_db_column :phone_number }
+  it { should have_many :club_admin_roles }
 
   describe 'authentication token should be generated' do
     subject { create :user, authentication_token: nil }

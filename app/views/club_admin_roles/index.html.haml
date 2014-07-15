@@ -1,0 +1,23 @@
+%h1 Listing club_admin_roles
+
+%table
+  %tr
+    %th Club
+    %th User
+    %th Name
+    %th
+    %th
+    %th
+
+  - @club_admin_roles.each do |club_admin_role|
+    %tr
+      %td= club_admin_role.club
+      %td= club_admin_role.user
+      %td= club_admin_role.name
+      %td= link_to 'Show', club_admin_role
+      %td= link_to 'Edit', edit_club_admin_role_path(club_admin_role)
+      %td= link_to 'Destroy', club_admin_role, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Club admin role', new_club_admin_role_path

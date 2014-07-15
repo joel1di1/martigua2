@@ -5,5 +5,11 @@ FactoryGirl.define do
     phone_number { Faker::PhoneNumber.cell_phone }
     email { Faker::Internet.email }
     password { Faker::Lorem.characters(6) }
+
+    trait :club_admin do
+      after(:create) do |user|
+        create :club_admin_role, user: user
+      end
+    end
   end
 end

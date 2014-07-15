@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Club:
+  = @club_admin_role.club
+%p
+  %b User:
+  = @club_admin_role.user
+%p
+  %b Name:
+  = @club_admin_role.name
+
+= link_to 'Edit', edit_club_admin_role_path(@club_admin_role)
+\|
+= link_to 'Back', club_admin_roles_path

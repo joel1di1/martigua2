@@ -5,12 +5,17 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :club_admin_roles
-
+  has_many :participations
+  has_many :sections, through: :participations 
 
   validates_presence_of :authentication_token
 
   before_validation :ensure_authentication_token
 
+
+  def has_only_one_section?
+    sections.count == 1
+  end
 
   protected 
     def ensure_authentication_token

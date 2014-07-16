@@ -12,4 +12,10 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :one_section_player, parent: :user do
+    after(:create) do |user|
+      create :participation, user: user
+    end
+  end
 end

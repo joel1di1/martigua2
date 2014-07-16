@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :season do
-    name "MyString"
-    start_date "2014-07-16"
-    end_date "2014-07-16"
+    start_date { (1..10).to_a.sample.years.ago }
+    end_date { start_date + 1.year }
+    name { "#{start_date.year}-#{end_date.year}" }
   end
 end

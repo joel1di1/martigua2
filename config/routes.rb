@@ -1,14 +1,14 @@
 Rails.application.routes.draw do
 
-  resources :sections
+  resources :sections, only: [:index, :show]
 
-  resources :club_admin_roles
+  resources :club_admin_roles, only: [:index, :show]
 
-  resources :teams
+  resources :teams, only: [:index, :show]
 
   resources :ping, only: :index, :constraints => {:format => :json }
 
-  resources :clubs
+  resources :clubs, only: [:index, :show]
 
   devise_for :users
 

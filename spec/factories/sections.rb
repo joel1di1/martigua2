@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :section do
-    club nil
-    name "MyString"
+    club
+    name { Faker::Company.name }
   end
 end

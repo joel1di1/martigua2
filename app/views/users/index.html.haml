@@ -1,6 +1,6 @@
-%ul
-  - @users.each do |user|
-    %li= user.email
+.table-responsive
+  %table.table.table-hover
+    = render @users
 
 - if current_section && current_user.coach_of?(current_section)
   = link_to 'Ajouter un joueur'

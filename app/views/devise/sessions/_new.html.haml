@@ -1,6 +1,12 @@
-= simple_form_for(resource, :as => resource_name, :url => session_path(resource)) do |f|
-  = f.input_field :email, placeholder: 'Email'
-  = f.input_field :password, placeholder: 'Password'
-  = f.input :remember_me, as: :boolean
-  = link_to "Forgot your password?", new_password_path(:user)
-  = f.submit 'Sign in'
+.row
+  .col-xs-12.col-sm-4.col-md-4.col-lg-2
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Sign In
+      .panel-body
+        = simple_form_for(resource, :as => resource_name, :url => session_path(resource), html:{ role: 'form' }) do |f|
+          = f.input :email, placeholder: 'Email', label: false
+          = f.input :password, placeholder: 'Password', label: false
+          = link_to "Forgot your password?", new_password_path(:user)
+          = f.input :remember_me, as: :boolean, inline_label: "Remember me", label: false
+          = f.button :submit, class: 'btn btn-primary', value: 'Sign in'

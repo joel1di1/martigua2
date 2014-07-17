@@ -1,0 +1,1 @@
+window.setTimeout(function() { $(".alert-success").slideToggle('slow'); }, 3000);

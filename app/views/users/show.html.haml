@@ -1,2 +1,16 @@
-User
-= @user.email
+.table-responsive
+  %table.table.table-hover.table-striped
+    %thead
+      %tr
+        %th
+          Prénom
+        %th
+          Nom
+        %th
+          Surnom
+        %th
+          Email
+        %th
+          Tel
+    %tbody
+      = render partial: 'user',  locals: {user: @user}

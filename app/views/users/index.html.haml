@@ -1,6 +1,19 @@
 .table-responsive
-  %table.table.table-hover
-    = render @users
+  %table.table.table-hover.table-striped
+    %thead
+      %tr
+        %th
+          Prénom
+        %th
+          Nom
+        %th
+          Surnom
+        %th
+          Email
+        %th
+          Tel
+    %tbody
+      = render @users
 
 - if current_section && current_user.coach_of?(current_section)
   = link_to 'Ajouter un joueur'

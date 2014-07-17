@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_section
 
   def log_requests(&block)
-    request_string = "--REQ-- #{Rails.env};#{current_user.try(:id)};#{current_user.try(:email)};#{request.url};#{request.host};#{request.query_string};#{filter_params(params)}"
+    request_string = "--REQ-- #{Rails.env};#{current_user.try(:id)};#{current_user.try(:email)};#{request.method};#{request.url};#{request.host};#{request.query_string};#{filter_params(params)}"
     begin
       yield
       p "#{request_string} --RESP-- #{response.status};#{response.redirect_url}" unless Rails.env.test?

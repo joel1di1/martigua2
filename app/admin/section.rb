@@ -6,5 +6,6 @@ ActiveAdmin.register Section do
       f.input :club
       f.input :name
     end
+    f.actions
   end
 end

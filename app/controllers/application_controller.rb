@@ -33,7 +33,9 @@ class ApplicationController < ActionController::Base
     end
 
     def current_section_from_params
-      Section.find(params[:section_id]) if params[:section_id]
+      section_id = params[:id] if params[:controller] == 'sections' && params[:id]
+      section_id ||= params[:section_id] if params[:section_id]
+      Section.find(section_id) if section_id
     end
 
   private

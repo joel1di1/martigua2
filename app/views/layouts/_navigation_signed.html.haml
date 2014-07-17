@@ -4,8 +4,15 @@
     %span.icon-bar
     %span.icon-bar
     %span.icon-bar
-  = link_to 'Accueil', root_path, class: 'navbar-brand'
+  - if current_section
+    = link_to current_section.to_s, current_section, {class: 'navbar-brand'}
+  - else
+    = link_to 'Accueil', root_path, {class: 'navbar-brand'}
 .collapse.navbar-collapse
+  - if current_section
+    %ul.nav.navbar-nav.navbar-left
+      %li{class: active_if_current_path(section_users_path(current_section))}
+        = link_to "Joueurs", section_users_path(current_section)
   %ul.nav.navbar-nav.navbar-right.user
     %li.dropdown
       %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}

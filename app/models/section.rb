@@ -22,4 +22,8 @@ class Section < ActiveRecord::Base
     "#{self.id}-#{self.name}"
   end
 
+  def to_s
+    "Section #{self.name} - #{self.club.name}"
+  end
+
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140716195442) do
+ActiveRecord::Schema.define(version: 20140717141139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,15 @@ ActiveRecord::Schema.define(version: 20140716195442) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "championships", force: true do |t|
+    t.integer  "season_id",  null: false
+    t.string   "name",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "championships", ["season_id"], name: "index_championships_on_season_id", using: :btree
+
   create_table "club_admin_roles", force: true do |t|
     t.integer  "club_id",    null: false
     t.integer  "user_id",    null: false
@@ -65,6 +74,16 @@ ActiveRecord::Schema.define(version: 20140716195442) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "enrolled_team_championships", force: true do |t|
+    t.integer  "team_id"
+    t.integer  "championship_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "enrolled_team_championships", ["championship_id"], name: "index_enrolled_team_championships_on_championship_id", using: :btree
+  add_index "enrolled_team_championships", ["team_id"], name: "index_enrolled_team_championships_on_team_id", using: :btree
 
   create_table "participations", force: true do |t|
     t.integer  "user_id",    null: false

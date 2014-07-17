@@ -11,6 +11,11 @@ FactoryGirl.define do
         create :club_admin_role, user: user
       end
     end
+    trait :section_coach do
+      after(:create) do |user|
+        create :participation, :coach, user: user
+      end
+    end
   end
 
   factory :one_section_player, parent: :user do

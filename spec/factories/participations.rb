@@ -5,6 +5,9 @@ FactoryGirl.define do
     user
     section
     season { Season.current }
-    role { ['player', 'coach'].sample }
+    role { [Participation::PLAYER, Participation::COACH].sample }
+    trait :coach do
+      role Participation::COACH
+    end
   end
 end

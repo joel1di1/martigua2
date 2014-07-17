@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
 
   around_filter :log_requests
 
+  helper_method :current_section
+
   def log_requests(&block)
     request_string = "--REQ-- #{Rails.env};#{current_user.try(:id)};#{current_user.try(:email)};#{request.url};#{request.host};#{request.query_string};#{filter_params(params)}"
     begin
@@ -24,6 +26,15 @@ class ApplicationController < ActionController::Base
     f = ActionDispatch::Http::ParameterFilter.new filters
     f.filter params
   end
+
+  protected 
+    def current_section
+      @current_section ||= current_section_from_params
+    end
+
+    def current_section_from_params
+      Section.find(params[:section_id]) if params[:section_id]
+    end
 
   private
     

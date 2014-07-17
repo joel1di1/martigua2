@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  resources :sections, only: [:index, :show]
+  resources :sections, only: [:index, :show] do
+    resources :users, path: 'members', only: :index
+  end
 
   resources :club_admin_roles, only: [:index, :show]
 

@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
+    @users = @users.joins(:participations).where(participations: { section: current_section } ) if current_section
   end
 
   def show

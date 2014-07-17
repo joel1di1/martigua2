@@ -9,6 +9,8 @@ describe User do
   it { should have_many :participations }
   it { should have_many :sections }
 
+  let(:user) { create :user }
+
   describe 'authentication token should be generated' do
     subject { create :user, authentication_token: nil }
 
@@ -20,18 +22,35 @@ describe User do
     subject { user.has_only_one_section? }
 
     context 'user with no section' do
-      let(:user) { create :user }
       it { should eq false }
     end
     context 'user with two sections' do
-      let(:user) { create :user }
       let!(:participation_1) { create :participation, user: user }
       let!(:participation_2) { create :participation, user: user }
       it { should eq false }
     end
     context 'user with one section' do
-      let(:user) { create :user }
       let!(:participation_1) { create :participation, user: user }
+      it { should eq true }
+    end
+  end
+
+  describe '#coach_of?' do
+    let(:section) { create :section }
+
+    subject { user.coach_of?(section) }
+
+    context 'with a user not in the section' do
+      it { should eq false }
+    end
+    context 'with a player of the section' do
+      before { section.add_player!(user) }
+      
+      it { should eq false }
+    end
+    context 'with a coach of the section' do
+      before { section.add_coach!(user) }
+      
       it { should eq true }
     end
   end

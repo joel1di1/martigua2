@@ -42,6 +42,7 @@ group :production do
   gem 'rails_12factor'
 end
 group :test do
+  gem 'sqlite3'
   gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'rspec-its'

@@ -4,10 +4,27 @@ class Section < ActiveRecord::Base
   has_many :team_sections
   has_many :teams, through: :team_sections 
 
-  has_many :participations
+  has_many :participations, inverse_of: :section
   has_many :users, through: :participations, inverse_of: :sections
 
+  has_many :section_user_invitations, inverse_of: :section
+
+
   validates_presence_of :club, :name
+
+  def invite_user!(params)
+    column_names = SectionUserInvitation.column_names
+    column_syms = column_names.map(&:to_sym)
+    params_only = params.slice(*column_syms)
+    params_only_with_section = params_only.merge(section: self)
+    invitation = SectionUserInvitation.create!(params_only_with_section)
+
+    user = User.find_by_email(invitation.email)
+    if user
+    else
+      user = User.invite!(params_only)
+    end
+  end
 
   def add_player!(user)
     add_user!(user, Participation::PLAYER)

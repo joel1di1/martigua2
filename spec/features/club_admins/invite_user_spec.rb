@@ -16,6 +16,8 @@ feature 'Invite User', :devise do
     click_link 'Joueurs'
     expect(current_path).to eq section_users_path(section_coach.sections.first)
     expect(page).to have_link 'Ajouter un joueur'
+    click_link 'Ajouter un joueur'
+    expect(current_path).to eq section_users_path(section_coach.sections.first)
   end
 
 end

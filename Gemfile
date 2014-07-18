@@ -11,6 +11,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 gem 'bootstrap-sass'
 gem 'devise'
+gem 'devise_invitable'
 gem 'haml-rails'
 gem 'pg'
 gem 'simple_form'

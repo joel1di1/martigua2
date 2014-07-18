@@ -3,9 +3,9 @@ class Participation < ActiveRecord::Base
   PLAYER = 'player'
   COACH = 'coach'
 
-  belongs_to :user
-  belongs_to :section
-  belongs_to :season
+  belongs_to :user, inverse_of: :participations
+  belongs_to :section, inverse_of: :participations
+  belongs_to :season, inverse_of: :participations
 
   validates_presence_of :user
   validates_presence_of :season

@@ -55,4 +55,19 @@ RSpec.describe Section, :type => :model do
     end
   end
 
+  describe '.invite_user!' do
+    let(:params) { attributes_for :user }
+
+    it { expect{section.invite_user!(params)}.to change{SectionUserInvitation.count}.by(1) }
+    it { expect{section.invite_user!(params)}.to change{section.section_user_invitations(true).count}.by(1) }
+
+    context 'with new user' do
+      it { expect{section.invite_user!(params)}.to change{User.count}.by(1) }
+    end
+    context 'with already known user' do
+      before { User.create!(params) }
+      it { expect{section.invite_user!(params)}.to change{User.count}.by(0) }
+    end
+  end
+
 end

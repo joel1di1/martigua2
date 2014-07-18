@@ -1,6 +1,13 @@
 language: ruby
 rvm:
-  - 2.1.1
+- 2.1.1
 cache: bundler
-before_script: 
-  - bundle exec rake db:migrate
+before_script:
+- bundle exec rake db:migrate
+deploy:
+  provider: heroku
+  api_key:
+    secure: UMOlEJR4BDdsvwzgdegb7n1BXwxyC2V1IATftmHxiDp79t5LzJlK59RXlkoZn1HI9ybR6L2X+t9CDMtxwjaa75YIj8jbksvpnzfwkztEs1iLWAMECrDS+e0xjJc0XI/Qf71h2FYPyqAt6OdWVvzbwNWM0ctlL14V33sgURSTnhk=
+  app: martigua2
+  on:
+    repo: joel1di1/martigua2

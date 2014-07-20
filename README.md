@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/joel1di1/martigua2.svg?branch=master)](https://travis-ci.org/joel1di1/martigua2)
+
 Martigua2
 =========
 

@@ -45,6 +45,8 @@ end
 group :test do
   gem "sqlite3", :platform => [:ruby, :mswin, :mingw]
   gem "jdbc-sqlite3", :platform => :jruby  
+  
+  gem "codeclimate-test-reporter", require: nil
 
   gem 'factory_girl_rails'
   gem 'rspec-rails'

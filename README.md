@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/joel1di1/martigua2.svg?branch=master)](https://travis-ci.org/joel1di1/martigua2)
+[![Code Climate](https://codeclimate.com/github/joel1di1/martigua2.png)](https://codeclimate.com/github/joel1di1/martigua2)
+[![Test Coverage](https://codeclimate.com/github/joel1di1/martigua2/coverage.png)](https://codeclimate.com/github/joel1di1/martigua2)
 
 Martigua2
 =========

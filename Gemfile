@@ -20,6 +20,7 @@ gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'polyamorous', github: 'activerecord-hackery/polyamorous'
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'formtastic', github: 'justinfrench/formtastic'
+gem 'delayed_job_active_record'
 
 group :development do
   gem 'better_errors'

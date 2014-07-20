@@ -3,6 +3,6 @@
 FactoryGirl.define do
   factory :section do
     club
-    name { Faker::Company.name }
+    name { "SECTION #{Faker::Company.name}"}
   end
 end

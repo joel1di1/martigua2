@@ -20,6 +20,14 @@ class User < ActiveRecord::Base
     participations.where(section: section, role: Participation::COACH).count > 0
   end
 
+  def display_participations
+    participations.map{ |participation| display_participation participation }.join("\n")
+  end
+
+  def display_participation(participation)
+    "#{participation.season.to_s} - #{participation.role} of #{participation.section.club.name} - #{participation.section.name}"
+  end
+
   protected 
     def ensure_authentication_token
       self.authentication_token ||= SecureRandom.urlsafe_base64(32)

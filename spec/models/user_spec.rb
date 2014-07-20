@@ -55,4 +55,19 @@ describe User do
     end
   end
 
+  describe '.display_participations' do
+
+    let(:display) { user.display_participations }
+
+    context 'with one participation' do
+      let!(:participation) { create :participation, user: user }
+
+      it { expect(display).to include(participation.section.club.name) }
+      it { expect(display).to include(participation.section.name) }
+      it { expect(display).to include(participation.role) }
+      it { expect(display).to include(participation.season.to_s) }
+    end
+
+  end
+
 end

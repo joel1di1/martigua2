@@ -13,5 +13,4 @@ class Participation < ActiveRecord::Base
   validates_presence_of :role
 
   scope :coachs, where(role: COACH)
-
 end

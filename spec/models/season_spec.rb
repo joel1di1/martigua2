@@ -5,6 +5,8 @@ RSpec.describe Season, :type => :model do
   it { should validate_presence_of :start_date }
   it { should validate_presence_of :end_date }
 
+  let(:season) { create :season }
+
   describe '.current' do
     before { Season.destroy_all }
 
@@ -25,5 +27,9 @@ RSpec.describe Season, :type => :model do
       subject { Season.current }
       it { should_not be_nil }
     end
+  end
+
+  describe '#to_s' do 
+    it { expect(season.to_s).to eq "#{season.start_date.year}-#{season.end_date.year}" }
   end
 end

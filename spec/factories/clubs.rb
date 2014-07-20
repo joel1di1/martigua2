@@ -2,6 +2,6 @@
 
 FactoryGirl.define do
   factory :club do
-    name { Faker::Company.name }
+    name { "CLUB: #{Faker::Company.name}" }
   end
 end

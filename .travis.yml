@@ -5,7 +5,7 @@ cache: bundler
 deploy:
   provider: heroku
   api_key:
-    secure: "bFqNbF285Y5ntmFyBg2G62RsPgrPRzvslAdTz7Eo3ztkob1TQtF+C//jziq9szPU5W/DkjVuoa5KAKNKX0JrlUH1fKLURwJBhjmqUIYiO5jtMAERU0pE0noNqWZbdDsE2v/Uy5anDDzk+yX0KsGDj7QXgVOEhwuU3Bqk+4ZvtGg="
+    secure: "gePgelkRYkgouo5y9lcYbkQgWj0gq+98YVFJCE0o3QHHNO1RXxfaqUrbmtBWhP9Ii4Y62jVIh3vvuSxMdn9ps8IQ6nP9soVfmOqJpFy7z/8ceZyyO4SpY7FECK2MSx7KD87rzN09kDhl5GQPdTp8ucAJXD20VjtxqGas+X8stFc="
   run: "rake db:migrate"
   app: martigua2
   on:

@@ -43,7 +43,9 @@ group :production do
   gem 'rails_12factor'
 end
 group :test do
-  gem 'sqlite3'
+  gem "sqlite3", :platform => [:ruby, :mswin, :mingw]
+  gem "jdbc-sqlite3", :platform => :jruby  
+
   gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'rspec-its'

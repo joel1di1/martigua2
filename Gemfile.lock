@@ -345,6 +345,7 @@ DEPENDENCIES
   haml-rails
   html2haml
   jbuilder (~> 2.0)
+  jdbc-sqlite3
   jquery-rails
   launchy
   pg

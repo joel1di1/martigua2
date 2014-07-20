@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   resources :sections, only: [:index, :show] do
     resources :users, path: 'members', only: [:index, :show]
-    resources :section_user_invitation, path: 'user_invitations', only: [:new, :create, :index]
+    resources :section_user_invitations, path: 'user_invitations', only: [:new, :show, :create, :index]
   end
 
   resources :club_admin_roles, only: [:index, :show]

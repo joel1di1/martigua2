@@ -16,8 +16,12 @@ class User < ActiveRecord::Base
     sections.count == 1
   end
 
-  def coach_of?(section)
-    participations.where(section: section, role: Participation::COACH).count > 0
+  def is_coach_of?(section)
+    is_member_of? section, Participation::COACH
+  end
+
+  def is_player_of?(section)
+    is_member_of? section, Participation::PLAYER
   end
 
   def display_participations
@@ -32,4 +36,8 @@ class User < ActiveRecord::Base
     def ensure_authentication_token
       self.authentication_token ||= SecureRandom.urlsafe_base64(32)
     end    
+
+    def is_member_of?(section, role)
+      participations.where(section: section, role: role).count > 0
+    end
 end

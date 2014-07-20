@@ -1,0 +1,10 @@
+= "Inviter un nouveau joueur dans #{current_section} :"
+
+= simple_form_for [current_section, @section_user_invitation]  do |f|
+  = f.hidden_field :roles, value: "player"
+  = f.input :email
+  = f.input :first_name
+  = f.input :last_name
+  = f.input :nickname
+  = f.input :phone_number
+  = f.button :submit, value: 'Inviter le joueur'

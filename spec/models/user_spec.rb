@@ -35,10 +35,10 @@ describe User do
     end
   end
 
-  describe '#coach_of?' do
+  describe '#is_coach_of?' do
     let(:section) { create :section }
 
-    subject { user.coach_of?(section) }
+    subject { user.is_coach_of?(section) }
 
     context 'with a user not in the section' do
       it { should eq false }
@@ -52,6 +52,25 @@ describe User do
       before { section.add_coach!(user) }
       
       it { should eq true }
+    end
+  end
+  describe '#is_player_of?' do
+    let(:section) { create :section }
+
+    subject { user.is_player_of?(section) }
+
+    context 'with a user not in the section' do
+      it { should eq false }
+    end
+    context 'with a player of the section' do
+      before { section.add_player!(user) }
+      
+      it { should eq true }
+    end
+    context 'with a coach of the section' do
+      before { section.add_coach!(user) }
+      
+      it { should eq false }
     end
   end
 

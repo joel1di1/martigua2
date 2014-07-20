@@ -56,17 +56,47 @@ RSpec.describe Section, :type => :model do
   end
 
   describe '.invite_user!' do
-    let(:params) { attributes_for :user }
+    let(:user_params) { attributes_for(:user) }
+    let(:roles) { [Participation::PLAYER, Participation::COACH].sample }
+    let(:params) { user_params.merge({roles: roles}) }
 
-    it { expect{section.invite_user!(params)}.to change{SectionUserInvitation.count}.by(1) }
-    it { expect{section.invite_user!(params)}.to change{section.section_user_invitations(true).count}.by(1) }
+    let(:invite_user) { section.invite_user!(params, coach) }
 
-    context 'with new user' do
-      it { expect{section.invite_user!(params)}.to change{User.count}.by(1) }
+    context 'with coach' do
+      let!(:coach) do
+        user = create :user
+        section.add_coach! user
+        user
+      end
+  
+      it { expect{ invite_user }.to change{SectionUserInvitation.count}.by(1) }
+      it { expect{ invite_user }.to change{section.section_user_invitations(true).count}.by(1) }
+
+      context 'invite player' do
+        let(:roles) { Participation::PLAYER }
+        it 'add user as a section player' do
+          user = invite_user
+          expect(user.is_player_of?(section)).to eq true
+        end
+      end
+
+      context 'with new user' do
+        it { expect{ invite_user }.to change{User.count}.by(1) }
+      end
+      context 'with already known user' do
+        before { User.create!(user_params) }
+        it { expect{ invite_user }.to change{User.count}.by(0) }
+      end
     end
-    context 'with already known user' do
-      before { User.create!(params) }
-      it { expect{section.invite_user!(params)}.to change{User.count}.by(0) }
+
+    context 'with fake coach' do
+      let!(:coach) do
+        user = create :user
+        section.add_player! user
+        user
+      end
+
+      it { expect{ invite_user }.to raise_exception }
     end
   end
 

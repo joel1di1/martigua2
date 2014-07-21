@@ -1,13 +1,13 @@
 class Section < ActiveRecord::Base
   belongs_to :club
 
-  has_many :team_sections
+  has_many :team_sections, dependent: :destroy
   has_many :teams, through: :team_sections 
 
-  has_many :participations, inverse_of: :section
+  has_many :participations, inverse_of: :section, dependent: :destroy
   has_many :users, through: :participations, inverse_of: :sections
 
-  has_many :section_user_invitations, inverse_of: :section
+  has_many :section_user_invitations, inverse_of: :section, dependent: :destroy
 
 
   validates_presence_of :club, :name

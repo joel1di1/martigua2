@@ -4,8 +4,8 @@ class User < ActiveRecord::Base
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :club_admin_roles
-  has_many :participations
+  has_many :club_admin_roles, dependent: :destroy
+  has_many :participations, dependent: :destroy
   has_many :sections, through: :participations, inverse_of: :users
 
   validates_presence_of :authentication_token

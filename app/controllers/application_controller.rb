@@ -10,32 +10,46 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_section
 
-  def log_requests(&block)
-    request_string = "--REQ-- #{Rails.env};#{current_user.try(:id)};#{current_user.try(:email)};#{request.method};#{request.url};#{request.host};#{request.query_string};#{filter_params(params)}"
-    begin
-      yield
-      p "#{request_string} --RESP-- #{response.status};#{response.redirect_url}" unless Rails.env.test?
-    rescue Exception => ex
-      p "#{request_string} --RESP-- 500;#{ex.message};#{ex.backtrace}" unless Rails.env.test?
-      raise
-    end
-  end
-
-  def filter_params params
-    filters = Rails.application.config.filter_parameters
-    f = ActionDispatch::Http::ParameterFilter.new filters
-    f.filter params
-  end
-
   protected 
+    def log_requests(&block)
+      yield and return if Rails.env.test?
+        
+      begin
+        yield
+        p "#{request_string} --RESP-- #{response.status};#{response.redirect_url}" 
+      rescue Exception => ex
+        p "#{request_string} --RESP-- 500;#{ex.message};#{ex.backtrace}"
+        raise
+      end
+    end
+
+    def request_string
+      "--REQ-- #{Rails.env};#{current_user.try(:id)};#{current_user.try(:email)};#{request.method};#{request.url};#{request.host};#{request.query_string};#{filter_params(params)}"
+    end
+
+    def filter_params params
+      filters = Rails.application.config.filter_parameters
+      f = ActionDispatch::Http::ParameterFilter.new filters
+      f.filter params
+    end
+
+
     def current_section
       @current_section ||= current_section_from_params
     end
 
     def current_section_from_params
-      section_id = params[:id] if params[:controller] == 'sections' && params[:id]
-      section_id ||= params[:section_id] if params[:section_id]
-      Section.find(section_id) if section_id
+      section_id = get_section_id_from_params_id
+      section_id ||= get_section_id_from_params_section_id
+      section_id ? Section.find(section_id) : nil
+    end
+
+    def get_section_id_from_params_id
+      params[:id] if params[:controller] == 'sections' && params[:id]
+    end
+
+    def get_section_id_from_params_section_id
+      params[:section_id] if params[:section_id]
     end
 
   private

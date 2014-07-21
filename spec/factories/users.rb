@@ -16,6 +16,15 @@ FactoryGirl.define do
         create :participation, :coach, user: user
       end
     end
+
+    ignore do
+      with_section nil
+    end
+
+    after(:create) do |user, evaluator|
+      evaluator.with_section.add_player!(user) if evaluator.with_section
+    end
+
   end
 
   factory :one_section_player, parent: :user do

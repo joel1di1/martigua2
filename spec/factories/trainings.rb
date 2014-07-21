@@ -5,5 +5,13 @@ FactoryGirl.define do
     start_datetime { 1.day.from_now }
     end_datetime { start_datetime + 2.hours }
     location
+
+    ignore do
+      with_section nil
+    end
+
+    after(:create) do |training, evaluator|
+      training.sections << evaluator.with_section if evaluator.with_section
+    end
   end
 end

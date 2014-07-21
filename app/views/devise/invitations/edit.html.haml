@@ -1,0 +1,18 @@
+
+= simple_form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => { :method => :put } do |f|
+  = f.hidden_field :invitation_token
+
+  %h2 1. Vérifiez vos informations
+  = f.input :email
+  = f.input :first_name
+  = f.input :last_name
+  = f.input :nickname
+  = f.input :phone_number
+
+
+  %h2 2. Choisissez un mot de passe
+  = f.input :password
+  = f.input :password_confirmation
+
+  %h2 3. Accédez à Martigua
+  = f.submit 'Validez votre inscription'

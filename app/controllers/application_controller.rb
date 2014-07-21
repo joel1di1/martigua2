@@ -6,34 +6,11 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user_from_token!
   before_filter :authenticate_user!
 
-  around_filter :log_requests
-
   helper_method :current_section
 
+  include LogAllRequests
+
   protected 
-    def log_requests(&block)
-      yield and return if Rails.env.test?
-        
-      begin
-        yield
-        p "#{request_string} --RESP-- #{response.status};#{response.redirect_url}" 
-      rescue Exception => ex
-        p "#{request_string} --RESP-- 500;#{ex.message};#{ex.backtrace}"
-        raise
-      end
-    end
-
-    def request_string
-      "--REQ-- #{Rails.env};#{current_user.try(:id)};#{current_user.try(:email)};#{request.method};#{request.url};#{request.host};#{request.query_string};#{filter_params(params)}"
-    end
-
-    def filter_params params
-      filters = Rails.application.config.filter_parameters
-      f = ActionDispatch::Http::ParameterFilter.new filters
-      f.filter params
-    end
-
-
     def current_section
       @current_section ||= current_section_from_params
     end

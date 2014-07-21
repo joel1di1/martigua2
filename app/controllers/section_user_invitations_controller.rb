@@ -6,7 +6,7 @@ class SectionUserInvitationsController < ApplicationController
 
   def create
     current_section.invite_user! section_user_invitation_params, current_user
-    redirect_to section_users_path(current_section), notice: "#{section_user_invitation_params[:email]} invité !"
+    redirect_to new_section_section_user_invitation_path(section_id: current_section.to_param), notice: "#{section_user_invitation_params[:email]} invité !"
   end
 
   private 

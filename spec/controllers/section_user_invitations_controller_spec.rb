@@ -21,6 +21,7 @@ describe SectionUserInvitationsController, :type => :controller do
         }
         
         it { expect{request}.to change{SectionUserInvitation.count}.by(1) }
+        it { expect(request).to redirect_to(new_section_section_user_invitation_path(section_id: section.to_param)) }
       end
     end
   end

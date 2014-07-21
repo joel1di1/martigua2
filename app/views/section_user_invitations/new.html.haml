@@ -7,4 +7,5 @@
   = f.input :last_name
   = f.input :nickname
   = f.input :phone_number
-  = f.button :submit, value: 'Inviter le joueur'
+  = f.button :submit, value: 'Inviter le joueur'  
+  = link_to 'Retour à la liste des joueurs', section_users_path(section_id: current_section.to_param)

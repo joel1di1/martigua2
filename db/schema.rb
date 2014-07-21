@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140721220032) do
+ActiveRecord::Schema.define(version: 20140721221124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -152,6 +152,11 @@ ActiveRecord::Schema.define(version: 20140721220032) do
 
   add_index "sections", ["club_id"], name: "index_sections_on_club_id", using: :btree
 
+  create_table "sections_trainings", id: false, force: true do |t|
+    t.integer "training_id", null: false
+    t.integer "section_id",  null: false
+  end
+
   create_table "team_sections", force: true do |t|
     t.integer  "team_id",    null: false
     t.integer  "section_id", null: false
@@ -170,6 +175,18 @@ ActiveRecord::Schema.define(version: 20140721220032) do
   end
 
   add_index "teams", ["club_id"], name: "index_teams_on_club_id", using: :btree
+
+  create_table "trainings", force: true do |t|
+    t.string   "start_datetime",     null: false
+    t.string   "end_datetime"
+    t.integer  "location_id"
+    t.boolean  "canceled"
+    t.text     "cancelation_reason"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "trainings", ["location_id"], name: "index_trainings_on_location_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

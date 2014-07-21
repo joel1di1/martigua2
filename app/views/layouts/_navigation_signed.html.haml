@@ -13,6 +13,8 @@
     %ul.nav.navbar-nav.navbar-left
       %li{class: active_if_current_path(section_users_path(current_section))}
         = link_to "Joueurs", section_users_path(current_section)
+      %li{class: active_if_current_path(section_trainings_path(current_section))}
+        = link_to "Entrainements", section_trainings_path(current_section)
   %ul.nav.navbar-nav.navbar-right.user
     %li.dropdown
       %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}

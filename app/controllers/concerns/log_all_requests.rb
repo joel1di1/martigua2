@@ -4,17 +4,21 @@ module LogAllRequests extend ActiveSupport::Concern
   end
 
   def log_requests(&block)
-    if Rails.env.test?
+    begin
       yield
-    else
-      begin
-        yield
-        p "#{request_string} --RESP-- #{response.status};#{response.redirect_url}" 
-      rescue Exception => ex
-        p "#{request_string} --RESP-- 500;#{ex.message};#{ex.backtrace}"
-        raise
-      end
+      log_if_active "#{request_string} --RESP-- #{response.status};#{response.redirect_url}"
+    rescue Exception => ex
+      log_if_active "#{request_string} --RESP-- 500;#{ex.message};#{ex.backtrace}"
+      raise
     end
+  end
+
+  def log_if_active(str)
+    puts str if log_active?
+  end
+
+  def log_active?
+    !Rails.env.test?
   end
 
   def request_string

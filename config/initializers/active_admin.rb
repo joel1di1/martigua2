@@ -141,6 +141,9 @@ ActiveAdmin.setup do |config|
   #
   # config.before_filter :do_something_awesome
 
+  config.skip_before_filter :authenticate_user!
+  config.skip_before_filter :authenticate_user_from_token!
+
 
   # == Setting a Favicon
   #

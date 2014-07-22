@@ -3,5 +3,6 @@
 FactoryGirl.define do
   factory :admin_user do
     email { Faker::Internet::email }
+    password 'secret'
   end
 end

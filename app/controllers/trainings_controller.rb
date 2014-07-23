@@ -10,6 +10,10 @@ class TrainingsController < ApplicationController
     redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Entrainement créé"
   end
 
+  def new
+    @training = Training.new
+  end
+
   private 
     def training_params
       params.require(:training).permit(:start_datetime, :end_datetime)

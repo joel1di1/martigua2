@@ -2,7 +2,7 @@
 
 = simple_form_for [current_section, @section_user_invitation]  do |f|
   = f.hidden_field :roles, value: "player"
-  = f.input :email
+  = f.input :email, :autofocus => true
   = f.input :first_name
   = f.input :last_name
   = f.input :nickname

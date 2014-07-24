@@ -16,7 +16,7 @@ class TrainingsController < ApplicationController
 
   private 
     def training_params
-      params.require(:training).permit(:start_datetime, :end_datetime)
+      params.require(:training).permit(:start_datetime, :end_datetime, :location_id)
     end
 
 end

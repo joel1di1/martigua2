@@ -1,2 +1,7 @@
 %h2 Prévoir un entrainement
 
+= simple_form_for [current_section, @training] do |f|
+  = f.input :start_datetime, :as => :datetime
+  = f.input :end_datetime, :as => :datetime
+  = f.input :location_id, collection: Location.order('name ASC')
+  = f.button :submit

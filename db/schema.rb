@@ -177,8 +177,8 @@ ActiveRecord::Schema.define(version: 20140721221124) do
   add_index "teams", ["club_id"], name: "index_teams_on_club_id", using: :btree
 
   create_table "trainings", force: true do |t|
-    t.string   "start_datetime",     null: false
-    t.string   "end_datetime"
+    t.datetime "start_datetime",     null: false
+    t.datetime "end_datetime"
     t.integer  "location_id"
     t.boolean  "canceled"
     t.text     "cancelation_reason"

@@ -1,4 +1,9 @@
-
-%li
+%tr
+  %td= training.start_datetime.strftime("%-d %b %Y")
+  %td= training.start_datetime.strftime("%R")
+  %td= training.location.try(:name)
+  %td
+  %td
+  %td
   = training.location.name
-  = training.start_datetime
+  

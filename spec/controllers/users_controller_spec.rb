@@ -10,18 +10,26 @@ describe UsersController, :type => :controller do
       let(:section) { create :section }
       let(:request_params) { { section_id: section.to_param } }
 
-      context 'sign as user with only one section' do
-        let(:user) { create :user }
+      context 'with on user' do
+        let(:user) { create :user, with_section: section }
 
-        before { 
-          section.add_player!(user)
-          sign_in user
-        }
-        
-        before { request }
+        before { sign_in user and request }
 
         it { expect(assigns[:users]).to match_array([user]) }
       end
+
+      context 'with one user with several roles' do
+        let(:user) do 
+          user = create :user, with_section_as_coach: section
+          section.add_player! user
+          user
+        end
+        
+        before { sign_in user and request }
+
+        it { expect(assigns[:users]).to match_array([user]) }
+      end
+
     end
   end
 end

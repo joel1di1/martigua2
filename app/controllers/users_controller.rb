@@ -1,8 +1,11 @@
 class UsersController < ApplicationController
 
   def index
-    @users = User.all
-    @users = @users.joins(:participations).where(participations: { section: current_section } ) if current_section
+    if current_section
+      @users = current_section.users
+    else
+      @users = User.all
+    end
   end
 
   def show

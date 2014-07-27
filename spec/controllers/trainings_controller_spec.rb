@@ -12,10 +12,11 @@ describe TrainingsController, :type => :controller do
       let(:request_params) { { section_id: section.to_param } }
 
       context 'signed as user' do
+        render_views
         let(:user) { create :user, with_section: section }
 
-        let(:training_1) { create :training, with_section: section }
-        let(:training_2) { create :training, with_section: section }
+        let!(:training_1) { create :training, with_section: section }
+        let!(:training_2) { create :training, with_section: section, location: nil }
         let!(:training_not_in_section) { create :training }
 
         before { sign_in user }

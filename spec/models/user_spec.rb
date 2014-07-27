@@ -34,6 +34,12 @@ describe User do
       let!(:participation_1) { create :participation, user: user }
       it { should eq true }
     end
+    context 'user with two participations on one section' do
+      let(:section) { create :section }
+      let!(:participation_1) { create :participation, user: user, section: section, role: Participation::PLAYER}
+      let!(:participation_2) { create :participation, user: user, section: section, role: Participation::COACH}
+      it { should eq true }
+    end
   end
 
   describe '#is_coach_of?' do

@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   has_many :club_admin_roles, dependent: :destroy
   has_many :participations, dependent: :destroy
-  has_many :sections, through: :participations, inverse_of: :users
+  has_many :sections, -> { uniq }, through: :participations, inverse_of: :users
   has_many :training_availabilities, inverse_of: :user
 
   validates_presence_of :authentication_token

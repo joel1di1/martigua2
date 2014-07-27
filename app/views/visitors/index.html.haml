@@ -1,4 +1,4 @@
 
 %h3 Bienvenue sur le site Martigua
 
-= render 'devise/sessions/new'
+= render 'devise/sessions/new' unless user_signed_in?

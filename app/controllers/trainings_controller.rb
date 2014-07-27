@@ -1,4 +1,7 @@
 class TrainingsController < ApplicationController
+
+  before_filter :set_current_training, only: [:invitations]
+
   def index
     @trainings = Training.of_section(current_section)
   end
@@ -14,9 +17,18 @@ class TrainingsController < ApplicationController
     @training = Training.new
   end
 
+  def invitations
+    @training.send_invitations!
+    redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Notifications envoyées"
+  end
+
   private 
     def training_params
       params.require(:training).permit(:start_datetime, :end_datetime, :location_id)
+    end
+
+    def set_current_training
+      @training = Training.of_section(current_section).where(id: params[:id]).first
     end
 
 end

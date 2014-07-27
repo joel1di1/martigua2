@@ -8,6 +8,7 @@ describe User do
   it { should have_many :club_admin_roles }
   it { should have_many :participations }
   it { should have_many :sections }
+  it { should have_many :training_availabilities }
 
   let(:user) { create :user }
 
@@ -74,7 +75,7 @@ describe User do
     end
   end
 
-  describe '.display_participations' do
+  describe '#display_participations' do
 
     let(:display) { user.display_participations }
 
@@ -87,6 +88,37 @@ describe User do
       it { expect(display).to include(participation.season.to_s) }
     end
 
+  end
+
+  describe '#available_for!' do
+    context 'with one training' do
+      let(:training) { create :training }
+
+      let(:set_availability) { user.available_for!(training) }
+
+      it { expect{set_availability}.to change{TrainingAvailability.count}.by(1) }
+
+      describe 'user availability' do
+        before { set_availability }
+
+        it { expect(user.is_available_for?(training)).to be_truthy }
+      end
+    end
+    context 'with two trainings' do
+      let(:training_1) { create :training }
+      let(:training_2) { create :training }
+
+      context 'passed as array' do
+        let(:set_availability) { user.available_for!([training_1, training_2]) }
+
+        it { expect{set_availability}.to change{TrainingAvailability.count}.by(2) }
+      end
+      context 'passed as params' do
+        let(:set_availability) { user.available_for!(training_1, training_2) }
+
+        it { expect{set_availability}.to change{TrainingAvailability.count}.by(2) }
+      end
+    end
   end
 
 end

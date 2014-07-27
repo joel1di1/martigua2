@@ -47,4 +47,17 @@ describe TrainingsController, :type => :controller do
     end
   end
 
+  describe "POST invitations" do
+    let(:section) {create :section }
+    let(:coach) { create :user, with_section_as_coach: section }
+    let(:training) { create :training, with_section: section}
+
+    let(:request) { post :invitations, section_id: section.to_param, id: training.to_param }
+
+    before { sign_in coach }
+    before { request }
+
+    it { expect(:response).to redirect_to(section_trainings_path(section_id: section.to_param))}        
+  end
+
 end

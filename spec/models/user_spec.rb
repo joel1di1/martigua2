@@ -8,7 +8,7 @@ describe User do
   it { should have_many :club_admin_roles }
   it { should have_many :participations }
   it { should have_many :sections }
-  it { should have_many :training_availabilities }
+  it { should have_many :training_presences }
 
   let(:user) { create :user }
 
@@ -96,18 +96,18 @@ describe User do
 
   end
 
-  describe '#available_for!' do
+  describe '#present_for!' do
     context 'with one training' do
       let(:training) { create :training }
 
-      let(:set_availability) { user.available_for!(training) }
+      let(:set_presence) { user.present_for!(training) }
 
-      it { expect{set_availability}.to change{TrainingAvailability.count}.by(1) }
+      it { expect{set_presence}.to change{TrainingPresence.count}.by(1) }
 
       describe 'user availability' do
-        before { set_availability }
+        before { set_presence }
 
-        it { expect(user.is_available_for?(training)).to be_truthy }
+        it { expect(user.is_present_for?(training)).to be_truthy }
       end
     end
     context 'with two trainings' do
@@ -115,14 +115,14 @@ describe User do
       let(:training_2) { create :training }
 
       context 'passed as array' do
-        let(:set_availability) { user.available_for!([training_1, training_2]) }
+        let(:set_presence) { user.present_for!([training_1, training_2]) }
 
-        it { expect{set_availability}.to change{TrainingAvailability.count}.by(2) }
+        it { expect{set_presence}.to change{TrainingPresence.count}.by(2) }
       end
       context 'passed as params' do
-        let(:set_availability) { user.available_for!(training_1, training_2) }
+        let(:set_presence) { user.present_for!(training_1, training_2) }
 
-        it { expect{set_availability}.to change{TrainingAvailability.count}.by(2) }
+        it { expect{set_presence}.to change{TrainingPresence.count}.by(2) }
       end
     end
   end

@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_many :club_admin_roles, dependent: :destroy
   has_many :participations, dependent: :destroy
   has_many :sections, -> { uniq }, through: :participations, inverse_of: :users
-  has_many :training_availabilities, inverse_of: :user
+  has_many :training_presences, inverse_of: :user
 
   validates_presence_of :authentication_token
 
@@ -33,13 +33,13 @@ class User < ActiveRecord::Base
     "#{participation.season.to_s} - #{participation.role} of #{participation.section.club.name} - #{participation.section.name}"
   end
 
-  def available_for!(training_or_array, *other_trainings)
+  def present_for!(training_or_array, *other_trainings)
     trainings = training_or_array if training_or_array.kind_of? Array
     trainings ||= [training_or_array] + other_trainings
-    [*trainings].each{|training| TrainingAvailability.create! training: training, user: self }
+    [*trainings].each{|training| TrainingPresence.create! training: training, user: self }
   end
 
-  def is_available_for?(training)
+  def is_present_for?(training)
     true
   end
 

@@ -1,4 +1,4 @@
-class TrainingAvailability < ActiveRecord::Base
+class TrainingPresence < ActiveRecord::Base
   belongs_to :user
   belongs_to :training
 

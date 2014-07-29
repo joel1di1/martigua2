@@ -18,8 +18,8 @@ RSpec.describe TrainingInvitation, :type => :model do
     let!(:player_undecided_2) { create :user, with_section: section }
     let!(:player_already_answered) { create :user, with_section: section }
     let!(:player_already_answered_with_nil) { create :user, with_section: section }
-    let!(:training_presence) { create :training_presence, user: player_already_answered, training: training, available: [true, false].sample }
-    let!(:training_presence_2) { create :training_presence, user: player_already_answered_with_nil, training: training, available: nil }
+    let!(:training_presence) { create :training_presence, user: player_already_answered, training: training, present: [true, false].sample }
+    let!(:training_presence_2) { create :training_presence, user: player_already_answered_with_nil, training: training, present: nil }
     let!(:coach_undecided) { create :user, with_section_as_coach: section }
     let!(:player_in_other_section) { create :user, with_section: other_section }
 

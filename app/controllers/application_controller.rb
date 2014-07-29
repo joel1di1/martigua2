@@ -29,6 +29,13 @@ class ApplicationController < ActionController::Base
       params[:section_id] if params[:section_id]
     end
 
+    def handle_404
+      respond_to do |format|
+        format.html { render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found }
+        format.xml  { head :not_found }
+      end
+    end
+
   private
     
     def authenticate_user_from_token!

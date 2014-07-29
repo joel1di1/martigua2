@@ -16,7 +16,8 @@ feature 'User edit', :devise do
   #   When I change my email address
   #   Then I see an account updated message
   scenario 'user changes email address' do
-    user = FactoryGirl.create(:user)
+    section = create :section
+    user = create :user, with_section: section
     new_email = Faker::Internet::email
     login_as(user, :scope => :user)
     visit edit_user_registration_path(user)
@@ -31,7 +32,8 @@ feature 'User edit', :devise do
   #   When I try to edit another user's profile
   #   Then I see my own 'edit profile' page
   scenario "user cannot cannot edit another user's profile", :me do
-    me = FactoryGirl.create(:user)
+    section = create :section
+    me = create :user, with_section: section
     other_email = Faker::Internet::email
     other = FactoryGirl.create(:user, email: other_email)
     login_as(me, :scope => :user)

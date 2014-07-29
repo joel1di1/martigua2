@@ -16,9 +16,10 @@ feature 'User index page', :devise do
   #   When I visit the user index page
   #   Then I see my own email address
   scenario 'user sees own email address' do
-    user = FactoryGirl.create(:user)
+    section = create :section
+    user = create :user, with_section: section
     login_as(user, scope: :user)
-    visit users_path
+    visit section_users_path(section_id: section.to_param)
     expect(page).to have_content user.email
   end
 

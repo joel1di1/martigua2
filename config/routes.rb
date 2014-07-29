@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   resources :sections, only: [:index, :show] do
-    resources :users, path: 'members', only: [:index, :show]
+    resources :users, path: 'members', only: [:index, :show, :edit, :update]
     resources :trainings, only: [:index, :create, :new] do
       member do
         post 'invitations'
@@ -20,8 +20,7 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  resources :users
-
+  resources :users, only: [:show, :edit, :update]
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)

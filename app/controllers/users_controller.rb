@@ -28,6 +28,19 @@ class UsersController < ApplicationController
     end
   end
 
+  def training_presences
+    present_ids = params[:present_ids].map(&:to_i)
+    checked_ids = params[:checked_ids].map(&:to_i)
+
+    TrainingPresence.where(training_id: present_ids).delete_all
+    
+    trainings = Training.where(id: present_ids)
+    trainings.each do |training|
+      TrainingPresence.create! user: current_user, training: training, present: checked_ids.include?(training.id)
+    end
+
+    redirect_to root_path
+  end
 
   protected 
     def find_user_by_id

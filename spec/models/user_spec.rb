@@ -127,4 +127,28 @@ describe User do
     end
   end
 
+  describe 'is_present_for?' do
+    let(:training) { create :training }
+
+    context 'without any response' do
+      it { expect(user.is_present_for?(training)).to be_nil }
+    end
+
+    context 'without a nil response' do
+      let!(:training_presence) { create :training_presence, training: training, user: user, present: nil }
+
+      it { expect(user.is_present_for?(training)).to be_nil }
+    end
+    context 'without a true response' do
+      let!(:training_presence) { create :training_presence, training: training, user: user, present: true }
+
+      it { expect(user.is_present_for?(training)).to be_truthy }
+    end
+    context 'without a false response' do
+      let!(:training_presence) { create :training_presence, training: training, user: user, present: false }
+
+      it { expect(user.is_present_for?(training)).to be_falsy }
+    end
+  end
+
 end

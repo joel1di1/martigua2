@@ -79,7 +79,23 @@ describe UsersController, :type => :controller do
         expect(response).to redirect_to(user_path(user))
       end
     end
+  end
 
+  describe 'POST training_presences' do
+    let(:training_1) { create :training }
+    let(:training_2) { create :training }
+    let(:training_3) { create :training }
+
+    let(:post_training_presences) { post :training_presences, id: user.to_param, user_email: user.email, user_token: user.authentication_token,
+                                present_ids: [training_1.id, training_2.id], checked_ids: [training_1.id] }
+
+    before { post_training_presences }
+
+    it 'should update training presences' do
+      expect(user.reload.is_present_for?(training_1)).to be_truthy
+      expect(user.reload.is_present_for?(training_2)).to be_falsy
+    end
+    it { expect(response).to redirect_to(root_path) }
   end
 
 end

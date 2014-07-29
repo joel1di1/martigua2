@@ -20,7 +20,11 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  resources :users, only: [:show, :edit, :update]
+  resources :users, only: [:show, :edit, :update] do
+    member do
+      post 'training_presences'
+    end
+  end
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)

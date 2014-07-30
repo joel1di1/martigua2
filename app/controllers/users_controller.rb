@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   before_filter :find_user_by_id, except: :index
+  skip_before_filter :verify_authenticity_token, only: [:training_presences]
 
   def index
     if current_section

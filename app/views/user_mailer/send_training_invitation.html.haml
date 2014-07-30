@@ -14,5 +14,5 @@ Entrainements :
         %td
           %input{ type: :hidden, name: 'present_ids[]', value: training.id }
           %input{ type: :checkbox, name: 'checked_ids[]', value: training.id, checked: @user.is_present_for?(training) ? 'checked' : '' }
-  %button{type: :submit, value: 'Valider mes présences'}
+  %button{type: :submit} Valider mes présences
 

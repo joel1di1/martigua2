@@ -30,10 +30,10 @@ class UsersController < ApplicationController
   end
 
   def training_presences
-    present_ids = params[:present_ids].map(&:to_i)
-    checked_ids = params[:checked_ids].map(&:to_i)
+    present_ids = ( params[:present_ids] || [] ).map(&:to_i)
+    checked_ids = ( params[:checked_ids] || [] ).map(&:to_i)
 
-    TrainingPresence.where(training_id: present_ids).delete_all
+    TrainingPresence.where(training_id: present_ids, user_id: current_user.id).delete_all
     
     trainings = Training.where(id: present_ids)
     trainings.each do |training|

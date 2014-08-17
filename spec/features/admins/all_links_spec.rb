@@ -21,9 +21,10 @@ feature 'Active Admin', :devise do
     create :team_section
     create :team
     create :training
+    create :training_presence
     create :user
 
-    admins_pages = ['Admin Users', 'Championships', 'Clubs', 'Comments', 'Locations', 'Seasons', 'Sections', 'Team Sections', 'Teams', 'Trainings', 'Users']
+    admins_pages = ['Admin Users', 'Championships', 'Clubs', 'Comments', 'Locations', 'Seasons', 'Sections', 'Team Sections', 'Teams', 'Trainings', 'Training Presences', 'Users']
 
     admins_pages.each do |admin_page|
       click_link admin_page

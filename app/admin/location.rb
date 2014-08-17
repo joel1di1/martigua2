@@ -1,3 +1,3 @@
 ActiveAdmin.register Location do
-  permit_params :name, :address
+  permit_params :name, :adress
 end

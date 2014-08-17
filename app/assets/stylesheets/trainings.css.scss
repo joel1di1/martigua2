@@ -1,3 +1,31 @@
 // Place all the styles related to the Trainings controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.training_presence{
+  padding: 5px;
+  display: inline-block;
+  font-weight: bold;
+  &.bg-danger{
+    color: #843534;
+  }
+  &.bg-success{
+    color: #3c763d;
+  }
+}
+
+.change_presence{
+  font-size: 12px;
+  &.present{
+    color: #3c763d;
+  }
+  &.not_present{
+    color: #a94442;
+  }
+}
+
+
+.set_present, .set_not_present{
+  padding: 5px;
+  display: inline-block;
+  font-weight: bold;
+}

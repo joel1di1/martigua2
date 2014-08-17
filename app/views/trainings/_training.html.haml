@@ -1,7 +1,15 @@
 %tr
-  %td= training.start_datetime.strftime("%-d %b %Y")
-  %td= training.start_datetime.strftime("%R")
+  %td= training.start_datetime.strftime("%-d %b %Y %R")
   %td= training.location.try(:name)
-  %td= current_user.is_present_for?(training)
+  %td
+    - if current_user.is_present_for?(training).nil?
+      = link_to 'Présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: [training.id]), method: :post, class: 'set_present btn-success'
+      = link_to 'Non présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: []), method: :post, class: 'set_not_present btn-danger'
+    - elsif current_user.is_present_for?(training) == true
+      %div.training_presence{class: 'bg-success'} Présent !
+      = link_to 'Non présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: []), method: :post, class: 'change_presence not_present'
+    - else
+      %div.training_presence{class: 'bg-danger'} Non présent !
+      = link_to 'Présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: [training.id]), method: :post, class: 'change_presence present'
   %td
     = button_to 'Envoyer les invitations', invitations_section_training_path(training, section_id: current_section), id: "training_invitations_#{training.id}"

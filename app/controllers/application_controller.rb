@@ -6,11 +6,16 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user_from_token!
   before_filter :authenticate_user!
 
-  helper_method :current_section
+  helper_method :current_section, :origin_path_or
 
   include LogAllRequests
 
   protected 
+
+    def referer_url_or(default_path)
+      request.referrer || default_path
+    end
+
     def current_section
       @current_section ||= current_section_from_params
     end

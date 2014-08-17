@@ -40,7 +40,7 @@ class UsersController < ApplicationController
       TrainingPresence.create! user: current_user, training: training, present: checked_ids.include?(training.id)
     end
 
-    redirect_to root_path
+    redirect_to referer_url_or(root_path)
   end
 
   protected 

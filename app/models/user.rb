@@ -39,6 +39,12 @@ class User < ActiveRecord::Base
     [*trainings].each{|training| TrainingPresence.create! training: training, user: self, present: true }
   end
 
+  def not_present_for!(training_or_array, *other_trainings)
+    trainings = training_or_array if training_or_array.kind_of? Array
+    trainings ||= [training_or_array] + other_trainings
+    [*trainings].each{|training| TrainingPresence.create! training: training, user: self, present: false }
+  end
+
   def is_present_for?(training)
     training_presences.where(training: training).first.try(:present)
   end

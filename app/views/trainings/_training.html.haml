@@ -1,6 +1,14 @@
 %tr
   %td= training.start_datetime.strftime("%-d %b %Y %R")
   %td= training.location.try(:name)
+  %td><
+    (
+    %span{class: 'text-success'}><= training.nb_presents
+    \/
+    %span{class: 'text-danger'}><= training.nb_not_presents
+    \/
+    %span{class: 'text-warning'}><= training.nb_presence_not_set
+    )
   %td
     - if current_user.is_present_for?(training).nil?
       = link_to 'Présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: [training.id]), method: :post, class: 'set_present btn-success'

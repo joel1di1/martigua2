@@ -4,13 +4,6 @@ RSpec.describe TrainingInvitation, :type => :model do
   it { should validate_presence_of :training }
 
   describe '#send_invitations_for_undecided_users' do
-
-    around(:each) do |example|
-      Delayed::Worker.delay_jobs = false
-      example.run
-      Delayed::Worker.delay_jobs = true
-    end
-
     let(:section) { create :section }
     let(:other_section) { create :section }
 

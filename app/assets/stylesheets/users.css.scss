@@ -4,3 +4,29 @@
 .user_remember_me > .controls {
   margin-left: 20px;
 }
+
+#new_user.sign_in{
+  #user_email {
+    width: 266px;
+  }
+  #user_password {
+    width: 150px;
+    display: inline-block;
+  }
+}
+label.remember_me {
+  font-weight: normal;
+  font-size: 12px;
+}
+
+.forgot {
+  font-size: 12px;
+}
+
+.remember_forgot{
+  margin-top: 4px;
+}
+
+#sign_in_panel{
+  width: 300px;
+}

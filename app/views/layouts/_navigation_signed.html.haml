@@ -1,29 +1,30 @@
-.navbar-header
-  %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
-    %span.sr-only Toggle navigation
-    %span.icon-bar
-    %span.icon-bar
-    %span.icon-bar
-  - if current_section
-    = link_to current_section.to_s, current_section, {class: 'navbar-brand'}
-  - else
-    = link_to 'Accueil', root_path, {class: 'navbar-brand'}
-.collapse.navbar-collapse
-  - if current_section
-    %ul.nav.navbar-nav.navbar-left
-      %li{class: active_if_current_path(section_users_path(current_section))}
-        = link_to "Joueurs", section_users_path(current_section)
-      %li{class: active_if_current_path(section_trainings_path(current_section))}
-        = link_to "Entrainements", section_trainings_path(current_section)
-  %ul.nav.navbar-nav.navbar-right.user
-    %li.dropdown
-      %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
-        = current_user.email
-        %span.carret
-      %ul.dropdown-menu{role: 'menu'}
-        - if current_section
-          %li= link_to 'Editer son profil', edit_section_user_path(current_user, section_id: current_section.to_param)
-        - else
-          %li= link_to 'Editer son profil', edit_user_path(current_user)
-        %li= link_to 'Changer de mot de passe', edit_user_registration_path
-        %li= link_to 'Déconnexion', destroy_user_session_path, :method=>'delete'
+.navbar.navbar-inverse.navbar-fixed-top{role: :navigation}
+  .navbar-header
+    %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+      %span.sr-only Toggle navigation
+      %span.icon-bar
+      %span.icon-bar
+      %span.icon-bar
+    - if current_section
+      = link_to current_section.to_s, current_section, {class: 'navbar-brand'}
+    - else
+      = link_to 'Accueil', root_path, {class: 'navbar-brand'}
+  .collapse.navbar-collapse
+    - if current_section
+      %ul.nav.navbar-nav.navbar-left
+        %li{class: active_if_current_path(section_users_path(current_section))}
+          = link_to "Joueurs", section_users_path(current_section)
+        %li{class: active_if_current_path(section_trainings_path(current_section))}
+          = link_to "Entrainements", section_trainings_path(current_section)
+    %ul.nav.navbar-nav.navbar-right.user
+      %li.dropdown
+        %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+          = current_user.email
+          %span.carret
+        %ul.dropdown-menu{role: 'menu'}
+          - if current_section
+            %li= link_to 'Editer son profil', edit_section_user_path(current_user, section_id: current_section.to_param)
+          - else
+            %li= link_to 'Editer son profil', edit_user_path(current_user)
+          %li= link_to 'Changer de mot de passe', edit_user_registration_path
+          %li= link_to 'Déconnexion', destroy_user_session_path, :method=>'delete'

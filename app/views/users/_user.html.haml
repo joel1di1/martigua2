@@ -2,5 +2,5 @@
   %td= user.first_name
   %td= user.last_name
   %td= user.nickname
-  %td= user.email
-  %td= user.phone_number
+  %td= mail_to user.email if user.email
+  %td= link_to user.phone_number, "tel:#{user.phone_number}" if user.phone_number

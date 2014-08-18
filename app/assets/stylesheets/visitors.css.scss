@@ -7,11 +7,8 @@
   }
 }
 
-.nw{
-  white-space: nowrap;
-}
-
 .front_bg{
+  z-index: -99;
   position: absolute;
   top: 0px;
   left: 0px;

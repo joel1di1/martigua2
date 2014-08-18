@@ -11,8 +11,8 @@ module Features
     def signin(email, password)
       visit root_path
       fill_in 'Email', with: email
-      fill_in 'Password', with: password
-      click_button 'Sign in'
+      fill_in 'Mot de passe', with: password
+      click_button 'Se connecter'
     end
   end
 end

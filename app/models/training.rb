@@ -8,8 +8,7 @@ class Training < ActiveRecord::Base
   validates_presence_of :start_datetime
 
   scope :of_section, ->(section) { joins(:sections).where("sections.id = ?", section.id) }
-  scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period)}
-
+  scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period) } 
 
   def send_invitations!
     invitations << TrainingInvitation.new 
@@ -29,11 +28,13 @@ class Training < ActiveRecord::Base
   end
 
   def self.send_presence_mail_for_next_week
-    trainings = Training.of_next_week
-    return if trainings.empty?
-    players = trainings.first.sections.map(&:players).flatten
-    players.each do |player|
-      Training.delay.send_training_invitation(trainings, player)
+    Section.all.each do |section| 
+      trainings = Training.of_next_week(section)
+      unless trainings.empty?
+        section.players.each do |player|
+          Training.delay.send_training_invitation(trainings, player)
+        end
+      end
     end
   end
 
@@ -41,10 +42,10 @@ class Training < ActiveRecord::Base
     UserMailer.send_training_invitation(trainings, player).deliver
   end
 
-  def self.of_next_week(date=DateTime.now)
+  def self.of_next_week(section, date=DateTime.now)
     start_period = date.next_week
     end_period = start_period.end_of_week
-    Training.with_start_between(start_period, end_period)
+    Training.with_start_between(start_period, end_period).of_section(section)
   end
 
 end

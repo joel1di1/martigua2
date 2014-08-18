@@ -1,5 +1,9 @@
 require 'rails_helper'
 
+RSpec::Matchers.define :db_object_eq do |x|
+  match { |actual| actual == x }
+end
+
 RSpec.describe Training, :type => :model do
   it { should validate_presence_of :start_datetime }
   it { should have_and_belong_to_many :sections }
@@ -9,7 +13,6 @@ RSpec.describe Training, :type => :model do
 
   let(:section) { create :section }
   let(:training) { create :training, with_section: section }
-
 
   describe '#nb_presents' do
     context 'with n users present' do
@@ -36,6 +39,7 @@ RSpec.describe Training, :type => :model do
   describe '.send_presence_mail_for_next_week' do
     context 'with n users and 3 coachs' do
       before { nb_users.times{ create :user, with_section: section } }
+      before { 4.times{ create :user } }
       before { 3.times{ create :user, with_section_as_coach: section } }
 
       context 'with no training next week' do
@@ -45,7 +49,9 @@ RSpec.describe Training, :type => :model do
       end
 
       context 'with some trainings next week' do
-        before { allow(Training).to receive(:of_next_week) {[training]} }
+        let(:training_of_other_section) { create :training }
+        before { allow(Training).to receive(:of_next_week).and_return([]) }
+        before { allow(Training).to receive(:of_next_week).with(db_object_eq(section)).and_return([training]) }
 
         it { expect{Training.send_presence_mail_for_next_week}.to change{ActionMailer::Base.deliveries.count}.by(nb_users) }
       end
@@ -63,7 +69,6 @@ RSpec.describe Training, :type => :model do
 
     let!(:trainings) { dates.map{|date| create :training, with_section: section, start_datetime: date } }
 
-    it { expect(Training.of_next_week(now)).to eq trainings[2..4] }
+    it { expect(Training.of_next_week(section, now)).to eq trainings[2..4] }
   end
-
 end

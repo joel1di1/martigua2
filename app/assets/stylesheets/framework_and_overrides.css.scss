@@ -14,6 +14,11 @@ img {
 .navbar {
   margin-bottom: 0px;
 }
+
+.form-control.datetime, .form-control.select{
+  display: inline;
+  width: inherit;
+}
 // THESE ARE EXAMPLES YOU CAN MODIFY
 // create your own classes
 // to make views framework-neutral

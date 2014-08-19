@@ -1,7 +1,7 @@
 Entrainements : 
 = @trainings.map{|t| t.start_datetime.strftime("%A %-d %HH%M")}.join(", ")
 
-%form{action: training_presences_user_url(@user.to_param), method: :post}
+%form{action: training_presences_user_url(@user.to_param, user_email: @user.email, user_token: @user.authentication_token), method: :post}
   %table{style: 'width: 600px;'}
     %tr{style: 'text-align: left;'}
       %th{style: 'border: 1px grey solid;'} Horaire
@@ -16,6 +16,6 @@ Entrainements :
           %input{ type: :checkbox, name: 'checked_ids[]', value: training.id, checked: @user.is_present_for?(training) }
     %tr
       %td{colspan: 3}
-        %a{style: "float: left; text-decoration: none; background:#5cb85c;display:inline-block;padding:10px;font-size:14px;margin:10px;color:white;", href: training_presences_user_url(@user.to_param, present_ids: @trainings.map(&:id), checked_ids: @trainings.map(&:id)), method: :post, } Présent à tous !!
-        %a{style: "float: left; text-decoration: none; background:#d9534f;display:inline-block;padding:10px;font-size:14px;margin:10px;color:white;", href: training_presences_user_url(@user.to_param, present_ids: @trainings.map(&:id), checked_ids: []), method: :post, } Présent à aucun :(
+        %a{style: "float: left; text-decoration: none; background:#5cb85c;display:inline-block;padding:10px;font-size:14px;margin:10px;color:white;", href: training_presences_user_url(@user.to_param, present_ids: @trainings.map(&:id), checked_ids: @trainings.map(&:id), user_email: @user.email, user_token: @user.authentication_token), method: :post} Présent à tous !!
+        %a{style: "float: left; text-decoration: none; background:#d9534f;display:inline-block;padding:10px;font-size:14px;margin:10px;color:white;", href: training_presences_user_url(@user.to_param, present_ids: @trainings.map(&:id), checked_ids: []), user_email: @user.email, user_token: @user.authentication_token, method: :post} Présent à aucun :(
         %button{type: :submit, style: "float: right; background:#428bca;display:inline-block;padding:10px;font-size:14px;margin:10px;color:white;"} Valider mes présences

@@ -13,8 +13,8 @@
   - if current_user.is_player_of?(current_section)
     %td
       - if current_user.is_present_for?(training).nil?
-        = link_to 'Présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: [training.id]), method: :post, class: 'btn btn-sm btn-success'
-        = link_to 'Non présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: []), method: :post, class: 'btn btn-sm btn-danger'
+        = link_to 'Présent ?', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: [training.id]), method: :post, class: 'btn btn-sm btn-success'
+        = link_to 'Non présent ?', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: []), method: :post, class: 'btn btn-sm btn-danger'
       - elsif current_user.is_present_for?(training) == true
         %div.training_presence{class: 'bg-success'} Présent !
         = link_to 'Non présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: []), method: :post, class: 'change_presence not_present'

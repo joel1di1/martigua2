@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show, :edit, :update] do
     member do
-      post 'training_presences'
+      match 'training_presences', via: [:get, :post]
     end
   end
 

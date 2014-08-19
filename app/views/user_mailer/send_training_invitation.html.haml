@@ -1,8 +1,10 @@
 Entrainements : 
 = @trainings.map{|t| t.start_datetime.strftime("%A %-d %HH%M")}.join(", ")
 
-%form{action: training_presences_user_url(@user.to_param, user_email: @user.email, user_token: @user.authentication_token), method: :post}
-  %table{style: 'width: 600px;'}
+%form{action: training_presences_user_url(@user.to_param), method: :post}
+  %input{type: :hidden, name: :user_email, value: @user.email}
+  %input{type: :hidden, name: :user_token, value: @user.authentication_token}
+  %table{style: 'width: 600px;border-collapse: collapse;'}
     %tr{style: 'text-align: left;'}
       %th{style: 'border: 1px grey solid;'} Horaire
       %th{style: 'border: 1px grey solid;'} Lieu

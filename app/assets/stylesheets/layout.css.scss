@@ -5,3 +5,14 @@
 body{
   padding-top: 52px;
 }
+
+.eye_link{
+  color: black;
+}
+
+.table > tbody > tr > td.link_column{
+  padding-left: 5px; 
+  padding-right: 0px; 
+  width: 20px;
+  vertical-align: middle;
+}

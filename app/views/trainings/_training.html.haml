@@ -1,4 +1,7 @@
 %tr
+  %td.link_column
+    = link_to section_training_path(training, section_id: current_section.to_param), class: :eye_link do
+      %span.glyphicon.glyphicon-eye-open
   %td
     %div= training.start_datetime.strftime("%-d %b %Y %R")
     = render partial: 'locations/gmaps_link', locals: {location: training.location}

@@ -12,8 +12,8 @@ feature 'Invite User', :devise do
   scenario 'section_coach sign in and invite player' do
     section_coach = create :user, :section_coach
     signin section_coach.email, section_coach.password
-    expect(page).to have_link 'Joueurs'
-    click_link 'Joueurs'
+    expect(page).to have_link 'Membres'
+    click_link 'Membres'
     expect(current_path).to eq section_users_path(section_coach.sections.first)
     expect(page).to have_link 'Ajouter un joueur'
     click_link 'Ajouter un joueur'

@@ -25,7 +25,7 @@ feature 'Sign in', :devise do
     signin(user.email, user.password)
     expect(page).to have_content 'Signed in successfully.'
     expect(page).to have_link user.email
-    expect(page).to have_link 'Joueurs'
+    expect(page).to have_link 'Membres'
     expect(page).to have_link 'Entrainements'
   end
 

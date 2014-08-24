@@ -1,9 +1,8 @@
-%p#notice= notice
+%h2= @club.name
 
-%p
-  %b Name:
-  = @club.name
+%h3 Sections
+%ul
+  = render @club.sections
 
-= link_to 'Edit', edit_club_path(@club)
-\|
-= link_to 'Back', clubs_path
+- if current_user.is_admin_of?(@club)
+  = link_to "Ajouter une section", new_club_section_path(club_id: @club.to_param), class: 'btn btn-primary'

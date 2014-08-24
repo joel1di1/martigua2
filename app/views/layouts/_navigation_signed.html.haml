@@ -13,7 +13,7 @@
     - if current_section
       %ul.nav.navbar-nav.navbar-left
         %li{class: active_if_current_path(section_users_path(current_section))}
-          = link_to "Joueurs", section_users_path(current_section)
+          = link_to "Membres", section_users_path(current_section)
         %li{class: active_if_current_path(section_trainings_path(current_section))}
           = link_to "Entrainements", section_trainings_path(current_section)
     %ul.nav.navbar-nav.navbar-right.user
@@ -22,6 +22,9 @@
           = current_user.email
           %span.glyphicon.glyphicon-chevron-down
         %ul.dropdown-menu{role: 'menu'}
+          - if current_section
+            %li= link_to current_section.club.to_s, current_section.club
+            %li.divider
           - current_user.sections.each do |section|
             %li= link_to section.to_s, section
           %li.divider

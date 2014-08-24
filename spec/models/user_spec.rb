@@ -127,7 +127,7 @@ describe User do
     end
   end
 
-  describe 'is_present_for?' do
+  describe '#is_present_for?' do
     let(:training) { create :training }
 
     context 'without any response' do
@@ -149,6 +149,20 @@ describe User do
 
       it { expect(user.is_present_for?(training)).to be_falsy }
     end
+  end
+
+  describe '#is_club_admin?' do
+    let(:club) { create :club }
+
+    context 'with other club' do
+      it { expect(user.is_admin_of?(club)).to be_falsy } 
+    end
+    context 'with club as admin' do
+      before { club.add_admin!(user) }
+
+      it { expect(user.is_admin_of?(club)).to be_truthy } 
+    end
+
   end
 
 end

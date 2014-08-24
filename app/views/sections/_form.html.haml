@@ -1,9 +1,3 @@
-= simple_form_for(@section) do |f|
-  = f.error_notification
-
-  .form-inputs
-    = f.association :club
-    = f.input :name
-
-  .form-actions
-    = f.button :submit
+= simple_form_for(@section, url: club_sections_path(club_id: @section.club)) do |f|
+  = f.input :name
+  = f.button :submit

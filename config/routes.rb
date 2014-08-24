@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :sections, only: [:index, :show] do
+  resources :sections, only: [:show] do
     resources :users, path: 'members', only: [:index, :show, :edit, :update]
     resources :trainings, only: [:index, :create, :new] do
       member do
@@ -16,7 +16,9 @@ Rails.application.routes.draw do
 
   resources :ping, only: :index, :constraints => {:format => :json }
 
-  resources :clubs, only: [:index, :show]
+  resources :clubs, only: [:index, :show] do 
+    resources :sections, only: [:index, :new, :create]
+  end
 
   devise_for :users
 

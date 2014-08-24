@@ -2,5 +2,12 @@
   %td= user.first_name
   %td= user.last_name
   %td= user.nickname
-  %td= mail_to user.email if user.email
-  %td= link_to user.phone_number, "tel:#{user.phone_number}" if user.phone_number
+  %td
+    - if user.email
+      = mail_to user.email 
+  %td
+    - if user.phone_number
+      = link_to user.phone_number, "tel:#{user.phone_number}" 
+  - if current_section
+    %td
+      = user.participations.where(section: current_section).map(&:role).sort.reverse.join(", ")

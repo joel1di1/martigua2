@@ -49,6 +49,10 @@ class User < ActiveRecord::Base
     training_presences.where(training: training).first.try(:present)
   end
 
+  def is_admin_of?(club)
+    club_admin_roles.where(club: club).exists?    
+  end
+
   protected 
     def ensure_authentication_token
       self.authentication_token ||= SecureRandom.urlsafe_base64(32)

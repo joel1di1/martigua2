@@ -7,9 +7,12 @@
         %th Surnom
         %th Email
         %th Tel
+        - if current_section
+          %th Roles
+
     %tbody
       = render @users
 
 - if current_section && current_user.is_coach_of?(current_section)
-  = link_to 'Ajouter un joueur', new_section_section_user_invitation_path(current_section)
+  = link_to 'Ajouter un joueur', new_section_section_user_invitation_path(current_section), class: 'btn btn-primary'
   

@@ -4,6 +4,6 @@ FactoryGirl.define do
   factory :club_admin_role do
     club
     user
-    name 'admin'
+    name ClubAdminRole::ADMIN
   end
 end

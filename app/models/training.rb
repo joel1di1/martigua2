@@ -32,14 +32,10 @@ class Training < ActiveRecord::Base
       trainings = Training.of_next_week(section)
       unless trainings.empty?
         section.players.each do |player|
-          Training.delay.send_training_invitation(trainings, player)
+          UserMailer.delay.send_training_invitation(trainings, player)
         end
       end
     end
-  end
-
-  def self.send_training_invitation(trainings, player)
-    UserMailer.send_training_invitation(trainings, player).deliver
   end
 
   def self.of_next_week(section, date=DateTime.now)

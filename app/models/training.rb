@@ -32,7 +32,7 @@ class Training < ActiveRecord::Base
       trainings = Training.of_next_week(section)
       unless trainings.empty?
         section.players.each do |player|
-          UserMailer.delay.send_training_invitation(trainings, player)
+          UserMailer.send_training_invitation(trainings, player).deliver
         end
       end
     end

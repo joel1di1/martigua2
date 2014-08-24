@@ -13,7 +13,7 @@ ActiveAdmin.register Delayed::Job, as: 'Job' do
     column :created_at
     column :locked_by
     column :locked_at
-    default_actions
+    actions
   end
  
   form do |f|

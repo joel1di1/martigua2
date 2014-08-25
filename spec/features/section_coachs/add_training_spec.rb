@@ -10,20 +10,14 @@ feature 'Add training', :devise do
   #   Then I can create new training
   scenario 'section_coach sign in and add new player' do
     section_coach = create :user, :section_coach
+    location = create :location
     signin section_coach.email, section_coach.password
     click_link 'Entrainements'
     click_link 'Ajouter un entrainement'
 
-    new_training = build :training
-
-    skip 'not tested yet'
-    # fill_in 'section_user_invitation[email]', with: invited_user.email
-    # fill_in 'section_user_invitation[first_name]', with: invited_user.first_name
-    # fill_in 'section_user_invitation[last_name]', with: invited_user.last_name
-    # fill_in 'section_user_invitation[nickname]', with: invited_user.nickname
-    # fill_in 'section_user_invitation[phone_number]', with: invited_user.phone_number
-
-    # expect{click_button('Inviter le joueur')}.to change{SectionUserInvitation.count}.by(1)
+    select(location.name, :from => 'training_location_id')
+    
+    expect{ click_button('Ajouter l\'entrainement') }.to change{ Training.count }.by(1)
   end
 
 end

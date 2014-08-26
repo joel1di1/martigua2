@@ -1,3 +1,7 @@
+- if current_section && current_user.is_coach_of?(current_section)
+  .text-center
+    = link_to 'Ajouter un joueur', new_section_section_user_invitation_path(current_section), class: 'btn btn-primary'
+
 .table-responsive
   %table.table.table-hover.table-striped
     %thead
@@ -13,6 +17,3 @@
     %tbody
       = render @users
 
-- if current_section && current_user.is_coach_of?(current_section)
-  = link_to 'Ajouter un joueur', new_section_section_user_invitation_path(current_section), class: 'btn btn-primary'
-  

@@ -47,6 +47,7 @@ group :production do
   gem 'puma'
   gem 'rails_12factor'
   gem 'postmark-rails'
+  gem 'heroku-deflater'
 end
 group :test do
   gem "sqlite3", :platform => [:ruby, :mswin, :mingw]

@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     else
       @users = User.all
     end
+    @users = @users.order('last_name ASC')
   end
 
   def show

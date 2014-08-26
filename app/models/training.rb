@@ -10,6 +10,8 @@ class Training < ActiveRecord::Base
   scope :of_section, ->(section) { joins(:sections).where("sections.id = ?", section.id) }
   scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period) } 
 
+  default_scope { order 'start_datetime' }
+
   def send_invitations!
     invitations << TrainingInvitation.new 
   end

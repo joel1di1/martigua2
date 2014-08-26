@@ -16,14 +16,14 @@
   - if current_user.is_player_of?(current_section)
     %td
       - if current_user.is_present_for?(training).nil?
-        = link_to 'Présent ?', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: [training.id]), method: :post, class: 'btn btn-sm btn-success'
-        = link_to 'Non présent ?', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: []), method: :post, class: 'btn btn-sm btn-danger'
+        = link_to 'Présent ?', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: [training.id]), method: :post, class: 'btn btn-sm btn-success text-nowrap'
+        = link_to 'Non présent ?', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: []), method: :post, class: 'btn btn-sm btn-danger text-nowrap'
       - elsif current_user.is_present_for?(training) == true
-        %div.training_presence{class: 'bg-success'} Présent !
-        = link_to 'Non présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: []), method: :post, class: 'change_presence not_present'
+        %div.training_presence{class: 'bg-success text-nowrap'} Présent !
+        = link_to 'Non présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: []), method: :post, class: 'change_presence not_present text-nowrap'
       - else
-        %div.training_presence{class: 'bg-danger'} Non présent !
-        = link_to 'Présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: [training.id]), method: :post, class: 'change_presence present'
+        %div.training_presence{class: 'bg-danger text-nowrap'} Non présent !
+        = link_to 'Présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: [training.id]), method: :post, class: 'change_presence present text-nowrap'
   - if current_user.is_coach_of?(current_section)
     %td
       = button_to '(Ré)envoyer les invitations', invitations_section_training_path(training, section_id: current_section), id: "training_invitations_#{training.id}", class: 'btn btn-warning btn-sm'

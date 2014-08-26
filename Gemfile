@@ -23,6 +23,7 @@ gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'formtastic', github: 'justinfrench/formtastic'
 gem 'delayed_job_active_record'
 gem 'nokogiri', '~> 1.6.2.1'
+gem 'kaminari'
 
 group :development do
   gem 'better_errors'

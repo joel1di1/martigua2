@@ -373,6 +373,7 @@ DEPENDENCIES
   jbuilder
   jdbc-sqlite3
   jquery-rails
+  kaminari
   launchy
   nokogiri (~> 1.6.2.1)
   pg

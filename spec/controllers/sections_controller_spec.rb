@@ -4,6 +4,7 @@ describe SectionsController, :type => :controller do
 
   let(:club) { create :club }
   let(:user) { create :user }
+  let(:section) { create :section, club: club }
 
   describe "GET new" do
     let(:do_request) { get :new, club_id: club.to_param, user_email: user.email, user_token: user.authentication_token }
@@ -26,6 +27,16 @@ describe SectionsController, :type => :controller do
 
     it { expect(response).to have_http_status(:created) }
     it { expect(user.is_coach_of?(Section.where(club: club, name: section_attributes[:name]))).to be_truthy }
+  end
+
+  describe 'GET show' do
+    before { sign_in user }
+    before { expect_any_instance_of(Section).to receive(:next_trainings).and_return(:next_trainings_mock) }
+
+    before { get :show, id: section.to_param }
+
+    it { expect(response).to have_http_status(:success) }
+    it { expect(assigns[:next_trainings]).to eq :next_trainings_mock }
   end
 
 end

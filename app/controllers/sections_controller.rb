@@ -1,7 +1,7 @@
 class SectionsController < ApplicationController
   def show
     @section = Section.find(params[:id])
-    redirect_to section_trainings_path(@section)
+    @next_trainings = @section.next_trainings
   end
 
   def new

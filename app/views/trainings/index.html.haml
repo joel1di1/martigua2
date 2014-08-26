@@ -1,18 +1,6 @@
 %h2 Entrainements
 
-.table-responsive
-  %table.table.table-hover.table-striped
-    %thead
-      %tr
-        %th
-        %th Date et lieu
-        %th.hidden-xs Présences
-        - if current_user.is_player_of?(current_section)
-          %th Ma dispo
-        - if current_user.is_coach_of?(current_section)
-          %th Actions
-    %tbody
-      = render @trainings
+= render partial: 'trainings/trainings', object: @trainings
 
 - if current_user.is_coach_of?(current_section)
   = link_to 'Ajouter un entrainement', new_section_training_path(section_id: current_section), class: 'btn btn-primary'

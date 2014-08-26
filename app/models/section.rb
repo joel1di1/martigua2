@@ -10,7 +10,6 @@ class Section < ActiveRecord::Base
   has_many :section_user_invitations, inverse_of: :section, dependent: :destroy
   has_and_belongs_to_many :trainings, inverse_of: :sections
 
-
   validates_presence_of :club, :name
 
   def invite_user!(params, inviter)
@@ -52,6 +51,12 @@ class Section < ActiveRecord::Base
 
   def to_s
     "Section #{self.name} - #{self.club.name}"
+  end
+
+  def next_trainings
+    now = DateTime.now
+    end_date = now.end_of_week + 2.weeks
+    trainings.where('start_datetime > ? AND start_datetime < ?', now, end_date)
   end
 
   protected 

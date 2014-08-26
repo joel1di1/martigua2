@@ -101,4 +101,12 @@ RSpec.describe Section, :type => :model do
     end
   end
 
+  describe '.next_trainings' do
+    let!(:previous_training) { create :training, with_section: section, start_datetime: 1.week.ago }
+    let!(:training_2_week_from_now) { create :training, with_section: section, start_datetime: 2.weeks.from_now }
+    let!(:training_1_week_from_now) { create :training, with_section: section, start_datetime: 1.week.from_now }
+
+    it { expect(section.next_trainings).to eq [training_1_week_from_now, training_2_week_from_now] }
+  end
+
 end

@@ -3,7 +3,7 @@ class TrainingsController < ApplicationController
   before_filter :set_current_training, only: [:invitations, :show]
 
   def index
-    @trainings = Training.of_section(current_section).where('start_datetime > ?', DateTime.now)
+    @trainings = Training.of_section(current_section)
   end
 
   def create

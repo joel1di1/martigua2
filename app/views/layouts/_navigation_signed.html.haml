@@ -6,7 +6,7 @@
       %span.icon-bar
       %span.icon-bar
     - if current_section
-      = link_to current_section.to_s, current_section, {class: 'navbar-brand'}
+      = link_to current_section.to_s, current_section, {class: "navbar-brand #{active_if_current_path(section_path(current_section))}"}
     - else
       = link_to 'Accueil', root_path, {class: 'navbar-brand'}
   .collapse.navbar-collapse

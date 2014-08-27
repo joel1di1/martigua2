@@ -26,4 +26,34 @@ describe GroupsController, :type => :controller do
     end
   end
 
+  describe 'POST create' do
+    before { sign_in user }
+
+    let(:do_request) { post :create, section_id: section.to_param, group: new_group_attributes }
+
+    context 'with coreect attributes' do
+      let(:new_group_attributes) { attributes_for(:group) }
+
+      it { expect{do_request}.to change{Group.count}.by(1) }
+
+      describe 'redirection' do
+        before { do_request }
+
+        it { expect(response).to redirect_to(section_group_path(section, Group.last)) }
+      end
+    end
+
+    context 'with empty name' do
+      let(:new_group_attributes) { attributes_for(:group, name: nil) }
+
+      it { expect{do_request}.to change{Group.count}.by(0) }
+
+      describe 'redirection' do
+        before { do_request }
+
+        it { expect(response).to have_http_status(:success) }
+      end
+    end
+  end
+
 end

@@ -11,6 +11,7 @@ describe User do
   it { should have_many :training_presences }
   it { should have_and_belong_to_many :groups }
 
+  let(:section) { create :section }
   let(:user) { create :user }
 
   describe 'authentication token should be generated' do
@@ -44,7 +45,6 @@ describe User do
   end
 
   describe '#is_coach_of?' do
-    let(:section) { create :section }
 
     subject { user.is_coach_of?(section) }
 
@@ -162,6 +162,48 @@ describe User do
       before { club.add_admin!(user) }
 
       it { expect(user.is_admin_of?(club)).to be_truthy } 
+    end
+  end
+
+  describe '#next_week_trainings' do
+    let(:training_group_ids) { [group.id] }
+    let(:training_date) { 1.week.from_now }
+    let(:user_group_ids) { [group.id] }
+    let(:group) { create :group, section: section }
+    let(:user) { create :user, with_section: section, group_ids: user_group_ids }
+    let(:training) { create :training, with_section: section, start_datetime: training_date, group_ids: training_group_ids }
+
+    before { training }
+
+    context 'when user is training group and training date is next week' do
+      it { expect(user.next_week_trainings).to include(training) }
+    end
+
+    context 'when date is passed' do
+      let(:training_date) { 1.day.ago }
+
+      it { expect(user.next_week_trainings).to_not include(training) }
+    end
+
+    context 'when date is in 2 weeks' do
+      let(:training_date) { 2.weeks.from_now }
+
+      it { expect(user.next_week_trainings).to_not include(training) }
+    end
+
+    context 'when user is not in training groups' do
+      let(:user_group_ids) { [] }
+
+      it { expect(user.next_week_trainings).to_not include(training) }
+    end
+
+    context 'when user is in 2 training groups' do
+      let(:group_2) { create :group, section: section }
+      let(:user_group_ids) { [group.id, group_2.id] }
+      let(:training_group_ids) { [group.id, group_2.id] }
+
+      it { expect(user.next_week_trainings).to include(training) }
+      it { expect(user.next_week_trainings.count).to eq 1 }
     end
 
   end

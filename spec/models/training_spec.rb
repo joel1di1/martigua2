@@ -12,8 +12,9 @@ RSpec.describe Training, :type => :model do
 
   let!(:nb_users) { [1,2,3,4,10].sample }
 
-  let(:section) { create :section }
-  let(:training) { create :training, with_section: section }
+  let(:section)  { create :section }
+  let(:group)    { create :group, section: section }
+  let(:training) { create :training, with_section: section, group_ids: [group.id] }
 
   describe '#nb_presents' do
     context 'with n users present' do
@@ -32,30 +33,25 @@ RSpec.describe Training, :type => :model do
   end
 
   describe '#nb_presence_not_set' do
-    before { nb_users.times{ create :user, with_section: section } }
+    before { nb_users.times{ create :user, with_section: section, group_ids: [group.id] } }
 
     it { expect(training.nb_presence_not_set).to eq nb_users }
   end
 
   describe '.send_presence_mail_for_next_week' do
-    context 'with n users and 3 coachs' do
-      before { nb_users.times{ create :user, with_section: section } }
-      before { 4.times{ create :user } }
-      before { 3.times{ create :user, with_section_as_coach: section } }
+    let(:users) { (1..nb_users).map{ create :user, with_section: section, group_ids: [group.id] } }
+    let(:trainings) { [training] }
 
-      context 'with no training next week' do
-        before { allow(Training).to receive(:of_next_week) {[]} }
+    before { User.delete_all }
+    before { allow(User).to receive(:all).and_return(users) }
+    before { users.each{|user| expect(user).to receive(:next_week_trainings).and_return(trainings)} }
 
-        it { expect{Training.send_presence_mail_for_next_week}.to change{ActionMailer::Base.deliveries.count}.by(0) }
-      end
-
-      context 'with some trainings next week' do
-        let(:training_of_other_section) { create :training }
-        before { allow(Training).to receive(:of_next_week).and_return([]) }
-        before { allow(Training).to receive(:of_next_week).with(db_object_eq(section)).and_return([training]) }
-
-        it { expect{Training.send_presence_mail_for_next_week}.to change{ActionMailer::Base.deliveries.count}.by(nb_users) }
-      end
+    context 'with trainings for users' do
+      it { expect{Training.send_presence_mail_for_next_week}.to change{ActionMailer::Base.deliveries.count}.by(nb_users) }
+    end
+    context 'with no trainings for users' do
+      let(:trainings) { [] }
+      it { expect{Training.send_presence_mail_for_next_week}.to change{ActionMailer::Base.deliveries.count}.by(0) }
     end
   end
 
@@ -71,5 +67,19 @@ RSpec.describe Training, :type => :model do
     let!(:trainings) { dates.map{|date| create :training, with_section: section, start_datetime: date } }
 
     it { expect(Training.of_next_week(section, now)).to eq trainings[2..4] }
+  end
+
+  describe 'users' do
+    let(:user) { create :user, with_section: section, group_ids: group_ids }
+
+    context 'with user not in training group' do
+      let(:group_ids) { [] }
+      it { expect(training.users).to_not include(user) }
+    end
+
+    context 'with user in training group' do
+      let(:group_ids) { [group.id] }
+      it { expect(training.users).to include(user) }
+    end
   end
 end

@@ -54,11 +54,15 @@ class User < ActiveRecord::Base
   end
 
   def is_admin_of?(club)
-    club_admin_roles.where(club: club).exists?    
+    club_admin_roles.where(club: club).exists?
   end
 
   def full_name
     nickname ? "#{first_name} #{last_name} - #{nickname}" : "#{first_name} #{last_name}"
+  end
+
+  def next_week_trainings
+    Training.of_next_week.joins(:groups).where(groups: {id: group_ids}).uniq
   end
 
   protected 

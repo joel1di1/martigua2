@@ -27,7 +27,7 @@ class Training < ActiveRecord::Base
   end
 
   def nb_presence_not_set
-    nb_users = sections.map{|section| section.players.count }.reduce(:+)  
+    nb_users = groups.map{|group| group.users.count }.reduce(0, :+)  
     nb_users - nb_presents - nb_not_presents
   end
 
@@ -35,21 +35,24 @@ class Training < ActiveRecord::Base
     groups.order('name').map(&:name).join(', ')
   end
 
+  def users
+    User.joins(:groups).where(groups: { id: group_ids })
+  end
+
   def self.send_presence_mail_for_next_week
-    Section.all.each do |section| 
-      trainings = Training.of_next_week(section)
-      unless trainings.empty?
-        section.players.each do |player|
-          UserMailer.send_training_invitation(trainings, player).deliver
-        end
+    User.all.each do |user|    
+      next_week_trainings = user.next_week_trainings
+      unless next_week_trainings.empty?
+        UserMailer.send_training_invitation(next_week_trainings, user).deliver
       end
     end
   end
 
-  def self.of_next_week(section, date=DateTime.now)
+  def self.of_next_week(section=nil, date=DateTime.now)
     start_period = date.next_week
     end_period = start_period.end_of_week
-    Training.with_start_between(start_period, end_period).of_section(section)
+    trainings = Training.with_start_between(start_period, end_period)
+    trainings = trainings.of_section(section) unless section.nil?
+    trainings
   end
-
 end

@@ -110,4 +110,15 @@ RSpec.describe Section, :type => :model do
     it { expect(section.next_trainings).to eq [training_1_week_from_now, training_2_week_from_now] }
   end
 
+  describe '.group_everybody' do
+    let(:section) { create :section }
+    let(:group_everybody) { section.group_everybody }
+
+    context 'new section' do
+      it { expect(group_everybody).to_not be_nil }
+      it { expect(group_everybody.name).to eq 'TOUS' }
+      it { expect(group_everybody.system).to be_truthy }
+      it { expect(group_everybody.role).to eq 'everybody' }
+    end
+  end
 end

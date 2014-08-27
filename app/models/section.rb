@@ -14,6 +14,8 @@ class Section < ActiveRecord::Base
 
   validates_presence_of :club, :name
 
+  after_create :add_group_everybody
+
   def invite_user!(params, inviter)
 
     raise "Inviter (#{inviter.email}) is not coach of #{self}" unless inviter.is_coach_of?(self)
@@ -61,12 +63,20 @@ class Section < ActiveRecord::Base
     trainings.where('start_datetime > ? AND start_datetime < ?', now, end_date)
   end
 
+  def group_everybody
+    groups.where(role: :everybody).take
+  end
+
   protected 
 
     def add_user!(user, role)
       params = { role: role, user: user, section: self, season: Season.current }
       participations << Participation.create!(params) unless participations.where(params).exists?
       self
+    end
+
+    def add_group_everybody
+      groups << Group.new(role: :everybody, system: true, name: 'TOUS', description: 'Tous les joueurs de la section')
     end
 
 end

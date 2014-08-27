@@ -5,9 +5,9 @@ feature 'See group detail' do
 
   before { signin_user user }
 
-  scenario 'visit the group page with no group' do
+  scenario 'visit the group page with defaults groups' do
     click_link 'Groupes'
-    expect(page).to have_content 'Aucun groupe défini'
+    expect(page).to have_content section.group_everybody.name
   end
 
   scenario 'visit the group page with 2 groups' do
@@ -18,16 +18,7 @@ feature 'See group detail' do
 
     expect(page).to have_content group_1.name
     expect(page).to have_content group_2.name
+    expect(page).to have_content section.group_everybody.name
   end
-
-  scenario 'visit a group page with 2 groups' do
-    group = create :group, section: section
-
-    click_link 'Groupes'
-    click_link group.name
-
-    expect(page).to have_content group.name
-  end
-
 
 end

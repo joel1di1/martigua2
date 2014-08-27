@@ -6,9 +6,10 @@ describe GroupsController, :type => :controller do
   let(:user) { create :user, with_section: section }
   let(:group) { create :group, section: section }
 
-  describe 'POST add_users' do
-    before { sign_in user }
+  before { sign_in user }
+  before { allow_any_instance_of(Section).to receive(:add_group_everybody) }
 
+  describe 'POST add_users' do
     let(:do_request) { post :add_users, section_id: section.to_param, group_id: group.to_param, user_id: user.id }
 
     it { expect{do_request}.to change{group.users.count}.by(1) }
@@ -27,11 +28,9 @@ describe GroupsController, :type => :controller do
   end
 
   describe 'POST create' do
-    before { sign_in user }
-
     let(:do_request) { post :create, section_id: section.to_param, group: new_group_attributes }
 
-    context 'with coreect attributes' do
+    context 'with correct attributes' do
       let(:new_group_attributes) { attributes_for(:group) }
 
       it { expect{do_request}.to change{Group.count}.by(1) }

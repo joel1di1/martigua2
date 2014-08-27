@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
 
-  before_filter :find_group, only: [:show, :add_users, :destroy]
+  before_filter :find_group
 
   def show
   end
@@ -24,14 +24,24 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    group.destroy
-    redirect_to section_groups_path(current_section), notice: "Groupe '#{group.name}' supprimé"
+    @group.destroy
+    redirect_to section_groups_path(current_section), notice: "Groupe '#{@group.name}' supprimé"
   end
 
   def add_users
     user = User.find params[:user_id]
     @group.add_user! user
     redirect_to section_group_path(current_section, @group), notice: 'Joueur ajouté au groupe'
+  end
+
+  def update 
+    
+    if @group.update_attributes group_params
+      redirect_to section_group_path(current_section, @group), notice: 'Groupe modifié'
+    else
+      render :edit
+    end
+
   end
 
   private
@@ -41,7 +51,7 @@ class GroupsController < ApplicationController
 
     def find_group
       id = params[:id] || params[:group_id]
-      @group = Group.find id
+      @group = Group.find id if id
     end
   
 end

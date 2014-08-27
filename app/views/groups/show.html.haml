@@ -1,0 +1,25 @@
+%h2
+  = @group.name
+  - if current_section && current_user.is_coach_of?(current_section)
+    .action
+      = link_to edit_section_group_path(current_section, @group) do
+        %span.glyphicon.glyphicon-pencil
+      = link_to section_group_path(@group, section_id: current_section), :method => :delete, :data => { :confirm => 'Are you sure?' } do 
+        %span.glyphicon.glyphicon-trash  
+%p
+  = @group.description
+-# %p
+-#   %b Color:
+-#   = @group.color
+
+.panel.panel-info
+  .panel-heading 
+    Joueurs du groupe
+  .panel-body
+    - if current_section && current_user.is_coach_of?(current_section)
+      = form_tag section_group_add_users_path(current_section, @group), class: 'form-inline' do
+        = select_tag 'user_id', options_from_collection_for_select(current_section.users - @group.users, :id, :full_name), include_blank: true, class: 'form-control'
+        %button.btn{type: :submit} Ajouter
+    = render partial: 'users/users', object: @group.users
+
+

@@ -9,9 +9,13 @@ class User < ActiveRecord::Base
   has_many :sections, -> { uniq }, through: :participations, inverse_of: :users
   has_many :training_presences, inverse_of: :user
 
+  has_and_belongs_to_many :groups, inverse_of: :users
+
   validates_presence_of :authentication_token
 
   before_validation :ensure_authentication_token
+
+  default_scope { order 'first_name' }
 
   def has_only_one_section?
     sections.count == 1
@@ -51,6 +55,10 @@ class User < ActiveRecord::Base
 
   def is_admin_of?(club)
     club_admin_roles.where(club: club).exists?    
+  end
+
+  def full_name
+    nickname ? "#{first_name} #{last_name} - #{nickname}" : "#{first_name} #{last_name}"
   end
 
   protected 

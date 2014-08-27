@@ -6,6 +6,8 @@
     %div= training.start_datetime.strftime("%-d %b %Y %R")
     = render partial: 'locations/gmaps_link', locals: {location: training.location}
   %td.hidden-xs><
+    = training.group_names
+  %td.hidden-xs><
     (
     %span{class: 'text-success'}><= training.nb_presents
     \/

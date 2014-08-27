@@ -1,13 +1,16 @@
 Rails.application.routes.draw do
 
   resources :sections, only: [:show] do
-    resources :users, path: 'members', only: [:index, :show, :edit, :update]
+    resources :section_user_invitations, path: 'user_invitations', only: [:new, :show, :create, :index]
     resources :trainings, only: [:show, :index, :create, :new] do
       member do
         post 'invitations'
       end
     end
-    resources :section_user_invitations, path: 'user_invitations', only: [:new, :show, :create, :index]
+    resources :users, path: 'members', only: [:index, :show, :edit, :update]
+    resources :groups do
+      post 'users' => 'groups#add_users', as: 'add_users'
+    end
   end
 
   resources :club_admin_roles, only: [:index, :show]

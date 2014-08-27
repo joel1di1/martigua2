@@ -20,3 +20,11 @@ body{
 .navbar-brand.active{
   color: white;
 }
+
+h2 > .action {
+  & > a {
+    color: black;
+  }
+  font-size: 16px;
+  display: inline;
+}

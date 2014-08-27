@@ -1,7 +1,10 @@
 %tr
-  %td= user.last_name
-  %td= user.first_name
-  %td= user.nickname
+  %td
+    %strong
+      = user.first_name
+      = user.last_name
+    - if user.nickname
+      %em= user.nickname
   %td
     - if user.email
       = mail_to user.email 

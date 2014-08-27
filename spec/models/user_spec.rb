@@ -9,6 +9,7 @@ describe User do
   it { should have_many :participations }
   it { should have_many :sections }
   it { should have_many :training_presences }
+  it { should have_and_belong_to_many :groups }
 
   let(:user) { create :user }
 

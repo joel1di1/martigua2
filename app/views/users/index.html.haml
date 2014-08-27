@@ -2,18 +2,4 @@
   .text-center
     = link_to 'Ajouter un joueur', new_section_section_user_invitation_path(current_section), class: 'btn btn-primary'
 
-.table-responsive
-  %table.table.table-hover.table-striped
-    %thead
-      %tr
-        %th Nom
-        %th Prénom
-        %th Surnom
-        %th Email
-        %th Tel
-        - if current_section
-          %th Roles
-
-    %tbody
-      = render @users
-
+= render partial: 'users/users', object: @users

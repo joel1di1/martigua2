@@ -10,6 +10,8 @@ class Section < ActiveRecord::Base
   has_many :section_user_invitations, inverse_of: :section, dependent: :destroy
   has_and_belongs_to_many :trainings, inverse_of: :sections
 
+  has_many :groups, inverse_of: :section, dependent: :destroy
+
   validates_presence_of :club, :name
 
   def invite_user!(params, inviter)

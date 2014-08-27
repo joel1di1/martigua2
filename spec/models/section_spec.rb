@@ -7,6 +7,7 @@ RSpec.describe Section, :type => :model do
   it { should have_many :participations }
   it { should have_many :users }
   it { should have_and_belong_to_many :trainings }
+  it { should have_many :groups }
 
   let(:section) { create :section }
 

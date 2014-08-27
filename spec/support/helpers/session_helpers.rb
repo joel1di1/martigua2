@@ -14,5 +14,9 @@ module Features
       fill_in 'Mot de passe', with: password
       click_button 'Se connecter'
     end
+
+    def signin_user(user)
+      signin(user.email, user.password)
+    end
   end
 end

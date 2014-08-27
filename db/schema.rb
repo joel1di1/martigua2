@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140817220826) do
+ActiveRecord::Schema.define(version: 20140827001808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,6 +100,33 @@ ActiveRecord::Schema.define(version: 20140817220826) do
 
   add_index "enrolled_team_championships", ["championship_id"], name: "index_enrolled_team_championships_on_championship_id", using: :btree
   add_index "enrolled_team_championships", ["team_id"], name: "index_enrolled_team_championships_on_team_id", using: :btree
+
+  create_table "groups", force: true do |t|
+    t.string   "name",        null: false
+    t.integer  "section_id"
+    t.string   "description"
+    t.string   "color"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "groups", ["section_id"], name: "index_groups_on_section_id", using: :btree
+
+  create_table "groups_trainings", id: false, force: true do |t|
+    t.integer "training_id", null: false
+    t.integer "group_id",    null: false
+  end
+
+  add_index "groups_trainings", ["group_id"], name: "index_groups_trainings_on_group_id", using: :btree
+  add_index "groups_trainings", ["training_id"], name: "index_groups_trainings_on_training_id", using: :btree
+
+  create_table "groups_users", id: false, force: true do |t|
+    t.integer "user_id",  null: false
+    t.integer "group_id", null: false
+  end
+
+  add_index "groups_users", ["group_id"], name: "index_groups_users_on_group_id", using: :btree
+  add_index "groups_users", ["user_id"], name: "index_groups_users_on_user_id", using: :btree
 
   create_table "locations", force: true do |t|
     t.string   "name",       null: false

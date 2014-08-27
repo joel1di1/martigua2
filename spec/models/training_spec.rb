@@ -5,9 +5,10 @@ RSpec::Matchers.define :db_object_eq do |x|
 end
 
 RSpec.describe Training, :type => :model do
-  it { should validate_presence_of :start_datetime }
   it { should have_and_belong_to_many :sections }
+  it { should have_and_belong_to_many :groups }
   it { should have_many :training_presences }
+  it { should validate_presence_of :start_datetime }
 
   let!(:nb_users) { [1,2,3,4,10].sample }
 

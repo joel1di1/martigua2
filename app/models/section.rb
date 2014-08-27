@@ -72,6 +72,7 @@ class Section < ActiveRecord::Base
     def add_user!(user, role)
       params = { role: role, user: user, section: self, season: Season.current }
       participations << Participation.create!(params) unless participations.where(params).exists?
+      group_everybody.add_user!(user)
       self
     end
 

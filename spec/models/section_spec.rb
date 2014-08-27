@@ -18,6 +18,7 @@ RSpec.describe Section, :type => :model do
 
     context 'with a new player' do
       it { expect(subject.players).to match_array([user]) }
+      it { expect(subject.group_everybody.users).to include(user) }
     end
 
     context 'with an already player' do

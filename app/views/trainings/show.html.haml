@@ -2,6 +2,11 @@
   Entrainement du 
   = @training.start_datetime.strftime("%-d/%-m/%Y")
 
+  - if current_user.is_coach_of?(current_section)
+    .action
+      = link_to section_training_path(@training, section_id: current_section), :method => :delete, :data => { :confirm => 'Are you sure?' } do 
+        %span.glyphicon.glyphicon-trash  
+
 .row
   .col-md-4
 

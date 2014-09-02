@@ -1,6 +1,6 @@
 class TrainingsController < ApplicationController
 
-  before_filter :set_current_training, only: [:invitations, :show]
+  before_filter :set_current_training
 
   def index
     @trainings = Training.of_section(current_section)
@@ -26,13 +26,18 @@ class TrainingsController < ApplicationController
   def show
   end
 
+  def destroy
+    @training.destroy
+    redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Entrainement supprimé"
+  end
+
   private 
     def training_params
       params.require(:training).permit(:start_datetime, :end_datetime, :location_id, :group_ids)
     end
 
     def set_current_training
-      @training = Training.of_section(current_section).where(id: params[:id]).take
+      @training = Training.of_section(current_section).where(id: params[:id]).take if params[:id]
     end
 
 end

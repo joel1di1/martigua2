@@ -6,6 +6,7 @@ class Training < ActiveRecord::Base
 
   has_many :invitations, class: TrainingInvitation
   has_many :training_presences, inverse_of: :training, dependent: :destroy
+  has_many :users, through: :groups 
 
   validates_presence_of :start_datetime
 
@@ -18,17 +19,28 @@ class Training < ActiveRecord::Base
     invitations << TrainingInvitation.new 
   end
 
-  def nb_presents
-    training_presences.where(present: true).count
+  def presents
+    training_presences.includes(:user).where(present: true).map(&:user)
   end
 
+  def nb_presents
+    presents.count
+  end
+
+  def not_presents
+    training_presences.includes(:user).where(present: false).map(&:user)
+  end
   def nb_not_presents
-    training_presences.where(present: false).count
+    not_presents.count
   end
 
   def nb_presence_not_set
     nb_users = groups.map{|group| group.users.count }.reduce(0, :+)  
     nb_users - nb_presents - nb_not_presents
+  end
+
+  def presence_not_set
+    users - presents - not_presents
   end
 
   def group_names

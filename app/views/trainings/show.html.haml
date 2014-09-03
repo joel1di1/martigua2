@@ -21,19 +21,19 @@
       .panel-heading 
         Joueurs présents
       %ul.list-group
-        - @training.presents.each do |user|
+        - @training.presents.sort_by(&:full_name).each do |user|
           %li.list-group-item= user.full_name
   .col-md-4
     .panel.panel-warning
       .panel-heading 
         Joueurs non présents
       .list-group
-        - @training.not_presents.each do |user|
+        - @training.not_presents.sort_by(&:full_name).each do |user|
           %li.list-group-item= user.full_name
   .col-md-4
     .panel.panel-danger
       .panel-heading 
         Pas de réponse
       .list-group
-        - @training.presence_not_set.each do |user|
+        - @training.presence_not_set.sort_by(&:full_name).each do |user|
           %li.list-group-item= user.full_name

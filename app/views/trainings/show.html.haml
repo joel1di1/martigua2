@@ -4,31 +4,36 @@
 
   - if current_user.is_coach_of?(current_section)
     .action
+      = link_to edit_section_training_path(current_section, @training) do
+        %span.glyphicon.glyphicon-pencil
       = link_to section_training_path(@training, section_id: current_section), :method => :delete, :data => { :confirm => 'Are you sure?' } do 
         %span.glyphicon.glyphicon-trash  
+
+%p
+  = render partial: 'locations/gmaps_link', locals: {location: @training.location}
+  %br
+  Groupes : 
+  = @training.groups.map(&:name).join(", ")
 
 .row
   .col-md-4
     .panel.panel-success
       .panel-heading 
         Joueurs présents
-      .panel-body
-        %ul.list-group
-          - @training.presents.each do |user|
-            %li.list-group-item= user.full_name
+      %ul.list-group
+        - @training.presents.each do |user|
+          %li.list-group-item= user.full_name
   .col-md-4
     .panel.panel-warning
       .panel-heading 
         Joueurs non présents
-      .panel-body
-        .list-group
-          - @training.not_presents.each do |user|
-            %li.list-group-item= user.full_name
+      .list-group
+        - @training.not_presents.each do |user|
+          %li.list-group-item= user.full_name
   .col-md-4
     .panel.panel-danger
       .panel-heading 
         Pas de réponse
-      .panel-body
-        .list-group
-          - @training.presence_not_set.each do |user|
-            %li.list-group-item= user.full_name
+      .list-group
+        - @training.presence_not_set.each do |user|
+          %li.list-group-item= user.full_name

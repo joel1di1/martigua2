@@ -4,6 +4,7 @@ describe TrainingsController, :type => :controller do
 
   let(:request_params) { {} }
   let(:section) { create :section }
+  let(:user) { create :user, with_section: section }
 
   describe "GET index" do
     let(:request) { get :index, request_params }
@@ -27,6 +28,34 @@ describe TrainingsController, :type => :controller do
     end
   end
 
+  describe "GET edit" do
+    let(:request) { get :edit, request_params }
+
+    context 'with existing training' do
+      let(:training) { create :training, with_section: section } 
+      let(:request_params) { { section_id: section.to_param, id: training.id } } 
+
+      before { sign_in user }
+      before { request }
+
+      it { expect(response).to have_http_status(:success) }      
+    end
+  end
+
+  describe "PATCH edit" do
+    let(:request) { patch :update, request_params }
+
+    context 'with existing training' do
+      let(:training) { create :training, with_section: section } 
+      let(:request_params) { { section_id: section.to_param, id: training.to_param, training: training.attributes } } 
+
+      before { sign_in user }
+      before { request }
+
+      it { expect(response).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}        
+    end
+  end
+
   describe "POST create" do
     let(:request) { post :create, request_params }
     let(:new_training) { build :training }
@@ -35,7 +64,6 @@ describe TrainingsController, :type => :controller do
       let(:training_params) { { training: new_training.attributes.slice('start_datetime', 'end_datetime') } }
       let(:request_params) { training_params.merge(section_id: section.id) }
 
-      let(:user) { create :user, with_section: section }
       before { sign_in user }
 
       it { expect{request}.to change{section.trainings.count}.by(1) }

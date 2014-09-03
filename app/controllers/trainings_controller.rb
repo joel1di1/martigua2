@@ -7,10 +7,10 @@ class TrainingsController < ApplicationController
   end
 
   def create
-    training = Training.new training_params
-    training.sections << current_section
-    training.groups = current_section.groups.where(id: training_params[:group_ids])
-    training.save!
+    @training = Training.new training_params
+    @training.sections << current_section
+    @training.groups = current_section.groups.where(id: training_params[:group_ids])
+    @training.save!
     redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Entrainement créé"
   end
 
@@ -24,6 +24,19 @@ class TrainingsController < ApplicationController
   end
 
   def show
+  end
+
+  def edit
+  end
+
+  def update
+    @training.assign_attributes(training_params)
+    @training.groups = current_section.groups.where(id: params[:training][:group_ids])
+    if @training.save
+      redirect_to section_training_path(section_id: current_section.to_param, id: @training.to_param), notice: "Entrainement modifié"
+    else
+      render :edit
+    end
   end
 
   def destroy

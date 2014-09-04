@@ -7,7 +7,6 @@ describe GroupsController, :type => :controller do
   let(:group) { create :group, section: section }
 
   before { sign_in user }
-  before { allow_any_instance_of(Section).to receive(:add_group_everybody) }
 
   describe 'POST add_users' do
     let(:do_request) { post :add_users, section_id: section.to_param, group_id: group.to_param, user_id: user.id }
@@ -31,9 +30,9 @@ describe GroupsController, :type => :controller do
     let(:do_request) { post :create, section_id: section.to_param, group: new_group_attributes }
 
     context 'with correct attributes' do
-      let(:new_group_attributes) { attributes_for(:group) }
+      let(:new_group_attributes) { attributes_for(:group, section: nil) }      
 
-      it { expect{do_request}.to change{Group.count}.by(1) }
+      it { expect{ do_request }.to change{ Group.count }.by(1) }
 
       describe 'redirection' do
         before { do_request }
@@ -43,7 +42,7 @@ describe GroupsController, :type => :controller do
     end
 
     context 'with empty name' do
-      let(:new_group_attributes) { attributes_for(:group, name: nil) }
+      let(:new_group_attributes) { attributes_for(:group, section: nil, name: nil) }
 
       it { expect{do_request}.to change{Group.count}.by(0) }
 

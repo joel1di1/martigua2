@@ -8,10 +8,12 @@ FactoryGirl.define do
 
     ignore do
       with_section nil
+      with_group nil
     end
 
     after(:create) do |training, evaluator|
       training.sections << evaluator.with_section if evaluator.with_section
+      training.groups   << evaluator.with_group if evaluator.with_group
     end
   end
 end

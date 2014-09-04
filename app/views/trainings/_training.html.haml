@@ -30,4 +30,4 @@
           = link_to 'Présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: [training.id]), method: :post, class: 'change_presence present text-nowrap'
   - if current_user.is_coach_of?(current_section)
     %td
-      = button_to '(Ré)envoyer les invitations', invitations_section_training_path(training, section_id: current_section), id: "training_invitations_#{training.id}", class: 'btn btn-warning btn-sm'
+      = button_to 'Relancer les indécits', invitations_section_training_path(training, section_id: current_section), id: "training_invitations_#{training.id}", class: 'btn btn-warning btn-sm'

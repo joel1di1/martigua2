@@ -6,13 +6,8 @@ class TrainingInvitation < ActiveRecord::Base
   after_create :send_invitations_for_undecided_users!
 
   def send_invitations_for_undecided_users!
-    training.sections.map do |section| 
-      section.players.each do |user| 
-        presence = user.training_presences.where(training: training).take
-        if presence.try(:present).nil?
-          UserMailer.send_training_invitation(training, user).deliver
-        end
-      end 
+    training.presence_not_set.each do |user|
+      UserMailer.send_training_invitation(training, user).deliver
     end
   end
   handle_asynchronously :send_invitations_for_undecided_users!

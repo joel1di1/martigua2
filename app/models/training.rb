@@ -35,8 +35,7 @@ class Training < ActiveRecord::Base
   end
 
   def nb_presence_not_set
-    nb_users = groups.map{|group| group.users.count }.reduce(0, :+)  
-    nb_users - nb_presents - nb_not_presents
+    presence_not_set.size
   end
 
   def presence_not_set

@@ -14,7 +14,7 @@ class Section < ActiveRecord::Base
 
   validates_presence_of :club, :name
 
-  after_create :add_group_everybody
+  after_create :add_everybody_and_every_player_groups
 
   def invite_user!(params, inviter)
 
@@ -64,7 +64,11 @@ class Section < ActiveRecord::Base
   end
 
   def group_everybody
-    groups.where(role: :everybody).take
+    groups.where(role: :everybody, system: true).take
+  end
+
+  def group_every_players
+    groups.where(role: :every_players, system: true).take
   end
 
   protected 
@@ -73,11 +77,13 @@ class Section < ActiveRecord::Base
       params = { role: role, user: user, section: self, season: Season.current }
       participations << Participation.create!(params) unless participations.where(params).exists?
       group_everybody.add_user!(user)
+      group_every_players.add_user!(user) if role == Participation::PLAYER
       self
     end
 
-    def add_group_everybody
-      groups << Group.new(role: :everybody, system: true, name: 'TOUS', description: 'Tous les joueurs de la section')
+    def add_everybody_and_every_player_groups
+      groups << Group.new(role: :everybody, system: true, name: 'TOUS LES MEMBRES', description: 'Tous les membres de la section') unless group_everybody
+      groups << Group.new(role: :every_players, system: true, name: 'TOUS LES JOUEURS', description: 'Tous les joueurs de la section') unless group_every_players
     end
 
 end

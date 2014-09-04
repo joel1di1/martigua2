@@ -18,13 +18,16 @@ RSpec.describe Section, :type => :model do
 
     context 'with a new player' do
       it { expect(subject.players).to match_array([user]) }
-      it { expect(subject.group_everybody.users).to include(user) }
+      it { expect(subject.group_everybody.users).to match_array([user]) }
+      it { expect(subject.group_every_players.users).to match_array([user]) }
     end
 
     context 'with an already player' do
       before { section.add_player!(user) }
 
       it { expect(subject.players).to match_array([user]) }
+      it { expect(subject.group_everybody.users).to match_array([user]) }
+      it { expect(subject.group_every_players.users).to match_array([user]) }
     end
 
     context 'with an already coach' do
@@ -32,6 +35,8 @@ RSpec.describe Section, :type => :model do
 
       it { expect(subject.players).to match_array([user]) }
       it { expect(subject.coachs).to match_array([user]) }
+      it { expect(subject.group_everybody.users).to match_array([user]) }
+      it { expect(subject.group_every_players.users).to match_array([user]) }
     end
   end
 
@@ -40,25 +45,34 @@ RSpec.describe Section, :type => :model do
 
     subject { section.add_coach!(user) }
 
-    context 'with a new player' do
+    context 'with a new user' do
       it { expect(subject.coachs).to match_array([user]) }
-    end
 
-    context 'with an already player' do
-      before { section.add_coach!(user) }
-
-      it { expect(subject.coachs).to match_array([user]) }
+      it { expect(subject.group_everybody.users).to match_array([user]) }
+      it { expect(subject.group_every_players.users).to match_array([]) }      
     end
 
     context 'with an already coach' do
+      before { section.add_coach!(user) }
+
+      it { expect(subject.coachs).to match_array([user]) }
+
+      it { expect(subject.group_everybody.users).to match_array([user]) }
+      it { expect(subject.group_every_players.users).to match_array([]) }      
+    end
+
+    context 'with an already player' do
       before { section.add_player!(user) }
 
       it { expect(subject.players).to match_array([user]) }
       it { expect(subject.coachs).to match_array([user]) }
+
+      it { expect(subject.group_everybody.users).to match_array([user]) }
+      it { expect(subject.group_every_players.users).to match_array([user]) }      
     end
   end
 
-  describe '.invite_user!' do
+  describe '#invite_user!' do
     let(:user_params) { attributes_for(:user) }
     let(:roles) { [Participation::PLAYER, Participation::COACH].sample }
     let(:params) { user_params.merge({roles: roles}) }
@@ -103,7 +117,7 @@ RSpec.describe Section, :type => :model do
     end
   end
 
-  describe '.next_trainings' do
+  describe '#next_trainings' do
     let!(:previous_training) { create :training, with_section: section, start_datetime: 1.week.ago }
     let!(:training_2_week_from_now) { create :training, with_section: section, start_datetime: 2.weeks.from_now }
     let!(:training_1_week_from_now) { create :training, with_section: section, start_datetime: 1.week.from_now }
@@ -111,15 +125,25 @@ RSpec.describe Section, :type => :model do
     it { expect(section.next_trainings).to eq [training_1_week_from_now, training_2_week_from_now] }
   end
 
-  describe '.group_everybody' do
+  describe '.create' do
     let(:section) { create :section }
-    let(:group_everybody) { section.group_everybody }
 
-    context 'new section' do
+    describe '#group_everybody' do
+      let(:group_everybody) { section.group_everybody }
+
       it { expect(group_everybody).to_not be_nil }
-      it { expect(group_everybody.name).to eq 'TOUS' }
+      it { expect(group_everybody.name).to eq 'TOUS LES MEMBRES' }
       it { expect(group_everybody.system).to be_truthy }
       it { expect(group_everybody.role).to eq 'everybody' }
+    end
+
+    describe '#group_everyplayers' do
+      let(:group_every_players) { section.group_every_players }
+
+      it { expect(group_every_players).to_not be_nil }
+      it { expect(group_every_players.name).to eq 'TOUS LES JOUEURS' }
+      it { expect(group_every_players.system).to be_truthy }
+      it { expect(group_every_players.role).to eq 'every_players' }
     end
   end
 end

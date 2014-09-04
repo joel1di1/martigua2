@@ -9,5 +9,6 @@
           %th Roles
 
     %tbody
-      = render users
+      - group = nil unless defined?(group)
+      = render partial: 'users/user', collection: users, locals: { group: group }
 

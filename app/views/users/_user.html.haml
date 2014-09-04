@@ -14,3 +14,10 @@
   - if current_section
     %td
       = user.participations.where(section: current_section).map(&:role).sort.reverse.join(", ")
+    %td
+      - if defined?(group) && group
+        = link_to section_group_user_path(current_section, group, user), :method => :delete, :data => { :confirm => 'Supprimer du groupe ?' } do
+          %span.glyphicon.glyphicon-trash  
+      - else 
+        = link_to section_user_path(current_section, user), :method => :delete, :data => { :confirm => 'Supprimer de la section ?' } do
+          %span.glyphicon.glyphicon-trash  

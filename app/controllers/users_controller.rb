@@ -44,6 +44,18 @@ class UsersController < ApplicationController
     redirect_to referer_url_or(root_path)
   end
 
+  def destroy
+    group_id = params[:group_id]
+    if group_id
+      group = Group.find group_id
+      group.remove_user(@user)
+      redirect_to section_group_path(current_section, group)
+    else
+      current_section.remove_member!(@user) if current_section.has_member?(@user)
+      redirect_to section_users_path(current_section)
+    end
+  end
+
   protected 
     def find_user_by_id
       @user = User.find params[:id]

@@ -146,4 +146,36 @@ RSpec.describe Section, :type => :model do
       it { expect(group_every_players.role).to eq 'every_players' }
     end
   end
+
+  describe '#has_member?' do
+    let(:has_member) { section.has_member?(user) }
+
+    context 'with user in section' do
+      let(:user) { create :user, with_section: section }
+
+      it { expect(has_member).to be_truthy }
+    end
+
+    context 'with user not in section' do
+      let(:user) { create :user }
+
+      it { expect(has_member).to be_falsy }
+    end
+  end
+
+  describe '.remove_member!' do
+    let(:user) { create :user }
+    let(:remove_user) { section.remove_member!(user) }
+
+    context 'with user in section' do
+      before { section.add_player! user }
+
+      before { remove_user }
+      
+      it { expect(section.users.include?(user)).to be_falsy }
+      it { expect(section.group_everybody.users.include?(user)).to be_falsy }
+      it { expect(section.group_every_players.users.include?(user)).to be_falsy }
+    end
+  end
+
 end

@@ -98,4 +98,39 @@ describe UsersController, :type => :controller do
     it { expect(response).to redirect_to(root_path) }
   end
 
+  describe 'DELETE destroy user' do
+    context 'from section' do
+      before { sign_in user }
+
+      let(:do_request) { delete :destroy, section_id: section.to_param, id: user.to_param }
+
+      it { expect{ do_request }.to change{ section.users.count }.by(-1) }
+
+      describe 'response' do
+        before { do_request }
+
+        it {  expect(response).to redirect_to(section_users_path(section)) }
+      end
+    end
+    context 'from section group' do
+      let(:group) { create :group, section: section }
+
+      before do
+        group.add_user! user
+        sign_in user
+      end
+
+      let(:do_request) { delete :destroy, section_id: section.to_param, group_id: group.to_param, id: user.to_param }
+
+      it { expect{ do_request }.to change{ section.users.count }.by(0) }
+      it { expect{ do_request }.to change{ group.users.count }.by(-1) }
+
+      describe 'response' do
+        before { do_request }
+
+        it { expect(response).to redirect_to(section_group_path(section, group)) }
+      end
+    end
+  end
+
 end

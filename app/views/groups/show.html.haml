@@ -20,6 +20,6 @@
       = form_tag section_group_add_users_path(current_section, @group), class: 'form-inline' do
         = select_tag 'user_id', options_from_collection_for_select(current_section.users - @group.users, :id, :full_name), include_blank: true, class: 'form-control'
         %button.btn{type: :submit} Ajouter
-    = render partial: 'users/users', object: @group.users
+    = render partial: 'users/users', object: @group.users, locals: { group: @group }
 
 

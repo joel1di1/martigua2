@@ -71,6 +71,16 @@ class Section < ActiveRecord::Base
     groups.where(role: :every_players, system: true).take
   end
 
+  def has_member?(user)
+    users.include?(user)
+  end
+
+  def remove_member!(user)
+    users.delete(user)
+    group_everybody.remove_user(user)
+    group_every_players.remove_user(user)
+  end
+
   protected 
 
     def add_user!(user, role)

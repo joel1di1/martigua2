@@ -7,9 +7,10 @@ Rails.application.routes.draw do
         post 'invitations'
       end
     end
-    resources :users, path: 'members', only: [:index, :show, :edit, :update]
+    resources :users, path: 'members'
     resources :groups do
       post 'users' => 'groups#add_users', as: 'add_users'
+      resources :users, only: [:destroy]
     end
   end
 

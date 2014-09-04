@@ -11,4 +11,8 @@ class Group < ActiveRecord::Base
     self
   end
 
+  def remove_user(user)
+    users.delete(user)
+  end
+
 end

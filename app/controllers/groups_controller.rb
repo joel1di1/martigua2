@@ -20,7 +20,7 @@ class GroupsController < ApplicationController
   end
 
   def index 
-    @groups = current_section.groups
+    @groups = current_section.groups.order('system ASC, name ASC')
   end
 
   def destroy

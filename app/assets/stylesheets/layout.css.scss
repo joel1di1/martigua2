@@ -21,10 +21,12 @@ body{
   color: white;
 }
 
+.action > a {
+  color: black;
+}
+
+
 h2 > .action {
-  & > a {
-    color: black;
-  }
   font-size: 16px;
   display: inline;
 }

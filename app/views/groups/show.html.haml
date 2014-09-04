@@ -14,7 +14,7 @@
 
 .panel.panel-info
   .panel-heading 
-    Joueurs du groupe
+    = "#{@group.users.count} membres"
   .panel-body
     - if !@group.system? && current_section && current_user.is_coach_of?(current_section)
       = form_tag section_group_add_users_path(current_section, @group), class: 'form-inline' do

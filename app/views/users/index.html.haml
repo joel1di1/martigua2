@@ -2,4 +2,6 @@
   .text-center
     = link_to 'Ajouter un joueur', new_section_section_user_invitation_path(current_section), class: 'btn btn-primary'
 
+%h3= "#{@users.count} membres"
+
 = render partial: 'users/users', object: @users

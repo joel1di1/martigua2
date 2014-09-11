@@ -9,13 +9,14 @@
     - training.groups.each do |group|
       %span{'data-toggle'=> :tooltip, title: group.description}= group.name
   %td.hidden-xs><
-    (
-    %span{class: 'text-success'}><= training.nb_presents
-    \/
-    %span{class: 'text-danger'}><= training.nb_not_presents
-    \/
-    %span{class: 'text-warning'}><= training.nb_presence_not_set
-    )
+    = link_to section_training_path(training, section_id: current_section.to_param) do 
+      (
+      %span{class: 'text-success'}><= training.nb_presents
+      \/
+      %span{class: 'text-danger'}><= training.nb_not_presents
+      \/
+      %span{class: 'text-warning'}><= training.nb_presence_not_set
+      )
   - if current_user.is_player_of?(current_section)
     %td
       - if training.users.include?(current_user)

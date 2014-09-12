@@ -11,6 +11,9 @@
   %td
     - if user.phone_number
       = link_to user.phone_number, "tel:#{user.phone_number}" 
+  %td
+    - user.groups.non_system.each do |group|
+      = link_to group.name, section_group_path(current_section, group)
   - if current_section
     %td
       = user.participations.where(section: current_section).map(&:role).sort.reverse.join(", ")

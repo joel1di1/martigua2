@@ -6,6 +6,8 @@ class Group < ActiveRecord::Base
 
   validates_presence_of :name
 
+  scope :non_system, -> { where(system: false) }
+
   def add_user!(user)
     users << user unless users.include?(user)
     self

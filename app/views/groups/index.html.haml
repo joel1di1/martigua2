@@ -8,10 +8,12 @@
   %table.table.table-hover.table-striped
     %thead
       %tr
+        %th
         %th Nom
         %th Description
 
     - @groups.each do |group|
       %tr
+        %td{style: "background-color: #{group.color}"}
         %td= link_to group.name, section_group_path(current_section, group)  
         %td= group.description

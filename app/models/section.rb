@@ -92,8 +92,8 @@ class Section < ActiveRecord::Base
     end
 
     def add_everybody_and_every_player_groups
-      groups << Group.new(role: :everybody, system: true, name: 'TOUS LES MEMBRES', description: 'Tous les membres de la section') unless group_everybody
-      groups << Group.new(role: :every_players, system: true, name: 'TOUS LES JOUEURS', description: 'Tous les joueurs de la section') unless group_every_players
+      groups << Group.new(role: :everybody, system: true, name: 'TOUS LES MEMBRES', description: 'Tous les membres de la section', color: '#226611') unless group_everybody
+      groups << Group.new(role: :every_players, system: true, name: 'TOUS LES JOUEURS', description: 'Tous les joueurs de la section', color: '#28c704') unless group_every_players
     end
 
 end

@@ -2,27 +2,31 @@ source 'https://rubygems.org'
 ruby ENV['TRAVIS'] ? '2.1.1' : '2.1.2'
 
 gem 'rails', '4.1.4'
-gem 'sass-rails', '~> 4.0.3'
-gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
-gem 'jquery-rails'
-gem 'turbolinks'
-gem 'jbuilder'
-gem 'sdoc', '~> 0.4.0',          group: :doc
-gem 'spring',        group: :development
+gem 'sass-rails', '~> 4.0.3'
+
+gem 'activeadmin', github: 'activeadmin'
 gem 'bootstrap-sass'
+gem 'colorist'
+gem 'delayed_job_active_record'
 gem 'devise'
 gem 'devise_invitable'
 gem 'haml-rails'
 gem 'heroku-api'
+gem 'kaminari'
+gem 'jbuilder'
+gem 'jquery-rails'
+gem 'jquery-turbolinks'
+gem 'jquery-minicolors-rails'
+gem 'nokogiri', '~> 1.6.2.1'
 gem 'pg'
-gem 'simple_form'
-gem 'activeadmin', github: 'activeadmin'
 gem 'polyamorous', github: 'activerecord-hackery/polyamorous'
 gem 'ransack', github: 'activerecord-hackery/ransack'
-gem 'delayed_job_active_record'
-gem 'nokogiri', '~> 1.6.2.1'
-gem 'kaminari'
+gem 'sdoc', '~> 0.4.0',          group: :doc
+gem 'simple_form'
+gem 'spring',        group: :development
+gem 'turbolinks'
+gem 'uglifier', '>= 1.3.0'
 
 group :development do
   gem 'better_errors'

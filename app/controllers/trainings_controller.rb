@@ -9,7 +9,7 @@ class TrainingsController < ApplicationController
   def create
     @training = Training.new training_params
     @training.sections << current_section
-    @training.groups = current_section.groups.where(id: training_params[:group_ids])
+    @training.groups = current_section.groups.where(id: params[:training][:group_ids])
     @training.save!
     redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Entrainement créé"
   end

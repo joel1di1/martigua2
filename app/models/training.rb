@@ -51,10 +51,12 @@ class Training < ActiveRecord::Base
   end
 
   def self.send_presence_mail_for_next_week
-    User.all.each do |user|    
-      next_week_trainings = user.next_week_trainings
-      unless next_week_trainings.empty?
-        UserMailer.send_training_invitation(next_week_trainings, user).deliver
+    User.all.each do |user|
+      if user.id == 1
+        next_week_trainings = user.next_week_trainings
+        unless next_week_trainings.empty?
+          UserMailer.delay.send_training_invitation(next_week_trainings, user)
+        end
       end
     end
   end

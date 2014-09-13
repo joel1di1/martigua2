@@ -54,15 +54,9 @@ class Training < ActiveRecord::Base
     User.all.each do |user|
       if user.id == 1
         next_week_trainings = user.next_week_trainings
-        unless next_week_trainings.empty?
-          Training.delay.deliver_training_invitation(next_week_trainings, user)
-        end
+        UserMailer.delay.send_training_invitation(next_week_trainings, user) unless next_week_trainings.empty?
       end
     end
-  end
-
-  def self.deliver_training_invitation(next_week_trainings, user)
-    UserMailer.send_training_invitation(next_week_trainings, user).deliver
   end
 
   def self.of_next_week(section=nil, date=DateTime.now)

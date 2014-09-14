@@ -10,7 +10,7 @@ RSpec.describe Training, :type => :model do
   it { should have_many :training_presences }
   it { should validate_presence_of :start_datetime }
 
-  let!(:nb_users) { [1,2,3,4,10].sample }
+  let!(:nb_users) { [1,2,3,4].sample }
 
   let(:section)  { create :section }
   let(:group)    { create :group, section: section }
@@ -40,13 +40,13 @@ RSpec.describe Training, :type => :model do
 
   describe '.send_presence_mail_for_next_week' do
     let(:users) { (1..nb_users).map{ create :user, with_section: section, group_ids: [group.id] } }
-    let(:trainings) { [training] }
 
     before { User.delete_all }
     before { allow(User).to receive(:all).and_return(users) }
     before { users.each{|user| expect(user).to receive(:next_week_trainings).and_return(trainings)} }
 
     context 'with trainings for users' do
+      let(:trainings) { [training] }
       it { expect{Training.send_presence_mail_for_next_week}.to change{ActionMailer::Base.deliveries.count}.by(nb_users) }
     end
     context 'with no trainings for users' do

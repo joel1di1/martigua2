@@ -12,6 +12,8 @@ Rails.application.routes.draw do
       post 'users' => 'groups#add_users', as: 'add_users'
       resources :users, only: [:destroy]
     end
+    resources :matches
+    resources :championships
   end
 
   resources :club_admin_roles, only: [:index, :show]

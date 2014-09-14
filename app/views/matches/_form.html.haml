@@ -1,0 +1,19 @@
+= simple_form_for(@match) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.association :championship
+    = f.input :local_team_id
+    = f.input :visitor_team_id
+    = f.input :start_datetime
+    = f.input :end_datetime
+    = f.input :prevision_period_start
+    = f.input :prevision_period_end
+    = f.input :local_score
+    = f.input :visitor_score
+    = f.association :location
+    = f.input :meeting_datetime
+    = f.input :meeting_location
+
+  .form-actions
+    = f.button :submit

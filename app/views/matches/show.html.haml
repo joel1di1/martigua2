@@ -1,0 +1,42 @@
+%p#notice= notice
+
+%p
+  %b Championship:
+  = @match.championship
+%p
+  %b Local team:
+  = @match.local_team_id
+%p
+  %b Visitor team:
+  = @match.visitor_team_id
+%p
+  %b Start datetime:
+  = @match.start_datetime
+%p
+  %b End datetime:
+  = @match.end_datetime
+%p
+  %b Prevision period start:
+  = @match.prevision_period_start
+%p
+  %b Prevision period end:
+  = @match.prevision_period_end
+%p
+  %b Local score:
+  = @match.local_score
+%p
+  %b Visitor score:
+  = @match.visitor_score
+%p
+  %b Location:
+  = @match.location
+%p
+  %b Meeting datetime:
+  = @match.meeting_datetime
+%p
+  %b Meeting location:
+  = @match.meeting_location
+
+= link_to 'Edit', edit_match_path(@match)
+\|
+= link_to 'Back', matches_path

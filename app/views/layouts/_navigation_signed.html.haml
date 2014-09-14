@@ -18,6 +18,8 @@
           = link_to "Entrainements", section_trainings_path(current_section)
         %li{class: active_if_current_path(section_groups_path(current_section))}
           = link_to "Groupes", section_groups_path(current_section)
+        %li{class: active_if_current_path(section_championships_path(current_section))}
+          = link_to "Compétitions", section_championships_path(current_section)
     %ul.nav.navbar-nav.navbar-right.user
       %li.dropdown
         %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}

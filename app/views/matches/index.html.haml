@@ -1,0 +1,41 @@
+%h1 Listing matches
+
+%table
+  %tr
+    %th Championship
+    %th Local team
+    %th Visitor team
+    %th Start datetime
+    %th End datetime
+    %th Prevision period start
+    %th Prevision period end
+    %th Local score
+    %th Visitor score
+    %th Location
+    %th Meeting datetime
+    %th Meeting location
+    %th
+    %th
+    %th
+
+  - @matches.each do |match|
+    %tr
+      %td= match.championship
+      %td= match.local_team_id
+      %td= match.visitor_team_id
+      %td= match.start_datetime
+      %td= match.end_datetime
+      %td= match.prevision_period_start
+      %td= match.prevision_period_end
+      %td= match.local_score
+      %td= match.visitor_score
+      %td= match.location
+      %td= match.meeting_datetime
+      %td= match.meeting_location
+      %td= link_to 'Show', match
+      %td= link_to 'Edit', edit_match_path(match)
+      %td= link_to 'Destroy', match, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Match', new_match_path

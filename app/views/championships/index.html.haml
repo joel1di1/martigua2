@@ -1,0 +1,7 @@
+- if current_section && current_user.is_coach_of?(current_section)
+  .text-center
+    = link_to 'Ajouter une compétition', new_section_championship_path(current_section), class: 'btn btn-primary'
+
+%h3= "#{@championships.count} compétitions"
+
+= render partial: 'championships/championships', object: @championships

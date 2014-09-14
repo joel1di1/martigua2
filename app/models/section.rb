@@ -11,7 +11,6 @@ class Section < ActiveRecord::Base
   has_and_belongs_to_many :trainings, inverse_of: :sections
 
   has_many :groups, inverse_of: :section, dependent: :destroy
-
   validates_presence_of :club, :name
 
   after_create :add_everybody_and_every_player_groups
@@ -79,6 +78,10 @@ class Section < ActiveRecord::Base
     users.delete(user)
     group_everybody.remove_user(user)
     group_every_players.remove_user(user)
+  end
+
+  def championships
+    teams.includes(:championships).map(&:championships).flatten.uniq
   end
 
   protected 

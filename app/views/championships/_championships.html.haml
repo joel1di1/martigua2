@@ -1,0 +1,4 @@
+.list-group
+  - @championships.each do |championship|
+    .list-group-item
+      = link_to section_championship_path(current_section, championship)

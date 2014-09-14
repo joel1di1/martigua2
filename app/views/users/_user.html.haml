@@ -12,7 +12,7 @@
     - if user.phone_number
       = link_to user.phone_number, "tel:#{user.phone_number}" 
   %td
-    - user.groups.non_system.each do |group|
+    - user.groups.where(section: current_section).non_system.each do |group|
       = link_to section_group_path(current_section, group) do 
         .group-box{style: "background-color: #{group.color}", 'data-toggle' => "tooltip", 'data-title' => group.name}
   - if current_section

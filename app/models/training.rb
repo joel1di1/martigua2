@@ -54,7 +54,7 @@ class Training < ActiveRecord::Base
     User.all.each do |user|
       if user.id == 1
         next_week_trainings = user.next_week_trainings
-        UserMailer.delay.send_training_invitation(next_week_trainings, user) unless next_week_trainings.empty?
+        UserMailer.delay.send_training_invitation(next_week_trainings, user)
       end
     end
   end

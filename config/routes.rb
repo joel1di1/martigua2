@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :championships
+  
   resources :sections, only: [:show] do
     resources :section_user_invitations, path: 'user_invitations', only: [:new, :show, :create, :index]
     resources :trainings do
@@ -13,7 +15,9 @@ Rails.application.routes.draw do
       resources :users, only: [:destroy]
     end
     resources :matches
-    resources :championships
+    resources :championships do
+      resources :matches
+    end
   end
 
   resources :club_admin_roles, only: [:index, :show]

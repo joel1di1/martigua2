@@ -1,6 +1,7 @@
 - if current_section && current_user.is_coach_of?(current_section)
   .text-center
-    = link_to 'Ajouter une compétition', new_section_championship_path(current_section), class: 'btn btn-primary'
+    - link_url = current_section ? new_section_championship_path(current_section) : new_championship_path
+    = link_to 'Ajouter une compétition', link_url, class: 'btn btn-primary'
 
 %h3= "#{@championships.count} compétitions"
 

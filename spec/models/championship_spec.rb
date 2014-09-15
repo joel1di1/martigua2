@@ -4,6 +4,7 @@ RSpec.describe Championship, :type => :model do
   it { should validate_presence_of :name }
   it { should validate_presence_of :season }
   it { should have_many :teams }
+  it { should have_many :matches }
 
   let(:championship) { create :championship }
 

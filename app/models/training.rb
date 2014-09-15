@@ -15,6 +15,8 @@ class Training < ActiveRecord::Base
 
   default_scope { order 'start_datetime' }
 
+  paginates_per 10
+
   def send_invitations!
     invitations << TrainingInvitation.new 
   end

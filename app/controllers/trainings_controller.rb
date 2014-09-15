@@ -3,7 +3,8 @@ class TrainingsController < ApplicationController
   before_filter :set_current_training
 
   def index
-    @trainings = Training.of_section(current_section)
+    section_trainings = Training.of_section(current_section)
+    @trainings = section_trainings.page(params[:page]).padding(section_trainings.where('start_datetime < ?', DateTime.now).count)
   end
 
   def create

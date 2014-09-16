@@ -1,5 +1,16 @@
 .panel.panel-default
   .panel-heading
+    %h3.panel-title Prochains matches
+  .panel-body
+    - if @next_matches.empty?
+      Aucun matches prévu dans les prochaines semaines
+    - else
+      = render partial: 'matches/matches', object: @next_matches
+
+
+
+.panel.panel-default
+  .panel-heading
     %h3.panel-title Prochains entrainements
   .panel-body
     - if @next_trainings.empty?

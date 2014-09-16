@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140914200502) do
+ActiveRecord::Schema.define(version: 20140916002059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,6 +136,29 @@ ActiveRecord::Schema.define(version: 20140914200502) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "match_availabilities", force: true do |t|
+    t.integer  "match_id",                   null: false
+    t.integer  "user_id",                    null: false
+    t.boolean  "available",  default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "match_availabilities", ["match_id"], name: "index_match_availabilities_on_match_id", using: :btree
+  add_index "match_availabilities", ["user_id"], name: "index_match_availabilities_on_user_id", using: :btree
+
+  create_table "match_selections", force: true do |t|
+    t.integer  "match_id",   null: false
+    t.integer  "team_id",    null: false
+    t.integer  "user_id",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "match_selections", ["match_id"], name: "index_match_selections_on_match_id", using: :btree
+  add_index "match_selections", ["team_id"], name: "index_match_selections_on_team_id", using: :btree
+  add_index "match_selections", ["user_id"], name: "index_match_selections_on_user_id", using: :btree
 
   create_table "matches", force: true do |t|
     t.integer  "championship_id"

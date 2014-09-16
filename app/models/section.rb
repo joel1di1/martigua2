@@ -62,6 +62,13 @@ class Section < ActiveRecord::Base
     trainings.where('start_datetime > ? AND start_datetime < ?', now, end_date)
   end
 
+  def next_matches
+    now = DateTime.now
+    end_date = now.end_of_week + 2.weeks
+    Match.where('(start_datetime > ? AND start_datetime < ?) OR (prevision_period_start > ? AND prevision_period_end < ?)', 
+      now, end_date, now, end_date).where('local_team_id IN (?) OR visitor_team_id IN (?)', teams.map(&:id), teams.map(&:id))
+  end
+
   def group_everybody
     groups.where(role: :everybody, system: true).take
   end

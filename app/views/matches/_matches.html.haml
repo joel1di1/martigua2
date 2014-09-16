@@ -4,9 +4,13 @@
       %tr
         %th
         %th Date et lieu
+        %th Match
         - if current_user.is_player_of?(current_section)
           %th Ma dispo
-        - if current_user.is_coach_of?(current_section)
-          %th Actions
+        -# - if current_user.is_coach_of?(current_section)
+        -#   %th Actions
     %tbody
-      = render partial: 'matches/match', collection: matches, locals: { championship: championship }
+      - locals = {}
+      - if defined?(championship)
+        - locals[:championship] = championship 
+      = render partial: 'matches/match', collection: matches, locals: locals

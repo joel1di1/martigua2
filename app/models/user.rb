@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
   has_many :participations, dependent: :destroy
   has_many :sections, -> { uniq }, through: :participations, inverse_of: :users
   has_many :training_presences, inverse_of: :user
+  
+  has_many :match_availabilities, inverse_of: :user
 
   has_and_belongs_to_many :groups, inverse_of: :users
 
@@ -53,6 +55,10 @@ class User < ActiveRecord::Base
     training_presences.where(training: training).first.try(:present)
   end
 
+  def is_available_for?(match)
+    match_availabilities.where(match: match).first.try(:available)
+  end
+
   def is_admin_of?(club)
     club_admin_roles.where(club: club).exists?
   end
@@ -63,6 +69,11 @@ class User < ActiveRecord::Base
 
   def next_week_trainings
     Training.of_next_week.joins(:groups).where(groups: {id: group_ids}).uniq
+  end
+
+  def next_weekend_matches
+    next_matches = Match.includes(local_team: :sections, visitor_team: :sections).of_next_weekend
+    next_matches.select { |match| (sections - match.local_team.sections - match.visitor_team.sections).size > 0 }
   end
 
   protected 

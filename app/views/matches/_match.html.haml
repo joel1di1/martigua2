@@ -1,6 +1,7 @@
 %tr
   %td.link_column
-    = link_to section_championship_match_path(current_section, championship, match), class: :eye_link do
+    - match_link_url = defined?(championship) ? section_championship_match_path(current_section, championship, match) : section_match_path(current_section, match)
+    = link_to match_link_url, class: :eye_link do
       %span.glyphicon.glyphicon-eye-open
   %td
     %div= match.date
@@ -11,16 +12,16 @@
     = match.visitor_team.name
   - if current_user.is_player_of?(current_section)
     %td
-      -# - if training.users.include?(current_user)
-      -#   - if current_user.is_present_for?(training).nil?
-      -#     = link_to 'Présent ?', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: [training.id]), method: :post, class: 'btn btn-sm btn-success text-nowrap'
-      -#     = link_to 'Non présent ?', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: []), method: :post, class: 'btn btn-sm btn-danger text-nowrap'
-      -#   - elsif current_user.is_present_for?(training) == true
-      -#     %div.training_presence{class: 'bg-success text-nowrap'} Présent !
-      -#     = link_to 'Non présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: []), method: :post, class: 'change_presence not_present text-nowrap'
-      -#   - else
-      -#     %div.training_presence{class: 'bg-danger text-nowrap'} Non présent !
-      -#     = link_to 'Présent', training_presences_user_path(current_user, present_ids: [training.id], checked_ids: [training.id]), method: :post, class: 'change_presence present text-nowrap'
-  - if current_user.is_coach_of?(current_section)
-    %td
-      -# = button_to 'Relancer les indécits', invitations_section_training_path(training, section_id: current_section), id: "training_invitations_#{training.id}", class: 'btn btn-warning btn-sm'
+      - if match.users.include?(current_user)
+        - if current_user.is_available_for?(match).nil?
+          = link_to 'Dispo ?', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: [match.id]), method: :post, class: 'btn btn-sm btn-success text-nowrap'
+          = link_to 'Non dispo ?', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: []), method: :post, class: 'btn btn-sm btn-danger text-nowrap'
+        - elsif current_user.is_available_for?(match) == true
+          %div.training_presence{class: 'bg-success text-nowrap'} Dispo !
+          = link_to 'Non dispo', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: []), method: :post, class: 'change_presence not_present text-nowrap'
+        - else
+          %div.training_presence{class: 'bg-danger text-nowrap'} Non dispo !
+          = link_to 'Dispo', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: [match.id]), method: :post, class: 'change_presence present text-nowrap'
+  -# - if current_user.is_coach_of?(current_section)
+  -#   %td
+      -# = button_to 'Relancer les indécits', invitations_section_training_path(training, section_id: current_section), id: "training_invitations_#{match.id}", class: 'btn btn-warning btn-sm'

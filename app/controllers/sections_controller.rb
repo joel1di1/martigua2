@@ -2,6 +2,7 @@ class SectionsController < ApplicationController
   def show
     @section = Section.find(params[:id])
     @next_trainings = @section.next_trainings
+    @next_matches = @section.next_matches
   end
 
   def new

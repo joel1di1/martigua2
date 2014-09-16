@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :edit, :update] do
     member do
       match 'training_presences', via: [:get, :post]
+      match 'match_availabilities', via: [:get, :post]
     end
   end
 

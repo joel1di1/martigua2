@@ -44,6 +44,20 @@ class UsersController < ApplicationController
     redirect_to referer_url_or(root_path)
   end
 
+  def match_availabilities
+    present_ids = ( params[:present_ids] || [] ).map(&:to_i)
+    checked_ids = ( params[:checked_ids] || [] ).map(&:to_i)
+
+    MatchAvailability.where(match_id: present_ids, user_id: current_user.id).delete_all
+    
+    matches = Match.where(id: present_ids)
+    matches.each do |match|
+      MatchAvailability.create! user: current_user, match: match, available: checked_ids.include?(match.id)
+    end
+
+    redirect_to referer_url_or(root_path)
+  end
+
   def destroy
     group_id = params[:group_id]
     if group_id

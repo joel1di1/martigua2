@@ -4,12 +4,11 @@
   .form-inputs
     = f.association :local_team, collection: @championship.teams.order(:name)
     = f.association :visitor_team, collection: @championship.teams.order(:name)
-    = f.input :start_datetime
-    = f.input :end_datetime
-    = f.input :prevision_period_start
-    = f.input :prevision_period_end
     = f.association :location
-    = f.input :meeting_datetime
+    = f.input :start_datetime, as: :date_time_picker, wrapper_html: { class: :pick_datetime }
+    = f.input :prevision_period_start, as: :date_time_picker, wrapper_html: { class: :pick_date }
+    = f.input :prevision_period_end, as: :date_time_picker, wrapper_html: { class: :pick_date }
+    = f.input :meeting_datetime, as: :date_time_picker, wrapper_html: { class: :pick_datetime }
     = f.input :meeting_location
 
   .form-actions

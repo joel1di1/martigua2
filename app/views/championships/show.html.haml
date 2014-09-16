@@ -1,17 +1,14 @@
 %h1= @championship.name
 
-
 .row
   .col-md-8
     .panel.panel-primary
       .panel-heading 
         Matches
-      %ul.list-group
-        - if @championship.matches.count == 0
-          %li.list-group-item Aucun match dans cette compétition
-        - else
-          - @championship.matches.date_ordered.each do |match|
-            %li.list-group-item= match
+      - if @championship.matches.count == 0
+        Aucun match dans cette compétition
+      - else
+        = render partial: 'matches/matches', object: @championship.matches.date_ordered, locals: { championship: @championship }
     = link_to 'Ajouter un match', new_section_championship_match_path(current_section, @championship), class: 'btn btn-primary'
   .col-md-4
     .panel.panel-primary

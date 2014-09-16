@@ -1,42 +1,29 @@
-%p#notice= notice
-
 %p
-  %b Championship:
-  = @match.championship
+  %b Compétition :
+  = @match.championship.name
 %p
-  %b Local team:
-  = @match.local_team_id
+  %b Locaux :
+  = @match.local_team.name
 %p
-  %b Visitor team:
-  = @match.visitor_team_id
+  %b Visiteurs :
+  = @match.visitor_team.name
 %p
-  %b Start datetime:
-  = @match.start_datetime
+  %b Date
+  = @match.date
 %p
-  %b End datetime:
-  = @match.end_datetime
-%p
-  %b Prevision period start:
-  = @match.prevision_period_start
-%p
-  %b Prevision period end:
-  = @match.prevision_period_end
-%p
-  %b Local score:
+  %b Local score :
   = @match.local_score
 %p
-  %b Visitor score:
+  %b Visitor score :
   = @match.visitor_score
 %p
-  %b Location:
-  = @match.location
+  %b Location :
+  = @match.location.try(:name)
 %p
-  %b Meeting datetime:
+  %b Meeting datetime :
   = @match.meeting_datetime
 %p
-  %b Meeting location:
+  %b Meeting location :
   = @match.meeting_location
 
-= link_to 'Edit', edit_match_path(@match)
-\|
-= link_to 'Back', matches_path
+= link_to 'Edit', edit_section_championship_match_path(current_section, @match.championship, @match)

@@ -1,0 +1,12 @@
+.table-responsive
+  %table.table.table-hover.table-striped
+    %thead
+      %tr
+        %th
+        %th Date et lieu
+        - if current_user.is_player_of?(current_section)
+          %th Ma dispo
+        - if current_user.is_coach_of?(current_section)
+          %th Actions
+    %tbody
+      = render partial: 'matches/match', collection: matches, locals: { championship: championship }

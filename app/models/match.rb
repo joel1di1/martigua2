@@ -6,4 +6,12 @@ class Match < ActiveRecord::Base
 
   scope :date_ordered, -> { order('start_datetime ASC') }
 
+  def date
+    if start_datetime
+      start_datetime.to_s(:short)
+    else
+      "(#{prevision_period_start.to_s(:short)} - #{prevision_period_end.to_s(:short)})"
+    end
+  end
+
 end

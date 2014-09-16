@@ -4,6 +4,8 @@ class Match < ActiveRecord::Base
   belongs_to :local_team, class_name: Team, foreign_key: :local_team_id
   belongs_to :visitor_team, class_name: Team, foreign_key: :visitor_team_id
 
+  has_many :match_availabilities, inverse_of: :match
+
   scope :date_ordered, -> { order('start_datetime ASC') }
 
   scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period) } 
@@ -18,6 +20,38 @@ class Match < ActiveRecord::Base
 
   def users
     @users = User.joins(sections: :teams).where('teams.id IN (?)', [local_team.id, visitor_team.id])
+  end
+
+  def _availables
+    match_availabilities.includes(:user).where(available: true)
+  end
+
+  def availables
+    _availables.map(&:user)
+  end
+
+  def nb_availables
+    _availables.count
+  end
+
+  def _not_availables
+    match_availabilities.includes(:user).where(available: false)
+  end
+
+  def not_availables
+    _not_availables.map(&:user)
+  end
+
+  def nb_not_availables
+    _not_availables.count
+  end
+
+  def nb_availability_not_set
+    availability_not_set.size
+  end
+
+  def availability_not_set
+    users.uniq - availables - not_availables
   end
 
   def self.send_availability_mail_for_next_weekend

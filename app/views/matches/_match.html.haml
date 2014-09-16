@@ -10,6 +10,15 @@
     = match.local_team.name
     \-
     = match.visitor_team.name
+  %td
+    = link_to match_link_url do 
+      (
+      %span{class: 'text-success'}><= match.nb_availables
+      \/
+      %span{class: 'text-danger'}><= match.nb_not_availables
+      \/
+      %span{class: 'text-warning'}><= match.nb_availability_not_set
+      )
   - if current_user.is_player_of?(current_section)
     %td
       - if match.users.include?(current_user)

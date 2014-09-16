@@ -1,29 +1,48 @@
-%p
-  %b Compétition :
-  = @match.championship.name
-%p
-  %b Locaux :
-  = @match.local_team.name
-%p
-  %b Visiteurs :
-  = @match.visitor_team.name
-%p
-  %b Date
-  = @match.date
-%p
-  %b Local score :
-  = @match.local_score
-%p
-  %b Visitor score :
-  = @match.visitor_score
-%p
-  %b Location :
-  = @match.location.try(:name)
-%p
-  %b Meeting datetime :
-  = @match.meeting_datetime
-%p
-  %b Meeting location :
-  = @match.meeting_location
+.row
+  .col-md-4
+    %h2
+      = @match.local_team.name
+      \-
+      = @match.visitor_team.name
+    %p
+      = @match.date
+    %p
+      %b Score final :
+      = @match.local_score
+      \-
+      = @match.visitor_score
+    %p
+      %b Location :
+      = @match.location.try(:name)
+    %p
+      %b Meeting datetime :
+      = @match.meeting_datetime
+    %p
+      %b Meeting location :
+      = @match.meeting_location
 
-= link_to 'Edit', edit_section_championship_match_path(current_section, @match.championship, @match)
+    = link_to 'Edit', edit_section_championship_match_path(current_section, @match.championship, @match)
+
+
+.row
+  .col-md-4
+    .panel.panel-success
+      .panel-heading 
+        Joueurs dispos
+      %ul.list-group
+        - @match.availables.sort_by(&:full_name).each do |user|
+          %li.list-group-item= user.full_name
+  .col-md-4
+    .panel.panel-warning
+      .panel-heading 
+        Joueurs non dispos
+      .list-group
+        - @match.not_availables.sort_by(&:full_name).each do |user|
+          %li.list-group-item= user.full_name
+  .col-md-4
+    .panel.panel-danger
+      .panel-heading 
+        Pas de réponse
+      .list-group
+        - @match.availability_not_set.sort_by(&:full_name).each do |user|
+          %li.list-group-item= user.full_name

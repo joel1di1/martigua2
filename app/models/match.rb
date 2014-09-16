@@ -20,10 +20,10 @@ class Match < ActiveRecord::Base
     @users = User.joins(sections: :teams).where('teams.id IN (?)', [local_team.id, visitor_team.id])
   end
 
-  def self.send_availability_mail_for_next_week
+  def self.send_availability_mail_for_next_weekend
     User.all.each do |user|
       next_weekend_matches = user.next_weekend_matches
-      UserMailer.delay.send_match_invitation(next_weekend_matches.to_a, user) unless next_week_matches.empty?
+      UserMailer.delay.send_match_invitation(next_weekend_matches.to_a, user) unless next_weekend_matches.empty?
     end
   end
 

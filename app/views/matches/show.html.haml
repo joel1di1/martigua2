@@ -31,14 +31,16 @@
         Joueurs dispos
       %ul.list-group
         - @match.availables.sort_by(&:full_name).each do |user|
-          %li.list-group-item= user.full_name
+          - if user.sections.include? current_section
+            %li.list-group-item= user.full_name
   .col-md-4
     .panel.panel-warning
       .panel-heading 
         Joueurs non dispos
       .list-group
         - @match.not_availables.sort_by(&:full_name).each do |user|
-          %li.list-group-item= user.full_name
+          - if user.sections.include? current_section
+            %li.list-group-item= user.full_name
   .col-md-4
     .panel.panel-danger
       .panel-heading 

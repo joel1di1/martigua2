@@ -1,7 +1,7 @@
 = "Bonjour #{@user.first_name},"
 
 %p
-  Merci d'indiquer ta disponibilité aux matches suivants :
+  Merci d'indiquer ta disponibilité aux matchs suivants :
 
 %form{action: match_availabilities_user_url(@user.to_param), method: :post}
   %input{type: :hidden, name: :user_email, value: @user.email}

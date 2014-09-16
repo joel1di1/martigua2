@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
   end
 
   def next_weekend_matches
-    next_matches = Match.includes(local_team: :sections, visitor_team: :sections).of_next_weekend
+    next_matches = Match.of_next_weekend.includes(local_team: :sections, visitor_team: :sections)
     next_matches.select { |match| (sections - match.local_team.sections - match.visitor_team.sections).size > 0 }
   end
 

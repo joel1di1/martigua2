@@ -58,14 +58,14 @@ class Section < ActiveRecord::Base
 
   def next_trainings
     now = DateTime.now
-    end_date = now.end_of_week + 2.weeks
+    end_date = (now + 2.days).end_of_week + 1.weeks
     trainings.where('start_datetime > ? AND start_datetime < ?', now, end_date)
   end
 
   def next_matches
-    now = DateTime.now
-    end_date = now.end_of_week + 2.weeks
-    Match.where('(start_datetime > ? AND start_datetime < ?) OR (prevision_period_start > ? AND prevision_period_end < ?)', 
+    now = DateTime.now.at_beginning_of_week
+    end_date = now.at_end_of_week + 2.weeks+2.days
+    Match.where('((start_datetime > ? AND start_datetime < ?) OR (prevision_period_start > ? AND prevision_period_start < ?))', 
       now, end_date, now, end_date).where('local_team_id IN (?) OR visitor_team_id IN (?)', teams.map(&:id), teams.map(&:id))
   end
 

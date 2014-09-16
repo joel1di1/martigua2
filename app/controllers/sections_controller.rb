@@ -2,7 +2,11 @@ class SectionsController < ApplicationController
   def show
     @section = Section.find(params[:id])
     @next_trainings = @section.next_trainings
-    @next_matches = @section.next_matches
+    @next_matches = @section.next_matches.sort do |a, b| 
+                      as = a.start_datetime || a.prevision_period_start
+                      bs = b.start_datetime || b.prevision_period_start
+                      as <=> bs
+                    end
   end
 
   def new

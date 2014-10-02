@@ -7,9 +7,10 @@
     %div= match.date
     = render partial: 'locations/gmaps_link', locals: { location: match.location }
   %td
-    = match.local_team.name
-    \-
-    = match.visitor_team.name
+    = link_to match_link_url do 
+      = match.local_team.name
+      \-
+      = match.visitor_team.name
   %td
     = link_to match_link_url do 
       (

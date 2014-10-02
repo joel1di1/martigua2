@@ -28,6 +28,7 @@
   .col-md-4
     .panel.panel-success
       .panel-heading 
+        = @match.availables.select{|user| user.sections.include? current_section}.size
         Joueurs dispos
       %ul.list-group
         - @match.availables.sort_by(&:full_name).each do |user|
@@ -36,6 +37,7 @@
   .col-md-4
     .panel.panel-warning
       .panel-heading 
+        = @match.not_availables.select{|user| user.sections.include? current_section}.size
         Joueurs non dispos
       .list-group
         - @match.not_availables.sort_by(&:full_name).each do |user|
@@ -44,6 +46,7 @@
   .col-md-4
     .panel.panel-danger
       .panel-heading 
+        = @match.availability_not_set.count
         Pas de réponse
       .list-group
         - @match.availability_not_set.sort_by(&:full_name).each do |user|

@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
   end
 
   def full_name
-    nickname ? "#{first_name} #{last_name} - #{nickname}" : "#{first_name} #{last_name}"
+    nickname.blank? ? "#{first_name} #{last_name}" : "#{first_name} #{last_name} - #{nickname}"
   end
 
   def next_week_trainings

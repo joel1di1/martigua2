@@ -67,4 +67,8 @@ class Match < ActiveRecord::Base
     Match.with_start_between(start_period, end_period)
   end
 
+  def teams
+    [local_team, visitor_team]
+  end
+
 end

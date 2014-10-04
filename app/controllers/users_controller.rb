@@ -45,14 +45,19 @@ class UsersController < ApplicationController
   end
 
   def match_availabilities
+    unless ((@user == current_user) || (current_user.is_coach_of?(current_section)))
+      render(:file => File.join(Rails.root, 'public/403.html'), :status => 403, :layout => false)
+      return
+    end
+
     present_ids = ( params[:present_ids] || [] ).map(&:to_i)
     checked_ids = ( params[:checked_ids] || [] ).map(&:to_i)
 
-    MatchAvailability.where(match_id: present_ids, user_id: current_user.id).delete_all
+    MatchAvailability.where(match_id: present_ids, user_id: @user.id).delete_all
     
     matches = Match.where(id: present_ids)
     matches.each do |match|
-      MatchAvailability.create! user: current_user, match: match, available: checked_ids.include?(match.id)
+      MatchAvailability.create! user: @user, match: match, available: checked_ids.include?(match.id)
     end
 
     redirect_to referer_url_or(root_path)
@@ -73,7 +78,8 @@ class UsersController < ApplicationController
 
   protected 
     def find_user_by_id
-      @user = User.find params[:id]
+      user_key = params[:user_id] ? :user_id : :id
+      @user = User.find params[user_key]
     rescue ActiveRecord::RecordNotFound
       handle_404
     end

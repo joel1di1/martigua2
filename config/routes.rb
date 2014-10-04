@@ -9,7 +9,11 @@ Rails.application.routes.draw do
         post 'invitations'
       end
     end
-    resources :users, path: 'members'
+    resources :users, path: 'members' do
+      match 'training_presences', via: [:get, :post]
+      match 'match_availabilities', via: [:get, :post]
+    end
+
     resources :groups do
       post 'users' => 'groups#add_users', as: 'add_users'
       resources :users, only: [:destroy]

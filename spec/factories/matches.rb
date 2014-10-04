@@ -2,9 +2,9 @@
 
 FactoryGirl.define do
   factory :match do
-    championship nil
-    local_team_id 1
-    visitor_team_id 1
+    championship
+    local_team { create :team }
+    visitor_team { create :team }
     start_datetime "2014-09-14 22:05:02"
     end_datetime "2014-09-14 22:05:02"
     prevision_period_start "2014-09-14"

@@ -16,4 +16,30 @@ describe MatchesController, :type => :controller do
     it { expect(assigns[:match]).not_to be_nil }
   end
 
+  describe 'POST selection' do
+    let(:local_team) { create :team }
+    let(:visitor_team) { create :team }
+    let(:match) { create :match, visitor_team: visitor_team, local_team: local_team }
+    let(:params) { {section_id: section, id: match, user_id: user.id, team_id: local_team.id, format: format} }
+
+    let(:do_request) { post :selection, params }
+
+    describe "response" do
+      before { do_request }
+
+      context 'with json' do
+        let(:format) { :json }
+
+        it { expect(response).to have_http_status(:created) }    
+      end
+    end
+
+    context 'with json' do
+      let(:format) { :json }
+
+      it { expect{do_request}.to change{Selection.count}.by(1) }
+    end
+
+  end
+
 end

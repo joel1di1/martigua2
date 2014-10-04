@@ -16,6 +16,7 @@ class MatchesController < ApplicationController
   end
 
   def show
+    
     @match = Match.find params[:id]
   end
 
@@ -33,6 +34,21 @@ class MatchesController < ApplicationController
       render :edit
     end
   end
+
+  def selection
+    user = User.find(params[:user_id])
+    team = Team.find(params[:team_id])
+    match = Match.find(params[:id])
+
+    Selection.create! user: user, team: team, match: match
+
+    respond_to do |format|
+      format.json { render json: {}, status: :created }
+      format.html { redirect_to referer_url_or(section_match_path(current_section, match)) }
+    end
+
+  end
+
 
   protected
     def match_params

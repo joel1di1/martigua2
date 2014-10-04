@@ -38,7 +38,8 @@
               .user
                 %strong= user.full_name
               - section_teams.each do |team|
-                %button.btn.btn-link.btn-xs{type: :button}= "#{team.name} !"
+                = form_tag selection_section_match_path(current_section, @match, user_id: user.id, team_id: team.id) do
+                  %button.btn.btn-link.btn-xs{type: :submit}= "#{team.name} !"
               = link_to 'Non dispo', section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: []), method: :post, class: 'change_presence not_present text-nowrap'
 
   - section_teams.each do |team|
@@ -48,7 +49,8 @@
           Selection 
           = team.name
         %ul.list-group
-
+          - @match.selection_players(team).each do |user|
+            %li.list-group-item= user.full_name
 
 .row
   .col-md-4.col-md-offset-1

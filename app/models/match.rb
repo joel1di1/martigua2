@@ -71,4 +71,8 @@ class Match < ActiveRecord::Base
     [local_team, visitor_team]
   end
 
+  def selection_players(team)
+    Selection.includes(:user).where(match: self, team: team).map{|s| s.user}
+  end
+
 end

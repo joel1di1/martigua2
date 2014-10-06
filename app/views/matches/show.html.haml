@@ -1,5 +1,5 @@
 .row
-  .col-md-4
+  .col-md-12
     %h2
       = @match.local_team.name
       \-
@@ -26,7 +26,7 @@
 
 - section_teams = @match.teams & current_section.teams
 .row 
-  .col-md-4
+  .col-md-6
     .panel.panel-success
       .panel-heading 
         = @match.availables.select{|user| user.sections.include? current_section}.size
@@ -35,22 +35,27 @@
         - @match.availables.sort_by(&:full_name).each do |user|
           - if user.sections.include? current_section
             %li.list-group-item
-              .user
+              .user.inline
                 %strong= user.full_name
-              - section_teams.each do |team|
-                = form_tag selection_section_match_path(current_section, @match, user_id: user.id, team_id: team.id) do
-                  %button.btn.btn-link.btn-xs{type: :submit}= "#{team.name} !"
-              = link_to 'Non dispo', section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: []), method: :post, class: 'change_presence not_present text-nowrap'
+              .pull-right
+                - section_teams.each do |team|
+                  = form_tag selection_section_match_path(current_section, @match, user_id: user.id, team_id: team.id), class: 'inline', role: 'form' do
+                    %button.btn.btn-link.btn-xs{type: :submit}= "#{team.name} !"
+                = link_to 'Non dispo ?', section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: []), method: :post, class: 'change_presence not_present text-nowrap'
 
   - section_teams.each do |team|
-    .col-md-4
+    .col-md-3
       .panel.panel-primary
         .panel-heading
           Selection 
           = team.name
         %ul.list-group
-          - @match.selection_players(team).each do |user|
-            %li.list-group-item= user.full_name
+          - @match.selections(team).each do |selection|
+            %li.list-group-item
+              = selection.user.full_name
+              = form_tag section_selection_path(current_section, @match, selection), class: 'inline', role: 'form', method: :delete do              
+                %button.btn.btn-link.btn-xs{type: :submit}
+                  %span.glyphicon.glyphicon-remove
 
 .row
   .col-md-4.col-md-offset-1
@@ -61,7 +66,12 @@
       .list-group
         - @match.not_availables.sort_by(&:full_name).each do |user|
           - if user.sections.include? current_section
-            %li.list-group-item= user.full_name
+            %li.list-group-item
+              = user.full_name
+              .pull-right
+                = link_to section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: [@match.id]), method: :post, class: 'change_presence present text-nowrap' do
+                  %strong Dispo ?
+
   .col-md-4.col-md-offset-1
     .panel.panel-danger
       .panel-heading 
@@ -69,4 +79,8 @@
         Pas de réponse
       .list-group
         - @match.availability_not_set.sort_by(&:full_name).each do |user|
-          %li.list-group-item= user.full_name
+          %li.list-group-item
+            = user.full_name
+            .pull-right
+              = link_to section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: [@match.id]), method: :post, class: 'change_presence present text-nowrap' do
+                %strong Dispo ?

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     resources :matches do
       member do
         post :selection
+        resources :selections, only: [:destroy]
       end
     end
     resources :championships do

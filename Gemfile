@@ -6,6 +6,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'sass-rails', '~> 4.0.3'
 
 gem 'activeadmin', github: 'activeadmin'
+gem 'activerecord-session_store'
 gem 'bootstrap-sass'
 gem 'colorist'
 gem 'delayed_job_active_record'

@@ -3,7 +3,7 @@ class ChampionshipsController < ApplicationController
 
   def index 
     @championships = current_section ? current_section.championships : Championship.all
-    @championships = @championships.where(season: Season.current)
+    @championships = @championships.select{|c| c.season == Season.current}
   end
 
   def new

@@ -3,12 +3,20 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :authenticate_user_from_token!
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, except: :catch_404
+  before_filter :authenticate_user!, except: :catch_404
 
   helper_method :current_section, :origin_path_or
 
   include LogAllRequests
+
+    def catch_404
+      p "404 : #{request.url}"
+      respond_to do |format|
+        format.html { render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found }
+        format.xml  { head :not_found }
+      end
+    end
 
   protected 
 
@@ -32,13 +40,6 @@ class ApplicationController < ActionController::Base
 
     def get_section_id_from_params_section_id
       params[:section_id] if params[:section_id]
-    end
-
-    def handle_404
-      respond_to do |format|
-        format.html { render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found }
-        format.xml  { head :not_found }
-      end
     end
 
   private

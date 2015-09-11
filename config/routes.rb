@@ -51,4 +51,6 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   root to: 'visitors#index'
+
+  match "*path", to: "application#catch_404", via: :all
 end

@@ -2,6 +2,7 @@ language: ruby
 rvm:
 - 2.1.1
 cache: bundler
+sudo: false
 script: CODECLIMATE_REPO_TOKEN=a75500354b06769d7c9f0508effa9c1b1afa9f230264dcf1bd4611ebd263056f bundle exec rake
 deploy:
   provider: heroku

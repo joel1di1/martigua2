@@ -6,7 +6,7 @@
       .panel-heading 
         Matchs
       - if @championship.matches.count == 0
-        Aucun match dans cette compétition
+        Aucun match dans cette compétition.
       - else
         = render partial: 'matches/matches', object: @championship.matches.date_ordered, locals: { championship: @championship }
     = link_to 'Ajouter un match', new_section_championship_match_path(current_section, @championship), class: 'btn btn-primary'
@@ -16,7 +16,8 @@
         Equipes enregistrées
       %ul.list-group
         - if @championship.teams.size == 0
-          %li.list-group-item Aucune équipe dans cette compétition
+          %li.list-group-item Aucune équipe dans cette compétition.
+          %li.list-group-item Attention : rajoutez une équipe pour pouvoir retrouver cette compétition (bref le lien en dessous et rajoutez les équipes du club).
         - else
           - @championship.teams.each do |team|
             %li.list-group-item= team.name

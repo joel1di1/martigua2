@@ -3,12 +3,13 @@ rvm:
 - 2.1.1
 cache: bundler
 sudo: false
-script: CODECLIMATE_REPO_TOKEN=a75500354b06769d7c9f0508effa9c1b1afa9f230264dcf1bd4611ebd263056f bundle exec rake
+script: CODECLIMATE_REPO_TOKEN=a75500354b06769d7c9f0508effa9c1b1afa9f230264dcf1bd4611ebd263056f
+  bundle exec rake
 deploy:
   provider: heroku
   api_key:
-    secure: "gePgelkRYkgouo5y9lcYbkQgWj0gq+98YVFJCE0o3QHHNO1RXxfaqUrbmtBWhP9Ii4Y62jVIh3vvuSxMdn9ps8IQ6nP9soVfmOqJpFy7z/8ceZyyO4SpY7FECK2MSx7KD87rzN09kDhl5GQPdTp8ucAJXD20VjtxqGas+X8stFc="
-  run: "rake db:migrate"
+    secure: dCKj2iC6wPo26sfUw09iPyAM46useaY3W0zorWuSRhIonESVHwsktptzLHPrdznLzJDanetkWIHxorgug36RiwLXOlLpHvuX/H0JDWUNFIVHdTxDzZqVQaXHKdZLKcLL6MKLEHOkR86ikoNdi64tCfZBuqUw5d2jrc8ZU3TB9mQ=
+  run: rake db:migrate
   app: martigua2
   on:
     repo: joel1di1/martigua2

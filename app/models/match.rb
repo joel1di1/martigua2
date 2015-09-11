@@ -14,12 +14,16 @@ class Match < ActiveRecord::Base
     if start_datetime
       start_datetime.to_s(:short)
     else
-      "(#{prevision_period_start.to_s(:short)} - #{prevision_period_end.to_s(:short)})"
+      if prevision_period_start && prevision_period_end
+        "(#{prevision_period_start.to_s(:short)} - #{prevision_period_end.to_s(:short)})"
+      else
+        ""
+      end
     end
   end
 
   def users
-    @users = User.joins(sections: :teams).where('teams.id IN (?)', [local_team.id, visitor_team.id])
+    @users = User.joins(sections: :teams).where('teams.id IN (?)', [local_team,visitor_team].compact.map(&:id))
   end
 
   def _availables

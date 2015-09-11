@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     end
     resources :championships do
       resources :matches
+      resources :enrolled_team_championships
     end
   end
 

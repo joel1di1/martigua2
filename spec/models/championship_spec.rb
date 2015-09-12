@@ -22,4 +22,19 @@ RSpec.describe Championship, :type => :model do
     end
   end
 
+  describe '#unenroll_team!' do
+    let(:team) { create :team }
+
+    subject { championship.unenroll_team!(team) }
+
+    context 'with new team' do
+      it { expect(subject.enrolled_teams).to match_array([]) } 
+    end
+    context 'with already enrolled team' do
+      before { championship.enroll_team!(team) }
+      it { expect(subject.enrolled_teams).to match_array([]) } 
+    end
+  end
+
+
 end

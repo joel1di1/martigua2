@@ -21,5 +21,6 @@
         - else
           - @championship.teams.each do |team|
             %li.list-group-item= team.name
-        %li.list-group-item 
-          = link_to 'Modifier les équipes de cette compétition', section_championship_enrolled_team_championships_path(current_section, @championship), class: 'btn'
+        - if current_section && current_user.is_coach_of?(current_section)  
+          %li.list-group-item 
+            = link_to 'Modifier les équipes de cette compétition', section_championship_enrolled_team_championships_path(current_section, @championship), class: 'btn'

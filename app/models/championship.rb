@@ -12,6 +12,11 @@ class Championship < ActiveRecord::Base
     self
   end
 
+  def unenroll_team!(team)
+    teams.delete team if teams.include?(team)
+    self
+  end
+
   def enrolled_teams
     teams
   end

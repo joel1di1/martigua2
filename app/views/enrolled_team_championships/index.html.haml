@@ -2,7 +2,7 @@
 
 .row
   .col-md-4
-    .panel.panel-primary
+    .panel.panel-default
       .panel-heading 
         Toutes les équipe
       - if @not_enrolled_teams.count == 0
@@ -18,9 +18,12 @@
     .panel.panel-primary
       .panel-heading 
         Equipes enregistrés dans la compétition
-      - if @enrolled_teams.count == 0
+      - if @enrolled_team_championships.count == 0
         Aucune équipe enregistré dans cette compétition
       - else
         %ul.list-group
-          - @enrolled_teams.each do |enrolled_team|
-            %li.list-group-item= enrolled_team.name
+          - @enrolled_team_championships.each do |enrolled_team_championship|
+            %li.list-group-item
+              = enrolled_team_championship.team.name
+              = link_to section_championship_enrolled_team_championship_path(current_section, @championship, enrolled_team_championship), method: :delete do
+                %span.glyphicon.glyphicon-minus

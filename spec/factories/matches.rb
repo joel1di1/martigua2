@@ -5,10 +5,10 @@ FactoryGirl.define do
     championship
     local_team { create :team }
     visitor_team { create :team }
-    start_datetime "2014-09-14 22:05:02"
-    end_datetime "2014-09-14 22:05:02"
-    prevision_period_start "2014-09-14"
-    prevision_period_end "2014-09-14"
+    start_datetime { 1.week.from_now }
+    end_datetime { 1.week.from_now + 2.hours }
+    prevision_period_start { 1.week.from_now - 1.day }
+    prevision_period_end { 1.week.from_now + 2.days }
     local_score 1
     visitor_score 1
     location nil

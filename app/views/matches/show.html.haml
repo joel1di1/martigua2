@@ -29,8 +29,8 @@
   .col-md-6
     .panel.panel-success
       .panel-heading 
-        = @match.availables.select{|user| user.sections.include? current_section}.size
-        Joueurs dispos
+        - all_availables = @match.availables.select{|user| user.sections.include? current_section}
+        = "#{all_availables.size} Joueurs dispos" 
       %ul.list-group
         - @match.availables.sort_by(&:full_name).each do |user|
           - if user.sections.include? current_section
@@ -47,8 +47,7 @@
     .col-md-3
       .panel.panel-primary
         .panel-heading
-          Selection 
-          = team.name
+          = "Selection #{team.name} (#{@match.selections(team).count} joueurs)"
         %ul.list-group
           - @match.selections(team).each do |selection|
             %li.list-group-item

@@ -5,10 +5,11 @@
     = f.association :local_team, collection: @championship.teams.order(:name)
     = f.association :visitor_team, collection: @championship.teams.order(:name)
     = f.association :location
+    = f.association :day, collection: @championship.season.days, hint: "Jour de match (saison régulière)"
     = f.input :start_datetime, as: :date_time_picker, wrapper_html: { class: :pick_datetime }
     = f.input :prevision_period_start, as: :date_time_picker, wrapper_html: { class: :pick_date }
     = f.input :prevision_period_end, as: :date_time_picker, wrapper_html: { class: :pick_date }
-    = f.input :meeting_datetime, as: :date_time_picker, wrapper_html: { class: :pick_datetime }
+    = f.input :meeting_datetime, as: :date_time_picker, wrapper_html: { class: :pick_datetime }, hint: "Si vide, une heure avant."
     = f.input :meeting_location
 
   .form-actions

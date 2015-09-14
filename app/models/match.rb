@@ -1,6 +1,7 @@
 class Match < ActiveRecord::Base
   belongs_to :championship
   belongs_to :location
+  belongs_to :day
   belongs_to :local_team, class_name: Team, foreign_key: :local_team_id
   belongs_to :visitor_team, class_name: Team, foreign_key: :visitor_team_id
 
@@ -13,12 +14,12 @@ class Match < ActiveRecord::Base
   def date
     if start_datetime
       start_datetime.to_s(:short)
-    else
-      if prevision_period_start && prevision_period_end
+    elsif day
+      day.name
+    elsif prevision_period_start && prevision_period_end
         "(#{prevision_period_start.to_s(:short)} - #{prevision_period_end.to_s(:short)})"
-      else
-        ""
-      end
+    else
+      ""
     end
   end
 

@@ -54,7 +54,7 @@ class MatchesController < ApplicationController
     def match_params
       params.require(:match).permit(:visitor_team_id, :local_team_id, :start_datetime, :end_datetime, 
                                     :meeting_datetime, :meeting_location, :location_id, :local_score, :visitor_score,
-                                    :prevision_period_start, :prevision_period_end)
+                                    :prevision_period_start, :prevision_period_end, :day_id)
     end
 end
 

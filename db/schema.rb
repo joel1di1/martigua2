@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141004110951) do
+ActiveRecord::Schema.define(version: 20150912195224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,17 @@ ActiveRecord::Schema.define(version: 20141004110951) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "days", force: true do |t|
+    t.string   "name",              null: false
+    t.integer  "season_id",         null: false
+    t.date     "period_start_date"
+    t.date     "period_end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "days", ["season_id"], name: "index_days_on_season_id", using: :btree
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false

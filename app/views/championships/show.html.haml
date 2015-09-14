@@ -8,7 +8,7 @@
       - if @championship.matches.count == 0
         Aucun match dans cette compétition.
       - else
-        = render partial: 'matches/matches', object: @championship.matches.date_ordered, locals: { championship: @championship }
+        = render partial: 'matches/matches', object: @championship.matches.join_day.date_ordered, locals: { championship: @championship }
     = link_to 'Ajouter un match', new_section_championship_match_path(current_section, @championship), class: 'btn btn-primary'
   .col-md-4
     .panel.panel-primary

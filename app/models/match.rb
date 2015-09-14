@@ -7,7 +7,8 @@ class Match < ActiveRecord::Base
 
   has_many :match_availabilities, inverse_of: :match
 
-  scope :date_ordered, -> { order('start_datetime ASC') }
+  scope :join_day, -> { joins('LEFT OUTER JOIN days ON days.id = matches.day_id') }
+  scope :date_ordered, -> { order('LEAST(days.period_end_date, start_datetime) ASC') }
 
   scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period) } 
   

@@ -7,8 +7,6 @@ FactoryGirl.define do
     visitor_team { create :team }
     start_datetime { 1.week.from_now }
     end_datetime { 1.week.from_now + 2.hours }
-    prevision_period_start { 1.week.from_now - 1.day }
-    prevision_period_end { 1.week.from_now + 2.days }
     local_score 1
     visitor_score 1
     location nil

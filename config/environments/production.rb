@@ -56,7 +56,7 @@ Rails.application.configure do
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = "http://assets.example.com"
   config.action_controller.asset_host = "http://d1zljy12d9ls0t.cloudfront.net"
-  
+
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
   # config.assets.precompile += %w( search.js )
@@ -86,5 +86,6 @@ Rails.application.configure do
   config.action_mailer.delivery_method   = :postmark
   config.action_mailer.postmark_settings = { :api_key => ENV['POSTMARK_API_KEY'] }
 
+  config.font_assets.origin = 'http://www.martigua.org'
 
 end

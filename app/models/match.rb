@@ -26,7 +26,7 @@ class Match < ActiveRecord::Base
   end
 
   def users
-    @users = User.joins(sections: :teams).where('teams.id IN (?)', [local_team,visitor_team].compact.map(&:id))
+    @users = User.joins(participations: {section: :teams}).where("role = 'player'").where('teams.id IN (?)', [local_team,visitor_team].compact.map(&:id))
   end
 
   def _availables

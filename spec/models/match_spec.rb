@@ -5,6 +5,8 @@ RSpec.describe Match, :type => :model do
   it { should belong_to :visitor_team }
   it { should belong_to :day }
 
+  it { should have_many :selections }
+
   describe "#date" do
     let(:day) { nil }
 

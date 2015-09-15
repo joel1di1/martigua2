@@ -32,16 +32,23 @@
         - all_availables = @match.availables.select{|user| user.sections.include? current_section}
         = "#{all_availables.size} Joueurs dispos" 
       %ul.list-group
-        - @match.availables.sort_by(&:full_name).each do |user|
+        - all_availables.sort_by(&:full_name).each do |user|
           - if user.sections.include? current_section
             %li.list-group-item
-              .user.inline
-                %strong= user.full_name
-              .pull-right
-                - section_teams.each do |team|
-                  = form_tag selection_section_match_path(current_section, @match, user_id: user.id, team_id: team.id), class: 'inline', role: 'form' do
-                    %button.btn.btn-link.btn-xs{type: :submit}= "#{team.name} !"
-                = link_to 'Non dispo ?', section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: []), method: :post, class: 'change_presence not_present text-nowrap'
+              - if @users_already_selected.include?(user)
+                .user.inline
+                  %em= user.full_name 
+                .pull-right
+                  %em= @team_by_user[user].name
+  
+              - else
+                .user.inline
+                  %strong= user.full_name
+                .pull-right
+                  - section_teams.each do |team|
+                    = form_tag selection_section_match_path(current_section, @match, user_id: user.id, team_id: team.id), class: 'inline', role: 'form' do
+                      %button.btn.btn-link.btn-xs{type: :submit}= "#{team.name} !"
+                  = link_to 'Non dispo ?', section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: []), method: :post, class: 'change_presence not_present text-nowrap'
 
   - section_teams.each do |team|
     .col-md-3

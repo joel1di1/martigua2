@@ -1,5 +1,6 @@
 class Day < ActiveRecord::Base
   belongs_to :season
+  has_many :matches, inverse_of: :day
 
   validates_presence_of :season, :name
 

@@ -16,8 +16,14 @@ class MatchesController < ApplicationController
   end
 
   def show
-    
     @match = Match.find params[:id]
+    day = @match.day
+    if day
+      @day_selections = Selection.joins(match: :day).where(matches: {day_id: day.id}).includes(:user, :team)
+      @users_already_selected = @day_selections.map(&:user)
+      @team_by_user = {}
+      @day_selections.each{|selection| @team_by_user[selection.user] = selection.team }
+    end
   end
 
   def edit

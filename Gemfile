@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 ruby ENV['TRAVIS'] ? '2.1.1' : '2.1.2'
 
-gem 'rails', '4.1.6'
-gem 'coffee-rails', '~> 4.0.0'
-gem 'sass-rails', '~> 4.0.3'
+gem 'rails', '4.2.4'
+gem 'coffee-rails'
+gem 'sass-rails'
 
 gem 'activeadmin', github: 'activeadmin'
 gem 'activerecord-session_store'
@@ -20,13 +20,12 @@ gem 'jbuilder'
 gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'jquery-minicolors-rails'
-gem 'nokogiri', '~> 1.6.3.1'
+gem 'nokogiri'
 gem 'pg'
 gem 'polyamorous', github: 'activerecord-hackery/polyamorous'
 gem 'ransack', github: 'activerecord-hackery/ransack'
-gem 'sdoc', '~> 0.4.0',          group: :doc
+gem 'sdoc',  group: :doc
 gem 'simple_form'
-gem 'spring',        group: :development
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 
@@ -41,6 +40,7 @@ group :development do
   gem 'rb-fchange', :require=>false
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
+  gem 'spring'
 end
 
 group :development, :test do

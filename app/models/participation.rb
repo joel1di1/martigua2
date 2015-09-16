@@ -12,5 +12,5 @@ class Participation < ActiveRecord::Base
   validates_presence_of :section
   validates_presence_of :role
 
-  scope :coachs, where(role: COACH)
+  scope :coachs, -> { where(role: COACH) }
 end

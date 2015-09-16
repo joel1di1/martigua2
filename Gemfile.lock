@@ -240,6 +240,7 @@ GEM
     minitest (5.8.0)
     multi_json (1.11.2)
     nenv (0.2.0)
+    newrelic_rpm (3.13.0.299)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     notiffany (0.0.8)
@@ -427,6 +428,7 @@ DEPENDENCIES
   jquery-turbolinks
   kaminari
   launchy
+  newrelic_rpm
   nokogiri
   oboe-heroku
   pg

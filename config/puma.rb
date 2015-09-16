@@ -15,14 +15,7 @@ on_worker_boot do
     config['pool'] = ENV['MAX_THREADS'] || 16
     ActiveRecord::Base.establish_connection(config)
   end
-
-  if defined?(::Oboe)
-    ::Oboe.reconnect! 
-  end
 end
 
 on_worker_shutdown do
-  if defined?(::Oboe)
-    ::Oboe.disconnect!
-  end
 end

@@ -4,8 +4,8 @@ rvm:
 cache: bundler
 sudo: false
 script: CODECLIMATE_REPO_TOKEN=a75500354b06769d7c9f0508effa9c1b1afa9f230264dcf1bd4611ebd263056f
-  bundle exec rake db:migrate
-  bundle exec rake
+  - bundle exec rake db:migrate
+  - bundle exec rake
 deploy:
   provider: heroku
   api_key:

@@ -245,6 +245,10 @@ GEM
     notiffany (0.0.8)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oboe (2.7.19)
+      json
+    oboe-heroku (0.9.18.1)
+      oboe (>= 2.7.14.1)
     orm_adapter (0.5.0)
     pg (0.18.3)
     postmark (1.6.0)
@@ -424,6 +428,7 @@ DEPENDENCIES
   kaminari
   launchy
   nokogiri
+  oboe-heroku
   pg
   polyamorous!
   postmark-rails

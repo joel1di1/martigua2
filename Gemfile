@@ -49,10 +49,11 @@ group :development, :test do
   gem 'thin'
 end
 group :production do
+  gem 'heroku-deflater'
+  gem 'oboe-heroku'
+  gem 'postmark-rails'
   gem 'puma'
   gem 'rails_12factor'
-  gem 'postmark-rails'
-  gem 'heroku-deflater'
 end
 group :test do
   gem "sqlite3", :platform => [:ruby, :mswin, :mingw]

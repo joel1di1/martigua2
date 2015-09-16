@@ -1,0 +1,8 @@
+languages:
+   Ruby: true
+   JavaScript: true
+   Python: true
+   PHP: true
+exclude_paths:
+- "spec/*"
+- "app/assets/javascripts/bootstrap-datetimepicker.js"

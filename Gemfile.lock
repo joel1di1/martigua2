@@ -116,7 +116,6 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     colorist (0.0.2)
-    daemons (1.2.3)
     database_cleaner (1.5.0)
     debug_inspector (0.0.2)
     delayed_job (4.0.6)
@@ -137,7 +136,6 @@ GEM
     diff-lcs (1.2.5)
     docile (1.1.5)
     erubis (2.7.0)
-    eventmachine (1.0.8)
     excon (0.45.4)
     execjs (2.6.0)
     factory_girl (4.5.0)
@@ -150,6 +148,8 @@ GEM
     ffi (1.9.10)
     font_assets (0.1.11)
       rack
+    foreman (0.78.0)
+      thor (~> 0.19.1)
     formatador (0.2.5)
     formtastic (3.1.3)
       actionpack (>= 3.2.13)
@@ -311,6 +311,8 @@ GEM
       json (~> 1.4)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rspec (3.3.0)
       rspec-core (~> 3.3.0)
       rspec-expectations (~> 3.3.0)
@@ -374,10 +376,6 @@ GEM
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
     sqlite3 (1.3.10)
-    thin (1.6.3)
-      daemons (~> 1.0, >= 1.0.9)
-      eventmachine (~> 1.0)
-      rack (~> 1.0)
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.1)
@@ -414,6 +412,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   font_assets
+  foreman
   guard-bundler
   guard-rails
   guard-rspec
@@ -444,6 +443,7 @@ DEPENDENCIES
   rb-fchange
   rb-fsevent
   rb-inotify
+  rest-client
   rspec-its
   rspec-rails
   sass-rails
@@ -453,6 +453,5 @@ DEPENDENCIES
   simple_form
   spring
   sqlite3
-  thin
   turbolinks
   uglifier (>= 1.3.0)

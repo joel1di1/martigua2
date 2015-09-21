@@ -24,7 +24,9 @@ gem 'newrelic_rpm'
 gem 'nokogiri'
 gem 'pg'
 gem 'polyamorous', github: 'activerecord-hackery/polyamorous'
+gem 'puma'
 gem 'ransack', github: 'activerecord-hackery/ransack'
+gem 'rest-client'
 gem 'sdoc',  group: :doc
 gem 'simple_form'
 gem 'turbolinks'
@@ -47,13 +49,12 @@ end
 group :development, :test do
   gem 'pry-rails'
   gem 'pry-rescue'
-  gem 'thin'
+  gem 'foreman'
 end
 group :production do
   gem 'heroku-deflater'
   gem 'oboe-heroku'
   gem 'postmark-rails'
-  gem 'puma'
   gem 'rails_12factor'
 end
 group :test do

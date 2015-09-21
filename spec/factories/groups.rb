@@ -5,6 +5,7 @@ FactoryGirl.define do
     name { Faker::Company.name}
     description { Faker::Lorem.sentence }
     section { create :section }
+    season { Season.current }
     color { Faker::Number.number(6) }
   end
 end

@@ -12,6 +12,7 @@ class GroupsController < ApplicationController
   def create 
     @group = Group.new group_params
     @group.section = current_section
+    @group.season = Season.current
     if @group.save
       redirect_to section_group_path(current_section, @group), notice: 'Groupe créé'
     else

@@ -39,16 +39,17 @@ RSpec.describe Season, :type => :model do
     before { Season.destroy_all }
 
     context 'with only one season' do
-      let!(:only_season) { create :season }
+      let!(:only_season) { create :season, start_date: Date.today - 1.month }
       subject { Season.current }
       it { should eq only_season }
     end
 
-    context 'with two seasons' do
-      let!(:first_season) { create :season }
-      let!(:second_season) { create :season }
-      subject { Season.current }
-      it { should eq Season.last }
+    context 'with one old season' do
+      let(:d) { Date.new(2015, 9, 22) }
+      let!(:first_season) { create :season, start_date: Date.new(2001, 9, 1) }
+      
+      it { expect(Season.current.start_date).to be < d }
+      it { expect(Season.current.end_date).to be > d }
     end
 
     context 'with no season' do

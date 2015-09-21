@@ -2,12 +2,18 @@ class Season < ActiveRecord::Base
   validates_presence_of :name, :start_date, :end_date 
 
   has_many :participations, inverse_of: :season, dependent: :destroy
+  has_many :groups, inverse_of: :season, dependent: :destroy
   has_many :days, inverse_of: :season, dependent: :destroy
 
   after_create :create_default_days!
 
   def self.current
-    Season.last || Season.create!(start_date: Date.new(2014, 9, 1), end_date: Date.new(2015, 7, 1), name: '2014-2015')
+    current = Season.order('end_date DESC').limit(1).first
+    current ||= Season.create!(start_date: Date.new(2014, 9, 1), end_date: Date.new(2015, 7, 1), name: '2014-2015')
+    while current.end_date < Date.today
+      current = Season.create!(start_date: current.start_date + 1.year, end_date: current.end_date + 1.year, name: "#{current.start_date.year + 1}-#{current.end_date.year + 1}")
+    end
+    current
   end
 
   def to_s

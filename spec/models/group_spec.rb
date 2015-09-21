@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Group, :type => :model do
+  it { should belong_to :season }
+  it { should validate_presence_of :season }
   it { should validate_presence_of :name }
+  it { should validate_presence_of :section }
   it { should have_and_belong_to_many :users }
   it { should have_and_belong_to_many :trainings }
 

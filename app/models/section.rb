@@ -13,8 +13,6 @@ class Section < ActiveRecord::Base
   has_many :groups, inverse_of: :section, dependent: :destroy
   validates_presence_of :club, :name
 
-  after_create :add_everybody_and_every_player_groups
-
   def invite_user!(params, inviter)
 
     raise "Inviter (#{inviter.email}) is not coach of #{self}" unless inviter.is_coach_of?(self)
@@ -32,12 +30,12 @@ class Section < ActiveRecord::Base
     user
   end
 
-  def add_player!(user)
-    add_user!(user, Participation::PLAYER)
+  def add_player!(user, season=nil)
+    add_user!(user, Participation::PLAYER, season)
   end
 
-  def add_coach!(user)
-    add_user!(user, Participation::COACH)
+  def add_coach!(user, season=nil)
+    add_user!(user, Participation::COACH, season)
   end
 
   def players
@@ -69,22 +67,40 @@ class Section < ActiveRecord::Base
       now, end_date).date_ordered.where('local_team_id IN (?) OR visitor_team_id IN (?)', teams.map(&:id), teams.map(&:id))
   end
 
-  def group_everybody
-    groups.where(role: :everybody, system: true).take
+  def group_everybody(season=nil)
+    season ||= Season.current
+    group = groups.where(role: :everybody, system: true, season: season).take
+    unless group
+      group = Group.new(role: :everybody, system: true, 
+                          name: 'TOUS LES MEMBRES', description: 'Tous les membres de la section', 
+                          color: '#226611', season: season)
+      groups << group
+    end
+    group
   end
 
-  def group_every_players
-    groups.where(role: :every_players, system: true).take
+  def group_every_players(season=nil)
+    season ||= Season.current
+    group = groups.where(role: :every_players, system: true, season: season).take
+
+    unless group
+      group = Group.new(role: :every_players, system: 
+                        true, name: 'TOUS LES JOUEURS', description: 'Tous les joueurs de la section', 
+                        color: '#28c704', season: season)
+      groups << group
+    end
+    group
   end
 
   def has_member?(user)
     users.include?(user)
   end
 
-  def remove_member!(user)
-    users.delete(user)
-    group_everybody.remove_user(user)
-    group_every_players.remove_user(user)
+  def remove_member!(user, season=nil)
+    season ||= Season.current
+    participations.where(user: user, season: season).delete_all
+    group_everybody(season).remove_user(user)
+    group_every_players(season).remove_user(user)
   end
 
   def championships
@@ -93,17 +109,12 @@ class Section < ActiveRecord::Base
 
   protected 
 
-    def add_user!(user, role)
-      params = { role: role, user: user, section: self, season: Season.current }
+    def add_user!(user, role, season=nil)
+      season ||= Season.current
+      params = { role: role, user: user, section: self, season: season }
       participations << Participation.create!(params) unless participations.where(params).exists?
-      group_everybody.add_user!(user)
-      group_every_players.add_user!(user) if role == Participation::PLAYER
+      group_everybody(season).add_user!(user)
+      group_every_players(season).add_user!(user) if role == Participation::PLAYER
       self
     end
-
-    def add_everybody_and_every_player_groups
-      groups << Group.new(role: :everybody, system: true, name: 'TOUS LES MEMBRES', description: 'Tous les membres de la section', color: '#226611') unless group_everybody
-      groups << Group.new(role: :every_players, system: true, name: 'TOUS LES JOUEURS', description: 'Tous les joueurs de la section', color: '#28c704') unless group_every_players
-    end
-
 end

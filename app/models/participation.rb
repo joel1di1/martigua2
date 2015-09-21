@@ -13,4 +13,9 @@ class Participation < ActiveRecord::Base
   validates_presence_of :role
 
   scope :coachs, -> { where(role: COACH) }
+
+  def renew!
+    Participation.create!(user: user, section: section, role: role, season: Season.current)
+  end
+
 end

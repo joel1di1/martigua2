@@ -5,7 +5,7 @@ FactoryGirl.define do
     club { create  :club }
     name { Faker::Company.name }
 
-    ignore do
+    transient do
       with_section nil
     end
 

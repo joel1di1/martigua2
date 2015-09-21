@@ -6,7 +6,7 @@ FactoryGirl.define do
     end_datetime { start_datetime + 2.hours }
     location
 
-    ignore do
+    transient do
       with_section nil
       with_group nil
     end

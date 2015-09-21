@@ -113,7 +113,7 @@ RSpec.describe Section, :type => :model do
         user
       end
 
-      it { expect{ invite_user }.to raise_exception }
+      it { expect{ invite_user }.to raise_exception "Inviter (#{coach.email}) is not coach of #{section}" }
     end
   end
 

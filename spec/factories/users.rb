@@ -17,7 +17,7 @@ FactoryGirl.define do
       end
     end
 
-    ignore do
+    transient do
       with_section nil
       with_section_as_coach nil
       with_group nil

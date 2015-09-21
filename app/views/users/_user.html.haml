@@ -17,7 +17,7 @@
         .group-box{style: "background-color: #{group.color}", 'data-toggle' => "tooltip", 'data-title' => group.name}
   - if current_section
     %td
-      = user.participations.where(section: current_section).map(&:role).sort.reverse.join(", ")
+      = user.participations.where(section: current_section, season: Season.current).map(&:role).sort.reverse.join(", ")
 
   - if current_user.is_coach_of?(current_section)
     - if defined?(group) && group

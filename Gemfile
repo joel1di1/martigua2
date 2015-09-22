@@ -22,7 +22,7 @@ gem 'jquery-turbolinks'
 gem 'jquery-minicolors-rails'
 gem 'newrelic_rpm'
 gem 'nokogiri'
-gem 'pg'
+gem 'pg', group: [:production, :development]
 gem 'polyamorous', github: 'activerecord-hackery/polyamorous'
 gem 'puma'
 gem 'ransack', github: 'activerecord-hackery/ransack'

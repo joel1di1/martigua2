@@ -82,4 +82,13 @@ RSpec.describe Training, :type => :model do
       it { expect(training.users).to include(user) }
     end
   end
+
+  describe '#group_names' do
+    let(:group_1)    { create :group, section: section, name: 'TEST' }
+    let(:group_2)    { create :group, section: section, name: 'AA TEST' }
+    let(:group_ids) { [ group_1.id, group_2.id ] }
+    let(:training) { create :training, with_section: section, group_ids: group_ids }
+
+    it { expect(training.group_names).to eq "AA TEST, TEST" }
+  end
 end

@@ -21,7 +21,7 @@ class GroupsController < ApplicationController
   end
 
   def index 
-    @groups = current_section.groups.order('system ASC, name ASC')
+    @groups = current_section.groups.where(season: Season.current).order('system ASC, name ASC')
   end
 
   def destroy

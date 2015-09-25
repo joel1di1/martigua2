@@ -18,4 +18,10 @@ class Group < ActiveRecord::Base
     users.delete(user)
   end
 
+  def copy_to_current_season
+    Group.create!(section: section, season: Season.current, 
+                          name: name, system: system, users: users, 
+                          color: color, description: description, role: role)
+  end
+
 end

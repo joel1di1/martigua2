@@ -1,0 +1,9 @@
+= simple_form_for [current_section, @sms_notification] do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :title, label: 'Titre'
+    = f.input :description, label: 'Texte'
+
+  .form-actions
+    = f.button :submit, value: 'Envoyer', class: 'btn btn-primary'

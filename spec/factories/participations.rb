@@ -9,5 +9,8 @@ FactoryGirl.define do
     trait :coach do
       role Participation::COACH
     end
+    trait :player do
+      role Participation::PLAYER
+    end
   end
 end

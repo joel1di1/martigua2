@@ -22,6 +22,7 @@ gem 'jquery-turbolinks'
 gem 'jquery-minicolors-rails'
 gem 'newrelic_rpm'
 gem 'nokogiri'
+gem 'phony'
 gem 'pg', group: [:production, :development]
 gem 'polyamorous', github: 'activerecord-hackery/polyamorous'
 gem 'puma'
@@ -44,6 +45,7 @@ group :development do
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
   gem 'spring'
+  gem 'spring-commands-rspec'
 end
 
 group :development, :test do

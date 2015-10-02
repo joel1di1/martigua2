@@ -33,7 +33,7 @@ FactoryGirl.define do
 
   factory :one_section_player, parent: :user do
     after(:create) do |user|
-      create :participation, user: user
+      create :participation, :player, user: user
     end
   end
 end

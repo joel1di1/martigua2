@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       resources :matches
       resources :enrolled_team_championships, only: [:index, :create, :destroy]
     end
+    resources :sms_notifications, only: [:new, :create]
   end
 
   resources :club_admin_roles, only: [:index, :show]

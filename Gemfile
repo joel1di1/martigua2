@@ -31,6 +31,7 @@ gem 'rest-client'
 gem 'sdoc',  group: :doc
 gem 'simple_form'
 gem 'turbolinks'
+gem 'twilio-ruby'
 gem 'uglifier', '>= 1.3.0'
 
 group :development do

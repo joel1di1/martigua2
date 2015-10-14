@@ -5,10 +5,17 @@ RSpec.describe SendSmsJob, type: :job do
     let(:sms_notification) { create :sms_notification }
     let(:user) { create :user, phone_number: '0656564343' }
 
-    it 'should call send_sms_with_blower' do
+    it 'should send SMS' do
       expected_text = sms_notification.title + "\n" + sms_notification.description
 
-      expect(Blower).to receive(:send_sms).with('+33656564343', expected_text)
+      messages = double("Messages")
+
+      expect_any_instance_of(Twilio::REST::Client).to receive(:messages).and_return(messages)
+
+      expect(messages).to receive(:create).with(
+          from: '+33644605525',
+          to: '+33656564343',
+          body: expected_text)
 
       SendSmsJob.perform_later(sms_notification, user)
     end

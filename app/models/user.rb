@@ -7,9 +7,9 @@ class User < ActiveRecord::Base
   has_many :club_admin_roles, dependent: :destroy
   has_many :participations, dependent: :destroy
   has_many :sections, -> { uniq }, through: :participations, inverse_of: :users
-  has_many :training_presences, inverse_of: :user
+  has_many :training_presences, inverse_of: :user, dependent: :destroy
   
-  has_many :match_availabilities, inverse_of: :user
+  has_many :match_availabilities, inverse_of: :user, dependent: :destroy
 
   has_and_belongs_to_many :groups, inverse_of: :users
 

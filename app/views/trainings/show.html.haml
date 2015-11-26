@@ -19,21 +19,27 @@
   .col-md-4
     .panel.panel-success
       .panel-heading 
+        - training_presents = @training.presents
+        = training_presents.size
         Joueurs présents
       %ul.list-group
-        - @training.presents.sort_by(&:full_name).each do |user|
+        - training_presents.sort_by(&:full_name).each do |user|
           %li.list-group-item= user.full_name
   .col-md-4
     .panel.panel-warning
       .panel-heading 
+        - training_not_presents = @training.not_presents
+        = training_not_presents.size
         Joueurs non présents
       .list-group
-        - @training.not_presents.sort_by(&:full_name).each do |user|
+        - training_not_presents.sort_by(&:full_name).each do |user|
           %li.list-group-item= user.full_name
   .col-md-4
     .panel.panel-danger
       .panel-heading 
+        - training_presence_not_set = @training.presence_not_set
+        = training_presence_not_set.size
         Pas de réponse
       .list-group
-        - @training.presence_not_set.sort_by(&:full_name).each do |user|
+        - training_presence_not_set.sort_by(&:full_name).each do |user|
           %li.list-group-item= user.full_name

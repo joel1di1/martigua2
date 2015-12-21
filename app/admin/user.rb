@@ -13,5 +13,5 @@ ActiveAdmin.register User do
     actions
   end
 
-  permit_params :email
+  permit_params :email, :nickname, :first_name, :last_name, :phone_number
 end

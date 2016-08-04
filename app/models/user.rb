@@ -6,9 +6,9 @@ class User < ActiveRecord::Base
 
   has_many :club_admin_roles, dependent: :destroy
   has_many :participations, dependent: :destroy
-  has_many :sections, -> { uniq }, through: :participations, inverse_of: :users
+  has_many :sections, -> { distinct }, through: :participations, inverse_of: :users
   has_many :training_presences, inverse_of: :user, dependent: :destroy
-  
+
   has_many :match_availabilities, inverse_of: :user, dependent: :destroy
 
   has_and_belongs_to_many :groups, inverse_of: :users
@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
   end
 
   def next_week_trainings
-    Training.of_next_week.joins(:groups).where(groups: {id: group_ids}).uniq
+    Training.of_next_week.joins(:groups).where(groups: {id: group_ids}).distinct
   end
 
   def next_weekend_matches
@@ -76,10 +76,10 @@ class User < ActiveRecord::Base
     next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select{|s| is_player_of?(s)}.size > 0 }
   end
 
-  protected 
+  protected
     def ensure_authentication_token
       self.authentication_token ||= SecureRandom.urlsafe_base64(32)
-    end    
+    end
 
     def is_member_of?(section, role)
       participations.where(section: section, role: role).count > 0

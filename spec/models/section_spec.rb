@@ -11,7 +11,7 @@ RSpec.describe Section, :type => :model do
 
   let(:section) { create :section }
 
-  describe '#add_player!' do 
+  describe '#add_player!' do
     let(:user) { create :user }
 
     subject { section.add_player!(user) }
@@ -40,7 +40,7 @@ RSpec.describe Section, :type => :model do
     end
   end
 
-  describe '#add_coach!' do 
+  describe '#add_coach!' do
     let(:user) { create :user }
 
     subject { section.add_coach!(user) }
@@ -49,7 +49,7 @@ RSpec.describe Section, :type => :model do
       it { expect(subject.coachs).to match_array([user]) }
 
       it { expect(subject.group_everybody.users).to match_array([user]) }
-      it { expect(subject.group_every_players.users).to match_array([]) }      
+      it { expect(subject.group_every_players.users).to match_array([]) }
     end
 
     context 'with an already coach' do
@@ -58,7 +58,7 @@ RSpec.describe Section, :type => :model do
       it { expect(subject.coachs).to match_array([user]) }
 
       it { expect(subject.group_everybody.users).to match_array([user]) }
-      it { expect(subject.group_every_players.users).to match_array([]) }      
+      it { expect(subject.group_every_players.users).to match_array([]) }
     end
 
     context 'with an already player' do
@@ -68,7 +68,7 @@ RSpec.describe Section, :type => :model do
       it { expect(subject.coachs).to match_array([user]) }
 
       it { expect(subject.group_everybody.users).to match_array([user]) }
-      it { expect(subject.group_every_players.users).to match_array([user]) }      
+      it { expect(subject.group_every_players.users).to match_array([user]) }
     end
   end
 
@@ -85,9 +85,9 @@ RSpec.describe Section, :type => :model do
         section.add_coach! user
         user
       end
-  
+
       it { expect{ invite_user }.to change{SectionUserInvitation.count}.by(1) }
-      it { expect{ invite_user }.to change{section.section_user_invitations(true).count}.by(1) }
+      it { expect{ invite_user }.to change{section.section_user_invitations.reload.count}.by(1) }
 
       context 'invite player' do
         let(:roles) { Participation::PLAYER }
@@ -170,7 +170,7 @@ RSpec.describe Section, :type => :model do
     context 'with user in section' do
       before { section.add_player! user }
       before { remove_user }
-      
+
       it { expect(section.users.include?(user)).to be_falsy }
       it { expect(section.group_everybody.users.include?(user)).to be_falsy }
       it { expect(section.group_every_players.users.include?(user)).to be_falsy }
@@ -191,8 +191,8 @@ RSpec.describe Section, :type => :model do
   end
 
   describe '#championships' do
-    let(:team_1) { create :team, with_section: section }    
-    let(:team_2) { create :team, with_section: section }    
+    let(:team_1) { create :team, with_section: section }
+    let(:team_2) { create :team, with_section: section }
 
     let(:championship_1) { create :championship }
     let(:championship_2) { create :championship }

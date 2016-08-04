@@ -2,10 +2,10 @@ class Section < ActiveRecord::Base
   belongs_to :club
 
   has_many :team_sections, dependent: :destroy
-  has_many :teams, through: :team_sections 
+  has_many :teams, through: :team_sections
 
   has_many :participations, inverse_of: :section, dependent: :destroy
-  has_many :users, -> { uniq }, through: :participations, inverse_of: :sections
+  has_many :users, -> { distinct }, through: :participations, inverse_of: :sections
 
   has_many :section_user_invitations, inverse_of: :section, dependent: :destroy
   has_and_belongs_to_many :trainings, inverse_of: :sections
@@ -41,7 +41,7 @@ class Section < ActiveRecord::Base
   def players
     User.joins(:participations).where( participations: { role: Participation::PLAYER, section: self } )
   end
-  
+
   def coachs
     User.joins(:participations).where( participations: { role: Participation::COACH, section: self } )
   end
@@ -63,7 +63,7 @@ class Section < ActiveRecord::Base
   def next_matches
     now = DateTime.now.at_beginning_of_week
     end_date = now.at_end_of_week + 2.weeks+2.days
-    Match.join_day.where('COALESCE(start_datetime, days.period_start_date) >= ? AND COALESCE(start_datetime, days.period_start_date) <= ?', 
+    Match.join_day.where('COALESCE(start_datetime, days.period_start_date) >= ? AND COALESCE(start_datetime, days.period_start_date) <= ?',
       now, end_date).date_ordered.where('local_team_id IN (?) OR visitor_team_id IN (?)', teams.map(&:id), teams.map(&:id))
   end
 
@@ -71,8 +71,8 @@ class Section < ActiveRecord::Base
     season ||= Season.current
     group = groups.where(role: :everybody, system: true, season: season).take
     unless group
-      group = Group.new(role: :everybody, system: true, 
-                          name: 'TOUS LES MEMBRES', description: 'Tous les membres de la section', 
+      group = Group.new(role: :everybody, system: true,
+                          name: 'TOUS LES MEMBRES', description: 'Tous les membres de la section',
                           color: '#226611', season: season)
       groups << group
     end
@@ -84,8 +84,8 @@ class Section < ActiveRecord::Base
     group = groups.where(role: :every_players, system: true, season: season).take
 
     unless group
-      group = Group.new(role: :every_players, system: 
-                        true, name: 'TOUS LES JOUEURS', description: 'Tous les joueurs de la section', 
+      group = Group.new(role: :every_players, system:
+                        true, name: 'TOUS LES JOUEURS', description: 'Tous les joueurs de la section',
                         color: '#28c704', season: season)
       groups << group
     end
@@ -107,7 +107,7 @@ class Section < ActiveRecord::Base
     teams.includes(:championships).map(&:championships).flatten.uniq
   end
 
-  protected 
+  protected
 
     def add_user!(user, role, season=nil)
       season ||= Season.current

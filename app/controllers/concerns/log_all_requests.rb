@@ -1,6 +1,6 @@
 module LogAllRequests extend ActiveSupport::Concern
   included do
-    around_filter :log_requests
+    around_action :log_requests
   end
 
   def log_requests(&block)

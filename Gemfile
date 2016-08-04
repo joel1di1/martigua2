@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
-ruby ENV['TRAVIS'] ? '2.1.1' : '2.1.2'
+ruby ENV['TRAVIS'] ? '2.2.2' : '2.3.1'
 
-gem 'rails', '4.2.4'
+gem 'rails', '4.2.5'
 gem 'coffee-rails'
 gem 'sass-rails'
 
@@ -62,8 +62,8 @@ group :production do
 end
 group :test do
   gem "sqlite3", :platform => [:ruby, :mswin, :mingw]
-  gem "jdbc-sqlite3", :platform => :jruby  
-  
+  gem "jdbc-sqlite3", :platform => :jruby
+
   gem "codeclimate-test-reporter", require: nil
 
   gem 'factory_girl_rails'

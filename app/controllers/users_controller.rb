@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
-  before_filter :find_user_by_id, except: :index
-  skip_before_filter :verify_authenticity_token, only: [:training_presences, :match_availabilities]
+  before_action :find_user_by_id, except: :index
+  skip_before_action :verify_authenticity_token, only: [:training_presences, :match_availabilities]
 
   def index
     if current_section
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
     checked_ids = ( params[:checked_ids] || [] ).map(&:to_i)
 
     TrainingPresence.where(training_id: present_ids, user_id: current_user.id).delete_all
-    
+
     trainings = Training.where(id: present_ids)
     trainings.each do |training|
       TrainingPresence.create! user: current_user, training: training, present: checked_ids.include?(training.id)
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
     checked_ids = ( params[:checked_ids] || [] ).map(&:to_i)
 
     MatchAvailability.where(match_id: present_ids, user_id: @user.id).delete_all
-    
+
     matches = Match.where(id: present_ids)
     matches.each do |match|
       MatchAvailability.create! user: @user, match: match, available: checked_ids.include?(match.id)
@@ -76,7 +76,7 @@ class UsersController < ApplicationController
     end
   end
 
-  protected 
+  protected
     def find_user_by_id
       user_key = params[:user_id] ? :user_id : :id
       @user = User.find params[user_key]

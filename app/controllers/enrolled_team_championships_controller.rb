@@ -1,7 +1,7 @@
 class EnrolledTeamChampionshipsController < ApplicationController
-  # before_filter :find_championship_by_id, except: [:index, :new, :create]
+  # before_action :find_championship_by_id, except: [:index, :new, :create]
 
-  def index 
+  def index
     @championship = Championship.find(params[:championship_id])
     @not_enrolled_teams = Team.where.not(id: @championship.enrolled_teams.select(:id)).order('name')
     @enrolled_team_championships = @championship.enrolled_team_championships.sort{|a, b| a.team.name <=> b.team.name}

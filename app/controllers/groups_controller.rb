@@ -1,15 +1,15 @@
 class GroupsController < ApplicationController
 
-  before_filter :find_group
+  before_action :find_group
 
   def show
   end
 
-  def new 
+  def new
     @group = Group.new section: current_section
   end
 
-  def create 
+  def create
     @group = Group.new group_params
     @group.section = current_section
     @group.season = Season.current
@@ -20,7 +20,7 @@ class GroupsController < ApplicationController
     end
   end
 
-  def index 
+  def index
     @groups = current_section.groups.where(season: Season.current).order('system ASC, name ASC')
   end
 
@@ -35,7 +35,7 @@ class GroupsController < ApplicationController
     redirect_to section_group_path(current_section, @group), notice: 'Joueur ajouté au groupe'
   end
 
-  def update 
+  def update
     if @group.update_attributes group_params
       redirect_to section_group_path(current_section, @group), notice: 'Groupe modifié'
     else
@@ -52,5 +52,5 @@ class GroupsController < ApplicationController
       id = params[:id] || params[:group_id]
       @group = Group.find id if id
     end
-  
+
 end

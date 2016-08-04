@@ -1,7 +1,7 @@
 class ChampionshipsController < ApplicationController
-  before_filter :find_championship_by_id, except: [:index, :new, :create]
+  before_action :find_championship_by_id, except: [:index, :new, :create]
 
-  def index 
+  def index
     @championships = current_section ? current_section.championships : Championship.all
     @championships = @championships.select{|c| c.season == Season.current}
   end

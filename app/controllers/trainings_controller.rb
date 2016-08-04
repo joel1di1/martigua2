@@ -1,6 +1,6 @@
 class TrainingsController < ApplicationController
 
-  before_filter :set_current_training
+  before_action :set_current_training
 
   def index
     section_trainings = Training.of_section(current_section)
@@ -45,7 +45,7 @@ class TrainingsController < ApplicationController
     redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Entrainement supprimé"
   end
 
-  private 
+  private
     def training_params
       params.require(:training).permit(:start_datetime, :end_datetime, :location_id, :group_ids)
     end

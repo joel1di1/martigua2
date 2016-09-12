@@ -55,9 +55,9 @@ RSpec.describe Training, :type => :model do
     end
   end
 
-  describe '.of_next_week' do 
+  describe '.of_next_week' do
     let(:now) { DateTime.new(2014, 8, 19, 13, 12, 55, '1') } # tuesday
-    let(:dates) {[now - 1.week, 
+    let(:dates) {[now - 1.week,
                   now + 5.days, # sunday 24
                   now + 6.days, # monday 25
                   now + 7.days, # tuesday 26
@@ -91,4 +91,21 @@ RSpec.describe Training, :type => :model do
 
     it { expect(training.group_names).to eq "AA TEST, TEST" }
   end
+
+  describe '#repeat_next_week!' do
+    subject { training.repeat_next_week! }
+    its(:start_datetime) { is_expected.to eq(training.start_datetime + 1.week)}
+    its(:end_datetime) { is_expected.to eq(training.end_datetime + 1.week)}
+    its(:sections) { is_expected.to eq(training.sections)}
+    its(:groups) { is_expected.to eq(training.groups)}
+    its(:location) { is_expected.to eq(training.location)}
+  end
+
+  describe '#repeat_until!' do
+    let!(:training) { create :training, start_datetime: 2.days.from_now }
+    let(:nb_weeks) { rand(2..6) }
+    let(:end_date) { nb_weeks.weeks.from_now }
+    it { expect{training.repeat_until!(end_date)}.to change{Training.count}.by(nb_weeks-1) }
+  end
+
 end

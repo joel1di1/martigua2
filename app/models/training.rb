@@ -6,19 +6,19 @@ class Training < ActiveRecord::Base
 
   has_many :invitations, class_name: TrainingInvitation
   has_many :training_presences, inverse_of: :training, dependent: :destroy
-  has_many :users, through: :groups 
+  has_many :users, through: :groups
 
   validates_presence_of :start_datetime
 
   scope :of_section, ->(section) { joins(:sections).where("sections.id = ?", section.id) }
-  scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period) } 
+  scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period) }
 
   default_scope { order 'start_datetime, location_id' }
 
   paginates_per 10
 
   def send_invitations!
-    invitations << TrainingInvitation.new 
+    invitations << TrainingInvitation.new
   end
 
   def presents
@@ -50,6 +50,20 @@ class Training < ActiveRecord::Base
 
   def users
     User.joins(:groups).where(groups: { id: group_ids })
+  end
+
+  def repeat_next_week!
+    Training.create!(start_datetime: start_datetime + 1.week,
+                     end_datetime: end_datetime + 1.week,
+                     sections: sections, groups: groups, location: location)
+  end
+
+  def repeat_until!(end_date)
+    training = self
+    end_date = end_date - 1.week
+    while(training.start_datetime < end_date) do
+      training = training.repeat_next_week!
+    end
   end
 
   def self.send_presence_mail_for_next_week

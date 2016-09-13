@@ -45,9 +45,9 @@ RSpec.describe Season, :type => :model do
     end
 
     context 'with one old season' do
-      let(:d) { Date.new(2015, 9, 22) }
+      let(:d) { Date.new(Date.today.year, 10, 22) }
       let!(:first_season) { create :season, start_date: Date.new(2001, 9, 1) }
-      
+
       it { expect(Season.current.start_date).to be < d }
       it { expect(Season.current.end_date).to be > d }
     end
@@ -58,7 +58,7 @@ RSpec.describe Season, :type => :model do
     end
   end
 
-  describe '#to_s' do 
+  describe '#to_s' do
     it { expect(season.to_s).to eq "#{season.start_date.year}-#{season.end_date.year}" }
   end
 end

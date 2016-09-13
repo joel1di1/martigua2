@@ -34,7 +34,6 @@ gem 'simple_form'
 gem 'turbolinks'
 gem 'twilio-ruby'
 gem 'uglifier', '>= 1.3.0'
-gem 'letsencrypt_plugin'
 
 group :development do
   gem 'better_errors'

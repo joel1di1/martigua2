@@ -53,13 +53,19 @@ describe User do
     end
     context 'with a player of the section' do
       before { section.add_player!(user) }
-      
+
       it { should eq false }
     end
     context 'with a coach of the section' do
       before { section.add_coach!(user) }
-      
+
       it { should eq true }
+    end
+    context 'with a last year coach of the section' do
+      let(:previous_season) { create :season, start_date: 2.years.ago }
+      before { section.add_coach!(user, previous_season) }
+
+      it { should be_falsy }
     end
   end
   describe '#is_player_of?' do
@@ -67,18 +73,24 @@ describe User do
 
     subject { user.is_player_of?(section) }
 
-    context 'with a user not in the section' do
+    context 'with a player not in the section' do
       it { should eq false }
     end
     context 'with a player of the section' do
       before { section.add_player!(user) }
-      
+
       it { should eq true }
     end
     context 'with a coach of the section' do
       before { section.add_coach!(user) }
-      
+
       it { should eq false }
+    end
+    context 'with a last year player of the section' do
+      let(:previous_season) { create :season, start_date: 2.years.ago }
+      before { section.add_player!(user, previous_season) }
+
+      it { should be_falsy }
     end
   end
 
@@ -156,12 +168,12 @@ describe User do
     let(:club) { create :club }
 
     context 'with other club' do
-      it { expect(user.is_admin_of?(club)).to be_falsy } 
+      it { expect(user.is_admin_of?(club)).to be_falsy }
     end
     context 'with club as admin' do
       before { club.add_admin!(user) }
 
-      it { expect(user.is_admin_of?(club)).to be_truthy } 
+      it { expect(user.is_admin_of?(club)).to be_truthy }
     end
   end
 

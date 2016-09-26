@@ -39,11 +39,11 @@ class Section < ActiveRecord::Base
   end
 
   def players
-    User.joins(:participations).where( participations: { role: Participation::PLAYER, section: self } )
+    User.joins(:participations).where( participations: { season: Season.current, role: Participation::PLAYER, section: self } )
   end
 
   def coachs
-    User.joins(:participations).where( participations: { role: Participation::COACH, section: self } )
+    User.joins(:participations).where( participations: { season: Season.current, role: Participation::COACH, section: self } )
   end
 
   def to_param

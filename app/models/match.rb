@@ -13,8 +13,8 @@ class Match < ActiveRecord::Base
   scope :join_day, -> { joins('LEFT OUTER JOIN days ON days.id = matches.day_id') }
   scope :date_ordered, -> { order('LEAST(days.period_end_date, start_datetime) ASC') }
 
-  scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period) } 
-  
+  scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period) }
+
   def date
     if start_datetime
       start_datetime.to_s(:short)
@@ -28,7 +28,9 @@ class Match < ActiveRecord::Base
   end
 
   def users
-    @users = User.joins(participations: {section: :teams}).where("role = 'player'").where('teams.id IN (?)', [local_team,visitor_team].compact.map(&:id))
+    User.joins(:participations).where( participations: { season: Season.current,
+                                                         role: Participation::PLAYER,
+                                                         section: teams.map(&:sections).flatten } )
   end
 
   def _availables

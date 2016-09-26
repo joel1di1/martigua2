@@ -25,4 +25,34 @@ RSpec.describe Match, :type => :model do
       it { expect(match.date).to eq day.name }
     end
   end
+
+  describe '#users' do
+    let(:previous_season) { create :season, start_date: 2.years.ago }
+    let(:player) { create :user }
+    let(:team) { create :team }
+    let(:section) { create :section, teams: [team] }
+    let(:match) { create :match, local_team: team }
+
+    subject { match.users }
+
+    context 'with user participating in the current season' do
+      before do
+        section.add_player!(player, Season.current)
+      end
+      it { is_expected.to include(player)}
+    end
+    context 'with user not participating in the current season but in the previous' do
+      before do
+        section.add_player!(player, previous_season)
+      end
+      it { is_expected.not_to include(player)}
+    end
+    context 'with user participating in the current season and the previous' do
+      before do
+        section.add_player!(player, previous_season)
+        section.add_player!(player, Season.current)
+      end
+      it { is_expected.to include(player)}
+    end
+  end
 end

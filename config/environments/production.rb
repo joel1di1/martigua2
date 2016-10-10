@@ -90,11 +90,11 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.action_mailer.default_url_options = { :host => 'www.martigua.org' }
+  config.action_mailer.default_url_options = { :host => 'www.martigua.org', , :protocol => 'https' }
 
   config.action_mailer.delivery_method   = :postmark
   config.action_mailer.postmark_settings = { :api_key => ENV['POSTMARK_API_KEY'] }
 
-  config.font_assets.origin = 'http://www.martigua.org'
+  config.font_assets.origin = 'https://www.martigua.org'
 
 end

@@ -45,11 +45,11 @@ RSpec.describe Season, :type => :model do
     end
 
     context 'with one old season' do
-      let(:d) { Date.new(Date.today.year, 10, 22) }
+      let(:today) { Date.today }
       let!(:first_season) { create :season, start_date: Date.new(2001, 9, 1) }
 
-      it { expect(Season.current.start_date).to be < d }
-      it { expect(Season.current.end_date).to be > d }
+      it { expect(Season.current.start_date).to be < today }
+      it { expect(Season.current.end_date).to be > today }
     end
 
     context 'with no season' do

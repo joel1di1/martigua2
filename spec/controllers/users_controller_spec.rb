@@ -7,7 +7,7 @@ describe UsersController, :type => :controller do
 
   describe "GET index" do
     let(:request_params) { {} }
-    let(:request) { get :index, request_params }
+    let(:request) { get :index, params: request_params }
 
     context 'within section' do
       let(:request_params) { { section_id: section.to_param } }
@@ -19,12 +19,12 @@ describe UsersController, :type => :controller do
       end
 
       context 'with one user with several roles' do
-        let(:user) do 
+        let(:user) do
           user = create :user, with_section_as_coach: section
           section.add_player! user
           user
         end
-        
+
         before { sign_in user and request }
 
         it { expect(assigns[:users]).to match_array([user]) }
@@ -35,10 +35,10 @@ describe UsersController, :type => :controller do
   describe "GET edit" do
     it 'assign @user' do
       sign_in user
-      get :edit, id: user.to_param, section_id: section.to_param
+      get :edit, params: {id: user.to_param, section_id: section.to_param}
 
       expect(response).to have_http_status(:success)
-      expect(response).to render_template(:edit) 
+      expect(response).to render_template(:edit)
       expect(assigns(:user)).to eq(user)
     end
   end
@@ -51,7 +51,7 @@ describe UsersController, :type => :controller do
       let!(:old_password) { user.password }
       before do
         sign_in user
-        patch :update, id: user.to_param, section_id: section.to_param, user: new_attributes
+        patch :update, params: {id: user.to_param, section_id: section.to_param, user: new_attributes}
         user.reload
       end
       it 'should update user' do
@@ -72,7 +72,7 @@ describe UsersController, :type => :controller do
       let!(:old_password) { user.password }
       before do
         sign_in user
-        patch :update, id: user.to_param, user: new_attributes
+        patch :update, params: { id: user.to_param, user: new_attributes }, flash: nil
       end
 
       it 'should redirect_to user path' do
@@ -86,8 +86,8 @@ describe UsersController, :type => :controller do
     let(:training_2) { create :training }
     let(:training_3) { create :training }
 
-    let(:post_training_presences) { post :training_presences, id: user.to_param, user_email: user.email, user_token: user.authentication_token,
-                                present_ids: [training_1.id, training_2.id], checked_ids: [training_1.id] }
+    let(:post_training_presences) { post :training_presences, params: { id: user.to_param, user_email: user.email, user_token: user.authentication_token,
+                                present_ids: [training_1.id, training_2.id], checked_ids: [training_1.id] } }
 
     before { post_training_presences }
 
@@ -102,7 +102,7 @@ describe UsersController, :type => :controller do
     context 'from section' do
       before { sign_in user }
 
-      let(:do_request) { delete :destroy, section_id: section.to_param, id: user.to_param }
+      let(:do_request) { delete :destroy, params: { section_id: section.to_param, id: user.to_param } }
 
       it { expect{ do_request }.to change{ section.users.count }.by(-1) }
 
@@ -120,7 +120,7 @@ describe UsersController, :type => :controller do
         sign_in user
       end
 
-      let(:do_request) { delete :destroy, section_id: section.to_param, group_id: group.to_param, id: user.to_param }
+      let(:do_request) { delete :destroy, params: { section_id: section.to_param, group_id: group.to_param, id: user.to_param } }
 
       it { expect{ do_request }.to change{ section.users.count }.by(0) }
       it { expect{ do_request }.to change{ group.users.count }.by(-1) }

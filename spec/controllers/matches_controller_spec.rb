@@ -9,7 +9,7 @@ describe MatchesController, :type => :controller do
   before { sign_in user }
 
   describe 'GET new' do
-    let(:do_request) { get :new, section_id: section, championship_id: championship }
+    let(:do_request) { get :new, params: { section_id: section, championship_id: championship } }
     before { do_request }
 
     it { expect(response).to have_http_status(:success) }
@@ -22,7 +22,7 @@ describe MatchesController, :type => :controller do
     let(:match) { create :match, visitor_team: visitor_team, local_team: local_team }
     let(:params) { {section_id: section, id: match, user_id: user.id, team_id: local_team.id, format: format} }
 
-    let(:do_request) { post :selection, params }
+    let(:do_request) { post :selection, params: params }
 
     describe "response" do
       before { do_request }
@@ -30,7 +30,7 @@ describe MatchesController, :type => :controller do
       context 'with json' do
         let(:format) { :json }
 
-        it { expect(response).to have_http_status(:created) }    
+        it { expect(response).to have_http_status(:created) }
       end
     end
 

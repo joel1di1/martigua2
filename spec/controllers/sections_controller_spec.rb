@@ -7,10 +7,10 @@ describe SectionsController, :type => :controller do
   let(:section) { create :section, club: club }
 
   describe "GET new" do
-    let(:do_request) { get :new, club_id: club.to_param, user_email: user.email, user_token: user.authentication_token }
+    let(:do_request) { get :new, params: { club_id: club.to_param, user_email: user.email, user_token: user.authentication_token } }
 
     before { do_request }
-    
+
     it { expect(response).to have_http_status(:success) }
     it { expect(assigns(:section).club).to eq(club)}
   end
@@ -21,7 +21,7 @@ describe SectionsController, :type => :controller do
     let(:auth_params) { {club_id: club.to_param, user_email: user.email, user_token: user.authentication_token, format: :json } }
     let(:req_params) { auth_params.merge({section: section_attributes}) }
 
-    let(:do_request) { post :create, req_params } 
+    let(:do_request) { post :create, params: req_params }
 
     before { do_request }
 
@@ -33,7 +33,7 @@ describe SectionsController, :type => :controller do
     before { sign_in user }
     before { expect_any_instance_of(Section).to receive(:next_trainings).and_return(:next_trainings_mock) }
 
-    before { get :show, id: section.to_param }
+    before { get :show, params: { id: section.to_param } }
 
     it { expect(response).to have_http_status(:success) }
     it { expect(assigns[:next_trainings]).to eq :next_trainings_mock }

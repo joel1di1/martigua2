@@ -7,7 +7,7 @@ describe TrainingsController, :type => :controller do
   let(:user) { create :user, with_section: section }
 
   describe "GET index" do
-    let(:request) { get :index, request_params }
+    let(:request) { get :index, params: request_params }
 
     context 'within section' do
       let(:request_params) { { section_id: section.to_param } }
@@ -29,35 +29,35 @@ describe TrainingsController, :type => :controller do
   end
 
   describe "GET edit" do
-    let(:request) { get :edit, request_params }
+    let(:request) { get :edit, params: request_params }
 
     context 'with existing training' do
-      let(:training) { create :training, with_section: section } 
-      let(:request_params) { { section_id: section.to_param, id: training.id } } 
+      let(:training) { create :training, with_section: section }
+      let(:request_params) { { section_id: section.to_param, id: training.id } }
 
       before { sign_in user }
       before { request }
 
-      it { expect(response).to have_http_status(:success) }      
+      it { expect(response).to have_http_status(:success) }
     end
   end
 
   describe "PATCH edit" do
-    let(:request) { patch :update, request_params }
+    let(:request) { patch :update, params: request_params }
 
     context 'with existing training' do
-      let(:training) { create :training, with_section: section } 
-      let(:request_params) { { section_id: section.to_param, id: training.to_param, training: training.attributes } } 
+      let(:training) { create :training, with_section: section }
+      let(:request_params) { { section_id: section.to_param, id: training.to_param, training: training.attributes } }
 
       before { sign_in user }
       before { request }
 
-      it { expect(response).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}        
+      it { expect(response).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
     end
   end
 
   describe "POST create" do
-    let(:request) { post :create, request_params }
+    let(:request) { post :create, params: request_params }
     let(:new_training) { build :training }
 
     context 'signed as user' do
@@ -71,7 +71,7 @@ describe TrainingsController, :type => :controller do
       describe 'response' do
         before { request }
 
-        it { expect(response).to redirect_to(section_trainings_path(section_id: section.to_param))}        
+        it { expect(response).to redirect_to(section_trainings_path(section_id: section.to_param))}
       end
     end
   end
@@ -81,12 +81,12 @@ describe TrainingsController, :type => :controller do
     let(:coach) { create :user, with_section_as_coach: section }
     let(:training) { create :training, with_section: section}
 
-    let(:request) { post :invitations, section_id: section.to_param, id: training.to_param }
+    let(:request) { post :invitations, params: { section_id: section.to_param, id: training.to_param } }
 
     before { sign_in coach }
     before { request }
 
-    it { expect(:response).to redirect_to(section_trainings_path(section_id: section.to_param))}        
+    it { expect(:response).to redirect_to(section_trainings_path(section_id: section.to_param))}
   end
 
 end

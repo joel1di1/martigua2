@@ -16,7 +16,7 @@ describe PingController do
       let(:user) { create :user }
       it { expect(response.status).to eq(200) }
       describe 'response' do
-        before { get :index, user_email: user.email, user_token: user.authentication_token }
+        before { get :index, params: { user_email: user.email, user_token: user.authentication_token } }
         subject { JSON.parse(response.body) }
         it { should include('datetime') }
         it { should include('current_user') }

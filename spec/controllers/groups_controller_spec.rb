@@ -9,7 +9,7 @@ describe GroupsController, :type => :controller do
   before { sign_in user }
 
   describe 'POST add_users' do
-    let(:do_request) { post :add_users, section_id: section.to_param, group_id: group.to_param, user_id: user.id }
+    let(:do_request) { post :add_users, params: { section_id: section.to_param, group_id: group.to_param, user_id: user.id } }
 
     it { expect{do_request}.to change{group.users.count}.by(1) }
 
@@ -27,10 +27,10 @@ describe GroupsController, :type => :controller do
   end
 
   describe 'POST create' do
-    let(:do_request) { post :create, section_id: section.to_param, group: new_group_attributes }
+    let(:do_request) { post :create, params: { section_id: section.to_param, group: new_group_attributes } }
 
     context 'with correct attributes' do
-      let(:new_group_attributes) { attributes_for(:group, section: nil) }      
+      let(:new_group_attributes) { attributes_for(:group, section: nil) }
 
       it { expect{ do_request }.to change{ Group.count }.by(1) }
 

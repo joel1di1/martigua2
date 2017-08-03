@@ -7,10 +7,10 @@ describe SmsNotificationsController, :type => :controller do
   let(:user) { create :user, with_section: section }
 
   describe "GET new" do
-    let(:do_request) { get :new, section_id: section.to_param, user_email: user.email, user_token: user.authentication_token }
+    let(:do_request) { get :new, params: { section_id: section.to_param, user_email: user.email, user_token: user.authentication_token } }
 
     before { do_request }
-    
+
     it { expect(response).to have_http_status(:success) }
   end
 
@@ -20,18 +20,18 @@ describe SmsNotificationsController, :type => :controller do
     let(:auth_params) { {section_id: section.to_param, user_email: user.email, user_token: user.authentication_token, format: :json } }
     let(:req_params) { auth_params.merge({sms_notification: sms_notification_attributes}) }
 
-    let(:do_request) { post :create, req_params }
+    let(:do_request) { post :create, params: req_params }
 
     before { allow(Blower).to receive(:send_sms) }
 
-    before { SmsNotification.delete_all } 
+    before { SmsNotification.delete_all }
 
     xit "should respond success" do
       do_request
       expect(response).to redirect_to(new_section_sms_notification_path(section))
     end
 
-    xit "should create a new SMS notification" do 
+    xit "should create a new SMS notification" do
       expect{do_request}.to change{SmsNotification.count}
     end
 

@@ -1,4 +1,4 @@
-class CreateTrainingAvailabilities < ActiveRecord::Migration
+class CreateTrainingAvailabilities < ActiveRecord::Migration[4.2]
   def change
     create_table :training_availabilities do |t|
       t.belongs_to :user, index: true, null: false

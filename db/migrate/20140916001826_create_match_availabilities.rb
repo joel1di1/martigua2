@@ -1,4 +1,4 @@
-class CreateMatchAvailabilities < ActiveRecord::Migration
+class CreateMatchAvailabilities < ActiveRecord::Migration[4.2]
   def change
     create_table :match_availabilities do |t|
       t.belongs_to :match, index: true, null: false

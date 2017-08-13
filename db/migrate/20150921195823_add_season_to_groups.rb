@@ -1,4 +1,4 @@
-class AddSeasonToGroups < ActiveRecord::Migration
+class AddSeasonToGroups < ActiveRecord::Migration[4.2]
   def change
     add_reference :groups, :season, index: true, foreign_key: true
   end

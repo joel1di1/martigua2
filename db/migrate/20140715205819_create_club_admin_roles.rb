@@ -1,4 +1,4 @@
-class CreateClubAdminRoles < ActiveRecord::Migration
+class CreateClubAdminRoles < ActiveRecord::Migration[4.2]
   def change
     create_table :club_admin_roles do |t|
       t.belongs_to :club, null:false, index: true

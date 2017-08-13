@@ -1,4 +1,4 @@
-class CreateTeamSections < ActiveRecord::Migration
+class CreateTeamSections < ActiveRecord::Migration[4.2]
   def change
     create_table :team_sections do |t|
       t.belongs_to :team, null:false, index: true

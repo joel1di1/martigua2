@@ -1,4 +1,4 @@
-class CreateMatchSelections < ActiveRecord::Migration
+class CreateMatchSelections < ActiveRecord::Migration[4.2]
   def change
     create_table :match_selections do |t|
       t.belongs_to :match, index: true, null: false

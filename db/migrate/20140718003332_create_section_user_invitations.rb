@@ -1,4 +1,4 @@
-class CreateSectionUserInvitations < ActiveRecord::Migration
+class CreateSectionUserInvitations < ActiveRecord::Migration[4.2]
   def change
     create_table :section_user_invitations do |t|
       t.belongs_to :section, index: true, null: false

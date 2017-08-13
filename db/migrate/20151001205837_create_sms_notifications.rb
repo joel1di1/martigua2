@@ -1,4 +1,4 @@
-class CreateSmsNotifications < ActiveRecord::Migration
+class CreateSmsNotifications < ActiveRecord::Migration[4.2]
   def change
     create_table :sms_notifications do |t|
       t.string :title

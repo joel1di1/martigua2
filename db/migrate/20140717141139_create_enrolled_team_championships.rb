@@ -1,4 +1,4 @@
-class CreateEnrolledTeamChampionships < ActiveRecord::Migration
+class CreateEnrolledTeamChampionships < ActiveRecord::Migration[4.2]
   def change
     create_table :enrolled_team_championships do |t|
       t.belongs_to :team, index: true, false: true

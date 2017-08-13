@@ -1,5 +1,5 @@
 
-'------------- VOUS ETES VOUS-MEME JOUEUR/JOUEUSE -----------------
+%p'------------- VOUS ETES VOUS-MEME JOUEUR/JOUEUSE -----------------
 
 %p Chers adhérent,
 
@@ -9,9 +9,8 @@
 
 %p Cela nous permettra de mettre en place de meilleurs séances en fonction de la présence réelle, et pour vous d'avoir le calendrier des matchs à venir à jour au maximum.
 
-%p Cliquez ici :
-
 %p
+  Cliquez ici :
   %b= link_to "Accepter l'invitation", accept_invitation_url(@resource, :invitation_token => @token)
 
 
@@ -19,9 +18,9 @@
 
 %p En vous remerciant par avance.
 
-
-
-'--------------- VOUS ETES PARENTS -------------------------
+%p
+%p
+%p '--------------- VOUS ETES PARENTS -------------------------
 
 %p Chers parents,
 
@@ -31,9 +30,8 @@
 
 %p Cela nous permettra de mettre en place de meilleurs séances en fonction de la présence réelle des enfants, et pour vous d'avoir le calendrier des matchs à venir à jour au maximum.
 
-%p Cliquez ici :
-
 %p
+  Cliquez ici :
   %b= link_to "Accepter l'invitation", accept_invitation_url(@resource, :invitation_token => @token)
 
 
@@ -42,10 +40,3 @@
 %p En vous remerciant par avance.
 
 
-
-
-
-%p= I18n.t("devise.mailer.invitation_instructions.hello", email: @resource.email)
-%p= I18n.t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url)
-%p= link_to I18n.t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token)
-%p= I18n.t("devise.mailer.invitation_instructions.ignore").html_safe

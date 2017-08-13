@@ -14,7 +14,7 @@ describe SmsNotificationsController, :type => :controller do
     it { expect(response).to have_http_status(:success) }
   end
 
-  describe "POST create" do
+  describe "POST create", skip: "SMS tests are skipped (need to pay for real tests)" do
     let(:sms_notification_attributes) { attributes_for(:sms_notification, section: nil) }
 
     let(:auth_params) { {section_id: section.to_param, user_email: user.email, user_token: user.authentication_token, format: :json } }
@@ -26,12 +26,12 @@ describe SmsNotificationsController, :type => :controller do
 
     before { SmsNotification.delete_all }
 
-    xit "should respond success" do
+    it "should respond success" do
       do_request
       expect(response).to redirect_to(new_section_sms_notification_path(section))
     end
 
-    xit "should create a new SMS notification" do
+    it "should create a new SMS notification" do
       expect{do_request}.to change{SmsNotification.count}
     end
 

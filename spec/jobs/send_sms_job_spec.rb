@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe SendSmsJob, type: :job do
-  describe ".perform" do
+  describe ".perform", skip: "SMS tests are skipped (need to pay for real tests)" do
     let(:sms_notification) { create :sms_notification }
     let(:user) { create :user, phone_number: '0656564343' }
 
-    xit 'should send SMS' do
+    it 'should send SMS' do
       expected_text = sms_notification.title + "\n" + sms_notification.description
 
       messages = double("Messages")

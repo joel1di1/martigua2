@@ -1,3 +1,50 @@
+
+'------------- VOUS ETES VOUS-MEME JOUEUR/JOUEUSE -----------------
+
+%p Chers adhérent,
+
+%p Vous êtes invités à vous créer un compte sur le site Martigua.org.
+
+%p Ce site vous permettra de mettre vos présences pour les entrainements ainsi que pour les compétitions.
+
+%p Cela nous permettra de mettre en place de meilleurs séances en fonction de la présence réelle, et pour vous d'avoir le calendrier des matchs à venir à jour au maximum.
+
+%p Cliquez ici :
+
+%p
+  %b= link_to "Accepter l'invitation", accept_invitation_url(@resource, :invitation_token => @token)
+
+
+%p Verifiez que les infos sont les bonnes puis choisissez un Mot de passe et le tour est joué.
+
+%p En vous remerciant par avance.
+
+
+
+'--------------- VOUS ETES PARENTS -------------------------
+
+%p Chers parents,
+
+%p Vous êtes invités à vous créer un compte pour votre enfant sur le site Martigua.org.
+
+%p Ce site vous permettra de mettre les présences de votre enfant pour les entrainements ainsi que pour les compétitions.
+
+%p Cela nous permettra de mettre en place de meilleurs séances en fonction de la présence réelle des enfants, et pour vous d'avoir le calendrier des matchs à venir à jour au maximum.
+
+%p Cliquez ici :
+
+%p
+  %b= link_to "Accepter l'invitation", accept_invitation_url(@resource, :invitation_token => @token)
+
+
+%p Verifiez que les infos sont les bonnes puis choisissez un Mot de passe et le tour est joué.
+
+%p En vous remerciant par avance.
+
+
+
+
+
 %p= I18n.t("devise.mailer.invitation_instructions.hello", email: @resource.email)
 %p= I18n.t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url)
 %p= link_to I18n.t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token)

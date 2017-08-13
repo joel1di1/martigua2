@@ -217,7 +217,25 @@ describe User do
       it { expect(user.next_week_trainings).to include(training) }
       it { expect(user.next_week_trainings.count).to eq 1 }
     end
+  end
 
+  describe '#is_available_for?' do
+
+    let(:match) { create :match }
+
+    subject { user.is_available_for?(match) }
+
+    context 'when player has not respond' do
+      it { is_expected.to be_falsy }
+    end
+    context 'when player has responded no' do
+      before { MatchAvailability.create! user: user, match: match, available: false }
+      it { is_expected.to be_falsy }
+    end
+    context 'when player has responded yes' do
+      before { MatchAvailability.create! user: user, match: match, available: true }
+      it { is_expected.to be_truthy }
+    end
   end
 
 end

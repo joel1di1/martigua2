@@ -6,11 +6,6 @@ FactoryGirl.define do
     email { Faker::Internet.email }
     password { Faker::Lorem.characters(6) }
 
-    trait :club_admin do
-      after(:create) do |user|
-        create :club_admin_role, user: user
-      end
-    end
     trait :section_coach do
       after(:create) do |user|
         create :participation, :coach, user: user

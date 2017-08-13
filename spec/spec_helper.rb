@@ -17,9 +17,9 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-if ENV['TRAVIS'] 
-  require "codeclimate-test-reporter"
-  CodeClimate::TestReporter.start
+if ENV['TRAVIS']
+  require 'simplecov'
+  SimpleCov.start
 end
 
 RSpec.configure do |config|

@@ -2,8 +2,8 @@ class Match < ActiveRecord::Base
   belongs_to :championship
   belongs_to :location
   belongs_to :day
-  belongs_to :local_team, class_name: Team, foreign_key: :local_team_id
-  belongs_to :visitor_team, class_name: Team, foreign_key: :visitor_team_id
+  belongs_to :local_team, class_name: 'Team', foreign_key: :local_team_id
+  belongs_to :visitor_team, class_name: 'Team', foreign_key: :visitor_team_id
 
   has_many :selections, inverse_of: :match
   has_many :match_availabilities, inverse_of: :match

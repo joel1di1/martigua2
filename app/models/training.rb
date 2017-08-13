@@ -4,7 +4,7 @@ class Training < ActiveRecord::Base
   has_and_belongs_to_many :sections, inverse_of: :trainings
   has_and_belongs_to_many :groups, inverse_of: :trainings
 
-  has_many :invitations, class_name: TrainingInvitation
+  has_many :invitations, class_name: 'TrainingInvitation'
   has_many :training_presences, inverse_of: :training, dependent: :destroy
   has_many :users, through: :groups
 

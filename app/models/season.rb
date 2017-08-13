@@ -38,4 +38,7 @@ class Season < ActiveRecord::Base
     d = default_days
   end
 
+  def previous
+    Season.find(id-1)
+  end
 end

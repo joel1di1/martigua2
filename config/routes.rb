@@ -37,7 +37,7 @@ Rails.application.routes.draw do
 
   resources :ping, only: :index, :constraints => {:format => :json }
 
-  resources :clubs, only: [:index, :show] do 
+  resources :clubs, only: [:index, :show] do
     resources :sections, only: [:index, :new, :create]
   end
 

@@ -48,6 +48,7 @@ group :development do
   gem 'rb-inotify', :require=>false
   gem 'spring'
   gem 'spring-commands-rspec'
+  gem 'web-console'
 end
 
 group :development, :test do

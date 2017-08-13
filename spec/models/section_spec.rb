@@ -205,4 +205,22 @@ RSpec.describe Section, :type => :model do
     it { expect(section.championships).to match_array([championship_1, championship_2]) }
   end
 
+  describe '#members' do
+    let(:current_season) { Season.current }
+    let(:previous_season) { current_season.previous }
+
+    let(:current_season_members) { Array.new(5) { u = create :user ; section.add_player!(u, season=current_season) ; u} }
+    let(:previous_season_members) { Array.new(6) { u = create :user ; section.add_player!(u, season=previous_season) ; u} }
+
+    context 'without specify season' do
+      subject { section.members }
+      it { is_expected.to match_array current_season_members }
+    end
+
+    context 'with specified season' do
+      subject { section.members(previous_season) }
+      it { is_expected.to match_array previous_season_members }
+    end
+  end
+
 end

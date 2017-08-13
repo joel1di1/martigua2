@@ -38,6 +38,11 @@ class Section < ActiveRecord::Base
     add_user!(user, Participation::COACH, season)
   end
 
+  def members(season=nil)
+    season ||= Season.current
+    User.joins(:participations).where( participations: { season: season, section: self } ).distinct
+  end
+
   def players
     User.joins(:participations).where( participations: { season: Season.current, role: Participation::PLAYER, section: self } )
   end

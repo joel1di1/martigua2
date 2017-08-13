@@ -61,4 +61,9 @@ RSpec.describe Season, :type => :model do
   describe '#to_s' do
     it { expect(season.to_s).to eq "#{season.start_date.year}-#{season.end_date.year}" }
   end
+
+  describe '#previous' do
+    subject { Season.current.previous }
+    it { expect(subject.start_date).to eq (Season.current.start_date - 1.year) }
+  end
 end

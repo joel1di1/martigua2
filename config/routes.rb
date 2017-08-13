@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   resources :championships
-  
+
   resources :sections, only: [:show] do
     resources :section_user_invitations, path: 'user_invitations', only: [:new, :show, :create, :index]
     resources :trainings do
@@ -13,6 +13,8 @@ Rails.application.routes.draw do
       match 'training_presences', via: [:get, :post]
       match 'match_availabilities', via: [:get, :post]
     end
+
+    resources :participations_renewal, only: [:index, :create]
 
     resources :groups do
       post 'users' => 'groups#add_users', as: 'add_users'

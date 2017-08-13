@@ -9,9 +9,9 @@ class Season < ActiveRecord::Base
 
   def self.current
     current = Season.order('end_date DESC').limit(1).first
-    current ||= Season.create!(start_date: Date.new(2014, 8, 1), end_date: Date.new(2015, 7, 1), name: '2014-2015')
+    current ||= create_default_season
     while current.end_date < Date.today
-      current = Season.create!(start_date: current.start_date + 1.year, end_date: current.end_date + 1.year, name: "#{current.start_date.year + 1}-#{current.end_date.year + 1}")
+      current = create_next_season(current)
     end
     current
   end
@@ -41,4 +41,15 @@ class Season < ActiveRecord::Base
   def previous
     Season.find(id-1)
   end
+
+  protected
+    def self.create_default_season
+      Season.create!(start_date: Date.new(2014, 8, 1), end_date: Date.new(2015, 7, 1), name: '2014-2015')
+    end
+
+    def self.create_next_season(season)
+      Season.create!(start_date: season.start_date + 1.year,
+                     end_date: season.end_date + 1.year,
+                     name: "#{season.start_date.year + 1}-#{season.end_date.year + 1}")
+    end
 end

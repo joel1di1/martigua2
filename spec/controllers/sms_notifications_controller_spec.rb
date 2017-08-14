@@ -22,8 +22,6 @@ describe SmsNotificationsController, :type => :controller do
 
     let(:do_request) { post :create, params: req_params }
 
-    before { allow(Blower).to receive(:send_sms) }
-
     before { SmsNotification.delete_all }
 
     it "should respond success" do

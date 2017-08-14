@@ -95,6 +95,6 @@ Rails.application.configure do
   config.action_mailer.delivery_method   = :postmark
   config.action_mailer.postmark_settings = { :api_key => ENV['POSTMARK_API_KEY'] }
 
-  config.font_assets.origin = 'http://www.martigua.org'
+  config.font_assets.origin = 'https://www.martigua.org'
 
 end

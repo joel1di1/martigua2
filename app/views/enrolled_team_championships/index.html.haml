@@ -1,9 +1,9 @@
 %h1= @championship.name
 
 .row
-  .col-md-4
+  .col-md-6.col-sm-6.col-xs-6
     .panel.panel-default
-      .panel-heading 
+      .panel-heading
         Toutes les équipe
       - if @not_enrolled_teams.count == 0
         Aucune équipe à enregistrer
@@ -11,12 +11,13 @@
         %ul.list-group
           - @not_enrolled_teams.each do |not_enrolled_team|
             %li.list-group-item
-              = not_enrolled_team.name
+              = not_enrolled_team.club.name + ' - '
+              %strong= not_enrolled_team.name
               = link_to section_championship_enrolled_team_championships_path(team_id: not_enrolled_team.id), method: :post do
                 %span.glyphicon.glyphicon-plus
-  .col-md-4
+  .col-md-6.col-sm-6.col-xs-6
     .panel.panel-primary
-      .panel-heading 
+      .panel-heading
         Equipes enregistrés dans la compétition
       - if @enrolled_team_championships.count == 0
         Aucune équipe enregistré dans cette compétition
@@ -24,6 +25,7 @@
         %ul.list-group
           - @enrolled_team_championships.each do |enrolled_team_championship|
             %li.list-group-item
-              = enrolled_team_championship.team.name
+              = enrolled_team_championship.team.club.name + ' - '
+              %strong= enrolled_team_championship.team.name
               = link_to section_championship_enrolled_team_championship_path(current_section, @championship, enrolled_team_championship), method: :delete do
                 %span.glyphicon.glyphicon-minus

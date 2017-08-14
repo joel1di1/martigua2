@@ -1,0 +1,45 @@
+%h1
+  Journée
+  = @day.name
+.row
+  .col-md-3.col-xs-3
+    .row
+      .col-md-12.col-xs-12
+        .panel
+          .panel-heading
+            Joueurs Dispos
+          %ul.list-group
+    .row
+      .col-md-12.col-xs-12
+        .panel
+        .panel-heading
+          Joueurs pas de réponses
+        %ul.list-group
+    .row
+      .col-md-12.col-xs-12
+        .panel
+        .panel-heading
+          Joueurs non dispos
+        %ul.list-group
+
+  - @teams_with_matches.each do |team, match|
+    .col-md-3.col-xs-3
+      .panel.panel-primary
+        .panel-heading
+          .text-center
+            %strong= team.name
+          .text-center
+            %em= "#{match.local_team.name} - #{match.visitor_team.name}"
+        %ul.list-group
+          - match.selections(team).each do |selection|
+            %li.list-group-item
+              = selection.user.full_name
+              = form_tag section_selection_path(current_section, match, selection), class: 'inline', role: 'form', method: :delete do
+                %button.btn.btn-link.btn-xs{type: :submit}
+                  %span.glyphicon.glyphicon-remove
+
+        / %ul.list-group
+        /   - day_selections = Selection.joins(match: :day).where(matches: {day_id: @day.id}).includes(:user, :team)
+        /   - users_already_selected = day_selections.map(&:user).uniq
+
+

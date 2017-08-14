@@ -31,6 +31,9 @@ Rails.application.routes.draw do
       resources :enrolled_team_championships, only: [:index, :create, :destroy]
     end
     resources :sms_notifications, only: [:new, :create]
+    resources :day, only: [] do
+      resources :selection, only: [:index, :create]
+    end
   end
 
   resources :club_admin_roles, only: [:index, :show]

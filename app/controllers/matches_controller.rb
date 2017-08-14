@@ -52,13 +52,11 @@ class MatchesController < ApplicationController
       format.json { render json: {}, status: :created }
       format.html { redirect_to referer_url_or(section_match_path(current_section, match)) }
     end
-
   end
-
 
   protected
     def match_params
-      params.require(:match).permit(:visitor_team_id, :local_team_id, :start_datetime, :end_datetime, 
+      params.require(:match).permit(:visitor_team_id, :local_team_id, :start_datetime, :end_datetime,
                                     :meeting_datetime, :meeting_location, :location_id, :local_score, :visitor_score, :day_id)
     end
 end

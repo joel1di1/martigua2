@@ -1,9 +1,20 @@
 %h1= @championship.name
 
+- if @championship.teams.size == 0
+  .row
+    .col-xs-12.col-sm-8.col-sm-offset-2.col-md-6.col-md-offset-3.col-lg-4.col-lg-offset-4
+      %div{:class => "alert alert-danger"}
+        .text-center
+          %p
+            Attention, cette compétition ne sera visible uniquement si une équipe du club est engagée dedans.
+          %p
+            1ère chose à faire : modifier les équipes et y inscrire une équipe du club.
+
+
 .row
   .col-md-8
     .panel.panel-primary
-      .panel-heading 
+      .panel-heading
         Matchs
       - if @championship.matches.count == 0
         Aucun match dans cette compétition.
@@ -12,7 +23,7 @@
     = link_to 'Ajouter un match', new_section_championship_match_path(current_section, @championship), class: 'btn btn-primary'
   .col-md-4
     .panel.panel-primary
-      .panel-heading 
+      .panel-heading
         Equipes enregistrées
       %ul.list-group
         - if @championship.teams.size == 0
@@ -21,6 +32,6 @@
         - else
           - @championship.teams.each do |team|
             %li.list-group-item= team.name
-        - if current_section && current_user.is_coach_of?(current_section)  
-          %li.list-group-item 
+        - if current_section && current_user.is_coach_of?(current_section)
+          %li.list-group-item
             = link_to 'Modifier les équipes de cette compétition', section_championship_enrolled_team_championships_path(current_section, @championship), class: 'btn'

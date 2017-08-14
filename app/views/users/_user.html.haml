@@ -7,25 +7,26 @@
       %em= user.nickname
   %td
     - if user.email
-      = mail_to user.email 
+      = mail_to user.email
   %td
     - if user.phone_number
-      = link_to user.phone_number, "tel:#{user.phone_number}" 
+      = link_to user.phone_number, "tel:#{user.phone_number}"
   %td
     - user.groups.where(section: current_section, season: Season.current).non_system.each do |group|
-      = link_to section_group_path(current_section, group) do 
+      = link_to section_group_path(current_section, group) do
         .group-box{style: "background-color: #{group.color}", 'data-toggle' => "tooltip", 'data-title' => group.name}
   - if current_section
     %td
       = user.participations.where(section: current_section, season: Season.current).map(&:role).sort.reverse.join(", ")
 
   - if current_user.is_coach_of?(current_section)
-    - if defined?(group) && group
-      - unless group.system?
-        %td.action
+    %td.action
+      = link_to edit_section_user_path(current_section, user, returns_to: request.env['PATH_INFO']) do
+        %span.glyphicon.glyphicon-edit
+      - if defined?(group) && group
+        - unless group.system?
           = link_to section_group_user_path(current_section, group, user), :method => :delete, :data => { :confirm => 'Supprimer du groupe ?' } do
-            %span.glyphicon.glyphicon-trash  
-    - else 
-      %td.action
+            %span.glyphicon.glyphicon-trash
+      - else
         = link_to section_user_path(current_section, user), :method => :delete, :data => { :confirm => 'Supprimer de la section ?' } do
-          %span.glyphicon.glyphicon-trash  
+          %span.glyphicon.glyphicon-trash

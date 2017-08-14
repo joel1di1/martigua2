@@ -19,11 +19,14 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @return_to = params[:returns_to]
   end
 
   def update
     @user.update_attributes! user_params
-    if current_section
+    if params[:return_to]
+      redirect_to params[:return_to]
+    elsif current_section
       redirect_to section_user_path(@user, section_id: current_section.to_param)
     else
       redirect_to user_path(@user, section_id: current_section.to_param)

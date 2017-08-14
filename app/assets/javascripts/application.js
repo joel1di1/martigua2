@@ -17,5 +17,4 @@
 //= require jquery.minicolors.simple_form
 //= require turbolinks
 //= require bootstrap
-//= require bootstrap-datetimepicker
 //= require_tree .

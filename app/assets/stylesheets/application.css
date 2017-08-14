@@ -21,6 +21,5 @@
  *= require users
  *= require visitors
  *= require jquery.minicolors
- *= require bootstrap-datetimepicker
  *= require_self
  */

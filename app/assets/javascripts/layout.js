@@ -3,7 +3,3 @@ $( document ).ready(function() {
     window.setTimeout(function() { $(".alert-success").slideToggle('slow'); }, 3000);
   }
 });
-
-$(document).ready(function() {
-    $('[data-toggle=tooltip]').tooltip();
-}); 

@@ -5,4 +5,3 @@ languages:
    PHP: true
 exclude_paths:
 - "spec/*"
-- "app/assets/javascripts/bootstrap-datetimepicker.js"

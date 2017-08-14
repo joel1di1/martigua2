@@ -27,6 +27,7 @@ gem 'phony'
 gem 'pg', group: [:production, :development]
 gem 'polyamorous', github: 'activerecord-hackery/polyamorous'
 gem 'puma'
+gem 'rack-cors', :require => 'rack/cors'
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'rest-client'
 gem 'sdoc',  group: :doc

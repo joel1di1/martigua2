@@ -31,15 +31,23 @@
           .text-center
             %em= "#{match.local_team.name} - #{match.visitor_team.name}"
         %ul.list-group
-          - match.selections(team).each do |selection|
+          - match.selections(team).sort{|a, b| a.user.short_name <=> b.user.short_name}.each do |selection|
             %li.list-group-item
-              = selection.user.full_name
-              = form_tag section_selection_path(current_section, match, selection), class: 'inline', role: 'form', method: :delete do
-                %button.btn.btn-link.btn-xs{type: :submit}
-                  %span.glyphicon.glyphicon-remove
-
-        / %ul.list-group
-        /   - day_selections = Selection.joins(match: :day).where(matches: {day_id: @day.id}).includes(:user, :team)
-        /   - users_already_selected = day_selections.map(&:user).uniq
+              .user.inline
+                - user = selection.user
+                = user.short_name
+                = form_tag section_selection_path(current_section, match, selection), class: 'inline', role: 'form', method: :delete do
+                  %button.btn.btn-link.btn-xs{type: :submit}
+                    %span.glyphicon.glyphicon-remove
+              .pull-right
+                / pour les autres matchs,
+                / si le joueur est dispo,
+                / mettre un lien qui le déplace vers l'autre match
+                - @teams_with_matches.reject{|t, m| m == match && t == team }.each do |other_team, other_match|
+                  - if user.is_available_for?(other_match)
+                    = form_tag selection_section_match_path(current_section, other_match, user_id: user.id, team_id: other_team.id), class: 'inline', role: 'form' do
+                      %button.btn.btn-link.btn-xs{type: :submit}= "#{other_team.name} !"
+                  - else
+                    %s= other_team.name
 
 

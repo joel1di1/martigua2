@@ -67,6 +67,10 @@ class User < ActiveRecord::Base
     nickname.blank? ? "#{first_name} #{last_name}" : "#{first_name} #{last_name} - #{nickname}"
   end
 
+  def short_name
+    nickname.blank? ? "#{first_name} #{last_name}" : "#{nickname}"
+  end
+
   def next_week_trainings
     Training.of_next_week.joins(:groups).where(groups: {id: group_ids}).distinct
   end

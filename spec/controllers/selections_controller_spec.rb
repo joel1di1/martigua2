@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe SelectionController, type: :controller do
+describe SelectionsController, type: :controller do
 
   let(:section) { create :section }
   let(:coach) { create :user, with_section_as_coach: section }

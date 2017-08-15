@@ -1,7 +1,7 @@
 %tr
   - if current_user.is_coach_of?(current_section)
     %td.link_column
-      = link_to section_day_selection_index_path(current_section, match.day), class: :eye_link do
+      = link_to section_day_selections_path(current_section, match.day), class: :eye_link do
         %span.glyphicon.glyphicon-knight
   %td
     %div= match.date

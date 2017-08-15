@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     end
     resources :sms_notifications, only: [:new, :create]
     resources :day, only: [] do
-      resources :selection, only: [:index, :create]
+      resources :selections, only: [:index]
     end
   end
 

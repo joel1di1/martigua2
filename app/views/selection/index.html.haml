@@ -106,47 +106,46 @@
     .row
       .col-md-9.col-xs-9
         %p
-          Et pour faciliter les mails :
+          %a(href="#mail-collapse" data-toggle="collapse")
+            Pour envoyer les mails, c'est ici...
 
         - all_mails = current_section.members.map(&:email).join(',')
+        #mail-collapse.collapse
+          %p
+            1) Click sur le boutton lancer un mail (y'a tous les emails de tout le monde et le sujet déjà renseigné)
+            %br
+            %a.btn.btn-info{target: '_blank', href: "mailto:#{all_mails}?subject=Compositions de la journée du #{@day.name}"}
+              Lancer un mail
 
-        %p
-          1) click sur le boutton lancer un mail (y'a tous les emails de tout le monde et le sujet déjà renseigné)
-          %br
-          %a.btn.btn-info{target: '_blank', href: "mailto:#{all_mails}?subject=Compositions de la journée du #{@day.name}"}
-            Lancer un mail
-
-        %p
-          2) Copier à la main (parce qu'automatiquement on perd le formattage) le texte qui s'affiche en dessous
-          %div#mail-compo
-            %hr
-            - @teams_with_matches.each do |team, match|
-              - selections = match.selections(team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
-              %p
-                Equipe :
-                %strong= team.name
-                %br
-                Match :
-                %strong= "#{match.local_team.name} - #{match.visitor_team.name}"
-                %br
-                Début du Match :
-                %strong= match.date
-                %br
-                Rendez-vous :
-                %strong= match.meeting_datetime.to_s(:short)
-                %br
-                Lieu :
-                %strong
-                  = render partial: 'locations/gmaps_link', locals: { location: match.location }
-
-              %p
-                Composition :
-                %strong
-                  = selections.map(&:user).map(&:short_name).join(', ')
-
+          %p
+            2) Copie à la main (parce qu'automatiquement on perd le formattage) le texte qui s'affiche en dessous
+            %div#mail-compo
               %hr
-        %p
-          3) Modifie comme tu veux le mail
+              - @teams_with_matches.each do |team, match|
+                - selections = match.selections(team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
+                %p
+                  %h3= team.name
+                  Match :
+                  %strong= "#{match.local_team.name} - #{match.visitor_team.name}"
+                  %br
+                  Début du Match :
+                  %strong= match.date
+                  %br
+                  Rendez-vous :
+                  %strong= match.meeting_datetime.to_s(:short)
+                  %br
+                  Lieu :
+                  %strong
+                    = render partial: 'locations/gmaps_link', locals: { location: match.location }
 
-        %p
-          4) Send !
+                %p
+                  Composition :
+                  %strong
+                    = selections.map(&:user).map(&:short_name).join(', ')
+
+                %hr
+          %p
+            3) Modifie comme tu veux le mail
+
+          %p
+            4) Send !

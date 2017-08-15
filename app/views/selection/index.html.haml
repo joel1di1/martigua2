@@ -8,6 +8,7 @@
         .panel.panel-success
           .panel-heading
             Joueurs Dispos
+            = "(#{@available_players.count})"
           %ul.list-group
             - @available_players.each do |user|
               %li.list-group-item
@@ -28,7 +29,8 @@
       .col-md-12.col-xs-12
         .panel.panel-warning
           .panel-heading
-            Joueurs pas de réponses
+            Joueurs sans réponses
+            = "(#{@no_response_players.count})"
           %ul.list-group
             - @no_response_players.each do |user|
               %li.list-group-item
@@ -49,6 +51,7 @@
         .panel.panel-danger
           .panel-heading
             Joueurs non dispos
+            = "(#{@non_available_players.count})"
           %ul.list-group
             - @non_available_players.each do |user|
               %li.list-group-item
@@ -66,16 +69,18 @@
                           %s.hidden-link.not-respond= team.name
 
   - @teams_with_matches.each do |team, match|
+    - selections = match.selections(team).sort{|a, b| a.user.short_name <=> b.user.short_name}
     .col-md-3.col-xs-3
       .panel.panel-primary
         .panel-heading
           .text-center
             %strong= team.name
+            = "(#{selections.count})"
           .text-center.white
             = link_to section_match_path(current_section, match) do
               %em= "#{match.local_team.name} - #{match.visitor_team.name}"
         %ul.list-group
-          - match.selections(team).sort{|a, b| a.user.short_name <=> b.user.short_name}.each do |selection|
+          - selections.each do |selection|
             %li.list-group-item
               .user.inline
                 - user = selection.user

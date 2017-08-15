@@ -13,8 +13,22 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
-//= require jquery.minicolors
-//= require jquery.minicolors.simple_form
 //= require turbolinks
 //= require bootstrap
-//= require_tree .
+
+//= require championships
+//= require club_admin_roles
+//= require clubs
+//= require groups
+//= require layout.js
+//= require matches
+//= require section_user_invitations
+//= require sections
+//= require selection
+//= require sms_notifications
+//= require spectrum-1.8.0
+//= require spectrum-config
+//= require teams
+//= require trainings
+//= require users
+//= require visitors

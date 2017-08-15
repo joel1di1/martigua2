@@ -21,6 +21,6 @@
  *= require trainings
  *= require users
  *= require visitors
- *= require jquery.minicolors
+ *= require spectrum-1.8.0
  *= require_self
  */

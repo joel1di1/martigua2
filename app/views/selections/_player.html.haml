@@ -1,0 +1,13 @@
+%li.list-group-item
+  .user.inline
+    = player.short_name
+  .pull-right
+    - teams_with_matches.each do |team, match|
+      = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline', role: 'form' do
+        %button.btn.btn-link.btn-xs{type: :submit}
+          - if player.is_available_for?(match)
+            = "#{team.name} !"
+          - elsif player.has_respond_for?(match)
+            %s.hidden-link.not-available= team.name
+          - else
+            %s.hidden-link.not-respond= team.name

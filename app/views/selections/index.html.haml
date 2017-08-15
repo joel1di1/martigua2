@@ -10,20 +10,8 @@
             Joueurs Dispos
             = "(#{@available_players.count})"
           %ul.list-group
-            - @available_players.each do |user|
-              %li.list-group-item
-                .user.inline
-                  = user.short_name
-                .pull-right
-                  - @teams_with_matches.each do |team, match|
-                    = form_tag selection_section_match_path(current_section, match, user_id: user.id, team_id: team.id), class: 'inline', role: 'form' do
-                      %button.btn.btn-link.btn-xs{type: :submit}
-                        - if user.is_available_for?(match)
-                          = "#{team.name} !"
-                        - elsif user.has_respond_for?(match)
-                          %s.hidden-link.not-available= team.name
-                        - else
-                          %s.hidden-link.not-respond= team.name
+            - @available_players.each do |player|
+              = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches}
 
     .row
       .col-md-12.col-xs-12
@@ -32,20 +20,8 @@
             Joueurs sans réponses
             = "(#{@no_response_players.count})"
           %ul.list-group
-            - @no_response_players.each do |user|
-              %li.list-group-item
-                .user.inline
-                  = user.short_name
-                .pull-right
-                  - @teams_with_matches.each do |team, match|
-                    = form_tag selection_section_match_path(current_section, match, user_id: user.id, team_id: team.id), class: 'inline', role: 'form' do
-                      %button.btn.btn-link.btn-xs{type: :submit}
-                        - if user.is_available_for?(match)
-                          = "#{team.name} !"
-                        - elsif user.has_respond_for?(match)
-                          %s.hidden-link.not-available= team.name
-                        - else
-                          %s.hidden-link.not-respond= team.name
+            - @no_response_players.each do |player|
+              = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches}
     .row
       .col-md-12.col-xs-12
         .panel.panel-danger
@@ -53,23 +29,10 @@
             Joueurs non dispos
             = "(#{@non_available_players.count})"
           %ul.list-group
-            - @non_available_players.each do |user|
-              %li.list-group-item
-                .user.inline
-                  = user.short_name
-                .pull-right
-                  - @teams_with_matches.each do |team, match|
-                    = form_tag selection_section_match_path(current_section, match, user_id: user.id, team_id: team.id), class: 'inline', role: 'form' do
-                      %button.btn.btn-link.btn-xs{type: :submit}
-                        - if user.is_available_for?(match)
-                          = "#{team.name} !"
-                        - elsif user.has_respond_for?(match)
-                          %s.hidden-link.not-available= team.name
-                        - else
-                          %s.hidden-link.not-respond= team.name
+            - @non_available_players.each do |player|
+              = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches}
   .col-md-9.col-xs-9
     .row
-
       - @teams_with_matches.each do |team, match|
         - selections = match.selections(team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
         .col-md-4.col-xs-4

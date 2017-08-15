@@ -12,7 +12,7 @@ class SelectionController < ApplicationController
     @non_available_players -= @available_players
     @non_available_players -= @users_already_selected
 
-    @no_response_players = current_section.players - @available_players - @users_already_selected - @non_available_players
+    @no_response_players = current_section.players.includes(:match_availabilities) - @available_players - @users_already_selected - @non_available_players
   end
 
   def create

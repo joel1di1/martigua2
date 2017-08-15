@@ -10,7 +10,7 @@
     - else
       = link_to 'Accueil', root_path, {class: 'navbar-brand'}
   .collapse.navbar-collapse
-    - if current_section 
+    - if current_section
       %ul.nav.navbar-nav.navbar-left
         %li{class: active_if_current_path(section_users_path(current_section))}
           = link_to "Membres", section_users_path(current_section)
@@ -32,7 +32,7 @@
           - if current_section
             %li= link_to current_section.club.to_s, current_section.club
             %li.divider
-          - current_user.sections.each do |section|
+          - current_user.sections.includes(:club).each do |section|
             %li= link_to section.to_s, section
           %li.divider
           - if current_section

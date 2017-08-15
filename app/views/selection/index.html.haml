@@ -69,7 +69,7 @@
                           %s.hidden-link.not-respond= team.name
 
   - @teams_with_matches.each do |team, match|
-    - selections = match.selections(team).sort{|a, b| a.user.short_name <=> b.user.short_name}
+    - selections = match.selections(team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
     .col-md-3.col-xs-3
       .panel.panel-primary
         .panel-heading

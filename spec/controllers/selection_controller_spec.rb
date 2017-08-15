@@ -21,14 +21,7 @@ describe SelectionController, type: :controller do
       before { expect(Team).to receive(:team_with_match_on).with(day, section).and_return(matches_with_teams) }
       before { request }
       it { expect(assigns[:day]).to eq day }
-
       it { expect(assigns[:teams_with_matches]).to eq matches_with_teams }
-    end
-
-    context "with three matches for the same day" do
-      describe "assigns" do
-        # it "should have the three days"
-      end
     end
   end
 end

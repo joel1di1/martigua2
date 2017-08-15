@@ -59,6 +59,10 @@ class User < ActiveRecord::Base
     match_availabilities.where(match: match).first.try(:available)
   end
 
+  def has_respond_for?(match)
+    match_availabilities.where(match: match).exists?
+  end
+
   def is_admin_of?(club)
     club_admin_roles.where(club: club).exists?
   end

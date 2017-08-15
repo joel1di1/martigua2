@@ -16,6 +16,7 @@
  *= require groups
  *= require layout
  *= require sections
+ *= require selection
  *= require teams
  *= require trainings
  *= require users

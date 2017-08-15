@@ -5,22 +5,37 @@
   .col-md-3.col-xs-3
     .row
       .col-md-12.col-xs-12
-        .panel
+        .panel.panel-success
           .panel-heading
             Joueurs Dispos
           %ul.list-group
+            - @available_players.each do |user|
+              %li.list-group-item
+                .user.inline
+                  = user.short_name
+                .pull-right
+                  - @teams_with_matches.each do |team, match|
+                    = form_tag selection_section_match_path(current_section, match, user_id: user.id, team_id: team.id), class: 'inline', role: 'form' do
+                      %button.btn.btn-link.btn-xs{type: :submit}
+                        - if user.is_available_for?(match)
+                          = "#{team.name} !"
+                        - elsif user.has_respond_for?(match)
+                          %s.hidden-link.not-available= team.name
+                        - else
+                          %s.hidden-link.not-respond= team.name
+
     .row
       .col-md-12.col-xs-12
-        .panel
-        .panel-heading
-          Joueurs pas de réponses
-        %ul.list-group
+        .panel.panel-warning
+          .panel-heading
+            Joueurs pas de réponses
+          %ul.list-group
     .row
       .col-md-12.col-xs-12
-        .panel
-        .panel-heading
-          Joueurs non dispos
-        %ul.list-group
+        .panel.panel-danger
+          .panel-heading
+            Joueurs non dispos
+          %ul.list-group
 
   - @teams_with_matches.each do |team, match|
     .col-md-3.col-xs-3
@@ -28,8 +43,9 @@
         .panel-heading
           .text-center
             %strong= team.name
-          .text-center
-            %em= "#{match.local_team.name} - #{match.visitor_team.name}"
+          .text-center.white
+            = link_to section_match_path(current_section, match) do
+              %em= "#{match.local_team.name} - #{match.visitor_team.name}"
         %ul.list-group
           - match.selections(team).sort{|a, b| a.user.short_name <=> b.user.short_name}.each do |selection|
             %li.list-group-item
@@ -44,10 +60,14 @@
                 / si le joueur est dispo,
                 / mettre un lien qui le déplace vers l'autre match
                 - @teams_with_matches.reject{|t, m| m == match && t == team }.each do |other_team, other_match|
-                  - if user.is_available_for?(other_match)
-                    = form_tag selection_section_match_path(current_section, other_match, user_id: user.id, team_id: other_team.id), class: 'inline', role: 'form' do
-                      %button.btn.btn-link.btn-xs{type: :submit}= "#{other_team.name} !"
-                  - else
-                    %s= other_team.name
+                  = form_tag selection_section_match_path(current_section, other_match, user_id: user.id, team_id: other_team.id), class: 'inline', role: 'form' do
+                    %button.btn.btn-link.btn-xs{type: :submit}
+                      - if user.is_available_for?(other_match)
+                        = "#{other_team.name} !"
+                      - elsif user.has_respond_for?(other_match)
+                        %s.hidden-link.not-available= other_team.name
+                      - else
+                        %s.hidden-link.not-respond= other_team.name
+
 
 

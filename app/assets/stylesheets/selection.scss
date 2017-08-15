@@ -1,3 +1,15 @@
 // Place all the styles related to the Selection controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+s.hidden-link{
+  color: #777777;
+  &.not-available{
+    color: #af0b0b;
+  }
+  &.not-respond{
+    color: #d6ae53;
+  }
+}
+.white a {
+  color: white;
+}

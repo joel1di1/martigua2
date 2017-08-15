@@ -67,40 +67,86 @@
                           %s.hidden-link.not-available= team.name
                         - else
                           %s.hidden-link.not-respond= team.name
+  .col-md-9.col-xs-9
+    .row
 
-  - @teams_with_matches.each do |team, match|
-    - selections = match.selections(team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
-    .col-md-3.col-xs-3
-      .panel.panel-primary
-        .panel-heading
-          .text-center
-            %strong= team.name
-            = "(#{selections.count})"
-          .text-center.white
-            = link_to section_match_path(current_section, match) do
-              %em= "#{match.local_team.name} - #{match.visitor_team.name}"
-        %ul.list-group
-          - selections.each do |selection|
-            %li.list-group-item
-              .user.inline
-                - user = selection.user
-                = user.short_name
-                = form_tag section_selection_path(current_section, match, selection), class: 'inline', role: 'form', method: :delete do
-                  %button.btn.btn-link.btn-xs{type: :submit}
-                    %span.glyphicon.glyphicon-remove
-              .pull-right
-                / pour les autres matchs,
-                / si le joueur est dispo,
-                / mettre un lien qui le déplace vers l'autre match
-                - @teams_with_matches.reject{|t, m| m == match && t == team }.each do |other_team, other_match|
-                  = form_tag selection_section_match_path(current_section, other_match, user_id: user.id, team_id: other_team.id), class: 'inline', role: 'form' do
-                    %button.btn.btn-link.btn-xs{type: :submit}
-                      - if user.is_available_for?(other_match)
-                        = "#{other_team.name} !"
-                      - elsif user.has_respond_for?(other_match)
-                        %s.hidden-link.not-available= other_team.name
-                      - else
-                        %s.hidden-link.not-respond= other_team.name
+      - @teams_with_matches.each do |team, match|
+        - selections = match.selections(team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
+        .col-md-4.col-xs-4
+          .panel.panel-primary
+            .panel-heading
+              .text-center
+                %strong= team.name
+                = "(#{selections.count})"
+              .text-center.white
+                = link_to section_match_path(current_section, match) do
+                  %em= "#{match.local_team.name} - #{match.visitor_team.name}"
+            %ul.list-group
+              - selections.each do |selection|
+                %li.list-group-item
+                  .user.inline
+                    - user = selection.user
+                    = user.short_name
+                    = form_tag section_selection_path(current_section, match, selection), class: 'inline', role: 'form', method: :delete do
+                      %button.btn.btn-link.btn-xs{type: :submit}
+                        %span.glyphicon.glyphicon-remove
+                  .pull-right
+                    / pour les autres matchs,
+                    / si le joueur est dispo,
+                    / mettre un lien qui le déplace vers l'autre match
+                    - @teams_with_matches.reject{|t, m| m == match && t == team }.each do |other_team, other_match|
+                      = form_tag selection_section_match_path(current_section, other_match, user_id: user.id, team_id: other_team.id), class: 'inline', role: 'form' do
+                        %button.btn.btn-link.btn-xs{type: :submit}
+                          - if user.is_available_for?(other_match)
+                            = "#{other_team.name} !"
+                          - elsif user.has_respond_for?(other_match)
+                            %s.hidden-link.not-available= other_team.name
+                          - else
+                            %s.hidden-link.not-respond= other_team.name
+    .row
+      .col-md-9.col-xs-9
+        %p
+          Et pour faciliter les mails :
 
+        - all_mails = current_section.members.map(&:email).join(',')
 
+        %p
+          1) click sur le boutton lancer un mail (y'a tous les emails de tout le monde et le sujet déjà renseigné)
+          %br
+          %a.btn.btn-info{target: '_blank', href: "mailto:#{all_mails}?subject=Compositions de la journée du #{@day.name}"}
+            Lancer un mail
 
+        %p
+          2) Copier à la main (parce qu'automatiquement on perd le formattage) le texte qui s'affiche en dessous
+          %div#mail-compo
+            %hr
+            - @teams_with_matches.each do |team, match|
+              - selections = match.selections(team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
+              %p
+                Equipe :
+                %strong= team.name
+                %br
+                Match :
+                %strong= "#{match.local_team.name} - #{match.visitor_team.name}"
+                %br
+                Début du Match :
+                %strong= match.date
+                %br
+                Rendez-vous :
+                %strong= match.meeting_datetime.to_s(:short)
+                %br
+                Lieu :
+                %strong
+                  = render partial: 'locations/gmaps_link', locals: { location: match.location }
+
+              %p
+                Composition :
+                %strong
+                  = selections.map(&:user).map(&:short_name).join(', ')
+
+              %hr
+        %p
+          3) Modifie comme tu veux le mail
+
+        %p
+          4) Send !

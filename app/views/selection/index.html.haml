@@ -30,12 +30,40 @@
           .panel-heading
             Joueurs pas de réponses
           %ul.list-group
+            - @no_response_players.each do |user|
+              %li.list-group-item
+                .user.inline
+                  = user.short_name
+                .pull-right
+                  - @teams_with_matches.each do |team, match|
+                    = form_tag selection_section_match_path(current_section, match, user_id: user.id, team_id: team.id), class: 'inline', role: 'form' do
+                      %button.btn.btn-link.btn-xs{type: :submit}
+                        - if user.is_available_for?(match)
+                          = "#{team.name} !"
+                        - elsif user.has_respond_for?(match)
+                          %s.hidden-link.not-available= team.name
+                        - else
+                          %s.hidden-link.not-respond= team.name
     .row
       .col-md-12.col-xs-12
         .panel.panel-danger
           .panel-heading
             Joueurs non dispos
           %ul.list-group
+            - @non_available_players.each do |user|
+              %li.list-group-item
+                .user.inline
+                  = user.short_name
+                .pull-right
+                  - @teams_with_matches.each do |team, match|
+                    = form_tag selection_section_match_path(current_section, match, user_id: user.id, team_id: team.id), class: 'inline', role: 'form' do
+                      %button.btn.btn-link.btn-xs{type: :submit}
+                        - if user.is_available_for?(match)
+                          = "#{team.name} !"
+                        - elsif user.has_respond_for?(match)
+                          %s.hidden-link.not-available= team.name
+                        - else
+                          %s.hidden-link.not-respond= team.name
 
   - @teams_with_matches.each do |team, match|
     .col-md-3.col-xs-3

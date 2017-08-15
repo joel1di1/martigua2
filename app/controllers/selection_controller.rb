@@ -7,6 +7,12 @@ class SelectionController < ApplicationController
     @users_already_selected = @day_selections.map(&:user).uniq
     @available_players = @day.matches.map { |match| match.availables-@users_already_selected }.flatten.compact.uniq
     @available_players.sort!{ |a, b| a.short_name <=> b.short_name }
+
+    @non_available_players = User.joins(:match_availabilities).where(match_availabilities: {match: @day.matches, available: false})
+    @non_available_players -= @available_players
+    @non_available_players -= @users_already_selected
+
+    @no_response_players = current_section.players - @available_players - @users_already_selected - @non_available_players
   end
 
   def create

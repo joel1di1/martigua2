@@ -12,7 +12,7 @@ class Team < ActiveRecord::Base
 
   def self.team_with_match_on(day, section)
     section_teams = section.teams
-    day_teams = day.matches.map(&:teams).flatten
+    day_teams = day.matches.includes(:local_team, :visitor_team).map(&:teams).flatten
     teams = section_teams & day_teams
     teams.map do |team|
       match = nil

@@ -56,11 +56,11 @@ class User < ActiveRecord::Base
   end
 
   def is_available_for?(match)
-    match_availabilities.where(match: match).first.try(:available)
+    match_availabilities.select{|ma| ma.match_id == match.id }.first.try(:available)
   end
 
   def has_respond_for?(match)
-    match_availabilities.where(match: match).exists?
+    match_availabilities.select{|ma| ma.match_id == match.id }.size > 0
   end
 
   def is_admin_of?(club)

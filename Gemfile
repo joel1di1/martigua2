@@ -37,12 +37,15 @@ gem 'twilio-ruby'
 gem 'uglifier', '>= 1.3.0'
 
 group :development do
+  gem 'active_record_query_trace'
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]
+  gem 'bullet'
   gem 'guard-bundler'
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'html2haml'
+  gem 'query_diet'
   gem 'rails_layout'
   gem 'rb-fchange', :require=>false
   gem 'rb-fsevent', :require=>false

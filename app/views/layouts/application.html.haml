@@ -18,6 +18,7 @@
         })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
     = csrf_meta_tags
   %body
+    = query_diet_widget if Rails.env.development?
     = render 'layouts/navigation'
     .container-fluid
       = render 'layouts/messages'

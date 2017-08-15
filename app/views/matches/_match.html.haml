@@ -1,15 +1,13 @@
 %tr
   - if current_user.is_coach_of?(current_section)
     %td.link_column
-      = link_to "Sélection", section_day_selection_index_path(current_section, match.day)
-  %td.link_column
-    - match_link_url = defined?(championship) ? section_championship_match_path(current_section, championship, match) : section_match_path(current_section, match)
-    = link_to match_link_url, class: :eye_link do
-      %span.glyphicon.glyphicon-eye-open
+      = link_to section_day_selection_index_path(current_section, match.day), class: :eye_link do
+        %span.glyphicon.glyphicon-knight
   %td
     %div= match.date
     = render partial: 'locations/gmaps_link', locals: { location: match.location }
   %td
+    - match_link_url = defined?(championship) ? section_championship_match_path(current_section, championship, match) : section_match_path(current_section, match)
     = link_to match_link_url do
       = match.local_team.name if match.local_team
       \-

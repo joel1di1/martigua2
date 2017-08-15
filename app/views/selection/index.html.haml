@@ -130,9 +130,10 @@
                   %br
                   Début du Match :
                   %strong= match.date
-                  %br
-                  Rendez-vous :
-                  %strong= match.meeting_datetime.to_s(:short)
+                  - if match.meeting_datetime
+                    %br
+                    Rendez-vous :
+                    %strong= match.meeting_datetime.to_s(:short)
                   %br
                   Lieu :
                   %strong

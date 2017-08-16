@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   validates_presence_of :authentication_token
 
   before_validation :ensure_authentication_token
+  before_save :format_phone_number
 
   default_scope { order 'first_name' }
 
@@ -92,5 +93,11 @@ class User < ActiveRecord::Base
     def is_member_of?(section, role, season=nil)
       season ||= Season.current
       participations.where(section: section, role: role, season: season).count > 0
+    end
+
+    def format_phone_number
+      if self.phone_number && self.phone_number.match('^[\s\d]*$')
+        self.phone_number = self.phone_number.gsub(' ', '').gsub(/(\d\d)/, '\1 ').chop
+      end
     end
 end

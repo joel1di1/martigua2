@@ -8,14 +8,9 @@
   %td.hidden-xs><
     - training.groups.each do |group|
       %span{'data-toggle'=> :tooltip, title: group.description}= group.name
-  %td.hidden-xs><
-    = link_to section_training_path(training, section_id: current_section.to_param) do
-      %span.nb_presents{class: 'text-success'}= training.nb_presents
-      (
-      %span{class: 'text-danger'}><= training.nb_not_presents
-      \-
-      %span{class: 'text-warning'}><= training.nb_presence_not_set
-      )
+  %td.hidden-xs
+    - tooltip = "#{training.nb_presents} présents<br/>#{training.nb_not_presents} absents<br/>#{training.nb_presence_not_set} sans réponse"
+    = render partial: 'matches/presences', locals: {tooltip: tooltip, link_url: section_training_path(training, section_id: current_section.to_param), nb_presents: training.nb_presents, nb_not_presents: training.nb_not_presents, nb_no_response: training.nb_presence_not_set}
   - if current_user.is_player_of?(current_section)
     %td
       - if training.users.include?(current_user)

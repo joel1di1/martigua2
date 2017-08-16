@@ -1,24 +1,24 @@
 %h2
-  Entrainement du 
+  Entrainement du
   = @training.start_datetime.strftime("%-d/%-m/%Y")
 
   - if current_user.is_coach_of?(current_section)
     .action
       = link_to edit_section_training_path(current_section, @training) do
         %span.glyphicon.glyphicon-pencil
-      = link_to section_training_path(@training, section_id: current_section), :method => :delete, :data => { :confirm => 'Are you sure?' } do 
-        %span.glyphicon.glyphicon-trash  
+      = link_to section_training_path(@training, section_id: current_section), :method => :delete, :data => { :confirm => 'Are you sure?' } do
+        %span.glyphicon.glyphicon-trash
 
 %p
   = render partial: 'locations/gmaps_link', locals: {location: @training.location}
   %br
-  Groupes : 
+  Groupes :
   = @training.groups.map(&:name).join(", ")
 
 .row
   .col-md-4
     .panel.panel-success
-      .panel-heading 
+      .panel-heading
         - training_presents = @training.presents
         = training_presents.size
         Joueurs présents
@@ -26,8 +26,8 @@
         - training_presents.sort_by(&:full_name).each do |user|
           %li.list-group-item= user.full_name
   .col-md-4
-    .panel.panel-warning
-      .panel-heading 
+    .panel.panel-danger
+      .panel-heading
         - training_not_presents = @training.not_presents
         = training_not_presents.size
         Joueurs non présents
@@ -35,8 +35,8 @@
         - training_not_presents.sort_by(&:full_name).each do |user|
           %li.list-group-item= user.full_name
   .col-md-4
-    .panel.panel-danger
-      .panel-heading 
+    .panel.panel-warning
+      .panel-heading
         - training_presence_not_set = @training.presence_not_set
         = training_presence_not_set.size
         Pas de réponse

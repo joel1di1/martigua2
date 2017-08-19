@@ -169,7 +169,6 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     erubi (1.6.1)
     erubis (2.7.0)
-    excon (0.58.0)
     execjs (2.7.0)
     factory_girl (4.8.0)
       activesupport (>= 3.0.0)
@@ -224,9 +223,6 @@ GEM
     has_scope (0.7.1)
       actionpack (>= 4.1, < 5.2)
       activesupport (>= 4.1, < 5.2)
-    heroku-api (0.4.3)
-      excon (~> 0.45)
-      multi_json (~> 1.8)
     heroku-deflater (0.6.3)
       rack (>= 1.4.5)
     html2haml (2.2.0)
@@ -495,7 +491,6 @@ DEPENDENCIES
   guard-rails
   guard-rspec
   haml-rails
-  heroku-api
   heroku-deflater
   html2haml
   inherited_resources!

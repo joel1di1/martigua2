@@ -21,7 +21,12 @@ class ApplicationController < ActionController::Base
   protected
 
     def referer_url_or(default_path)
-      request.referrer || default_path
+      if request.referrer &&
+         referrer.match(Rails.application.config.action_mailer.default_url_options[:host])
+        request.referrer
+      else
+        default_path
+      end
     end
 
     def current_section

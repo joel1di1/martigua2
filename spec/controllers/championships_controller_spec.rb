@@ -44,6 +44,7 @@ describe ChampionshipsController, :type => :controller do
 
       it { expect(response).to have_http_status(:success) }
       it { expect(assigns(:championship)).not_to be_nil}
+      it { expect(assigns(:calendars)).not_to be_nil}
     end
   end
 

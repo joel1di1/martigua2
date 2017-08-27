@@ -16,6 +16,7 @@
 //= require turbolinks
 //= require bootstrap
 
+//= require calendars
 //= require championships
 //= require club_admin_roles
 //= require clubs

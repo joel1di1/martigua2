@@ -1,0 +1,7 @@
+= simple_form_for([current_section, @calendar]) do |f|
+  = f.error_notification
+  .form-inputs
+    = f.input :name
+    = f.association :season, collection: Season.all
+  .form-actions
+    = f.button :submit

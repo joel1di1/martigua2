@@ -7,6 +7,7 @@ class ChampionshipsController < ApplicationController
   end
 
   def new
+    prepare_form
     @championship = Championship.new championship_params
   end
 
@@ -24,12 +25,14 @@ class ChampionshipsController < ApplicationController
   end
 
   def edit
+    prepare_form
   end
 
   def update
     if @championship.update_attributes(championship_params)
       redirect_to section_championship_path(current_section, @championship), notice: 'Compétition sauvegardée'
     else
+      prepare_form
       render :edit
     end
   end
@@ -37,7 +40,7 @@ class ChampionshipsController < ApplicationController
   protected
     def championship_params
       if params[:championship]
-        params.require(:championship).permit(:name)
+        params.require(:championship).permit(:name, :calendar_id)
       else
         {}
       end
@@ -47,5 +50,10 @@ class ChampionshipsController < ApplicationController
       @championship = Championship.find params[:id]
     rescue ActiveRecord::RecordNotFound
       handle_404
+    end
+
+    def prepare_form
+      season = @championship ? @championship.season : Season.current
+      @calendars = Calendar.where(season: season)
     end
 end

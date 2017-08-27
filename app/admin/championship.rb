@@ -3,6 +3,7 @@ ActiveAdmin.register Championship do
     column :id
     column :season
     column :name
+    column :calendar
     column :created_at
     column :updated_at
     actions

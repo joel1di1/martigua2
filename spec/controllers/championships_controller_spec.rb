@@ -31,7 +31,34 @@ describe ChampionshipsController, :type => :controller do
 
       it { expect(response).to redirect_to(section_championship_path(section, Championship.last)) }
     end
-
   end
 
+  describe "GET edit" do
+    let(:championship) { create :championship }
+    let(:do_request) { get :edit, params: {section_id: section, id: championship.id } }
+
+    before { sign_in user }
+
+    describe 'response' do
+      before { do_request }
+
+      it { expect(response).to have_http_status(:success) }
+      it { expect(assigns(:championship)).not_to be_nil}
+    end
+  end
+
+  describe "POST update" do
+    let!(:championship) { create :championship }
+    let(:new_championship_params) { {name: Faker::Company.name} }
+    let(:params) { {section_id: section.to_param, id: championship.id, championship: new_championship_params} }
+    let(:do_request) { post :update, params: params }
+
+    before { sign_in user }
+
+    describe 'response' do
+      before { do_request }
+
+      it { expect(response).to redirect_to(section_championship_path(section, championship)) }
+    end
+  end
 end

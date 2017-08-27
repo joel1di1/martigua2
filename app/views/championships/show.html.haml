@@ -1,4 +1,9 @@
-%h1= @championship.name
+%h2
+  = @championship.name
+  - if current_section && current_user.is_coach_of?(current_section)
+    .action
+      = link_to edit_section_championship_path(current_section, @championship) do
+        %span.glyphicon.glyphicon-pencil
 
 - if @championship.teams.size == 0
   .row

@@ -23,6 +23,17 @@ class ChampionshipsController < ApplicationController
   def show
   end
 
+  def edit
+  end
+
+  def update
+    if @championship.update_attributes(championship_params)
+      redirect_to section_championship_path(current_section, @championship), notice: 'Compétition sauvegardée'
+    else
+      render :edit
+    end
+  end
+
   protected
     def championship_params
       if params[:championship]

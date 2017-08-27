@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170827131723) do
+ActiveRecord::Schema.define(version: 20170827132240) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -84,6 +84,8 @@ ActiveRecord::Schema.define(version: 20170827131723) do
     t.date "period_end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer "calendar_id"
+    t.index ["calendar_id"], name: "index_days_on_calendar_id"
     t.index ["season_id"], name: "index_days_on_season_id"
   end
 

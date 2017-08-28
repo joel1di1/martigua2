@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :days
+
   resources :championships
 
   resources :sections, only: [:show] do

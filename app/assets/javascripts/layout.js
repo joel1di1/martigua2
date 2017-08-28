@@ -8,3 +8,8 @@ $( document ).ready(function() {
 $(document).on('turbolinks:load', function() {
   $('[data-toggle="tooltip"]').tooltip();
 });
+
+$(document).ready(function() {
+  /* Activating Best In Place */
+  jQuery(".best_in_place").best_in_place();
+});

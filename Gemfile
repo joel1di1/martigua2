@@ -7,6 +7,7 @@ gem 'sass-rails', github: 'rails/sass-rails'
 
 gem 'activeadmin', github: 'activeadmin'
 gem 'activerecord-session_store'
+gem 'best_in_place'
 gem 'bootstrap-sass'
 gem 'colorist'
 gem 'delayed_job_active_record'

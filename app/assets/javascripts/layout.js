@@ -24,5 +24,6 @@ $(document).on('turbolinks:load', function() {
     showMicrosec: false,
     showTimezone: false,
     closeText: 'OK',
+    parse: 'loose',
   });
 });

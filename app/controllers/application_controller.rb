@@ -10,13 +10,13 @@ class ApplicationController < ActionController::Base
 
   include LogAllRequests
 
-    def catch_404
-      p "404 : #{request.url}"
-      respond_to do |format|
-        format.html { render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found }
-        format.xml  { head :not_found }
-      end
+  def catch_404
+    p "404 : #{request.url}"
+    respond_to do |format|
+      format.html { render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found }
+      format.xml  { head :not_found }
     end
+  end
 
   protected
 

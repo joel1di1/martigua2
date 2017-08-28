@@ -6,8 +6,8 @@
     = f.association :visitor_team, collection: @championship.teams.order(:name)
     = f.association :location
     = f.association :day, collection: @championship.season.days.order('period_start_date ASC'), hint: "Jour de match (saison régulière)"
-    = f.input :start_datetime, as: :datetime
-    = f.input :meeting_datetime, as: :datetime, hint: "Si vide, une heure avant."
+    = f.input :start_datetime, as: :string, input_html: { class: 'datetimepicker' }
+    = f.input :meeting_datetime, as: :string, input_html: { class: 'datetimepicker' }, hint: "Si vide, une heure avant."
     = f.input :meeting_location
 
   .form-actions

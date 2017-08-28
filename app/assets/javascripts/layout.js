@@ -9,5 +9,20 @@ $(document).on('turbolinks:load', function() {
   $('.best_in_place').bind("ajax:success", function () { $(this).effect('highlight'); } );
 
   $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
-  $( "input.datepicker" ).datepicker();
+  $("input.datepicker").datepicker();
+
+  $(".datetimepicker").datetimepicker({
+    controlType: 'select',
+    oneLine: true,
+    timeInput: true,
+    timeFormat: "HH:mm",
+    showTime: false,
+    showHour: true,
+    showMinute: true,
+    showSecond: false,
+    showMillisec: false,
+    showMicrosec: false,
+    showTimezone: false,
+    closeText: 'OK',
+  });
 });

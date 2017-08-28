@@ -11,11 +11,14 @@
 // about supported directives.
 //
 //= require jquery3
+//= require jquery-ui
 //= require jquery.turbolinks
 //= require turbolinks
 //= require bootstrap
 
+//= require datepicker-fr-20170828
 //= require best_in_place
+//= require best_in_place.jquery-ui
 //= require calendars
 //= require championships
 //= require club_admin_roles

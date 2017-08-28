@@ -13,6 +13,7 @@ class CalendarsController < ApplicationController
   end
 
   def edit
+    @new_day = Day.new calendar: @calendar, name: "J#{@calendar.days.count + 1}"
   end
 
   def update

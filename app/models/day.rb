@@ -5,9 +5,16 @@ class Day < ActiveRecord::Base
 
   validates_presence_of :season, :name
 
+  before_save :set_default_period_end_date
+
   # before_create :set_default_name
 
-  # protected
+  protected
+    def set_default_period_end_date
+      if self.period_start_date_changed? && self.period_start_date && !self.period_end_date_changed?
+        self.period_end_date = self.period_start_date + 1
+      end
+    end
   # def set_default_name
   #   p self
   #   if self.name.blank?

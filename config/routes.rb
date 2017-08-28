@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       resources :selections, only: [:index]
     end
     resources :calendars, only: [:index, :create, :edit, :update]
+    resources :days, only: [:create]
   end
 
   resources :club_admin_roles, only: [:index, :show]

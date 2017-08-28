@@ -17,6 +17,7 @@
 //= require bootstrap
 
 //= require datepicker-fr-20170828
+//= require jquery-ui-timepicker-addon-1.6.3
 //= require best_in_place
 //= require best_in_place.jquery-ui
 //= require calendars

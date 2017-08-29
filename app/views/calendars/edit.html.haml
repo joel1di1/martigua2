@@ -18,7 +18,7 @@
                 %th Nom
                 %th 1er jour du weekend
             %tbody
-              = render @calendar.days
+              = render @calendar.days.order('period_start_date ASC')
         %p
           %a(href="#new-day-collapse" data-toggle="collapse")
             Rajouter une journée

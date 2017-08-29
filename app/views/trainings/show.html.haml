@@ -1,6 +1,6 @@
 %h2
   Entrainement du
-  = @training.start_datetime.strftime("%-d/%-m/%Y")
+  = @training.start_datetime.strftime("%-d/%-m/%Y %-HH%-M")
 
   - if current_user.is_coach_of?(current_section)
     .action

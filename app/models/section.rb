@@ -73,28 +73,11 @@ class Section < ActiveRecord::Base
   end
 
   def group_everybody(season=nil)
-    season ||= Season.current
-    group = groups.where(role: :everybody, system: true, season: season).take
-    unless group
-      group = Group.new(role: :everybody, system: true,
-                          name: 'TOUS LES MEMBRES', description: 'Tous les membres de la section',
-                          color: '#226611', season: season)
-      groups << group
-    end
-    group
+    _default_group(season, :everybody, 'TOUS LES MEMBRES', 'Tous les membres de la section', '#226611')
   end
 
   def group_every_players(season=nil)
-    season ||= Season.current
-    group = groups.where(role: :every_players, system: true, season: season).take
-
-    unless group
-      group = Group.new(role: :every_players, system:
-                        true, name: 'TOUS LES JOUEURS', description: 'Tous les joueurs de la section',
-                        color: '#28c704', season: season)
-      groups << group
-    end
-    group
+    _default_group(season, :every_players, 'TOUS LES JOUEURS', 'Tous les joueurs de la section', '#28c704')
   end
 
   def has_member?(user)
@@ -121,5 +104,18 @@ class Section < ActiveRecord::Base
       group_everybody(season).add_user!(user)
       group_every_players(season).add_user!(user) if role == Participation::PLAYER
       self
+    end
+
+    def _default_group(season=nil, players_role, group_name, group_description, color)
+      season ||= Season.current
+      group = groups.where(role: players_role, system: true, season: season).take
+
+      unless group
+        group = Group.new(role: players_role, system: true,
+                          name: group_name, description: group_description,
+                          color: color, season: season)
+        groups << group
+      end
+      group
     end
 end

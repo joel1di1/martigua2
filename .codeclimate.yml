@@ -5,3 +5,5 @@ languages:
    PHP: true
 exclude_paths:
 - "spec/*"
+- "app/assets/javascripts/3rd/*"
+- "app/assets/stylesheets/3rd/*"

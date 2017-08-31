@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :selection do
-    user nil
-    match nil
-    team nil
+    user
+    match
+    team
   end
 end

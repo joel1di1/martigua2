@@ -13,7 +13,6 @@ describe SelectionsController, type: :controller do
   before { sign_in coach }
 
   describe "GET index" do
-
     let(:request_params) { { section_id: section.to_param, day_id: day.id } }
     let(:request) { get :index, params: request_params }
 
@@ -24,4 +23,16 @@ describe SelectionsController, type: :controller do
       it { expect(assigns[:teams_with_matches]).to eq matches_with_teams }
     end
   end
+
+  describe "DELETE destroy" do
+    let(:match) { create :match, day: day }
+    let(:selection) { create :selection, match: match }
+    let(:request_params) { { section_id: section.to_param, match_id: match.id, id: selection.id } }
+    let(:request) { delete :destroy, params: request_params }
+
+    before { request }
+    it { expect(response).to redirect_to(root_path) }
+    it { expect(Selection.find_by_id(selection.id)).to be_nil }
+  end
+
 end

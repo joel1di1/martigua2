@@ -25,7 +25,7 @@ RSpec.describe Season, :type => :model do
       let!(:first_season) { create :season, start_date: Date.new(2001, 9, 1) }
 
       it { expect(Season.current.start_date).to be < today }
-      it { expect(Season.current.end_date).to be > today }
+      it { expect(Season.current.end_date).to be >= today }
     end
 
     context 'with no season' do

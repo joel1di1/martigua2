@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170831210855) do
+ActiveRecord::Schema.define(version: 20170831214713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,14 +82,12 @@ ActiveRecord::Schema.define(version: 20170831210855) do
 
   create_table "days", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255, null: false
-    t.integer "season_id", null: false
     t.date "period_start_date"
     t.date "period_end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.bigint "calendar_id"
     t.index ["calendar_id"], name: "index_days_on_calendar_id"
-    t.index ["season_id"], name: "index_days_on_season_id"
   end
 
   create_table "delayed_jobs", id: :serial, force: :cascade do |t|

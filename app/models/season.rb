@@ -4,8 +4,8 @@ class Season < ActiveRecord::Base
   has_many :participations, inverse_of: :season, dependent: :destroy
   has_many :groups, inverse_of: :season, dependent: :destroy
   has_many :days, inverse_of: :season, dependent: :destroy
-
-  after_create :create_default_days!
+  has_many :championships, inverse_of: :season, dependent: :destroy
+  has_many :calendars, inverse_of: :season, dependent: :destroy
 
   def self.current
     current = Season.order('end_date DESC').limit(1).first
@@ -18,24 +18,6 @@ class Season < ActiveRecord::Base
 
   def to_s
     "#{start_date.year}-#{end_date.year}"
-  end
-
-  def create_default_days!
-    default_days = []
-    d = start_date
-
-    while !d.saturday? do
-      d = d + 1.day
-    end
-
-    while d < end_date do
-      day = Day.new(period_start_date: d, period_end_date: (d+1.day), season: self )
-      day.name = "#{day.period_start_date.to_s(:short)} - #{day.period_end_date.to_s(:short)}"
-      day.save!
-      default_days << day
-      d = d + 1.week
-    end
-    d = default_days
   end
 
   def previous

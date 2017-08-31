@@ -11,7 +11,7 @@
  * file per style scope.
  *
  *= require jquery-ui/datepicker
- *= require jquery-ui-timepicker-addon-1.6.3
+ *= require 3rd/jquery-ui-timepicker-addon-1.6.3
  *= require calendars
  *= require club_admin_roles
  *= require clubs
@@ -24,6 +24,6 @@
  *= require trainings
  *= require users
  *= require visitors
- *= require spectrum-1.8.0
+ *= require 3rd/spectrum-1.8.0
  *= require_self
  */

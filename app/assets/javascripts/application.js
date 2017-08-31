@@ -17,8 +17,8 @@
 //= require turbolinks
 //= require bootstrap
 
-//= require datepicker-fr-20170828
-//= require jquery-ui-timepicker-addon-1.6.3
+//= require 3rd/datepicker-fr-20170828
+//= require 3rd/jquery-ui-timepicker-addon-1.6.3
 //= require best_in_place
 //= require best_in_place.jquery-ui
 //= require calendars
@@ -32,7 +32,7 @@
 //= require sections
 //= require selection
 //= require sms_notifications
-//= require spectrum-1.8.0
+//= require 3rd/spectrum-1.8.0
 //= require spectrum-config
 //= require teams
 //= require trainings

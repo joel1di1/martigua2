@@ -8,7 +8,7 @@ $(document).on('turbolinks:load', function() {
   jQuery(".best_in_place").best_in_place();
   $('.best_in_place').bind("ajax:success", function () { $(this).effect('highlight'); } );
 
-  $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
+  $.datepicker.setDefaults( $.datepicker.regional.fr );
   $("input.datepicker").datepicker();
 
   $(".datetimepicker").datetimepicker({

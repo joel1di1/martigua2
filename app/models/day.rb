@@ -1,9 +1,8 @@
 class Day < ActiveRecord::Base
-  belongs_to :season
   belongs_to :calendar
   has_many :matches, inverse_of: :day
 
-  validates_presence_of :season, :name
+  validates_presence_of :name
 
   before_save :set_default_period_end_date
 

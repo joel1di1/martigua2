@@ -1,12 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Day, :type => :model do
-  it { should belong_to :season }
   it { should belong_to :calendar }
   it { should have_many :matches }
 
   it { should validate_presence_of :name }
-  it { should validate_presence_of :season }
 
   describe 'create with period_start_date should set defaut period_end_date' do
     let(:day) { build :day, period_start_date: start_date, period_end_date: end_date }

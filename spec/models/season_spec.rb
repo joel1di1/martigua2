@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Season, :type => :model do
   it { should have_many :participations }
-  it { should have_many :days }
   it { should have_many :calendars }
   it { should have_many :championships }
 

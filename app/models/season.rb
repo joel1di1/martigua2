@@ -3,7 +3,6 @@ class Season < ActiveRecord::Base
 
   has_many :participations, inverse_of: :season, dependent: :destroy
   has_many :groups, inverse_of: :season, dependent: :destroy
-  has_many :days, inverse_of: :season, dependent: :destroy
   has_many :championships, inverse_of: :season, dependent: :destroy
   has_many :calendars, inverse_of: :season, dependent: :destroy
 

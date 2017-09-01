@@ -24,6 +24,7 @@
           %li{class: active_if_current_path(new_section_sms_notification_path(current_section))}
             = link_to "Notification SMS", new_section_sms_notification_path(current_section)
     %ul.nav.navbar-nav.navbar-right.user
+      %li= switch_user_select
       %li.dropdown
         %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
           = current_user.email
@@ -41,3 +42,5 @@
             %li= link_to 'Editer son profil', edit_user_path(current_user)
           %li= link_to 'Changer de mot de passe', edit_user_registration_path
           %li= link_to 'Déconnexion', destroy_user_session_path, :method=>'delete'
+
+

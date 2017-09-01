@@ -63,5 +63,8 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   root to: 'visitors#index'
 
+  get 'switch_user', to: 'switch_user#set_current_user'
+  get 'switch_user/remember_user', to: 'switch_user#remember_user'
+
   match "*path", to: "application#catch_404", via: :all
 end

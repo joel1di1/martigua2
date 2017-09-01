@@ -32,6 +32,7 @@ gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'rest-client'
 gem 'sdoc',  group: :doc
 gem 'simple_form'
+gem 'switch_user'
 gem 'turbolinks'
 gem 'twilio-ruby'
 gem 'uglifier', '>= 1.3.0'
@@ -39,7 +40,7 @@ gem 'uglifier', '>= 1.3.0'
 group :development do
   gem 'active_record_query_trace'
   gem 'better_errors'
-  gem 'binding_of_caller', :platforms=>[:mri_21]
+  gem 'binding_of_caller'
   gem 'bullet'
   gem 'guard-bundler'
   gem 'guard-rails'

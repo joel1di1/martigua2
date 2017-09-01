@@ -45,6 +45,16 @@ class TrainingsController < ApplicationController
     redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Entrainement supprimé"
   end
 
+  def cancellation
+    @training.cancel!(params[:cancellation][:reason])
+    redirect_to referer_url_or(section_training_path(current_section, @training))
+  end
+
+  def uncancel
+    @training.uncancel!
+    redirect_to referer_url_or(section_training_path(current_section, @training))
+  end
+
   private
     def training_params
       params.require(:training).permit(:start_datetime, :end_datetime, :location_id, :group_ids)

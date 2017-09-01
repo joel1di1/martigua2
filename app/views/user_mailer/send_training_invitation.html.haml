@@ -16,8 +16,12 @@
         %td{style: 'border: 1px grey solid;'}= training.start_datetime.strftime("%A %-d %HH%M")
         %td{style: 'border: 1px grey solid;'}= training.location ? training.location.name : ''
         %td{style: 'border: 1px grey solid;text-align: center;'}
-          %input{ type: :hidden, name: 'present_ids[]', value: training.id }
-          %input{ type: :checkbox, name: 'checked_ids[]', value: training.id, checked: @user.is_present_for?(training) }
+          - if training.cancelled?
+            ENTRAINEMENT ANNULÉ :
+            = training.cancel_reason
+          - else
+            %input{ type: :hidden, name: 'present_ids[]', value: training.id }
+            %input{ type: :checkbox, name: 'checked_ids[]', value: training.id, checked: @user.is_present_for?(training) }
     %tr
       %td{colspan: 3}
         %a{style: "float: left; text-decoration: none; background:#5cb85c;display:inline-block;padding:10px;font-size:14px;margin:10px 10px 0 0;color:white;", href: training_presences_user_url(@user.to_param, present_ids: @trainings.map(&:id), checked_ids: @trainings.map(&:id), user_email: @user.email, user_token: @user.authentication_token), method: :post} Présent à tous !!

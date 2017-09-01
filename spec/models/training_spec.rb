@@ -108,4 +108,24 @@ RSpec.describe Training, :type => :model do
     it { expect{training.repeat_until!(end_date)}.to change{Training.count}.by(nb_weeks-1) }
   end
 
+  describe 'cancel uncancel' do
+    let(:reason) { "For this reason " + Faker::Lorem.sentence }
+    describe '#cancelled?' do
+      subject { training.cancelled? }
+
+      context 'when not cancelled' do
+        it { is_expected.to be_falsy }
+      end
+      context 'when cancelled' do
+        before { training.cancel!(reason) }
+        it { is_expected.to be_truthy }
+        it { expect(training.cancel_reason).to eq reason }
+        context 'when uncancelled' do
+          before { training.uncancel! }
+          it { is_expected.to be_falsy }
+          it { expect(training.cancel_reason).to be_nil }
+        end
+      end
+    end
+  end
 end

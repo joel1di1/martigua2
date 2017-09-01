@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     resources :trainings do
       member do
         post 'invitations'
+        post 'cancellation'
+        delete 'uncancel'
       end
     end
     resources :users, path: 'members' do

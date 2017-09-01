@@ -66,6 +66,18 @@ class Training < ActiveRecord::Base
     end
   end
 
+  def cancel!(reason="Raison inconnue")
+    self.cancelled = true
+    self.cancel_reason = reason
+    save!
+  end
+
+  def uncancel!
+    self.cancelled = false
+    self.cancel_reason = nil
+    save!
+  end
+
   def self.send_presence_mail_for_next_week
     User.all.each do |user|
       next_week_trainings = user.next_week_trainings

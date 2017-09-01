@@ -6,8 +6,8 @@ ActiveAdmin.register Training do
       f.input :start_datetime, :as => :datetime_picker
       f.input :end_datetime, :as => :datetime_picker
       f.input :location
-      f.input :canceled
-      f.input :cancelation_reason
+      f.input :cancelled
+      f.input :cancel_reason
       f.actions
     end
   end

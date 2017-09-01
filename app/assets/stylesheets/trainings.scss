@@ -33,3 +33,15 @@
   text-align: right;
   width: 25px;
 }
+
+tr.training-cancelled, .table-striped > tbody > tr.training-cancelled {
+  background-color: rgba(210, 80, 80, 0.38);
+}
+
+td.training-cancelled {
+  font-weight: bold;
+}
+
+.d-inline-block {
+  display: inline-block;
+}

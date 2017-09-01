@@ -89,4 +89,32 @@ describe TrainingsController, :type => :controller do
     it { expect(:response).to redirect_to(section_trainings_path(section_id: section.to_param))}
   end
 
+  describe "POST cancellation" do
+    let(:section) {create :section }
+    let(:coach) { create :user, with_section_as_coach: section }
+    let(:training) { create :training, with_section: section}
+
+    let(:request) { post :cancellation, params: { section_id: section.to_param, id: training.to_param, cancellation: { reason: "TEST" } } }
+
+    before { sign_in coach }
+    before { request }
+
+    it { expect(training.reload.cancelled?).to be_truthy }
+    it { expect(:response).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
+  end
+
+  describe "DELETE cancellation" do
+    let(:section) {create :section }
+    let(:coach) { create :user, with_section_as_coach: section }
+    let(:training) { create :training, with_section: section}
+
+    let(:request) { delete :uncancel, params: { section_id: section.to_param, id: training.to_param } }
+
+    before { training.cancel!('for some reason') }
+    before { sign_in coach }
+    before { request }
+
+    it { expect(training.reload.cancelled?).to be_falsy }
+    it { expect(:response).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
+  end
 end

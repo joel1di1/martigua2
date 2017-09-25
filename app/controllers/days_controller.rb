@@ -3,7 +3,6 @@ class DaysController < InheritedResources::Base
 
   def create
     @day = Day.new day_params
-    @day.season = @day.calendar ? @day.calendar.season : Season.current
     @day.save!
     redirect_to referer_url_or(section_days_path(current_section)), notice: 'Journée créée'
   end

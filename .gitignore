@@ -68,3 +68,4 @@ pickle-email-*.html
 .env
 .powenv
 SSL/*
+/google_client_secret.json

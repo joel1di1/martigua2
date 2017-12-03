@@ -89,13 +89,15 @@ class Match < ActiveRecord::Base
   end
 
   def update_shared_calendar
-    if shared_calendar_id
-      event_id = CalendarService.instance.add_event(
-                  "#{local_team.name} - #{visitor_team.name}",
-                  nil,
-                  start_datetime, end_datetime,
-                  location.address)
-    else
+    if start_datetime
+      event_id = CalendarService.instance.create_or_update_event(
+        shared_calendar_id,
+        "#{local_team.try(:name)} - #{visitor_team.try(:name)}",
+        nil,
+        start_datetime, start_datetime + 2.hours,
+        "#{location.try(:name)}, #{location.try(:address)}")
+
+      self.update_column :shared_calendar_id, event_id
     end
   end
 

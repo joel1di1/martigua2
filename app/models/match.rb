@@ -15,6 +15,8 @@ class Match < ActiveRecord::Base
 
   scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period) }
 
+  after_save :update_shared_calendar
+
   def date
     if start_datetime
       start_datetime.to_s(:short)
@@ -84,6 +86,17 @@ class Match < ActiveRecord::Base
 
   def selections(team)
     Selection.includes(:user).where(match: self, team: team)
+  end
+
+  def update_shared_calendar
+    if shared_calendar_id
+      event_id = CalendarService.instance.add_event(
+                  "#{local_team.name} - #{visitor_team.name}",
+                  nil,
+                  start_datetime, end_datetime,
+                  location.address)
+    else
+    end
   end
 
 end

@@ -15,6 +15,8 @@ class CalendarService
   CLIENT_SECRETS_PATH = 'google_client_secret.json'
   GOOGLE_CALENDAR_ID = ENV['GOOGLE_CALENDAR_ID'] || '24l3f4bf1u4fut3gdjpb2pfq94@group.calendar.google.com'
 
+  include Singleton
+
   def initialize
     gcalendar_service
   end

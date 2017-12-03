@@ -20,6 +20,9 @@ module Martigua2
       g.fixture_replacement :factory_girl, dir: "spec/factories"
     end
 
+    config.time_zone = 'Paris'
+    config.active_record.default_timezone = :local
+
     config.active_job.queue_adapter = :delayed_job
 
     config.middleware.insert_before 0, Rack::Cors do

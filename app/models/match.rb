@@ -89,7 +89,7 @@ class Match < ActiveRecord::Base
   end
 
   def update_shared_calendar
-    if start_datetime
+    if !Rails.env.test? && start_datetime
       event_id = CalendarService.instance.create_or_update_event(
         shared_calendar_id,
         "#{local_team.try(:name)} - #{visitor_team.try(:name)}",

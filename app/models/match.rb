@@ -90,15 +90,19 @@ class Match < ActiveRecord::Base
 
   def update_shared_calendar
     if !Rails.env.test? && start_datetime
-      event_id = CalendarService.instance.create_or_update_event(
-        shared_calendar_id,
-        "#{local_team.try(:name)} - #{visitor_team.try(:name)}",
-        nil,
-        start_datetime, start_datetime + 2.hours,
-        "#{location.try(:name)}, #{location.try(:address)}")
-
-      self.update_column :shared_calendar_id, event_id
+      async_update_shared_calendar
     end
   end
 
+  def async_update_shared_calendar
+    event_id = CalendarService.instance.create_or_update_event(
+      shared_calendar_id,
+      "#{local_team.try(:name)} - #{visitor_team.try(:name)}",
+      nil,
+      start_datetime, start_datetime + 2.hours,
+      "#{location.try(:name)}, #{location.try(:address)}")
+
+    self.update_column :shared_calendar_id, event_id
+  end
+  handle_asynchronously :async_update_shared_calendar
 end

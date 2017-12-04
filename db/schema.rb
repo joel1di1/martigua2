@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171203223432) do
-  
+ActiveRecord::Schema.define(version: 20171204011052) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -187,6 +187,7 @@ ActiveRecord::Schema.define(version: 20171203223432) do
     t.datetime "updated_at"
     t.integer "day_id"
     t.string "shared_calendar_id"
+    t.string "shared_calendar_url"
     t.index ["championship_id"], name: "index_matches_on_championship_id"
     t.index ["day_id"], name: "index_matches_on_day_id"
     t.index ["location_id"], name: "index_matches_on_location_id"

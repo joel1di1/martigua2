@@ -21,6 +21,7 @@
  *= require sections
  *= require selection
  *= require teams
+ *= require matches
  *= require trainings
  *= require users
  *= require visitors

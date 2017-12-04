@@ -52,14 +52,15 @@ class CalendarService
   def build_gcalendar_event(summary, description, starttime, endtime, location)
     Google::Apis::CalendarV3::Event.new(
               summary: summary,
-              description: description, 
+              description: description,
               start: Google::Apis::CalendarV3::EventDateTime.new(
                 date_time: starttime.to_datetime.rfc3339
               ),
               end: Google::Apis::CalendarV3::EventDateTime.new(
                 date_time: endtime.to_datetime.rfc3339
               ),
-              location: location)
+              location: location,
+              anyone_can_add_self:true)
   end
 
   def create_or_update_event(event_id, summary, description, starttime, endtime, location)
@@ -72,14 +73,12 @@ class CalendarService
 
   def add_event(summary, description, starttime, endtime, location)
     event = build_gcalendar_event(summary, description, starttime, endtime, location)
-    event = gcalendar_service.insert_event(GOOGLE_CALENDAR_ID, event)
-    event.id
+    gcalendar_service.insert_event(GOOGLE_CALENDAR_ID, event)
   end
 
   def update_event(event_id, summary, description, starttime, endtime, location)
     event = build_gcalendar_event(summary, description, starttime, endtime, location)
-    event = gcalendar_service.update_event(GOOGLE_CALENDAR_ID, event_id, event)
-    event.id
+    gcalendar_service.update_event(GOOGLE_CALENDAR_ID, event_id, event)
   end
 
   def display_events

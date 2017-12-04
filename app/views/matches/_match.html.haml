@@ -4,7 +4,11 @@
       = link_to section_day_selections_path(current_section, match.day), class: :eye_link do
         %span.glyphicon.glyphicon-knight
   %td
-    %div= match.date
+    %div
+      = match.date
+      - if match.shared_calendar_url
+        %a{target: "_blank",  href: match.shared_calendar_url}
+          <span class="glyphicon glyphicon-calendar gcalendar-link" aria-hidden="true" ></span>
     = render partial: 'locations/gmaps_link', locals: { location: match.location }
   %td
     - match_link_url = defined?(championship) ? section_championship_match_path(current_section, championship, match) : section_match_path(current_section, match)

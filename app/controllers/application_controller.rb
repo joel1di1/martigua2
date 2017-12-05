@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_section, :origin_path_or
 
+  helper Starburst::AnnouncementsHelper
+
   include LogAllRequests
 
   def catch_404

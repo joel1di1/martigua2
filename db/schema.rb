@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171204011052) do
+ActiveRecord::Schema.define(version: 20171204231461) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -259,7 +259,26 @@ ActiveRecord::Schema.define(version: 20171204011052) do
     t.index ["section_id"], name: "index_sms_notifications_on_section_id"
   end
 
-  create_table "team_sections", force: :cascade do |t|
+  create_table "starburst_announcement_views", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "announcement_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "announcement_id"], name: "starburst_announcement_view_index", unique: true
+  end
+
+  create_table "starburst_announcements", force: :cascade do |t|
+    t.text "title"
+    t.text "body"
+    t.datetime "start_delivering_at"
+    t.datetime "stop_delivering_at"
+    t.text "limit_to_users"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "category"
+  end
+
+  create_table "team_sections", id: :serial, force: :cascade do |t|
     t.integer "team_id", null: false
     t.integer "section_id", null: false
     t.datetime "created_at"

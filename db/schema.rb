@@ -278,7 +278,7 @@ ActiveRecord::Schema.define(version: 20171204231461) do
     t.text "category"
   end
 
-  create_table "team_sections", id: :serial, force: :cascade do |t|
+  create_table "team_sections", force: :cascade do |t|
     t.integer "team_id", null: false
     t.integer "section_id", null: false
     t.datetime "created_at"

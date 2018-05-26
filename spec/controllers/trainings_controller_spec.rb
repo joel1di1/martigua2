@@ -43,21 +43,18 @@ describe TrainingsController, :type => :controller do
   end
 
   describe "PATCH edit" do
-    let(:request) { patch :update, params: request_params }
-
     context 'with existing training' do
       let(:training) { create :training, with_section: section }
       let(:request_params) { { section_id: section.to_param, id: training.to_param, training: training.attributes } }
 
       before { sign_in user }
-      before { request }
+      subject { patch :update, params: request_params }
 
-      it { expect(response).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
+      it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
     end
   end
 
   describe "POST create" do
-    let(:request) { post :create, params: request_params }
     let(:new_training) { build :training }
 
     context 'signed as user' do
@@ -66,12 +63,15 @@ describe TrainingsController, :type => :controller do
 
       before { sign_in user }
 
-      it { expect{request}.to change{section.trainings.count}.by(1) }
+      describe 'effects' do
+        let(:request) { post :create, params: request_params }
+        it { expect{request}.to change{section.trainings.count}.by(1) }
+      end
 
       describe 'response' do
-        before { request }
+        subject { post :create, params: request_params }
 
-        it { expect(response).to redirect_to(section_trainings_path(section_id: section.to_param))}
+        it { expect(subject).to redirect_to(section_trainings_path(section_id: section.to_param))}
       end
     end
   end
@@ -81,12 +81,11 @@ describe TrainingsController, :type => :controller do
     let(:coach) { create :user, with_section_as_coach: section }
     let(:training) { create :training, with_section: section}
 
-    let(:request) { post :invitations, params: { section_id: section.to_param, id: training.to_param } }
+    subject { post :invitations, params: { section_id: section.to_param, id: training.to_param } }
 
     before { sign_in coach }
-    before { request }
 
-    it { expect(:response).to redirect_to(section_trainings_path(section_id: section.to_param))}
+    it { expect(subject).to redirect_to(section_trainings_path(section_id: section.to_param))}
   end
 
   describe "POST cancellation" do
@@ -94,13 +93,12 @@ describe TrainingsController, :type => :controller do
     let(:coach) { create :user, with_section_as_coach: section }
     let(:training) { create :training, with_section: section}
 
-    let(:request) { post :cancellation, params: { section_id: section.to_param, id: training.to_param, cancellation: { reason: "TEST" } } }
-
     before { sign_in coach }
-    before { request }
 
-    it { expect(training.reload.cancelled?).to be_truthy }
-    it { expect(:response).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
+    subject { post :cancellation, params: { section_id: section.to_param, id: training.to_param, cancellation: { reason: "TEST" } } }
+
+    it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
+    it { expect(subject && training.reload.cancelled?).to be_truthy }
   end
 
   describe "DELETE cancellation" do
@@ -108,13 +106,12 @@ describe TrainingsController, :type => :controller do
     let(:coach) { create :user, with_section_as_coach: section }
     let(:training) { create :training, with_section: section}
 
-    let(:request) { delete :uncancel, params: { section_id: section.to_param, id: training.to_param } }
+    subject { delete :uncancel, params: { section_id: section.to_param, id: training.to_param } }
 
     before { training.cancel!('for some reason') }
     before { sign_in coach }
-    before { request }
 
-    it { expect(training.reload.cancelled?).to be_falsy }
-    it { expect(:response).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
+    it { expect(subject && training.reload.cancelled?).to be_falsy }
+    it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
   end
 end

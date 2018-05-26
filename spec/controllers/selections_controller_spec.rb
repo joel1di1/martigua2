@@ -28,11 +28,9 @@ describe SelectionsController, type: :controller do
     let(:match) { create :match, day: day }
     let(:selection) { create :selection, match: match }
     let(:request_params) { { section_id: section.to_param, match_id: match.id, id: selection.id } }
-    let(:request) { delete :destroy, params: request_params }
+    subject { delete :destroy, params: request_params }
 
-    before { request }
-    it { expect(response).to redirect_to(root_path) }
-    it { expect(Selection.find_by_id(selection.id)).to be_nil }
+    it { expect(subject).to redirect_to(root_path) }
+    it { expect(subject && Selection.find_by_id(selection.id)).to be_nil }
   end
-
 end

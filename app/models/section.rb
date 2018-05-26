@@ -1,8 +1,8 @@
 class Section < ActiveRecord::Base
   belongs_to :club
 
-  has_many :team_sections, dependent: :destroy
-  has_many :teams, through: :team_sections
+  has_many :team_sections, dependent: :destroy, inverse_of: :section
+  has_many :teams, through: :team_sections, inverse_of: :sections
 
   has_many :participations, inverse_of: :section, dependent: :destroy
   has_many :users, -> { distinct }, through: :participations, inverse_of: :sections

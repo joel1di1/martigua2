@@ -1,8 +1,8 @@
 class Team < ActiveRecord::Base
   belongs_to :club
 
-  has_many :team_sections, dependent: :destroy
-  has_many :sections, through: :team_sections
+  has_many :team_sections, dependent: :destroy, inverse_of: :team
+  has_many :sections, through: :team_sections, inverse_of: :teams
 
   has_many :enrolled_team_championships
   has_many :championships, through: :enrolled_team_championships

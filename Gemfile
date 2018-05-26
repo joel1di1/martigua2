@@ -34,6 +34,7 @@ gem 'redis'
 gem 'rest-client'
 gem 'sdoc',  group: :doc
 gem 'simple_form'
+gem 'starburst', '~> 1.0'
 gem 'switch_user'
 gem 'turbolinks'
 gem 'twilio-ruby'
@@ -86,6 +87,3 @@ group :test do
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', require: false
 end
-
-# Added at 2017-12-05 00:14:17 +0100 by joel1di1:
-gem "starburst", "~> 1.0"

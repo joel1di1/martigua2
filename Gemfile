@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.5.1'
 
-gem 'rails', '~> 5.1.3'
+gem 'rails', '~> 5.2'
 gem 'coffee-rails'
 gem 'sass-rails', github: 'rails/sass-rails'
 

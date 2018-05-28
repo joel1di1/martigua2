@@ -19,7 +19,7 @@ feature 'Sign in', :devise do
   #   When I sign in with valid credentials
   #   Then I see a success message
   scenario 'user can sign in with valid credentials' do
-    user = FactoryGirl.create(:user)
+    user = FactoryBot.create(:user)
     section = create :section
     section.add_player! user
     signin(user.email, user.password)
@@ -35,7 +35,7 @@ feature 'Sign in', :devise do
   #   When I sign in with a wrong email
   #   Then I see an invalid email message
   scenario 'user cannot sign in with wrong email' do
-    user = FactoryGirl.create(:user)
+    user = FactoryBot.create(:user)
     signin('invalid@email.com', user.password)
     expect(page).to have_content 'Invalid email or password.'
   end
@@ -46,7 +46,7 @@ feature 'Sign in', :devise do
   #   When I sign in with a wrong password
   #   Then I see an invalid password message
   scenario 'user cannot sign in with wrong password' do
-    user = FactoryGirl.create(:user)
+    user = FactoryBot.create(:user)
     signin(user.email, 'invalidpass')
     expect(page).to have_content 'Invalid email or password.'
   end

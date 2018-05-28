@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :day do
     name "MyString"
     period_start_date "2015-09-12"

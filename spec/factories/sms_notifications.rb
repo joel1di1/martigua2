@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :sms_notification do
     title { Faker::Lorem.sentence(4) }
     description { Faker::Lorem.sentence(20) }

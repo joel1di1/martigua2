@@ -76,7 +76,7 @@ group :test do
 
   gem "codeclimate-test-reporter", require: nil
 
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'rspec-rails'
   gem 'rspec-its'
   gem 'capybara'

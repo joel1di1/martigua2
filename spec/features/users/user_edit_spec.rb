@@ -35,7 +35,7 @@ feature 'User edit', :devise do
     section = create :section
     me = create :user, with_section: section
     other_email = Faker::Internet::email
-    other = FactoryGirl.create(:user, email: other_email)
+    other = FactoryBot.create(:user, email: other_email)
     login_as(me, :scope => :user)
     visit edit_user_registration_path(other)
     expect(page).to have_content 'Edit User'

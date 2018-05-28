@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :training_invitation do
     training
   end

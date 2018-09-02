@@ -259,4 +259,32 @@ describe User do
       end
     end
   end
+
+  describe '.active_this_season' do
+    subject(:active_users) { User.active_this_season }
+
+    context 'with an active user' do
+      before { section.add_player! user }
+
+      it { expect(active_users.count).to eq 1 }
+
+      context 'after 14 months' do
+        before { Timecop.travel 14.months.from_now }
+
+        it { expect(active_users.count).to eq 0 }
+
+        context 'with a readded user' do
+          before { section.add_player! user }
+
+          it { expect(active_users.count).to eq 1 }
+
+          context 'then deleted' do
+            before { section.remove_member! user }
+
+            it { expect(active_users.count).to eq 0 }
+          end
+        end
+      end
+    end
+  end
 end

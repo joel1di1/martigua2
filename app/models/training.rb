@@ -32,6 +32,7 @@ class Training < ActiveRecord::Base
   def not_presents
     training_presences.includes(:user).where(present: false).map(&:user)
   end
+
   def nb_not_presents
     not_presents.count
   end
@@ -79,7 +80,7 @@ class Training < ActiveRecord::Base
   end
 
   def self.send_presence_mail_for_next_week
-    User.all.each do |user|
+    User.active_this_season.each do |user|
       next_week_trainings = user.next_week_trainings
       UserMailer.delay.send_training_invitation(next_week_trainings.to_a, user) unless next_week_trainings.empty?
     end

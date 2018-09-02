@@ -43,12 +43,12 @@ class Section < ActiveRecord::Base
     User.joins(:participations).where( participations: { season: season, section: self } ).distinct
   end
 
-  def players
-    User.joins(:participations).where( participations: { season: Season.current, role: Participation::PLAYER, section: self } )
+  def players(season=Season.current)
+    User.joins(:participations).where( participations: { season: season, role: Participation::PLAYER, section: self } )
   end
 
-  def coachs
-    User.joins(:participations).where( participations: { season: Season.current, role: Participation::COACH, section: self } )
+  def coachs(season=Season.current)
+    User.joins(:participations).where( participations: { season: season, role: Participation::COACH, section: self } )
   end
 
   def to_param
@@ -93,6 +93,18 @@ class Section < ActiveRecord::Base
 
   def championships
     teams.includes(:championships).map(&:championships).flatten.uniq
+  end
+
+  def copy_from_previous_season
+    current_season = Season.current
+    previous_season = current_season.previous
+    players(previous_season).each do |player|
+      add_player! player
+    end
+    coachs(previous_season).each do |coach|
+      add_coach! coach
+    end
+    Group.where(season: previous_season, section: self).each(&:copy_to_current_season)
   end
 
   protected

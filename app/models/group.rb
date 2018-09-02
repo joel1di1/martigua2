@@ -14,13 +14,14 @@ class Group < ActiveRecord::Base
     self
   end
 
-  def remove_user(user)
+  def remove_user!(user, systems: false)
+    raise 'You cannot remove user from system group' if !systems && system?
     users.delete(user)
   end
 
   def copy_to_current_season
-    Group.create!(section: section, season: Season.current, 
-                          name: name, system: system, users: users, 
+    Group.create!(section: section, season: Season.current,
+                          name: name, system: system, users: users,
                           color: color, description: description, role: role)
   end
 

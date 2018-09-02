@@ -70,11 +70,10 @@ class UsersController < ApplicationController
     group_id = params[:group_id]
     if group_id
       group = Group.find group_id
-      raise 'you cannot remove user from system group' if group.system?
-      group.remove_user(@user)
+      group.remove_user!(@user)
       redirect_to section_group_path(current_section, group)
     else
-      current_section.remove_member!(@user) if current_section.has_member?(@user)
+      current_section.remove_member!(@user)
       redirect_to section_users_path(current_section)
     end
   end

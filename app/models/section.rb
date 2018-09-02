@@ -73,11 +73,11 @@ class Section < ActiveRecord::Base
   end
 
   def group_everybody(season=nil)
-    _default_group(season, :everybody, 'tous les membres', '#226611')
+    _default_group(:everybody, 'tous les membres', '#226611', season)
   end
 
   def group_every_players(season=nil)
-    _default_group(season, :every_players, 'tous les joueurs', '#28c704')
+    _default_group(:every_players, 'tous les joueurs', '#28c704', season)
   end
 
   def has_member?(user)
@@ -117,7 +117,7 @@ class Section < ActiveRecord::Base
       self
     end
 
-    def _default_group(season=nil, players_role, group_name, color)
+    def _default_group(players_role, group_name, color, season=nil)
       season ||= Season.current
       group = groups.where(role: players_role, system: true, season: season).take
 

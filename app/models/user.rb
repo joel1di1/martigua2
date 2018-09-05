@@ -43,15 +43,28 @@ class User < ActiveRecord::Base
   end
 
   def present_for!(training_or_array, *other_trainings)
-    trainings = training_or_array if training_or_array.kind_of? Array
-    trainings ||= [training_or_array] + other_trainings
-    [*trainings].each{|training| TrainingPresence.create! training: training, user: self, present: true }
+    _set_presence_for!(true, training_or_array, *other_trainings)
   end
 
   def not_present_for!(training_or_array, *other_trainings)
+    _set_presence_for!(false, training_or_array, *other_trainings)
+  end
+
+  def _set_presence_for!(present, training_or_array, *other_trainings)
     trainings = training_or_array if training_or_array.kind_of? Array
     trainings ||= [training_or_array] + other_trainings
-    [*trainings].each{|training| TrainingPresence.create! training: training, user: self, present: false }
+
+    presences = {}
+    training_presences.each { |training_presence| presences[training_presence.training_id] = training_presence }
+
+    [*trainings].each do |training|
+      presence = presences[training.id]
+      if presence.nil?
+        training_presences << TrainingPresence.new(training: training, user: self, present: present)
+      else
+        presence.update present: present
+      end
+    end
   end
 
   def is_present_for?(training)

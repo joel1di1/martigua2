@@ -14,6 +14,10 @@ Rails.application.routes.draw do
       end
     end
     resources :users, path: 'members' do
+      resources :trainings, only:[] do
+        resources :training_presences, only: [:create]
+        delete 'training_presences' => 'training_presences#destroy'
+      end
       match 'training_presences', via: [:get, :post]
       match 'match_availabilities', via: [:get, :post]
     end

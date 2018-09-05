@@ -113,7 +113,7 @@ describe User do
     context 'with one training' do
       let(:training) { create :training }
 
-      let(:set_presence) { user.present_for!(training) }
+      subject(:set_presence) { user.present_for!(training) }
 
       it { expect{set_presence}.to change{TrainingPresence.count}.by(1) }
 
@@ -121,6 +121,10 @@ describe User do
         before { set_presence }
 
         it { expect(user.is_present_for?(training)).to be_truthy }
+      end
+
+      describe 'double presence set' do
+        it { expect{ 2.times { user.present_for!(training) } }.to change { TrainingPresence.count }.by(1) }
       end
     end
     context 'with two trainings' do

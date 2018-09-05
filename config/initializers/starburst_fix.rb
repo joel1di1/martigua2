@@ -1,4 +1,6 @@
-# require 'starburst/app/models/starburst/announcement'
+require 'starburst/announcement'
+
+Starburst::Announcement.count
 
 module Starburst
   Announcement.class_eval do
@@ -9,5 +11,9 @@ module Starburst
         starburst_announcement_views.user_id = ?", current_user.id]))
       .where("starburst_announcement_views.announcement_id IS NULL AND starburst_announcement_views.user_id IS NULL")
     }
+    def sanitize(value)
+      raise 'coucou'
+      ActionController::Base.helpers.sanitize(value)
+    end
   end
 end

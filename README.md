@@ -26,8 +26,8 @@ Dev Setup
 
 Pour que ça marche en local et que vous puissiez développer :
 1. sur mac c'est quand même plus facile
-2. installez (homebrew|https://brew.sh/)
-3. installez (rvm|https://rvm.io/), sauf si vous ne jure que par rbenv
+2. installez homebrew : https://brew.sh/
+3. installez rvm : https://rvm.io/  (sauf si vous ne jure que par rbenv)
 4. git clone ...
 5. il va falloir un postgres (a installer avec brew)
 6. appelez-moi :)

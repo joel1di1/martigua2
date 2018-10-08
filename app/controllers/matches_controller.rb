@@ -54,6 +54,12 @@ class MatchesController < ApplicationController
     end
   end
 
+  def destroy
+    @match = Match.find params[:id]
+    @match.destroy!
+    redirect_to referer_url_or(root_path)
+  end
+
   protected
     def match_params
       params.require(:match).permit(:visitor_team_id, :local_team_id, :start_datetime, :end_datetime,

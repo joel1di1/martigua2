@@ -9,6 +9,8 @@
         %th
         - if current_user.is_player_of?(current_section)
           %th Ma dispo
+        - if current_user.is_coach_of?(current_section)
+          %th
     %tbody
       - locals = {}
       - if defined?(championship)

@@ -58,6 +58,12 @@ class MatchesController < ApplicationController
     end
   end
 
+  def destroy
+    @match = Match.find params[:id]
+    @match.destroy!
+    redirect_to referer_url_or(root_path)
+  end
+
   protected
     def match_params
       if params[:match].present?

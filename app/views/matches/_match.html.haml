@@ -31,6 +31,13 @@
         - else
           %div.training_presence{class: 'bg-danger text-nowrap'} Non dispo !
           = link_to 'Dispo', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: [match.id]), method: :post, class: 'change_presence present text-nowrap'
+
+  - if current_user.is_coach_of?(current_section)
+    %td.link_column
+      = link_to match, :method => :delete, :data => { :confirm => 'Are you sure?' } do
+      = link_to section_day_selections_path(current_section, match.day), class: :eye_link do
+        %span.glyphicon.glyphicon-trash
+
   -# - if current_user.is_coach_of?(current_section)
   -#   %td
       -# = button_to 'Relancer les indécits', invitations_section_training_path(training, section_id: current_section), id: "training_invitations_#{match.id}", class: 'btn btn-warning btn-sm'

@@ -35,7 +35,6 @@
   - if current_user.is_coach_of?(current_section)
     %td.link_column
       = link_to match, :method => :delete, :data => { :confirm => 'Are you sure?' } do
-      = link_to section_day_selections_path(current_section, match.day), class: :eye_link do
         %span.glyphicon.glyphicon-trash
 
   -# - if current_user.is_coach_of?(current_section)

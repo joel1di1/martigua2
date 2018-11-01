@@ -60,9 +60,11 @@ group :development do
 end
 
 group :development, :test do
+  gem 'byebug'
+  gem 'foreman'
+  gem 'pry-byebug'
   gem 'pry-rails'
   gem 'pry-rescue'
-  gem 'foreman'
 end
 group :production do
   gem 'heroku-deflater'
@@ -80,6 +82,8 @@ group :test do
   gem 'rspec-rails'
   gem 'rspec-its'
   gem 'capybara'
+  gem 'capybara-select2'
+
   gem 'database_cleaner'
   gem 'faker'
   gem 'launchy'

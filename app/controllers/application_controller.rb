@@ -34,6 +34,18 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def redirect_to_with(fallback: root_path, additionnal_params: {}, use_referrer: true, **options)
+      if params[:_redirect_url].present?
+        url = params[:_redirect_url].presence
+        url += url['?'] ? '&' : '?'
+        url += URI.encode_www_form(additionnal_params)
+      else
+        url = request.referrer if use_referrer
+        url ||= fallback
+      end
+      redirect_to url, options
+    end
+
     def current_section
       @current_section ||= current_section_from_params
     end

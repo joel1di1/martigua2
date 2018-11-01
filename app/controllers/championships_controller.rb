@@ -17,14 +17,11 @@ class ChampionshipsController < ApplicationController
       if params[:default_team_id].present?
         @championship.enroll_team! Team.find_by_id(params[:default_team_id])
       end
-      if params[:redirect_to].present?
-        redirect_url = params[:redirect_to].presence
-        redirect_url += '&'
-        redirect_url += URI.encode_www_form('match[championship_id]' => @championship.id)
-      else
-        redirect_url =  section_championship_path(current_section, @championship)
-      end
-      redirect_to redirect_url, notice: 'Compétition créée'
+
+      redirect_to_with additionnal_params: {'match[championship_id]' => @championship.id},
+                       fallback: section_championship_path(current_section, @championship),
+                       use_referrer: false,
+                       notice: 'Compétition créée'
     else
       render :new
     end

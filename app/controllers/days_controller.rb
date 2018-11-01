@@ -4,13 +4,10 @@ class DaysController < InheritedResources::Base
   def create
     @day = Day.new day_params
     @day.save!
-    redirect_to(
-      referer_url_or(
-        section_days_path(current_section),
-        additionnal_params: {'match[day_id]' => @day.id}
-      ),
-      notice: 'Journée créée'
-    )
+
+    redirect_to_with(fallback: section_days_path(current_section),
+                     additionnal_params: {'match[day_id]' => @day.id},
+                     notice: 'Journée créée')
   end
 
   protected

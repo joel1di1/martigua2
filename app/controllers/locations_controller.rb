@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
   def create
     @location = Location.create! location_params
 
-    redirect_to referer_url_or(root_path, additionnal_params: { 'match[location_id]': @location.id }), notice: 'Lieu créé'
+    redirect_to_with additionnal_params: { 'match[location_id]': @location.id }, notice: 'Lieu créé'
   end
 
   private

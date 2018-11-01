@@ -37,7 +37,7 @@
     = f.submit 'next'
 
   %a(href="#new-day-collapse" data-toggle="collapse")
-    Rajouter une journée
+    Ajouter une journée
 
   #new-day-collapse.row.collapse
     .col-md-6.col-xs-12
@@ -45,6 +45,7 @@
       = simple_form_for [current_section, @new_day] do |f|
         = f.error_notification
         .form-inputs
+          = hidden_field_tag :_redirect_url, request.original_url
           = f.input :period_start_date, as: :string, input_html: { class: 'newday-psd' }
           = f.input :name, input_html: { 'data-default-name' => @new_day.name }
           = f.hidden_field :calendar_id
@@ -61,7 +62,7 @@
     = f.submit 'next'
 
   %a(href="#new-location-collapse" data-toggle="collapse")
-    Rajouter un lieu
+    Ajouter un lieu
 
   #new-location-collapse.row.collapse
     .col-md-6.col-xs-12
@@ -69,6 +70,7 @@
       = simple_form_for [current_section, @new_location] do |f|
         = f.error_notification
         .form-inputs
+          = hidden_field_tag :_redirect_url, request.original_url
           = f.input :name
           = f.input :address
         .form-actions
@@ -85,7 +87,7 @@
     = f.submit 'next'
 
   %a(href="#new-location-collapse" data-toggle="collapse")
-    Rajouter une équipe
+    Ajouter une équipe
 
   #new-location-collapse.row.collapse
     .col-md-6.col-xs-12
@@ -94,6 +96,7 @@
         = hidden_field_tag :championship_id, params[:championship_id]
         = f.error_notification
         .form-inputs
+          = hidden_field_tag :_redirect_url, request.original_url
           = f.input :name
         .form-actions
           = f.button :submit

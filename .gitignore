@@ -69,3 +69,4 @@ pickle-email-*.html
 .powenv
 SSL/*
 /google_client_secret.json
+/.byebug_history

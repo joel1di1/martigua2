@@ -1,6 +1,6 @@
 = simple_form_for [current_section, @championship] do |f|
   = f.error_notification
-  = hidden_field_tag :redirect_to, request.original_url
+  = hidden_field_tag :_redirect_url, request.original_url
   = hidden_field_tag :default_team_id, params[:section_team_id]
   .form-inputs
     = f.input :name

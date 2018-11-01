@@ -5,7 +5,7 @@
         %h3.panel-title
           Prochains matchs
           - if current_user.is_coach_of?(current_section)
-            = link_to new_section_match_path(current_section), class: 'btn btn-xs btn-default' do
+            = link_to new_section_match_path(current_section), id: 'add-match', class: 'btn btn-xs btn-default' do
               %span.glyphicon.glyphicon-plus
 
       .panel-body

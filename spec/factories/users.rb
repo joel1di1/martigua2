@@ -23,12 +23,21 @@ FactoryBot.define do
       evaluator.with_section_as_coach.add_coach!(user) if evaluator.with_section_as_coach
       evaluator.with_group.add_user!(user) if evaluator.with_group
     end
-
   end
 
   factory :one_section_player, parent: :user do
     after(:create) do |user|
       create :participation, :player, user: user
+    end
+  end
+
+  factory :coach, parent: :user do
+    after(:create) do |coach|
+      create :participation, :coach, user: coach
+      2.times do
+        section = coach.sections.first
+        section.teams << create(:team, club: section.club)
+      end
     end
   end
 end

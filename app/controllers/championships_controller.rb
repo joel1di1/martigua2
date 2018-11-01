@@ -7,7 +7,6 @@ class ChampionshipsController < ApplicationController
   end
 
   def new
-    prepare_form
     @championship = Championship.new championship_params
   end
 
@@ -15,7 +14,17 @@ class ChampionshipsController < ApplicationController
     @championship = Championship.new championship_params
     @championship.season = Season.current
     if @championship.save
-      redirect_to section_championship_path(current_section, @championship), notice: 'Compétition créée'
+      if params[:default_team_id].present?
+        @championship.enroll_team! Team.find_by_id(params[:default_team_id])
+      end
+      if params[:redirect_to].present?
+        redirect_url = params[:redirect_to].presence
+        redirect_url += '&'
+        redirect_url += URI.encode_www_form('match[championship_id]' => @championship.id)
+      else
+        redirect_url =  section_championship_path(current_section, @championship)
+      end
+      redirect_to redirect_url, notice: 'Compétition créée'
     else
       render :new
     end
@@ -25,7 +34,6 @@ class ChampionshipsController < ApplicationController
   end
 
   def edit
-    prepare_form
   end
 
   def update
@@ -50,10 +58,5 @@ class ChampionshipsController < ApplicationController
       @championship = Championship.find params[:id]
     rescue ActiveRecord::RecordNotFound
       handle_404
-    end
-
-    def prepare_form
-      season = @championship ? @championship.season : Season.current
-      @calendars = Calendar.where(season: season)
     end
 end

@@ -1,13 +1,17 @@
 class MatchesController < ApplicationController
   def new
-    @championship = Championship.find(params[:championship_id])
-    @match = Match.new params[:match]
+    @section_team = Team.find_by_id(params[:section_team_id])
+    @match = Match.new match_params
+    @championship = @match.championship || Championship.new
+
+    if params[:adversary_team_id].present? && @championship.persisted?
+      @championship.enroll_team! Team.find_by_id(params[:adversary_team_id])
+    end
   end
 
   def create
-    @championship = Championship.find(params[:championship_id])
+    @championship = Championship.find(params[:match][:championship_id])
     @match = Match.new match_params
-    @match.championship = @championship
     if @match.save
       redirect_to section_championship_path(current_section, @championship)
     else
@@ -56,8 +60,13 @@ class MatchesController < ApplicationController
 
   protected
     def match_params
-      params.require(:match).permit(:visitor_team_id, :local_team_id, :start_datetime, :end_datetime,
-                                    :meeting_datetime, :meeting_location, :location_id, :local_score, :visitor_score, :day_id)
+      if params[:match].present?
+        params.require(:match).permit(:visitor_team_id, :local_team_id, :start_datetime, :end_datetime,
+                                    :meeting_datetime, :meeting_location, :location_id, :local_score, :visitor_score,
+                                    :day_id, :championship_id)
+      else
+        {}
+      end
     end
 end
 

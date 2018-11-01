@@ -26,4 +26,7 @@ $(document).on('turbolinks:load', function() {
     closeText: 'OK',
     parse: 'loose',
   });
+
+  $('.select2').select2();
+
 });

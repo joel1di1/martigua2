@@ -44,6 +44,8 @@ Rails.application.routes.draw do
     end
     resources :calendars, only: [:index, :create, :edit, :update]
     resources :days, only: [:create]
+    resources :locations, only: [:create]
+    resources :teams, only: [:create]
   end
 
   resources :club_admin_roles, only: [:index, :show]

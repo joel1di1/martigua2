@@ -22,10 +22,12 @@ class ApplicationController < ActionController::Base
 
   protected
 
-    def referer_url_or(default_path)
+    def referer_url_or(default_path, additionnal_params: {})
       referrer = request.referrer
       if referrer &&
          referrer.match(Rails.application.config.action_mailer.default_url_options[:host])
+        referrer += '&'
+        referrer += URI.encode_www_form(additionnal_params)
         referrer
       else
         default_path

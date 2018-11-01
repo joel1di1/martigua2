@@ -8,6 +8,15 @@ class Championship < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :season
 
+  scope :of_current_season, -> { where(season: Season.current) }
+
+  after_initialize :init
+  before_create :ensure_calendar
+
+  def init
+    self.season = Season.current
+  end
+
   def enroll_team!(team)
     teams << team unless teams.include?(team)
     self
@@ -22,4 +31,10 @@ class Championship < ActiveRecord::Base
     teams
   end
 
+  private
+    def ensure_calendar
+      return if calendar.present?
+
+      self.calendar = Calendar.create!(season: self.season, name: self.name)
+    end
 end

@@ -19,7 +19,7 @@ development:
   database: martigua2_development
   pool:     5
   username: joel1di1
-  password: 
+  password:
   template: template0
 
 
@@ -43,10 +43,14 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  adapter: sqlite3
-  database: db/martigua2_test.sqlite3
-  pool: 5
-  timeout: 5000
+  adapter:  postgresql
+  host:     localhost
+  encoding: unicode
+  database: martigua2_test
+  pool:     5
+  username: joel1di1
+  password:
+  template: template0
 
 production:
   adapter:  postgresql
@@ -55,5 +59,5 @@ production:
   database: martigua2_production
   pool:     5
   username: joel1di1
-  password: 
+  password:
   template: template0

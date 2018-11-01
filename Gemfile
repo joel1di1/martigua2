@@ -73,9 +73,6 @@ group :production do
   gem 'rails_12factor'
 end
 group :test do
-  gem "sqlite3", :platform => [:ruby, :mswin, :mingw]
-  gem "jdbc-sqlite3", :platform => :jruby
-
   gem "codeclimate-test-reporter", require: nil
 
   gem 'factory_bot_rails'

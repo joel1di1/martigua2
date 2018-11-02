@@ -7,8 +7,8 @@ FactoryBot.define do
     location
 
     transient do
-      with_section nil
-      with_group nil
+      with_section { nil }
+      with_group { nil }
     end
 
     after(:create) do |training, evaluator|

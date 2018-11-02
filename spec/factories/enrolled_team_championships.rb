@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :enrolled_team_championship do
-    team nil
-    championship nil
+    team { nil }
+    championship { nil }
   end
 end

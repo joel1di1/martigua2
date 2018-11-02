@@ -6,7 +6,7 @@ FactoryBot.define do
     name { Faker::Company.name }
 
     transient do
-      with_section nil
+      with_section { nil }
     end
 
     after(:create) do |team, evaluator|

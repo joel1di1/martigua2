@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :club_admin_role do
     club
     user
-    name ClubAdminRole::ADMIN
+    name { ClubAdminRole::ADMIN }
   end
 end

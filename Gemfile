@@ -54,6 +54,7 @@ group :development do
   gem 'rb-fchange', :require=>false
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
+  gem 'rubocop-rspec'
   gem 'spring'
   gem 'spring-commands-rspec'
   gem 'web-console'

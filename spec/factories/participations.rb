@@ -7,10 +7,10 @@ FactoryBot.define do
     season { Season.current }
     role { [Participation::PLAYER, Participation::COACH].sample }
     trait :coach do
-      role Participation::COACH
+      role { Participation::COACH }
     end
     trait :player do
-      role Participation::PLAYER
+      role { Participation::PLAYER }
     end
   end
 end

@@ -16,6 +16,6 @@ feature 'Add training', :devise do
 
     select(location.name, :from => 'training_location_id')
 
-    expect { click_button('Ajouter l\'entrainement') }.to change { Training.count }.by(1)
+    expect { click_button('Ajouter l\'entrainement') }.to change(Training, :count).by(1)
   end
 end

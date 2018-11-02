@@ -10,6 +10,7 @@ RSpec.describe UserMailer, :type => :mailer do
 
     context 'with 1 training' do
       let(:trainings) { training_1 }
+
       it { expect(mail.body).to match(training_1.start_datetime.strftime("%A %-d %HH%M")) }
     end
   end

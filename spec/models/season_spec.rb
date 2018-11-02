@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Season, :type => :model do
   let(:season) { create :season }
+
   it { should have_many :participations }
   it { should have_many :calendars }
   it { should have_many :championships }
@@ -15,7 +16,9 @@ RSpec.describe Season, :type => :model do
 
     context 'with only one season' do
       subject { Season.current }
+
       let!(:only_season) { create :season, start_date: Date.today - 1.month }
+
       it { should eq only_season }
     end
 
@@ -29,6 +32,7 @@ RSpec.describe Season, :type => :model do
 
     context 'with no season' do
       subject { Season.current }
+
       it { should_not be_nil }
     end
   end
@@ -39,6 +43,7 @@ RSpec.describe Season, :type => :model do
 
   describe '#previous' do
     subject { Season.current.previous }
+
     it { expect(subject.start_date).to eq (Season.current.start_date - 1.year) }
   end
 end

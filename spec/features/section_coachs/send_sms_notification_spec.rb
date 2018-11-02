@@ -20,7 +20,7 @@ feature 'send sms notification', :devise do
     fill_in 'sms_notification[title]', with: sms_notification.title
     fill_in 'sms_notification[description]', with: sms_notification.description
 
-    expect { click_button('Envoyer') }.to change { SmsNotification.count }.by(1)
+    expect { click_button('Envoyer') }.to change(SmsNotification, :count).by(1)
   end
 
   scenario 'section simple member sign in and do not see sms notifications' do

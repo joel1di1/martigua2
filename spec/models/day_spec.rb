@@ -18,11 +18,13 @@ RSpec.describe Day, :type => :model do
 
       context 'and end_date not set' do
         let(:end_date) { nil }
+
         it { is_expected.to eq (start_date + 1) }
       end
 
       context 'and end_date set' do
         let(:end_date) { Date.parse("2010-09-12") }
+
         it { is_expected.to eq (end_date) }
       end
     end
@@ -32,11 +34,13 @@ RSpec.describe Day, :type => :model do
 
       context 'and end_date not nil' do
         let(:end_date) { Date.parse("2010-09-12") }
+
         it { is_expected.to eq end_date }
       end
 
       context 'and end_date nil' do
         let(:end_date) { nil }
+
         it { is_expected.to eq nil }
       end
     end
@@ -62,6 +66,7 @@ RSpec.describe Day, :type => :model do
 
       context 'and end_date set' do
         let(:params) { { period_start_date: new_start_date, period_end_date: new_end_date } }
+
         it { is_expected.to eq new_end_date }
       end
     end
@@ -69,11 +74,13 @@ RSpec.describe Day, :type => :model do
     context 'with start_date not set' do
       context 'and end_date not set' do
         let(:params) { {} }
+
         it { is_expected.to eq old_end_date }
       end
 
       context 'and end_date set' do
         let(:params) { { period_end_date: new_end_date } }
+
         it { is_expected.to eq new_end_date }
       end
     end

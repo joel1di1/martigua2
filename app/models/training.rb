@@ -67,7 +67,7 @@ class Training < ActiveRecord::Base
     end
   end
 
-  def cancel!(reason = "Raison inconnue")
+  def cancel!(reason: "Raison inconnue")
     self.cancelled = true
     self.cancel_reason = reason
     save!
@@ -86,7 +86,7 @@ class Training < ActiveRecord::Base
     end
   end
 
-  def self.of_next_week(section = nil, date = DateTime.now)
+  def self.of_next_week(section: nil, date: DateTime.now)
     start_period = date.next_week
     end_period = start_period.end_of_week
     trainings = Training.with_start_between(start_period, end_period)

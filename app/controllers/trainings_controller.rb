@@ -45,7 +45,7 @@ class TrainingsController < ApplicationController
   end
 
   def cancellation
-    @training.cancel!(params[:cancellation][:reason])
+    @training.cancel!(reason: params[:cancellation][:reason])
     redirect_to referer_url_or(section_training_path(current_section, @training))
   end
 

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Section, :type => :model do
   let(:section) { create :section }
+
   it { should validate_presence_of :club }
   it { should validate_presence_of :name }
   it { should have_many :teams }
@@ -12,6 +13,7 @@ RSpec.describe Section, :type => :model do
 
   describe '#add_player!' do
     subject { section.add_player!(user) }
+
     let(:user) { create :user }
 
     context 'with a new player' do
@@ -40,6 +42,7 @@ RSpec.describe Section, :type => :model do
 
   describe '#add_coach!' do
     subject { section.add_coach!(user) }
+
     let(:user) { create :user }
 
     context 'with a new user' do
@@ -83,11 +86,12 @@ RSpec.describe Section, :type => :model do
         user
       end
 
-      it { expect { invite_user }.to change { SectionUserInvitation.count }.by(1) }
+      it { expect { invite_user }.to change(SectionUserInvitation, :count).by(1) }
       it { expect { invite_user }.to change { section.section_user_invitations.reload.count }.by(1) }
 
       context 'invite player' do
         let(:roles) { Participation::PLAYER }
+
         it 'add user as a section player' do
           user = invite_user
           expect(user.is_player_of?(section)).to eq true
@@ -95,11 +99,13 @@ RSpec.describe Section, :type => :model do
       end
 
       context 'with new user' do
-        it { expect { invite_user }.to change { User.count }.by(1) }
+        it { expect { invite_user }.to change(User, :count).by(1) }
       end
+
       context 'with already known user' do
         before { User.create!(user_params) }
-        it { expect { invite_user }.to change { User.count }.by(0) }
+
+        it { expect { invite_user }.to change(User, :count).by(0) }
       end
     end
 
@@ -167,6 +173,7 @@ RSpec.describe Section, :type => :model do
 
     context 'with user in section' do
       before { section.add_player! user }
+
       before { group.add_user! user }
 
       before { remove_user! }
@@ -176,9 +183,12 @@ RSpec.describe Section, :type => :model do
       it { expect(section.group_every_players.users.include?(user)).to be_falsy }
       it { expect(group.users.reload.include?(user)).to be_falsy }
     end
+
     context 'with user in section for a specific season' do
       let(:other_season) { create :season, start_date: 2.years.ago }
+
       before { section.add_player! user, season: other_season }
+
       before { section.add_player! user }
 
       before { remove_user! }
@@ -214,11 +224,13 @@ RSpec.describe Section, :type => :model do
 
     context 'without specify season' do
       subject { section.members }
+
       it { is_expected.to match_array current_season_members }
     end
 
     context 'with specified season' do
       subject { section.members(season: previous_season) }
+
       it { is_expected.to match_array previous_season_members }
     end
   end

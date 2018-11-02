@@ -6,6 +6,12 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
+# Offense count: 2
+Airbnb/DefaultScope:
+  Exclude:
+    - 'app/models/training.rb'
+    - 'app/models/user.rb'
+
 # Offense count: 1
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:
@@ -53,94 +59,6 @@ Lint/UselessAssignment:
 RSpec/EmptyExampleGroup:
   Exclude:
     - 'spec/controllers/participations_renewal_controller_spec.rb'
-
-# Offense count: 32
-# Cop supports --auto-correct.
-RSpec/EmptyLineAfterExampleGroup:
-  Exclude:
-    - 'spec/controllers/ping_controller_spec.rb'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/controllers/visitors_controller_spec.rb'
-    - 'spec/models/championship_spec.rb'
-    - 'spec/models/club_spec.rb'
-    - 'spec/models/match_spec.rb'
-    - 'spec/models/section_spec.rb'
-    - 'spec/models/training_spec.rb'
-    - 'spec/models/user_spec.rb'
-
-# Offense count: 35
-# Cop supports --auto-correct.
-RSpec/EmptyLineAfterFinalLet:
-  Exclude:
-    - 'spec/controllers/matches_controller_spec.rb'
-    - 'spec/controllers/ping_controller_spec.rb'
-    - 'spec/controllers/section_user_invitations_controller_spec.rb'
-    - 'spec/controllers/selections_controller_spec.rb'
-    - 'spec/controllers/trainings_controller_spec.rb'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/controllers/visitors_controller_spec.rb'
-    - 'spec/mailers/user_mailer_spec.rb'
-    - 'spec/models/day_spec.rb'
-    - 'spec/models/season_spec.rb'
-    - 'spec/models/section_spec.rb'
-    - 'spec/models/training_spec.rb'
-    - 'spec/models/user_spec.rb'
-
-# Offense count: 25
-# Cop supports --auto-correct.
-RSpec/EmptyLineAfterHook:
-  Exclude:
-    - 'spec/controllers/ping_controller_spec.rb'
-    - 'spec/controllers/sections_controller_spec.rb'
-    - 'spec/controllers/selections_controller_spec.rb'
-    - 'spec/controllers/trainings_controller_spec.rb'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/models/championship_spec.rb'
-    - 'spec/models/club_spec.rb'
-    - 'spec/models/match_spec.rb'
-    - 'spec/models/section_spec.rb'
-    - 'spec/models/training_spec.rb'
-    - 'spec/models/user_spec.rb'
-
-# Offense count: 10
-# Cop supports --auto-correct.
-RSpec/EmptyLineAfterSubject:
-  Exclude:
-    - 'spec/controllers/ping_controller_spec.rb'
-    - 'spec/models/season_spec.rb'
-    - 'spec/models/section_spec.rb'
-    - 'spec/models/training_spec.rb'
-    - 'spec/models/user_spec.rb'
-
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: CustomTransform, IgnoredWords.
-RSpec/ExampleWording:
-  Exclude:
-    - 'spec/controllers/sms_notifications_controller_spec.rb'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/jobs/send_sms_job_spec.rb'
-    - 'spec/models/selection_spec.rb'
-    - 'spec/models/sms_notification_spec.rb'
-    - 'spec/models/training_invitation_spec.rb'
-
-# Offense count: 21
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: method_call, block
-RSpec/ExpectChange:
-  Exclude:
-    - 'spec/controllers/groups_controller_spec.rb'
-    - 'spec/controllers/matches_controller_spec.rb'
-    - 'spec/controllers/section_user_invitations_controller_spec.rb'
-    - 'spec/controllers/sms_notifications_controller_spec.rb'
-    - 'spec/features/matches/add_match_spec.rb'
-    - 'spec/features/section_coachs/add_training_spec.rb'
-    - 'spec/features/section_coachs/invite_user_spec.rb'
-    - 'spec/features/section_coachs/send_sms_notification_spec.rb'
-    - 'spec/models/section_spec.rb'
-    - 'spec/models/training_spec.rb'
-    - 'spec/models/user_spec.rb'
 
 # Offense count: 6
 RSpec/ExpectInHook:

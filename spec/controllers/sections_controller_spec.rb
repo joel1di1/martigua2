@@ -30,6 +30,7 @@ describe SectionsController, :type => :controller do
 
   describe 'GET show' do
     before { sign_in user }
+
     before { expect_any_instance_of(Section).to receive(:next_trainings).and_return(:next_trainings_mock) }
 
     before { get :show, params: { id: section.to_param } }

@@ -9,6 +9,7 @@ describe MatchesController, :type => :controller do
 
   describe 'GET new' do
     let(:do_request) { get :new, params: { section_id: section, championship_id: championship } }
+
     before { do_request }
 
     it { expect(response).to have_http_status(:success) }
@@ -36,7 +37,7 @@ describe MatchesController, :type => :controller do
     context 'with json' do
       let(:format) { :json }
 
-      it { expect { do_request }.to change { Selection.count }.by(1) }
+      it { expect { do_request }.to change(Selection, :count).by(1) }
     end
   end
 end

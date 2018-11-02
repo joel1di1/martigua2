@@ -23,13 +23,13 @@ describe SmsNotificationsController, :type => :controller do
 
     before { SmsNotification.delete_all }
 
-    it "should respond success" do
+    it "responds success" do
       do_request
       expect(response).to redirect_to(new_section_sms_notification_path(section))
     end
 
-    it "should create a new SMS notification" do
-      expect { do_request }.to change { SmsNotification.count }
+    it "creates a new SMS notification" do
+      expect { do_request }.to change(SmsNotification, :count)
     end
 
     # describe "sms notification created" do

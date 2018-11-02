@@ -18,7 +18,7 @@ RSpec.describe TrainingInvitation, :type => :model do
 
     let(:training) { create :training, with_section: section, with_group: group }
 
-    it 'should send mails to undecided users' do
+    it 'sends mails to undecided users' do
       expect { create :training_invitation, training: training }.to change { ActionMailer::Base.deliveries.count }.by(3)
     end
   end

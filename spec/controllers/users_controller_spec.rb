@@ -47,12 +47,14 @@ describe UsersController, :type => :controller do
 
     context 'within section' do
       let!(:old_password) { user.password }
+
       before do
         sign_in user
         patch :update, params: { id: user.to_param, section_id: section.to_param, user: new_attributes }
         user.reload
       end
-      it 'should update user' do
+
+      it 'updates user' do
         expect(user.first_name).to eq new_attributes[:first_name]
         expect(user.last_name).to eq new_attributes[:last_name]
         expect(user.nickname).to eq new_attributes[:nickname]
@@ -61,19 +63,20 @@ describe UsersController, :type => :controller do
         expect(user.valid_password?(old_password)).to eq true
       end
 
-      it 'should redirect_to section user path' do
+      it 'redirect_toes section user path' do
         expect(response).to redirect_to(section_user_path(user, section_id: section.to_param))
       end
     end
 
     context 'within no section' do
       let!(:old_password) { user.password }
+
       before do
         sign_in user
         patch :update, params: { id: user.to_param, user: new_attributes }, flash: nil
       end
 
-      it 'should redirect_to user path' do
+      it 'redirect_toes user path' do
         expect(response).to redirect_to(user_path(user))
       end
     end
@@ -93,7 +96,7 @@ describe UsersController, :type => :controller do
 
     before { post_training_presences }
 
-    it 'should update training presences' do
+    it 'updates training presences' do
       expect(user.reload.is_present_for?(training_1)).to be_truthy
       expect(user.reload.is_present_for?(training_2)).to be_falsy
     end
@@ -114,6 +117,7 @@ describe UsersController, :type => :controller do
         it { expect(response).to redirect_to(section_users_path(section)) }
       end
     end
+
     context 'from section group' do
       let(:group) { create :group, section: section }
 

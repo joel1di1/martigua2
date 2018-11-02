@@ -1,6 +1,7 @@
 describe User do
   let(:user) { create :user }
   let(:section) { create :section }
+
   it { should validate_presence_of :email }
   it { should have_db_column :first_name }
   it { should have_db_column :last_name }
@@ -25,19 +26,25 @@ describe User do
     context 'user with no section' do
       it { should eq false }
     end
+
     context 'user with two sections' do
       let!(:participation_1) { create :participation, user: user }
       let!(:participation_2) { create :participation, user: user }
+
       it { should eq false }
     end
+
     context 'user with one section' do
       let!(:participation_1) { create :participation, user: user }
+
       it { should eq true }
     end
+
     context 'user with two participations on one section' do
       let(:section) { create :section }
       let!(:participation_1) { create :participation, user: user, section: section, role: Participation::PLAYER }
       let!(:participation_2) { create :participation, user: user, section: section, role: Participation::COACH }
+
       it { should eq true }
     end
   end
@@ -48,42 +55,52 @@ describe User do
     context 'with a user not in the section' do
       it { should eq false }
     end
+
     context 'with a player of the section' do
       before { section.add_player!(user) }
 
       it { should eq false }
     end
+
     context 'with a coach of the section' do
       before { section.add_coach!(user) }
 
       it { should eq true }
     end
+
     context 'with a last year coach of the section' do
       let(:previous_season) { create :season, start_date: 2.years.ago }
+
       before { section.add_coach!(user, season: previous_season) }
 
       it { should be_falsy }
     end
   end
+
   describe '#is_player_of?' do
     subject { user.is_player_of?(section) }
+
     let(:section) { create :section }
 
     context 'with a player not in the section' do
       it { should eq false }
     end
+
     context 'with a player of the section' do
       before { section.add_player!(user) }
 
       it { should eq true }
     end
+
     context 'with a coach of the section' do
       before { section.add_coach!(user) }
 
       it { should eq false }
     end
+
     context 'with a last year player of the section' do
       let(:previous_season) { create :season, start_date: 2.years.ago }
+
       before { section.add_player!(user, season: previous_season) }
 
       it { should be_falsy }
@@ -106,9 +123,10 @@ describe User do
   describe '#present_for!' do
     context 'with one training' do
       subject(:set_presence) { user.present_for!(training) }
+
       let(:training) { create :training }
 
-      it { expect { set_presence }.to change { TrainingPresence.count }.by(1) }
+      it { expect { set_presence }.to change(TrainingPresence, :count).by(1) }
 
       describe 'user availability' do
         before { set_presence }
@@ -117,9 +135,10 @@ describe User do
       end
 
       describe 'double presence set' do
-        it { expect { 2.times { user.present_for!(training) } }.to change { TrainingPresence.count }.by(1) }
+        it { expect { 2.times { user.present_for!(training) } }.to change(TrainingPresence, :count).by(1) }
       end
     end
+
     context 'with two trainings' do
       let(:training_1) { create :training }
       let(:training_2) { create :training }
@@ -127,12 +146,13 @@ describe User do
       context 'passed as array' do
         let(:set_presence) { user.present_for!([training_1, training_2]) }
 
-        it { expect { set_presence }.to change { TrainingPresence.count }.by(2) }
+        it { expect { set_presence }.to change(TrainingPresence, :count).by(2) }
       end
+
       context 'passed as params' do
         let(:set_presence) { user.present_for!(training_1, training_2) }
 
-        it { expect { set_presence }.to change { TrainingPresence.count }.by(2) }
+        it { expect { set_presence }.to change(TrainingPresence, :count).by(2) }
       end
     end
   end
@@ -149,11 +169,13 @@ describe User do
 
       it { expect(user.is_present_for?(training)).to be_nil }
     end
+
     context 'without a true response' do
       let!(:training_presence) { create :training_presence, training: training, user: user, present: true }
 
       it { expect(user.is_present_for?(training)).to be_truthy }
     end
+
     context 'without a false response' do
       let!(:training_presence) { create :training_presence, training: training, user: user, present: false }
 
@@ -167,6 +189,7 @@ describe User do
     context 'with other club' do
       it { expect(user.is_admin_of?(club)).to be_falsy }
     end
+
     context 'with club as admin' do
       before { club.add_admin!(user) }
 
@@ -218,17 +241,22 @@ describe User do
 
   describe '#is_available_for?' do
     subject { user.is_available_for?(match) }
+
     let(:match) { create :match }
 
     context 'when player has not respond' do
       it { is_expected.to be_falsy }
     end
+
     context 'when player has responded no' do
       before { MatchAvailability.create! user: user, match: match, available: false }
+
       it { is_expected.to be_falsy }
     end
+
     context 'when player has responded yes' do
       before { MatchAvailability.create! user: user, match: match, available: true }
+
       it { is_expected.to be_truthy }
     end
   end
@@ -236,20 +264,28 @@ describe User do
   describe '.create' do
     describe '#format_phone_number' do
       subject { create(:user, phone_number: phone_number).phone_number }
+
       context 'with phone number 0123456789' do
         let(:phone_number) { "0123456789" }
+
         it { is_expected.to eq '01 23 45 67 89' }
       end
+
       context 'with phone number \'01 23 45 67 89\'' do
         let(:phone_number) { "01 23 45 67 89" }
+
         it { is_expected.to eq '01 23 45 67 89' }
       end
+
       context 'with phone number \' 01  2345 67 89 \'' do
         let(:phone_number) { ' 01  2345 67 89 ' }
+
         it { is_expected.to eq '01 23 45 67 89' }
       end
+
       context 'with phone number \'+33(0)1 23-45-67\t89\'' do
         let(:phone_number) { '+33(0)1 23-45-67\t89' }
+
         it { is_expected.to eq '+33(0)1 23-45-67\t89' }
       end
     end

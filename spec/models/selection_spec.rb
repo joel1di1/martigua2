@@ -16,7 +16,7 @@ RSpec.describe Selection, :type => :model do
       let(:user) { create :user }
       let!(:previous_selection) { create :selection, user: user, match: match_1, team: match_1.local_team }
 
-      it 'should delete old selections' do
+      it 'deletes old selections' do
         expect(Selection.where(user: user, match: [match_1, match_2])).to eq [previous_selection]
         new_selection = Selection.create! user: user, team: match_2.local_team, match: match_2
         expect(Selection.where(user: user, match: [match_1, match_2])).to eq [new_selection]

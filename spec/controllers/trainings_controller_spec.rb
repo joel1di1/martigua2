@@ -20,6 +20,7 @@ describe TrainingsController, :type => :controller do
         let!(:training_not_in_section) { create :training }
 
         before { sign_in user }
+
         before { request }
 
         it { expect(assigns[:trainings]).to match_array([training_1, training_2]) }
@@ -35,6 +36,7 @@ describe TrainingsController, :type => :controller do
       let(:request_params) { { section_id: section.to_param, id: training.id } }
 
       before { sign_in user }
+
       before { request }
 
       it { expect(response).to have_http_status(:success) }
@@ -65,6 +67,7 @@ describe TrainingsController, :type => :controller do
 
       describe 'effects' do
         let(:request) { post :create, params: request_params }
+
         it { expect { request }.to change { section.trainings.count }.by(1) }
       end
 
@@ -108,7 +111,8 @@ describe TrainingsController, :type => :controller do
     let(:coach) { create :user, with_section_as_coach: section }
     let(:training) { create :training, with_section: section }
 
-    before { training.cancel!('for some reason') }
+    before { training.cancel!(reason: 'for some reason') }
+
     before { sign_in coach }
 
     it { expect(subject && training.reload.cancelled?).to be_falsy }

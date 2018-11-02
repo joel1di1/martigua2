@@ -26,12 +26,12 @@ class User < ActiveRecord::Base
     sections.count == 1
   end
 
-  def is_coach_of?(section, season = nil)
-    is_member_of? section, Participation::COACH, season
+  def is_coach_of?(section, season: nil)
+    is_member_of? section, Participation::COACH, season: season
   end
 
-  def is_player_of?(section, season = nil)
-    is_member_of? section, Participation::PLAYER, season
+  def is_player_of?(section, season: nil)
+    is_member_of? section, Participation::PLAYER, season: season
   end
 
   def display_participations
@@ -106,7 +106,7 @@ class User < ActiveRecord::Base
     self.authentication_token ||= SecureRandom.urlsafe_base64(32)
   end
 
-  def is_member_of?(section, role, season = nil)
+  def is_member_of?(section, role, season: nil)
     season ||= Season.current
     participations.where(section: section, role: role, season: season).count > 0
   end

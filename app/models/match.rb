@@ -76,7 +76,7 @@ class Match < ActiveRecord::Base
     end
   end
 
-  def self.of_next_weekend(date = DateTime.now)
+  def self.of_next_weekend(date: DateTime.now)
     start_period = date.at_beginning_of_week
     end_period = start_period.at_end_of_week
     Match.with_start_between(start_period, end_period)

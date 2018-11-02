@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
   end
 
   def _set_presence_for!(present, training_or_array, *other_trainings)
-    trainings = training_or_array if training_or_array.kind_of? Array
+    trainings = training_or_array if training_or_array.is_a? Array
     trainings ||= [training_or_array] + other_trainings
 
     presences = {}

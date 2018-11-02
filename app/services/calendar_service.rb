@@ -114,7 +114,7 @@ class CalendarService
       url = authorizer.get_authorization_url(
         base_url: OOB_URI
       )
-      puts "Open the following URL in the browser and enter the " +
+      puts "Open the following URL in the browser and enter the " \
            "resulting code after authorization"
       puts url
       code = gets

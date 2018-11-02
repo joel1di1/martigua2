@@ -27,7 +27,7 @@ feature 'User profile page', :devise do
   #   Then I see an 'access denied' message
   scenario "user cannot see another user's profile" do
     me = FactoryBot.create(:user)
-    other_email = Faker::Internet::email
+    other_email = Faker::Internet.email
     other = FactoryBot.create(:user, email: other_email)
     login_as(me, :scope => :user)
     Capybara.current_session.driver.header 'Referer', root_path

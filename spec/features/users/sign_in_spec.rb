@@ -8,7 +8,7 @@ feature 'Sign in', :devise do
   #   When I sign in with valid credentials
   #   Then I see an invalid credentials message
   scenario 'user cannot sign in if not registered' do
-    signin(Faker::Internet::email, 'please123')
+    signin(Faker::Internet.email, 'please123')
     expect(page).to have_content 'Invalid email or password.'
   end
 

@@ -17,7 +17,7 @@ feature 'User edit', :devise do
   scenario 'user changes email address' do
     section = create :section
     user = create :user, with_section: section
-    new_email = Faker::Internet::email
+    new_email = Faker::Internet.email
     login_as(user, :scope => :user)
     visit edit_user_registration_path(user)
     fill_in 'Email', :with => new_email
@@ -33,7 +33,7 @@ feature 'User edit', :devise do
   scenario "user cannot cannot edit another user's profile", :me do
     section = create :section
     me = create :user, with_section: section
-    other_email = Faker::Internet::email
+    other_email = Faker::Internet.email
     other = FactoryBot.create(:user, email: other_email)
     login_as(me, :scope => :user)
     visit edit_user_registration_path(other)

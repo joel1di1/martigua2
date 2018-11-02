@@ -8,7 +8,7 @@ feature 'Sign Up', :devise do
   #   When I sign up with a valid email address and password
   #   Then I see a successful sign up message
   scenario 'visitor can sign up with valid email address and password' do
-    sign_up_with(Faker::Internet::email, 'please123', 'please123')
+    sign_up_with(Faker::Internet.email, 'please123', 'please123')
     expect(page).to have_content 'Welcome! You have signed up successfully.'
   end
 
@@ -26,7 +26,7 @@ feature 'Sign Up', :devise do
   #   When I sign up without a password
   #   Then I see a missing password message
   scenario 'visitor cannot sign up without password' do
-    sign_up_with(Faker::Internet::email, '', '')
+    sign_up_with(Faker::Internet.email, '', '')
     expect(page).to have_content "Password can't be blank"
   end
 
@@ -35,7 +35,7 @@ feature 'Sign Up', :devise do
   #   When I sign up with a short password
   #   Then I see a 'too short password' message
   scenario 'visitor cannot sign up with a short password' do
-    sign_up_with(Faker::Internet::email, 'ple', 'ple')
+    sign_up_with(Faker::Internet.email, 'ple', 'ple')
     expect(page).to have_content "Password is too short"
   end
 
@@ -44,7 +44,7 @@ feature 'Sign Up', :devise do
   #   When I sign up without a password confirmation
   #   Then I see a missing password confirmation message
   scenario 'visitor cannot sign up without password confirmation' do
-    sign_up_with(Faker::Internet::email, 'please123', '')
+    sign_up_with(Faker::Internet.email, 'please123', '')
     expect(page).to have_content "Password confirmation doesn't match"
   end
 
@@ -53,7 +53,7 @@ feature 'Sign Up', :devise do
   #   When I sign up with a mismatched password confirmation
   #   Then I should see a mismatched password message
   scenario 'visitor cannot sign up with mismatched password and confirmation' do
-    sign_up_with(Faker::Internet::email, 'please123', 'mismatch')
+    sign_up_with(Faker::Internet.email, 'please123', 'mismatch')
     expect(page).to have_content "Password confirmation doesn't match"
   end
 end

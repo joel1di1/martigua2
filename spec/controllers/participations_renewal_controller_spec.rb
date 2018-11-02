@@ -28,11 +28,11 @@ describe ParticipationsRenewalController, :type => :controller do
 
     before do
       previous_season = Season.current.previous
-      section.add_player!(player_from_previous_season, previous_season)
-      section.add_player!(player_from_previous_season_2, previous_season)
-      section.add_coach!(coach_from_previous_season, previous_season)
-      section.add_player!(player_and_coach_from_previous_season, previous_season)
-      section.add_coach!(player_and_coach_from_previous_season, previous_season)
+      section.add_player!(player_from_previous_season, season: previous_season)
+      section.add_player!(player_from_previous_season_2, season: previous_season)
+      section.add_coach!(coach_from_previous_season, season: previous_season)
+      section.add_player!(player_and_coach_from_previous_season, season: previous_season)
+      section.add_coach!(player_and_coach_from_previous_season, season: previous_season)
       section.add_player!(player_from_current_season)
       section.add_coach!(coach_from_current_season)
     end

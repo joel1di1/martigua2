@@ -60,7 +60,7 @@ describe User do
     end
     context 'with a last year coach of the section' do
       let(:previous_season) { create :season, start_date: 2.years.ago }
-      before { section.add_coach!(user, previous_season) }
+      before { section.add_coach!(user, season: previous_season) }
 
       it { should be_falsy }
     end
@@ -84,7 +84,7 @@ describe User do
     end
     context 'with a last year player of the section' do
       let(:previous_season) { create :season, start_date: 2.years.ago }
-      before { section.add_player!(user, previous_season) }
+      before { section.add_player!(user, season: previous_season) }
 
       it { should be_falsy }
     end

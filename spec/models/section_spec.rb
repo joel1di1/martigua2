@@ -178,15 +178,15 @@ RSpec.describe Section, :type => :model do
     end
     context 'with user in section for a specific season' do
       let(:other_season) { create :season, start_date: 2.years.ago }
-      before { section.add_player! user, other_season }
+      before { section.add_player! user, season: other_season }
       before { section.add_player! user }
 
       before { remove_user! }
 
       it { expect(section.group_everybody.users.include?(user)).to be_falsy }
       it { expect(section.group_every_players.users.include?(user)).to be_falsy }
-      it { expect(section.group_everybody(other_season).users.include?(user)).to be_truthy }
-      it { expect(section.group_every_players(other_season).users.include?(user)).to be_truthy }
+      it { expect(section.group_everybody(season: other_season).users.include?(user)).to be_truthy }
+      it { expect(section.group_every_players(season: other_season).users.include?(user)).to be_truthy }
     end
   end
 
@@ -209,8 +209,8 @@ RSpec.describe Section, :type => :model do
     let(:current_season) { Season.current }
     let(:previous_season) { current_season.previous }
 
-    let(:current_season_members) { Array.new(5) { u = create :user; section.add_player!(u, season = current_season); u } }
-    let(:previous_season_members) { Array.new(6) { u = create :user; section.add_player!(u, season = previous_season); u } }
+    let(:current_season_members) { Array.new(5) { u = create :user; section.add_player!(u, season: current_season); u } }
+    let(:previous_season_members) { Array.new(6) { u = create :user; section.add_player!(u, season: previous_season); u } }
 
     context 'without specify season' do
       subject { section.members }
@@ -218,7 +218,7 @@ RSpec.describe Section, :type => :model do
     end
 
     context 'with specified season' do
-      subject { section.members(previous_season) }
+      subject { section.members(season: previous_season) }
       it { is_expected.to match_array previous_season_members }
     end
   end

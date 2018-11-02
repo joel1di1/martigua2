@@ -29,24 +29,24 @@ class Section < ActiveRecord::Base
     user
   end
 
-  def add_player!(user, season = nil)
-    add_user!(user, Participation::PLAYER, season)
+  def add_player!(user, season: nil)
+    add_user!(user, Participation::PLAYER, season: season)
   end
 
-  def add_coach!(user, season = nil)
-    add_user!(user, Participation::COACH, season)
+  def add_coach!(user, season: nil)
+    add_user!(user, Participation::COACH, season: season)
   end
 
-  def members(season = nil)
+  def members(season: nil)
     season ||= Season.current
     User.joins(:participations).where(participations: { season: season, section: self }).distinct
   end
 
-  def players(season = Season.current)
+  def players(season: Season.current)
     User.joins(:participations).where(participations: { season: season, role: Participation::PLAYER, section: self })
   end
 
-  def coachs(season = Season.current)
+  def coachs(season: Season.current)
     User.joins(:participations).where(participations: { season: season, role: Participation::COACH, section: self })
   end
 
@@ -71,19 +71,19 @@ class Section < ActiveRecord::Base
                          now, end_date).date_ordered.where('local_team_id IN (?) OR visitor_team_id IN (?)', teams.map(&:id), teams.map(&:id))
   end
 
-  def group_everybody(season = nil)
-    _default_group(:everybody, 'tous les membres', '#226611', season)
+  def group_everybody(season: nil)
+    _default_group(:everybody, 'tous les membres', '#226611', season: season)
   end
 
-  def group_every_players(season = nil)
-    _default_group(:every_players, 'tous les joueurs', '#28c704', season)
+  def group_every_players(season: nil)
+    _default_group(:every_players, 'tous les joueurs', '#28c704', season: season)
   end
 
   def has_member?(user)
     users.include?(user)
   end
 
-  def remove_member!(user, season = nil)
+  def remove_member!(user, season: nil)
     season ||= Season.current
     participations.where(user: user, season: season).delete_all
     groups.where(season: season).map { |group| group.remove_user! user, force: true }
@@ -96,10 +96,10 @@ class Section < ActiveRecord::Base
   def copy_from_previous_season
     current_season = Season.current
     previous_season = current_season.previous
-    players(previous_season).each do |player|
+    players(season: previous_season).each do |player|
       add_player! player
     end
-    coachs(previous_season).each do |coach|
+    coachs(season: previous_season).each do |coach|
       add_coach! coach
     end
     Group.where(season: previous_season, section: self).each(&:copy_to_current_season)
@@ -107,16 +107,16 @@ class Section < ActiveRecord::Base
 
   protected
 
-  def add_user!(user, role, season = nil)
+  def add_user!(user, role, season: nil)
     season ||= Season.current
     params = { role: role, user: user, section: self, season: season }
     participations << Participation.create!(params) unless participations.where(params).exists?
-    group_everybody(season).add_user!(user)
-    group_every_players(season).add_user!(user) if role == Participation::PLAYER
+    group_everybody(season: season).add_user!(user)
+    group_every_players(season: season).add_user!(user) if role == Participation::PLAYER
     self
   end
 
-  def _default_group(players_role, group_name, color, season = nil)
+  def _default_group(players_role, group_name, color, season: nil)
     season ||= Season.current
     group = groups.where(role: players_role, system: true, season: season).take
 

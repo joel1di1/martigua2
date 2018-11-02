@@ -15,7 +15,7 @@ feature 'Renew Participations', :devise do
     # add a member in the previous season
     previous_season = Season.current.previous
     previous_player = create :user
-    section.add_player!(previous_player, previous_season)
+    section.add_player!(previous_player, season: previous_season)
 
     renouveller = 'Renouveller de l\'année précédente'
 

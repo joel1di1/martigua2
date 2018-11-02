@@ -13,9 +13,9 @@ FactoryBot.define do
     end
 
     transient do
-      with_section nil
-      with_section_as_coach nil
-      with_group nil
+      with_section { nil }
+      with_section_as_coach { nil }
+      with_group { nil }
     end
 
     after(:create) do |user, evaluator|

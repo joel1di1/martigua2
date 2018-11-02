@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   end
 
   def display_participation(participation)
-    "#{participation.season.to_s} - #{participation.role} of #{participation.section.club.name} - #{participation.section.name}"
+    "#{participation.season} - #{participation.role} of #{participation.section.club.name} - #{participation.section.name}"
   end
 
   def present_for!(training_or_array, *other_trainings)

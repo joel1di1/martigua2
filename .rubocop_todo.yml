@@ -38,12 +38,6 @@ Lint/ParenthesesAsGroupedExpression:
     - 'spec/models/season_spec.rb'
 
 # Offense count: 1
-# Cop supports --auto-correct.
-Lint/PercentStringArray:
-  Exclude:
-    - 'config/initializers/assets.rb'
-
-# Offense count: 1
 Lint/RescueException:
   Exclude:
     - 'app/controllers/concerns/log_all_requests.rb'
@@ -52,12 +46,6 @@ Lint/RescueException:
 Lint/ShadowingOuterLocalVariable:
   Exclude:
     - 'app/services/create_admin_service.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Lint/StringConversionInInterpolation:
-  Exclude:
-    - 'app/models/user.rb'
 
 # Offense count: 1
 # Configuration parameters: ContextCreatingMethods, MethodCreatingMethods.

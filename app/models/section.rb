@@ -86,7 +86,7 @@ class Section < ActiveRecord::Base
   def remove_member!(user, season = nil)
     season ||= Season.current
     participations.where(user: user, season: season).delete_all
-    groups.where(season: season).map { |group| group.remove_user! user, systems: true }
+    groups.where(season: season).map { |group| group.remove_user! user, force: true }
   end
 
   def championships

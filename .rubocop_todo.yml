@@ -20,12 +20,6 @@ Airbnb/OptArgParameters:
     - 'app/models/training.rb'
     - 'app/models/user.rb'
 
-# Offense count: 2
-Airbnb/SimpleModifierConditional:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-    - 'app/models/group.rb'
-
 # Offense count: 1
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:

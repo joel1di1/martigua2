@@ -57,7 +57,9 @@ class ApplicationController < ActionController::Base
   end
 
   def get_section_id_from_params_id
-    params[:id] if params[:controller] == 'sections' && params[:id]
+    if params[:controller] == 'sections' && params[:id]
+      params[:id]
+    end
   end
 
   def get_section_id_from_params_section_id

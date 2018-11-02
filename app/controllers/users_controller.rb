@@ -79,16 +79,16 @@ class UsersController < ApplicationController
 
   protected
 
-    def find_user_by_id
-      user_key = params[:user_id] ? :user_id : :id
-      @user = User.find params[user_key]
-    rescue ActiveRecord::RecordNotFound
-      handle_404
-    end
+  def find_user_by_id
+    user_key = params[:user_id] ? :user_id : :id
+    @user = User.find params[user_key]
+  rescue ActiveRecord::RecordNotFound
+    handle_404
+  end
 
   private
 
-    def user_params
-      params.require(:user).permit(:email, :first_name, :last_name, :nickname, :phone_number)
-    end
+  def user_params
+    params.require(:user).permit(:email, :first_name, :last_name, :nickname, :phone_number)
+  end
 end

@@ -26,7 +26,7 @@ class MatchesController < ApplicationController
       @day_selections = Selection.joins(match: :day).where(matches: {day_id: day.id}).includes(:user, :team)
       @users_already_selected = @day_selections.map(&:user).uniq
       @team_by_user = {}
-      @day_selections.each{|selection| @team_by_user[selection.user] = selection.team }
+      @day_selections.each {|selection| @team_by_user[selection.user] = selection.team }
     end
   end
 
@@ -66,15 +66,15 @@ class MatchesController < ApplicationController
 
   protected
 
-    def match_params
-      if params[:match].present?
-        params.require(:match).permit(:visitor_team_id, :local_team_id, :start_datetime, :end_datetime,
-                                      :meeting_datetime, :meeting_location, :location_id, :local_score, :visitor_score,
-                                      :day_id, :championship_id)
-      else
-        {}
-      end
+  def match_params
+    if params[:match].present?
+      params.require(:match).permit(:visitor_team_id, :local_team_id, :start_datetime, :end_datetime,
+                                    :meeting_datetime, :meeting_location, :location_id, :local_score, :visitor_score,
+                                    :day_id, :championship_id)
+    else
+      {}
     end
+  end
 end
 
 

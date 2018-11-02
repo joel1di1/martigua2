@@ -27,17 +27,17 @@ class CalendarsController < ApplicationController
 
   protected
 
-    def calendar_params
-      if params[:calendar]
-        params.require(:calendar).permit(:name, :season_id)
-      else
-        {}
-      end
+  def calendar_params
+    if params[:calendar]
+      params.require(:calendar).permit(:name, :season_id)
+    else
+      {}
     end
+  end
 
-    def find_calendar_by_id
-      @calendar = Calendar.find params[:id]
-    rescue ActiveRecord::RecordNotFound
-      handle_404
-    end
+  def find_calendar_by_id
+    @calendar = Calendar.find params[:id]
+  rescue ActiveRecord::RecordNotFound
+    handle_404
+  end
 end

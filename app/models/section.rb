@@ -23,30 +23,30 @@ class Section < ActiveRecord::Base
     invitation = SectionUserInvitation.create!(params_only_with_section)
 
     user = User.find_by_email(invitation.email)
-    user ||= User.invite!(params_only.delete_if{|k, v| k.to_s == 'roles'}, inviter)
+    user ||= User.invite!(params_only.delete_if {|k, v| k.to_s == 'roles'}, inviter)
 
     add_user! user, params[:roles]
     user
   end
 
-  def add_player!(user, season=nil)
+  def add_player!(user, season = nil)
     add_user!(user, Participation::PLAYER, season)
   end
 
-  def add_coach!(user, season=nil)
+  def add_coach!(user, season = nil)
     add_user!(user, Participation::COACH, season)
   end
 
-  def members(season=nil)
+  def members(season = nil)
     season ||= Season.current
     User.joins(:participations).where( participations: { season: season, section: self } ).distinct
   end
 
-  def players(season=Season.current)
+  def players(season = Season.current)
     User.joins(:participations).where( participations: { season: season, role: Participation::PLAYER, section: self } )
   end
 
-  def coachs(season=Season.current)
+  def coachs(season = Season.current)
     User.joins(:participations).where( participations: { season: season, role: Participation::COACH, section: self } )
   end
 
@@ -66,16 +66,16 @@ class Section < ActiveRecord::Base
 
   def next_matches
     now = DateTime.now.at_beginning_of_week
-    end_date = now.at_end_of_week + 2.weeks+2.days
+    end_date = now.at_end_of_week + 2.weeks + 2.days
     Match.join_day.where('COALESCE(start_datetime, days.period_start_date) >= ? AND COALESCE(start_datetime, days.period_start_date) <= ?',
                          now, end_date).date_ordered.where('local_team_id IN (?) OR visitor_team_id IN (?)', teams.map(&:id), teams.map(&:id))
   end
 
-  def group_everybody(season=nil)
+  def group_everybody(season = nil)
     _default_group(:everybody, 'tous les membres', '#226611', season)
   end
 
-  def group_every_players(season=nil)
+  def group_every_players(season = nil)
     _default_group(:every_players, 'tous les joueurs', '#28c704', season)
   end
 
@@ -83,10 +83,10 @@ class Section < ActiveRecord::Base
     users.include?(user)
   end
 
-  def remove_member!(user, season=nil)
+  def remove_member!(user, season = nil)
     season ||= Season.current
     participations.where(user: user, season: season).delete_all
-    groups.where(season: season).map{ |group| group.remove_user! user, systems: true }
+    groups.where(season: season).map { |group| group.remove_user! user, systems: true }
   end
 
   def championships
@@ -107,25 +107,25 @@ class Section < ActiveRecord::Base
 
   protected
 
-    def add_user!(user, role, season=nil)
-      season ||= Season.current
-      params = { role: role, user: user, section: self, season: season }
-      participations << Participation.create!(params) unless participations.where(params).exists?
-      group_everybody(season).add_user!(user)
-      group_every_players(season).add_user!(user) if role == Participation::PLAYER
-      self
-    end
+  def add_user!(user, role, season = nil)
+    season ||= Season.current
+    params = { role: role, user: user, section: self, season: season }
+    participations << Participation.create!(params) unless participations.where(params).exists?
+    group_everybody(season).add_user!(user)
+    group_every_players(season).add_user!(user) if role == Participation::PLAYER
+    self
+  end
 
-    def _default_group(players_role, group_name, color, season=nil)
-      season ||= Season.current
-      group = groups.where(role: players_role, system: true, season: season).take
+  def _default_group(players_role, group_name, color, season = nil)
+    season ||= Season.current
+    group = groups.where(role: players_role, system: true, season: season).take
 
-      unless group
-        group = Group.new(role: players_role, system: true,
-                          name: group_name.upcase, description: "#{group_name.capitalize} de la section",
-                          color: color, season: season)
-        groups << group
-      end
-      group
+    unless group
+      group = Group.new(role: players_role, system: true,
+                        name: group_name.upcase, description: "#{group_name.capitalize} de la section",
+                        color: color, season: season)
+      groups << group
     end
+    group
+  end
 end

@@ -23,16 +23,18 @@ class Match < ActiveRecord::Base
     elsif day
       day.name
     elsif prevision_period_start && prevision_period_end
-        "(#{prevision_period_start.to_s(:short)} - #{prevision_period_end.to_s(:short)})"
+      "(#{prevision_period_start.to_s(:short)} - #{prevision_period_end.to_s(:short)})"
     else
       ""
     end
   end
 
   def users
-    User.joins(:participations).where( participations: { season: Season.current,
-                                                         role: Participation::PLAYER,
-                                                         section: teams.map(&:sections).flatten } )
+    User.joins(:participations).where( participations: {
+      season: Season.current,
+      role: Participation::PLAYER,
+      section: teams.map(&:sections).flatten
+    } )
   end
 
   def _availables
@@ -74,7 +76,7 @@ class Match < ActiveRecord::Base
     end
   end
 
-  def self.of_next_weekend(date=DateTime.now)
+  def self.of_next_weekend(date = DateTime.now)
     start_period = date.at_beginning_of_week
     end_period = start_period.at_end_of_week
     Match.with_start_between(start_period, end_period)
@@ -100,7 +102,8 @@ class Match < ActiveRecord::Base
       "#{local_team.try(:name)} - #{visitor_team.try(:name)}",
       nil,
       start_datetime, start_datetime + 2.hours,
-      "#{location.try(:name)}, #{location.try(:address)}")
+      "#{location.try(:name)}, #{location.try(:address)}"
+    )
 
     self.update_columns shared_calendar_id: event.id, shared_calendar_url: event.html_link
   end

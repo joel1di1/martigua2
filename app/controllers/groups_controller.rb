@@ -44,12 +44,12 @@ class GroupsController < ApplicationController
 
   private
 
-    def group_params
-      params.require(:group).permit(:name, :color, :description)
-    end
+  def group_params
+    params.require(:group).permit(:name, :color, :description)
+  end
 
-    def find_group
-      id = params[:id] || params[:group_id]
-      @group = Group.find id if id
-    end
+  def find_group
+    id = params[:id] || params[:group_id]
+    @group = Group.find id if id
+  end
 end

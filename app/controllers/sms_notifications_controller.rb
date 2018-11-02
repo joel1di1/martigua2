@@ -14,8 +14,8 @@ class SmsNotificationsController < ApplicationController
 
   private
 
-    def sms_notification_params
-      params.require(:sms_notification).permit(:title, :description, :section_id)
-    end
+  def sms_notification_params
+    params.require(:sms_notification).permit(:title, :description, :section_id)
+  end
 end
 

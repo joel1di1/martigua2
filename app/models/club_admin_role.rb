@@ -1,5 +1,5 @@
 class ClubAdminRole < ActiveRecord::Base
-  ADMIN='admin'
+  ADMIN = 'admin'
 
   belongs_to :club
   belongs_to :user

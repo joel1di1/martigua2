@@ -32,7 +32,7 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'redis'
 gem 'rest-client'
-gem 'sdoc',  group: :doc
+gem 'sdoc', group: :doc
 gem 'simple_form'
 gem 'starburst', '~> 1.0'
 gem 'switch_user'
@@ -51,9 +51,9 @@ group :development do
   gem 'html2haml'
   gem 'query_diet'
   gem 'rails_layout'
-  gem 'rb-fchange', :require=>false
-  gem 'rb-fsevent', :require=>false
-  gem 'rb-inotify', :require=>false
+  gem 'rb-fchange', :require => false
+  gem 'rb-fsevent', :require => false
+  gem 'rb-inotify', :require => false
   gem 'rubocop-airbnb'
   gem 'rubocop-rspec'
   gem 'spring'

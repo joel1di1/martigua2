@@ -3,7 +3,7 @@ class ChampionshipsController < ApplicationController
 
   def index
     @championships = current_section ? current_section.championships : Championship.all
-    @championships = @championships.select{|c| c.season == Season.current}
+    @championships = @championships.select {|c| c.season == Season.current}
   end
 
   def new
@@ -44,17 +44,17 @@ class ChampionshipsController < ApplicationController
 
   protected
 
-    def championship_params
-      if params[:championship]
-        params.require(:championship).permit(:name, :calendar_id)
-      else
-        {}
-      end
+  def championship_params
+    if params[:championship]
+      params.require(:championship).permit(:name, :calendar_id)
+    else
+      {}
     end
+  end
 
-    def find_championship_by_id
-      @championship = Championship.find params[:id]
-    rescue ActiveRecord::RecordNotFound
-      handle_404
-    end
+  def find_championship_by_id
+    @championship = Championship.find params[:id]
+  rescue ActiveRecord::RecordNotFound
+    handle_404
+  end
 end

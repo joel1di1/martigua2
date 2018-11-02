@@ -20,22 +20,22 @@ class User < ActiveRecord::Base
 
   default_scope { order 'first_name' }
 
-  scope :active_this_season,  -> { joins(:participations).where(participations: {season: Season.current}) }
+  scope :active_this_season, -> { joins(:participations).where(participations: {season: Season.current}) }
 
   def has_only_one_section?
     sections.count == 1
   end
 
-  def is_coach_of?(section, season=nil)
+  def is_coach_of?(section, season = nil)
     is_member_of? section, Participation::COACH, season
   end
 
-  def is_player_of?(section, season=nil)
+  def is_player_of?(section, season = nil)
     is_member_of? section, Participation::PLAYER, season
   end
 
   def display_participations
-    participations.map{ |participation| display_participation participation }.join("\n")
+    participations.map { |participation| display_participation participation }.join("\n")
   end
 
   def display_participation(participation)
@@ -72,11 +72,11 @@ class User < ActiveRecord::Base
   end
 
   def is_available_for?(match)
-    match_availabilities.select{|ma| ma.match_id == match.id }.first.try(:available)
+    match_availabilities.select {|ma| ma.match_id == match.id }.first.try(:available)
   end
 
   def has_respond_for?(match)
-    match_availabilities.select{|ma| ma.match_id == match.id }.size > 0
+    match_availabilities.select {|ma| ma.match_id == match.id }.size > 0
   end
 
   def is_admin_of?(club)
@@ -97,23 +97,23 @@ class User < ActiveRecord::Base
 
   def next_weekend_matches
     next_matches = Match.of_next_weekend.includes(local_team: :sections, visitor_team: :sections)
-    next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select{|s| is_player_of?(s)}.size > 0 }
+    next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select {|s| is_player_of?(s)}.size > 0 }
   end
 
   protected
 
-    def ensure_authentication_token
-      self.authentication_token ||= SecureRandom.urlsafe_base64(32)
-    end
+  def ensure_authentication_token
+    self.authentication_token ||= SecureRandom.urlsafe_base64(32)
+  end
 
-    def is_member_of?(section, role, season=nil)
-      season ||= Season.current
-      participations.where(section: section, role: role, season: season).count > 0
-    end
+  def is_member_of?(section, role, season = nil)
+    season ||= Season.current
+    participations.where(section: section, role: role, season: season).count > 0
+  end
 
-    def format_phone_number
-      if self.phone_number && self.phone_number.match('^[\s\d]*$')
-        self.phone_number = self.phone_number.gsub(' ', '').gsub(/(\d\d)/, '\1 ').chop
-      end
+  def format_phone_number
+    if self.phone_number && self.phone_number.match('^[\s\d]*$')
+      self.phone_number = self.phone_number.gsub(' ', '').gsub(/(\d\d)/, '\1 ').chop
     end
+  end
 end

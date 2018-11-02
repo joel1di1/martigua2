@@ -25,7 +25,7 @@ module LogAllRequests extend ActiveSupport::Concern
     "--REQ-- #{Rails.env};#{current_user.try(:id)};#{current_user.try(:email)};#{request.method};#{request.url};#{request.host};#{request.query_string};#{filter_params(params)}"
   end
 
-  def filter_params params
+  def filter_params(params)
     filters = Rails.application.config.filter_parameters
     f = ActionDispatch::Http::ParameterFilter.new filters
     f.filter params

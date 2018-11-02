@@ -1,8 +1,11 @@
 {
+  "buildpacks": [
+    { "url": "heroku/ruby" }
+  ],
   "environments": {
     "test": {
       "addons":[
-         "heroku-postgresql"
+         "heroku-postgresql:in-dyno"
       ]
     }
   }

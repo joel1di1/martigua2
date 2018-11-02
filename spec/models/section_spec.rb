@@ -72,7 +72,7 @@ RSpec.describe Section, :type => :model do
   describe '#invite_user!' do
     let(:user_params) { attributes_for(:user) }
     let(:roles) { [Participation::PLAYER, Participation::COACH].sample }
-    let(:params) { user_params.merge({roles: roles}) }
+    let(:params) { user_params.merge({ roles: roles }) }
 
     let(:invite_user) { section.invite_user!(params, coach) }
 
@@ -83,8 +83,8 @@ RSpec.describe Section, :type => :model do
         user
       end
 
-      it { expect{ invite_user }.to change{SectionUserInvitation.count}.by(1) }
-      it { expect{ invite_user }.to change{section.section_user_invitations.reload.count}.by(1) }
+      it { expect { invite_user }.to change { SectionUserInvitation.count }.by(1) }
+      it { expect { invite_user }.to change { section.section_user_invitations.reload.count }.by(1) }
 
       context 'invite player' do
         let(:roles) { Participation::PLAYER }
@@ -95,11 +95,11 @@ RSpec.describe Section, :type => :model do
       end
 
       context 'with new user' do
-        it { expect{ invite_user }.to change{User.count}.by(1) }
+        it { expect { invite_user }.to change { User.count }.by(1) }
       end
       context 'with already known user' do
         before { User.create!(user_params) }
-        it { expect{ invite_user }.to change{User.count}.by(0) }
+        it { expect { invite_user }.to change { User.count }.by(0) }
       end
     end
 
@@ -110,7 +110,7 @@ RSpec.describe Section, :type => :model do
         user
       end
 
-      it { expect{ invite_user }.to raise_exception "Inviter (#{coach.email}) is not coach of #{section}" }
+      it { expect { invite_user }.to raise_exception "Inviter (#{coach.email}) is not coach of #{section}" }
     end
   end
 
@@ -209,8 +209,8 @@ RSpec.describe Section, :type => :model do
     let(:current_season) { Season.current }
     let(:previous_season) { current_season.previous }
 
-    let(:current_season_members) { Array.new(5) { u = create :user ; section.add_player!(u, season=current_season) ; u} }
-    let(:previous_season_members) { Array.new(6) { u = create :user ; section.add_player!(u, season=previous_season) ; u} }
+    let(:current_season_members) { Array.new(5) { u = create :user; section.add_player!(u, season = current_season); u } }
+    let(:previous_season_members) { Array.new(6) { u = create :user; section.add_player!(u, season = previous_season); u } }
 
     context 'without specify season' do
       subject { section.members }

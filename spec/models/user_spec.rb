@@ -36,8 +36,8 @@ describe User do
     end
     context 'user with two participations on one section' do
       let(:section) { create :section }
-      let!(:participation_1) { create :participation, user: user, section: section, role: Participation::PLAYER}
-      let!(:participation_2) { create :participation, user: user, section: section, role: Participation::COACH}
+      let!(:participation_1) { create :participation, user: user, section: section, role: Participation::PLAYER }
+      let!(:participation_2) { create :participation, user: user, section: section, role: Participation::COACH }
       it { should eq true }
     end
   end
@@ -108,7 +108,7 @@ describe User do
       subject(:set_presence) { user.present_for!(training) }
       let(:training) { create :training }
 
-      it { expect{set_presence}.to change{TrainingPresence.count}.by(1) }
+      it { expect { set_presence }.to change { TrainingPresence.count }.by(1) }
 
       describe 'user availability' do
         before { set_presence }
@@ -117,7 +117,7 @@ describe User do
       end
 
       describe 'double presence set' do
-        it { expect{ 2.times { user.present_for!(training) } }.to change { TrainingPresence.count }.by(1) }
+        it { expect { 2.times { user.present_for!(training) } }.to change { TrainingPresence.count }.by(1) }
       end
     end
     context 'with two trainings' do
@@ -127,12 +127,12 @@ describe User do
       context 'passed as array' do
         let(:set_presence) { user.present_for!([training_1, training_2]) }
 
-        it { expect{set_presence}.to change{TrainingPresence.count}.by(2) }
+        it { expect { set_presence }.to change { TrainingPresence.count }.by(2) }
       end
       context 'passed as params' do
         let(:set_presence) { user.present_for!(training_1, training_2) }
 
-        it { expect{set_presence}.to change{TrainingPresence.count}.by(2) }
+        it { expect { set_presence }.to change { TrainingPresence.count }.by(2) }
       end
     end
   end

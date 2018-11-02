@@ -19,7 +19,7 @@ describe SectionUserInvitationsController, :type => :controller do
           sign_in user
         }
 
-        it { expect{subject}.to change{SectionUserInvitation.count}.by(1) }
+        it { expect { subject }.to change { SectionUserInvitation.count }.by(1) }
         it { expect(subject).to redirect_to(new_section_section_user_invitation_path(section_id: section.to_param)) }
       end
     end

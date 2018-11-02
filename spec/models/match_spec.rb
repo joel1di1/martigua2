@@ -39,20 +39,20 @@ RSpec.describe Match, :type => :model do
       before do
         section.add_player!(player, Season.current)
       end
-      it { is_expected.to include(player)}
+      it { is_expected.to include(player) }
     end
     context 'with user not participating in the current season but in the previous' do
       before do
         section.add_player!(player, previous_season)
       end
-      it { is_expected.not_to include(player)}
+      it { is_expected.not_to include(player) }
     end
     context 'with user participating in the current season and the previous' do
       before do
         section.add_player!(player, previous_season)
         section.add_player!(player, Season.current)
       end
-      it { is_expected.to include(player)}
+      it { is_expected.to include(player) }
     end
   end
 end

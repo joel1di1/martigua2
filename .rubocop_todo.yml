@@ -26,42 +26,6 @@ Airbnb/SimpleModifierConditional:
     - 'app/controllers/application_controller.rb'
     - 'app/models/group.rb'
 
-# Offense count: 16
-# Cop supports --auto-correct.
-# Configuration parameters: IndentationWidth.
-Layout/Tab:
-  Exclude:
-    - 'db/migrate/20171204231459_create_announcement_tables.starburst.rb'
-    - 'db/migrate/20171204231461_add_index_and_uniqueness_to_announcement_views.starburst.rb'
-
-# Offense count: 42
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: final_newline, final_blank_line
-Layout/TrailingBlankLines:
-  Enabled: false
-
-# Offense count: 36
-# Cop supports --auto-correct.
-# Configuration parameters: AllowInHeredoc.
-Layout/TrailingWhitespace:
-  Exclude:
-    - 'app/admin/jobs.rb'
-    - 'app/admin/team.rb'
-    - 'app/controllers/section_user_invitations_controller.rb'
-    - 'app/controllers/sections_controller.rb'
-    - 'app/controllers/sms_notifications_controller.rb'
-    - 'app/helpers/visitors_helper.rb'
-    - 'app/jobs/send_sms_job.rb'
-    - 'app/models/admin_user.rb'
-    - 'spec/controllers/visitors_controller_spec.rb'
-    - 'spec/features/section_coachs/add_training_spec.rb'
-    - 'spec/features/section_coachs/invite_user_spec.rb'
-    - 'spec/features/section_coachs/send_manual_training_invitations_spec.rb'
-    - 'spec/features/section_coachs/send_sms_notification_spec.rb'
-    - 'spec/models/club_spec.rb'
-    - 'spec/models/sms_notification_spec.rb'
-
 # Offense count: 1
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:

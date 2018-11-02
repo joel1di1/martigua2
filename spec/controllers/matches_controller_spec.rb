@@ -19,7 +19,7 @@ describe MatchesController, :type => :controller do
     let(:local_team) { create :team }
     let(:visitor_team) { create :team }
     let(:match) { create :match, visitor_team: visitor_team, local_team: local_team }
-    let(:params) { {section_id: section, id: match, user_id: user.id, team_id: local_team.id, format: format} }
+    let(:params) { { section_id: section, id: match, user_id: user.id, team_id: local_team.id, format: format } }
 
     let(:do_request) { post :selection, params: params }
 
@@ -36,7 +36,7 @@ describe MatchesController, :type => :controller do
     context 'with json' do
       let(:format) { :json }
 
-      it { expect{do_request}.to change{Selection.count}.by(1) }
+      it { expect { do_request }.to change { Selection.count }.by(1) }
     end
   end
 end

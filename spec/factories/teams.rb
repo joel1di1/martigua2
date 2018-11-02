@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :team do
-    club { create  :club }
+    club { create :club }
     name { Faker::Company.name }
 
     transient do

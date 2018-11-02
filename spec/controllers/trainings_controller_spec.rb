@@ -22,7 +22,7 @@ describe TrainingsController, :type => :controller do
         before { sign_in user }
         before { request }
 
-        it { expect(assigns[:trainings]).to match_array([training_1, training_2 ]) }
+        it { expect(assigns[:trainings]).to match_array([training_1, training_2]) }
       end
     end
   end
@@ -50,7 +50,7 @@ describe TrainingsController, :type => :controller do
 
       before { sign_in user }
 
-      it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
+      it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param)) }
     end
   end
 
@@ -65,13 +65,13 @@ describe TrainingsController, :type => :controller do
 
       describe 'effects' do
         let(:request) { post :create, params: request_params }
-        it { expect{request}.to change{section.trainings.count}.by(1) }
+        it { expect { request }.to change { section.trainings.count }.by(1) }
       end
 
       describe 'response' do
         subject { post :create, params: request_params }
 
-        it { expect(subject).to redirect_to(section_trainings_path(section_id: section.to_param))}
+        it { expect(subject).to redirect_to(section_trainings_path(section_id: section.to_param)) }
       end
     end
   end
@@ -79,39 +79,39 @@ describe TrainingsController, :type => :controller do
   describe "POST invitations" do
     subject { post :invitations, params: { section_id: section.to_param, id: training.to_param } }
 
-    let(:section) {create :section }
+    let(:section) { create :section }
     let(:coach) { create :user, with_section_as_coach: section }
-    let(:training) { create :training, with_section: section}
+    let(:training) { create :training, with_section: section }
 
     before { sign_in coach }
 
-    it { expect(subject).to redirect_to(section_trainings_path(section_id: section.to_param))}
+    it { expect(subject).to redirect_to(section_trainings_path(section_id: section.to_param)) }
   end
 
   describe "POST cancellation" do
     subject { post :cancellation, params: { section_id: section.to_param, id: training.to_param, cancellation: { reason: "TEST" } } }
 
-    let(:section) {create :section }
+    let(:section) { create :section }
     let(:coach) { create :user, with_section_as_coach: section }
-    let(:training) { create :training, with_section: section}
+    let(:training) { create :training, with_section: section }
 
     before { sign_in coach }
 
-    it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
+    it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param)) }
     it { expect(subject && training.reload.cancelled?).to be_truthy }
   end
 
   describe "DELETE cancellation" do
     subject { delete :uncancel, params: { section_id: section.to_param, id: training.to_param } }
 
-    let(:section) {create :section }
+    let(:section) { create :section }
     let(:coach) { create :user, with_section_as_coach: section }
-    let(:training) { create :training, with_section: section}
+    let(:training) { create :training, with_section: section }
 
     before { training.cancel!('for some reason') }
     before { sign_in coach }
 
     it { expect(subject && training.reload.cancelled?).to be_falsy }
-    it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
+    it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param)) }
   end
 end

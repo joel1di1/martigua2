@@ -8,7 +8,7 @@ class DateTimePickerInput < SimpleForm::Inputs::Base
   end
 
   def input_html_options
-    {class: 'form-control', readonly: true}
+    { class: 'form-control', readonly: true }
   end
 
   def span_remove

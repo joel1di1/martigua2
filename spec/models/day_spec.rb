@@ -61,14 +61,14 @@ RSpec.describe Day, :type => :model do
       end
 
       context 'and end_date set' do
-        let(:params) { {period_start_date: new_start_date, period_end_date: new_end_date} }
+        let(:params) { { period_start_date: new_start_date, period_end_date: new_end_date } }
         it { is_expected.to eq new_end_date }
       end
     end
 
     context 'with start_date not set' do
       context 'and end_date not set' do
-        let(:params) { { } }
+        let(:params) { {} }
         it { is_expected.to eq old_end_date }
       end
 

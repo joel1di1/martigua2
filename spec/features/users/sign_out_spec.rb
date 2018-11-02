@@ -16,5 +16,3 @@ feature 'Sign out', :devise do
     expect(page).to have_content 'Signed out successfully.'
   end
 end
-
-

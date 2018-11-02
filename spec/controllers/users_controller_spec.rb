@@ -34,7 +34,7 @@ describe UsersController, :type => :controller do
   describe "GET edit" do
     it 'assign @user' do
       sign_in user
-      get :edit, params: {id: user.to_param, section_id: section.to_param}
+      get :edit, params: { id: user.to_param, section_id: section.to_param }
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:edit)
@@ -49,7 +49,7 @@ describe UsersController, :type => :controller do
       let!(:old_password) { user.password }
       before do
         sign_in user
-        patch :update, params: {id: user.to_param, section_id: section.to_param, user: new_attributes}
+        patch :update, params: { id: user.to_param, section_id: section.to_param, user: new_attributes }
         user.reload
       end
       it 'should update user' do
@@ -84,8 +84,11 @@ describe UsersController, :type => :controller do
     let(:training_2) { create :training }
     let(:training_3) { create :training }
 
-    let(:post_training_presences) { post :training_presences, params: { id: user.to_param, user_email: user.email, user_token: user.authentication_token,
-                                                                        present_ids: [training_1.id, training_2.id], checked_ids: [training_1.id] }
+    let(:post_training_presences) {
+      post :training_presences, params: {
+        id: user.to_param, user_email: user.email, user_token: user.authentication_token,
+        present_ids: [training_1.id, training_2.id], checked_ids: [training_1.id]
+      }
     }
 
     before { post_training_presences }
@@ -103,12 +106,12 @@ describe UsersController, :type => :controller do
 
       let(:do_request) { delete :destroy, params: { section_id: section.to_param, id: user.to_param } }
 
-      it { expect{ do_request }.to change{ section.users.count }.by(-1) }
+      it { expect { do_request }.to change { section.users.count }.by(-1) }
 
       describe 'response' do
         before { do_request }
 
-        it {  expect(response).to redirect_to(section_users_path(section)) }
+        it { expect(response).to redirect_to(section_users_path(section)) }
       end
     end
     context 'from section group' do
@@ -121,8 +124,8 @@ describe UsersController, :type => :controller do
 
       let(:do_request) { delete :destroy, params: { section_id: section.to_param, group_id: group.to_param, id: user.to_param } }
 
-      it { expect{ do_request }.to change{ section.users.count }.by(0) }
-      it { expect{ do_request }.to change{ group.users.count }.by(-1) }
+      it { expect { do_request }.to change { section.users.count }.by(0) }
+      it { expect { do_request }.to change { group.users.count }.by(-1) }
 
       describe 'response' do
         before { do_request }

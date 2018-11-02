@@ -4,7 +4,7 @@ class SmsNotificationsController < ApplicationController
     @last_sms = SmsNotification.order('created_at DESC').limit(5)
   end
 
-  def create 
+  def create
     sms_notification = SmsNotification.new(sms_notification_params)
     sms_notification.section = current_section
     sms_notification.save!
@@ -18,4 +18,3 @@ class SmsNotificationsController < ApplicationController
     params.require(:sms_notification).permit(:title, :description, :section_id)
   end
 end
-

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe SmsNotificationsController, :type => :controller do
-  let(:section) { create :section}
+  let(:section) { create :section }
   let(:sms_notification) { create :sms_notification, section: section }
   let(:user) { create :user, with_section: section }
 
@@ -16,8 +16,8 @@ describe SmsNotificationsController, :type => :controller do
   describe "POST create", skip: "SMS tests are skipped (need to pay for real tests)" do
     let(:sms_notification_attributes) { attributes_for(:sms_notification, section: nil) }
 
-    let(:auth_params) { {section_id: section.to_param, user_email: user.email, user_token: user.authentication_token, format: :json } }
-    let(:req_params) { auth_params.merge({sms_notification: sms_notification_attributes}) }
+    let(:auth_params) { { section_id: section.to_param, user_email: user.email, user_token: user.authentication_token, format: :json } }
+    let(:req_params) { auth_params.merge({ sms_notification: sms_notification_attributes }) }
 
     let(:do_request) { post :create, params: req_params }
 
@@ -29,7 +29,7 @@ describe SmsNotificationsController, :type => :controller do
     end
 
     it "should create a new SMS notification" do
-      expect{do_request}.to change{SmsNotification.count}
+      expect { do_request }.to change { SmsNotification.count }
     end
 
     # describe "sms notification created" do

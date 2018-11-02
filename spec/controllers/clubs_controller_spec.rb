@@ -10,6 +10,6 @@ describe ClubsController, :type => :controller do
     before { do_request }
 
     it { expect(response).to have_http_status(:success) }
-    it { expect(assigns(:club)).to eq(club)}
+    it { expect(assigns(:club)).to eq(club) }
   end
 end

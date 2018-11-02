@@ -10,7 +10,7 @@ describe GroupsController, :type => :controller do
   describe 'POST add_users' do
     let(:do_request) { post :add_users, params: { section_id: section.to_param, group_id: group.to_param, user_id: user.id } }
 
-    it { expect{do_request}.to change{group.users.count}.by(1) }
+    it { expect { do_request }.to change { group.users.count }.by(1) }
 
     describe 'method call' do
       before do
@@ -31,7 +31,7 @@ describe GroupsController, :type => :controller do
     context 'with correct attributes' do
       let(:new_group_attributes) { attributes_for(:group, section: nil) }
 
-      it { expect{ do_request }.to change{ Group.count }.by(1) }
+      it { expect { do_request }.to change { Group.count }.by(1) }
 
       describe 'redirection' do
         before { do_request }
@@ -43,7 +43,7 @@ describe GroupsController, :type => :controller do
     context 'with empty name' do
       let(:new_group_attributes) { attributes_for(:group, section: nil, name: nil) }
 
-      it { expect{do_request}.to change{Group.count}.by(0) }
+      it { expect { do_request }.to change { Group.count }.by(0) }
 
       describe 'redirection' do
         before { do_request }

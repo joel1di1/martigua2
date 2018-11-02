@@ -14,14 +14,14 @@ RSpec.describe Group, :type => :model do
   describe 'add_user!' do
     context 'with new user' do
       it { expect(group.add_user!(user).users).to include(user) }
-      it { expect{group.add_user!(user)}.to change{group.users.count}.by(1) }
+      it { expect { group.add_user!(user) }.to change { group.users.count }.by(1) }
     end
 
     context 'with already added user' do
       before { group.add_user!(user) }
 
       it { expect(group.add_user!(user).users).to include(user) }
-      it { expect{group.add_user!(user)}.to change{group.users.count}.by(0) }
+      it { expect { group.add_user!(user) }.to change { group.users.count }.by(0) }
     end
   end
 end

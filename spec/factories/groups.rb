@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :group do
-    name { Faker::Company.name}
+    name { Faker::Company.name }
     description { Faker::Lorem.sentence }
     section { create :section }
     season { Season.current }

@@ -5,9 +5,9 @@ class SendSmsJob < ActiveJob::Base
 
   def perform(sms_notification, user)
     # put your own credentials here
-    account_sid = ENV['TWILIO_ACCOUNT_ID'] 
-    auth_token = ENV['TWILIO_AUTH_TOKEN'] 
-    twilio_phone_number = ENV['TWILIO_PHONE_NUMBER'] 
+    account_sid = ENV['TWILIO_ACCOUNT_ID']
+    auth_token = ENV['TWILIO_AUTH_TOKEN']
+    twilio_phone_number = ENV['TWILIO_PHONE_NUMBER']
 
     # set up a client to talk to the Twilio REST API
     @client = Twilio::REST::Client.new account_sid, auth_token

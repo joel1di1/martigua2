@@ -4,7 +4,7 @@
 #   So he can access the site
 feature 'Add training', :devise do
   # Scenario: section_coach add new training
-  #   Given I am a signed in section_coach 
+  #   Given I am a signed in section_coach
   #   When I go to trainings page
   #   Then I can create new training
   scenario 'section_coach sign in and add new player' do
@@ -15,7 +15,7 @@ feature 'Add training', :devise do
     click_link 'Ajouter un entrainement'
 
     select(location.name, :from => 'training_location_id')
-    
-    expect{ click_button('Ajouter l\'entrainement') }.to change{ Training.count }.by(1)
+
+    expect { click_button('Ajouter l\'entrainement') }.to change { Training.count }.by(1)
   end
 end

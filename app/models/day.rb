@@ -24,4 +24,3 @@ class Day < ActiveRecord::Base
   #   end
   # end
 end
-

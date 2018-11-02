@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       end
     end
     resources :users, path: 'members' do
-      resources :trainings, only:[] do
+      resources :trainings, only: [] do
         resources :training_presences, only: [:create]
         delete 'training_presences' => 'training_presences#destroy'
       end
@@ -51,7 +51,7 @@ Rails.application.routes.draw do
 
   resources :teams, only: [:index, :show]
 
-  resources :ping, only: :index, :constraints => {:format => :json }
+  resources :ping, only: :index, :constraints => { :format => :json }
 
   resources :clubs, only: [:index, :show] do
     resources :sections, only: [:index, :new, :create]

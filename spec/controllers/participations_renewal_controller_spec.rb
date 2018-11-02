@@ -17,10 +17,13 @@ describe ParticipationsRenewalController, :type => :controller do
     let(:player_from_current_season) { create :user }
     let(:coach_from_current_season) { create :user }
 
-    let(:expected_members) { [player_from_previous_season,
-                              player_from_previous_season_2,
-                              coach_from_previous_season,
-                              player_and_coach_from_previous_season]
+    let(:expected_members) {
+      [
+        player_from_previous_season,
+        player_from_previous_season_2,
+        coach_from_previous_season,
+        player_and_coach_from_previous_season
+      ]
     }
 
     before do
@@ -37,7 +40,7 @@ describe ParticipationsRenewalController, :type => :controller do
     before { request }
 
     it { expect(assigns[:previous_season_members]).to match_array(expected_members) }
-    it { expect(assigns[:previous_season]).to eq Season.current.previous}
+    it { expect(assigns[:previous_season]).to eq Season.current.previous }
   end
 
   describe 'POST create' do

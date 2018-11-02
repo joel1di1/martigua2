@@ -76,6 +76,3 @@ class MatchesController < ApplicationController
     end
   end
 end
-
-
-

@@ -13,9 +13,10 @@ RSpec.describe SendSmsJob, type: :job do
       expect_any_instance_of(Twilio::REST::Client).to receive(:messages).and_return(messages)
 
       expect(messages).to receive(:create).with(
-          from: '+33644605525',
-          to: '+33656564343',
-          body: expected_text)
+        from: '+33644605525',
+        to: '+33656564343',
+        body: expected_text
+      )
 
       SendSmsJob.perform_later(sms_notification, user)
     end

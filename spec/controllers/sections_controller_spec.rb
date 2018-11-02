@@ -11,14 +11,14 @@ describe SectionsController, :type => :controller do
     before { do_request }
 
     it { expect(response).to have_http_status(:success) }
-    it { expect(assigns(:section).club).to eq(club)}
+    it { expect(assigns(:section).club).to eq(club) }
   end
 
   describe "POST create" do
     let(:section_attributes) { attributes_for(:section, club: nil) }
 
-    let(:auth_params) { {club_id: club.to_param, user_email: user.email, user_token: user.authentication_token, format: :json } }
-    let(:req_params) { auth_params.merge({section: section_attributes}) }
+    let(:auth_params) { { club_id: club.to_param, user_email: user.email, user_token: user.authentication_token, format: :json } }
+    let(:req_params) { auth_params.merge({ section: section_attributes }) }
 
     let(:do_request) { post :create, params: req_params }
 

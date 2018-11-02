@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :section do
     club
-    name { "SECTION #{Faker::Company.name}"}
+    name { "SECTION #{Faker::Company.name}" }
   end
 end

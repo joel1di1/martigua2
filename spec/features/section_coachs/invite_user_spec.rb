@@ -4,7 +4,7 @@
 #   So he can access the site
 feature 'Invite User', :devise do
   # Scenario: section_coach sign in and see invitation form
-  #   Given I am a signed in section_coach 
+  #   Given I am a signed in section_coach
   #   When I visit club root page
   #   Then I see members page
   #   And I can invite new users
@@ -25,6 +25,6 @@ feature 'Invite User', :devise do
     fill_in 'section_user_invitation[nickname]', with: invited_user.nickname
     fill_in 'section_user_invitation[phone_number]', with: invited_user.phone_number
 
-    expect{click_button('Inviter le joueur')}.to change{SectionUserInvitation.count}.by(1)
+    expect { click_button('Inviter le joueur') }.to change { SectionUserInvitation.count }.by(1)
   end
 end

@@ -6,7 +6,7 @@ describe ChampionshipsController, :type => :controller do
   let(:user) { create :user, with_section_as_coach: section }
 
   describe "GET new" do
-    let(:do_request) { get :new, params: {section_id: section } }
+    let(:do_request) { get :new, params: { section_id: section } }
 
     before { sign_in user }
 
@@ -14,13 +14,13 @@ describe ChampionshipsController, :type => :controller do
       before { do_request }
 
       it { expect(response).to have_http_status(:success) }
-      it { expect(assigns(:championship)).not_to be_nil}
+      it { expect(assigns(:championship)).not_to be_nil }
     end
   end
 
   describe "POST create" do
-    let(:championship_params) { {name: Faker::Company.name} }
-    let(:params) { {section_id: section.to_param, championship: championship_params} }
+    let(:championship_params) { { name: Faker::Company.name } }
+    let(:params) { { section_id: section.to_param, championship: championship_params } }
     let(:do_request) { post :create, params: params }
 
     before { sign_in user }
@@ -34,7 +34,7 @@ describe ChampionshipsController, :type => :controller do
 
   describe "GET edit" do
     let(:championship) { create :championship }
-    let(:do_request) { get :edit, params: {section_id: section, id: championship.id } }
+    let(:do_request) { get :edit, params: { section_id: section, id: championship.id } }
 
     before { sign_in user }
 
@@ -42,14 +42,14 @@ describe ChampionshipsController, :type => :controller do
       before { do_request }
 
       it { expect(response).to have_http_status(:success) }
-      it { expect(assigns(:championship)).not_to be_nil}
+      it { expect(assigns(:championship)).not_to be_nil }
     end
   end
 
   describe "POST update" do
     let!(:championship) { create :championship }
-    let(:new_championship_params) { {name: Faker::Company.name} }
-    let(:params) { {section_id: section.to_param, id: championship.id, championship: new_championship_params} }
+    let(:new_championship_params) { { name: Faker::Company.name } }
+    let(:params) { { section_id: section.to_param, id: championship.id, championship: new_championship_params } }
     let(:do_request) { post :update, params: params }
 
     before { sign_in user }

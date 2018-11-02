@@ -12,7 +12,7 @@ describe UsersController, :type => :controller do
       let(:request_params) { { section_id: section.to_param } }
 
       context 'with on user' do
-        before { sign_in user and request }
+        before { sign_in(user) && request }
 
         it { expect(assigns[:users]).to match_array([user]) }
       end
@@ -24,7 +24,7 @@ describe UsersController, :type => :controller do
           user
         end
 
-        before { sign_in user and request }
+        before { sign_in(user) && request }
 
         it { expect(assigns[:users]).to match_array([user]) }
       end
@@ -87,12 +87,12 @@ describe UsersController, :type => :controller do
     let(:training_2) { create :training }
     let(:training_3) { create :training }
 
-    let(:post_training_presences) {
+    let(:post_training_presences) do
       post :training_presences, params: {
         id: user.to_param, user_email: user.email, user_token: user.authentication_token,
         present_ids: [training_1.id, training_2.id], checked_ids: [training_1.id]
       }
-    }
+    end
 
     before { post_training_presences }
 

@@ -14,10 +14,10 @@ describe SectionUserInvitationsController, :type => :controller do
       context 'signed as coach' do
         let(:user) { create :user }
 
-        before {
+        before do
           section.add_coach!(user)
           sign_in user
-        }
+        end
 
         it { expect { subject }.to change(SectionUserInvitation, :count).by(1) }
         it { expect(subject).to redirect_to(new_section_section_user_invitation_path(section_id: section.to_param)) }

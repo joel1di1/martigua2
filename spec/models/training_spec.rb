@@ -61,7 +61,7 @@ RSpec.describe Training, :type => :model do
 
   describe '.of_next_week' do
     let(:now) { DateTime.new(2014, 8, 19, 13, 12, 55, '1') } # tuesday
-    let(:dates) {
+    let(:dates) do
       [
         now - 1.week,
         now + 5.days, # sunday 24
@@ -70,7 +70,7 @@ RSpec.describe Training, :type => :model do
         now + 12.days, # sunday 31
         now + 2.weeks
       ]
-    }
+    end
 
     let!(:trainings) { dates.map { |date| create :training, with_section: section, start_datetime: date } }
 

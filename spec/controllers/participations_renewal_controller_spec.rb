@@ -17,14 +17,14 @@ describe ParticipationsRenewalController, :type => :controller do
     let(:player_from_current_season) { create :user }
     let(:coach_from_current_season) { create :user }
 
-    let(:expected_members) {
+    let(:expected_members) do
       [
         player_from_previous_season,
         player_from_previous_season_2,
         coach_from_previous_season,
         player_and_coach_from_previous_season
       ]
-    }
+    end
 
     before do
       previous_season = Season.current.previous

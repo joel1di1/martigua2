@@ -44,11 +44,12 @@ describe TrainingsController, :type => :controller do
 
   describe "PATCH edit" do
     context 'with existing training' do
+      subject { patch :update, params: request_params }
+
       let(:training) { create :training, with_section: section }
       let(:request_params) { { section_id: section.to_param, id: training.to_param, training: training.attributes } }
 
       before { sign_in user }
-      subject { patch :update, params: request_params }
 
       it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
     end
@@ -77,11 +78,11 @@ describe TrainingsController, :type => :controller do
   end
 
   describe "POST invitations" do
+    subject { post :invitations, params: { section_id: section.to_param, id: training.to_param } }
+
     let(:section) {create :section }
     let(:coach) { create :user, with_section_as_coach: section }
     let(:training) { create :training, with_section: section}
-
-    subject { post :invitations, params: { section_id: section.to_param, id: training.to_param } }
 
     before { sign_in coach }
 
@@ -89,24 +90,24 @@ describe TrainingsController, :type => :controller do
   end
 
   describe "POST cancellation" do
+    subject { post :cancellation, params: { section_id: section.to_param, id: training.to_param, cancellation: { reason: "TEST" } } }
+
     let(:section) {create :section }
     let(:coach) { create :user, with_section_as_coach: section }
     let(:training) { create :training, with_section: section}
 
     before { sign_in coach }
 
-    subject { post :cancellation, params: { section_id: section.to_param, id: training.to_param, cancellation: { reason: "TEST" } } }
-
     it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param))}
     it { expect(subject && training.reload.cancelled?).to be_truthy }
   end
 
   describe "DELETE cancellation" do
+    subject { delete :uncancel, params: { section_id: section.to_param, id: training.to_param } }
+
     let(:section) {create :section }
     let(:coach) { create :user, with_section_as_coach: section }
     let(:training) { create :training, with_section: section}
-
-    subject { delete :uncancel, params: { section_id: section.to_param, id: training.to_param } }
 
     before { training.cancel!('for some reason') }
     before { sign_in coach }

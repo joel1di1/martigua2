@@ -10,11 +10,9 @@ RSpec.describe Section, :type => :model do
   it { should have_and_belong_to_many :trainings }
   it { should have_many :groups }
 
-
   describe '#add_player!' do
-    let(:user) { create :user }
-
     subject { section.add_player!(user) }
+    let(:user) { create :user }
 
     context 'with a new player' do
       it { expect(subject.players).to match_array([user]) }
@@ -41,9 +39,8 @@ RSpec.describe Section, :type => :model do
   end
 
   describe '#add_coach!' do
-    let(:user) { create :user }
-
     subject { section.add_coach!(user) }
+    let(:user) { create :user }
 
     context 'with a new user' do
       it { expect(subject.coachs).to match_array([user]) }

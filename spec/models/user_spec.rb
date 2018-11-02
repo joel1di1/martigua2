@@ -13,7 +13,6 @@ describe User do
   it { should have_many :training_presences }
   it { should have_and_belong_to_many :groups }
 
-
   describe 'authentication token should be generated' do
     subject { create :user, authentication_token: nil }
 
@@ -69,9 +68,8 @@ describe User do
     end
   end
   describe '#is_player_of?' do
-    let(:section) { create :section }
-
     subject { user.is_player_of?(section) }
+    let(:section) { create :section }
 
     context 'with a player not in the section' do
       it { should eq false }
@@ -111,9 +109,8 @@ describe User do
 
   describe '#present_for!' do
     context 'with one training' do
-      let(:training) { create :training }
-
       subject(:set_presence) { user.present_for!(training) }
+      let(:training) { create :training }
 
       it { expect{set_presence}.to change{TrainingPresence.count}.by(1) }
 
@@ -225,9 +222,8 @@ describe User do
 
   describe '#is_available_for?' do
 
-    let(:match) { create :match }
-
     subject { user.is_available_for?(match) }
+    let(:match) { create :match }
 
     context 'when player has not respond' do
       it { is_expected.to be_falsy }

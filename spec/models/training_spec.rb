@@ -14,8 +14,6 @@ RSpec.describe Training, :type => :model do
   it { should have_many :training_presences }
   it { should validate_presence_of :start_datetime }
 
-
-
   describe '#nb_presents' do
     context 'with n users present' do
       before { nb_users.times{ (create :user).present_for!(training) } }

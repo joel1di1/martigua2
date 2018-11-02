@@ -25,10 +25,11 @@ describe SelectionsController, type: :controller do
   end
 
   describe "DELETE destroy" do
+    subject { delete :destroy, params: request_params }
+
     let(:match) { create :match, day: day }
     let(:selection) { create :selection, match: match }
     let(:request_params) { { section_id: section.to_param, match_id: match.id, id: selection.id } }
-    subject { delete :destroy, params: request_params }
 
     it { expect(subject).to redirect_to(root_path) }
     it { expect(subject && Selection.find_by_id(selection.id)).to be_nil }

@@ -10,13 +10,12 @@ RSpec.describe Season, :type => :model do
   it { should validate_presence_of :start_date }
   it { should validate_presence_of :end_date }
 
-
   describe '.current' do
     before { Season.destroy_all }
 
     context 'with only one season' do
-      let!(:only_season) { create :season, start_date: Date.today - 1.month }
       subject { Season.current }
+      let!(:only_season) { create :season, start_date: Date.today - 1.month }
       it { should eq only_season }
     end
 

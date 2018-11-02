@@ -7,8 +7,9 @@ RSpec.describe Day, :type => :model do
   it { should validate_presence_of :name }
 
   describe 'create with period_start_date should set defaut period_end_date' do
-    let(:day) { build :day, period_start_date: start_date, period_end_date: end_date }
     subject { day.period_end_date }
+
+    let(:day) { build :day, period_start_date: start_date, period_end_date: end_date }
 
     before { day.save! }
 
@@ -42,11 +43,12 @@ RSpec.describe Day, :type => :model do
   end
 
   describe 'update period_start_date should set defaut period_end_date' do
+    subject { day.period_end_date }
+
     let(:new_end_date) { Date.parse("2010-09-12") }
     let(:old_end_date) { Date.parse("2003-03-06") }
     let(:day) { create :day, period_end_date: old_end_date }
 
-    subject { day.period_end_date }
 
     before { day.update_attributes(params) }
 

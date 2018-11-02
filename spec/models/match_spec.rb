@@ -27,13 +27,13 @@ RSpec.describe Match, :type => :model do
   end
 
   describe '#users' do
+    subject { match.users }
+
     let(:previous_season) { create :season, start_date: 2.years.ago }
     let(:player) { create :user }
     let(:team) { create :team }
     let(:section) { create :section, teams: [team] }
     let(:match) { create :match, local_team: team }
-
-    subject { match.users }
 
     context 'with user participating in the current season' do
       before do

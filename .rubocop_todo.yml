@@ -526,22 +526,6 @@ RSpec/ExpectInHook:
     - 'spec/controllers/selections_controller_spec.rb'
     - 'spec/models/training_spec.rb'
 
-# Offense count: 20
-# Cop supports --auto-correct.
-RSpec/LeadingSubject:
-  Exclude:
-    - 'spec/controllers/ping_controller_spec.rb'
-    - 'spec/controllers/section_user_invitations_controller_spec.rb'
-    - 'spec/controllers/selections_controller_spec.rb'
-    - 'spec/controllers/trainings_controller_spec.rb'
-    - 'spec/models/championship_spec.rb'
-    - 'spec/models/day_spec.rb'
-    - 'spec/models/match_spec.rb'
-    - 'spec/models/season_spec.rb'
-    - 'spec/models/section_spec.rb'
-    - 'spec/models/team_spec.rb'
-    - 'spec/models/user_spec.rb'
-
 # Offense count: 7
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

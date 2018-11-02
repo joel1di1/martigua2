@@ -7,13 +7,14 @@ RSpec.describe Team, :type => :model do
   it { should have_many :championships}
 
   describe ".team_with_match_on" do
+    subject { Team.team_with_match_on(day, section) }
+
     let(:section) { create :section }
     let(:home_team_1) { create :team, sections: [section] }
     let(:home_team_2) { create :team, sections: [section] }
 
     let(:day) { create :day }
 
-    subject { Team.team_with_match_on(day, section) }
 
     context "with no match" do
       it { is_expected.to match_array [] }

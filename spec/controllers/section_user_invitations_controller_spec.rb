@@ -4,9 +4,10 @@ describe SectionUserInvitationsController, :type => :controller do
 
   describe "POST create" do
 
+    subject { post :create, params: request_params }
+
     let(:invited_user) { build :user }
     let(:invitation_params) { { section_user_invitation: { email: invited_user.email, roles: [Participation::PLAYER, Participation::COACH].sample } } }
-    subject { post :create, params: request_params }
 
     context 'within section' do
       let(:section) { create :section }

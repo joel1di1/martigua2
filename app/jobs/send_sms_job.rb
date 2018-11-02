@@ -4,7 +4,6 @@ class SendSmsJob < ActiveJob::Base
   queue_as :default
 
   def perform(sms_notification, user)
-
     # put your own credentials here
     account_sid = ENV['TWILIO_ACCOUNT_ID'] 
     auth_token = ENV['TWILIO_AUTH_TOKEN'] 

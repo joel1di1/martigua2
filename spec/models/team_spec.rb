@@ -15,7 +15,6 @@ RSpec.describe Team, :type => :model do
 
     let(:day) { create :day }
 
-
     context "with no match" do
       it { is_expected.to match_array [] }
     end

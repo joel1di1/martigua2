@@ -21,6 +21,7 @@ class MoveAllPreviousDaysToDefaultCalendar < ActiveRecord::Migration[5.1]
       end
     end
   end
+
   def down
     calendars = Calendar.where(name: DEFAULT_NAME)
     calendars.each do |calendar|

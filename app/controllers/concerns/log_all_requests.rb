@@ -30,5 +30,4 @@ module LogAllRequests extend ActiveSupport::Concern
     f = ActionDispatch::Http::ParameterFilter.new filters
     f.filter params
   end
-
 end

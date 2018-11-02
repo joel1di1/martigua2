@@ -9,12 +9,10 @@ RSpec.describe Championship, :type => :model do
   it { should have_many :matches }
   it { should belong_to :calendar }
 
-
   describe '.enroll_team!' do
     subject { championship.enroll_team!(team) }
 
     let(:team) { create :team }
-
 
     context 'with new team' do
       it { expect(subject.enrolled_teams).to match_array([team]) }
@@ -29,7 +27,6 @@ RSpec.describe Championship, :type => :model do
     subject { championship.unenroll_team!(team) }
 
     let(:team) { create :team }
-
 
     context 'with new team' do
       it { expect(subject.enrolled_teams).to match_array([]) }

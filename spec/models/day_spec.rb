@@ -49,7 +49,6 @@ RSpec.describe Day, :type => :model do
     let(:old_end_date) { Date.parse("2003-03-06") }
     let(:day) { create :day, period_end_date: old_end_date }
 
-
     before { day.update_attributes(params) }
 
     context 'with start_date random' do

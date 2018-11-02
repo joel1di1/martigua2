@@ -9,7 +9,7 @@ class TeamsController < InheritedResources::Base
       championship.enroll_team! @team
     end
 
-    redirect_to_with additionnal_params: {adversary_team_id: @team.id}, notice: 'Equipe créée'
+    redirect_to_with additionnal_params: { adversary_team_id: @team.id }, notice: 'Equipe créée'
   end
 
   private

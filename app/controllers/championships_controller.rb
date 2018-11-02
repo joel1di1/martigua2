@@ -3,7 +3,7 @@ class ChampionshipsController < ApplicationController
 
   def index
     @championships = current_section ? current_section.championships : Championship.all
-    @championships = @championships.select {|c| c.season == Season.current}
+    @championships = @championships.select { |c| c.season == Season.current }
   end
 
   def new
@@ -18,7 +18,7 @@ class ChampionshipsController < ApplicationController
         @championship.enroll_team! Team.find_by_id(params[:default_team_id])
       end
 
-      redirect_to_with additionnal_params: {'match[championship_id]' => @championship.id},
+      redirect_to_with additionnal_params: { 'match[championship_id]' => @championship.id },
                        fallback: section_championship_path(current_section, @championship),
                        use_referrer: false,
                        notice: 'Compétition créée'

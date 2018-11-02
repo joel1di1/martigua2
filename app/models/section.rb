@@ -23,7 +23,7 @@ class Section < ActiveRecord::Base
     invitation = SectionUserInvitation.create!(params_only_with_section)
 
     user = User.find_by_email(invitation.email)
-    user ||= User.invite!(params_only.delete_if {|k, v| k.to_s == 'roles'}, inviter)
+    user ||= User.invite!(params_only.delete_if { |k, v| k.to_s == 'roles' }, inviter)
 
     add_user! user, params[:roles]
     user
@@ -39,15 +39,15 @@ class Section < ActiveRecord::Base
 
   def members(season = nil)
     season ||= Season.current
-    User.joins(:participations).where( participations: { season: season, section: self } ).distinct
+    User.joins(:participations).where(participations: { season: season, section: self }).distinct
   end
 
   def players(season = Season.current)
-    User.joins(:participations).where( participations: { season: season, role: Participation::PLAYER, section: self } )
+    User.joins(:participations).where(participations: { season: season, role: Participation::PLAYER, section: self })
   end
 
   def coachs(season = Season.current)
-    User.joins(:participations).where( participations: { season: season, role: Participation::COACH, section: self } )
+    User.joins(:participations).where(participations: { season: season, role: Participation::COACH, section: self })
   end
 
   def to_param

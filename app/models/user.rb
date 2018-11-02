@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
 
   default_scope { order 'first_name' }
 
-  scope :active_this_season, -> { joins(:participations).where(participations: {season: Season.current}) }
+  scope :active_this_season, -> { joins(:participations).where(participations: { season: Season.current }) }
 
   def has_only_one_section?
     sections.count == 1
@@ -72,11 +72,11 @@ class User < ActiveRecord::Base
   end
 
   def is_available_for?(match)
-    match_availabilities.select {|ma| ma.match_id == match.id }.first.try(:available)
+    match_availabilities.select { |ma| ma.match_id == match.id }.first.try(:available)
   end
 
   def has_respond_for?(match)
-    match_availabilities.select {|ma| ma.match_id == match.id }.size > 0
+    match_availabilities.select { |ma| ma.match_id == match.id }.size > 0
   end
 
   def is_admin_of?(club)
@@ -92,12 +92,12 @@ class User < ActiveRecord::Base
   end
 
   def next_week_trainings
-    Training.of_next_week.joins(:groups).where(groups: {id: group_ids}).distinct
+    Training.of_next_week.joins(:groups).where(groups: { id: group_ids }).distinct
   end
 
   def next_weekend_matches
     next_matches = Match.of_next_weekend.includes(local_team: :sections, visitor_team: :sections)
-    next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select {|s| is_player_of?(s)}.size > 0 }
+    next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select { |s| is_player_of?(s) }.size > 0 }
   end
 
   protected

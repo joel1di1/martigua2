@@ -24,18 +24,18 @@ ActiveAdmin.register Delayed::Job, as: 'Job' do
     end
  
     f.inputs "Details" do
-      f.input :id, input_html:          {disabled: true}
-      f.input :created_at, input_html:  {disabled: true}
-      f.input :updated_at, input_html:  {disabled: true}
-      f.input :handler, input_html:     {disabled: true}
+      f.input :id, input_html:          { disabled: true }
+      f.input :created_at, input_html:  { disabled: true }
+      f.input :updated_at, input_html:  { disabled: true }
+      f.input :handler, input_html:     { disabled: true }
     end
  
     f.inputs "Diagnostics" do
-      f.input :attempts,    input_html: {disabled: true}
-      f.input :failed_at,   input_html: {disabled: true}
-      f.input :last_error,  input_html: {disabled: true}
-      f.input :locked_at,   input_html: {disabled: true}
-      f.input :locked_by,   input_html: {disabled: true}
+      f.input :attempts,    input_html: { disabled: true }
+      f.input :failed_at,   input_html: { disabled: true }
+      f.input :last_error,  input_html: { disabled: true }
+      f.input :locked_at,   input_html: { disabled: true }
+      f.input :locked_by,   input_html: { disabled: true }
     end
     f.buttons
   end

@@ -1,3 +1,4 @@
+# rubocop:disable Layout/IndentationConsistency
 module LogAllRequests extend ActiveSupport::Concern
   included do
     around_action :log_requests
@@ -31,3 +32,4 @@ module LogAllRequests extend ActiveSupport::Concern
     f.filter params
   end
 end
+# rubocop:enable Layout/IndentationConsistency

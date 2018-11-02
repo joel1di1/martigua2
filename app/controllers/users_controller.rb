@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   def index
     if current_section
-      @users = User.joins(:participations).where(participations: {section: current_section, season: Season.current} )
+      @users = User.joins(:participations).where(participations: { section: current_section, season: Season.current })
     else
       @users = User.all
     end
@@ -33,8 +33,8 @@ class UsersController < ApplicationController
   end
 
   def training_presences
-    present_ids = ( params[:present_ids] || [] ).map(&:to_i)
-    checked_ids = ( params[:checked_ids] || [] ).map(&:to_i)
+    present_ids = (params[:present_ids] || []).map(&:to_i)
+    checked_ids = (params[:checked_ids] || []).map(&:to_i)
 
     TrainingPresence.where(training_id: present_ids, user_id: current_user.id).delete_all
 
@@ -52,8 +52,8 @@ class UsersController < ApplicationController
       return
     end
 
-    present_ids = ( params[:present_ids] || [] ).map(&:to_i)
-    checked_ids = ( params[:checked_ids] || [] ).map(&:to_i)
+    present_ids = (params[:present_ids] || []).map(&:to_i)
+    checked_ids = (params[:checked_ids] || []).map(&:to_i)
 
     MatchAvailability.where(match_id: present_ids, user_id: @user.id).delete_all
 

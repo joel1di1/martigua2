@@ -69,7 +69,7 @@ class Section < ActiveRecord::Base
     now = DateTime.now.at_beginning_of_week
     end_date = now.at_end_of_week + 2.weeks+2.days
     Match.join_day.where('COALESCE(start_datetime, days.period_start_date) >= ? AND COALESCE(start_datetime, days.period_start_date) <= ?',
-      now, end_date).date_ordered.where('local_team_id IN (?) OR visitor_team_id IN (?)', teams.map(&:id), teams.map(&:id))
+                         now, end_date).date_ordered.where('local_team_id IN (?) OR visitor_team_id IN (?)', teams.map(&:id), teams.map(&:id))
   end
 
   def group_everybody(season=nil)

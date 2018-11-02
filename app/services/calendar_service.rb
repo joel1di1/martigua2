@@ -84,10 +84,10 @@ class CalendarService
   def display_events
     # Fetch the next 10 events for the user
     response = gcalendar_service.list_events(GOOGLE_CALENDAR_ID,
-                                   max_results: 10,
-                                   single_events: true,
-                                   order_by: 'startTime',
-                                   time_min: Time.now.iso8601)
+                                             max_results: 10,
+                                             single_events: true,
+                                             order_by: 'startTime',
+                                             time_min: Time.now.iso8601)
 
     puts "Upcoming events:"
     puts "No upcoming events found" if response.items.empty?

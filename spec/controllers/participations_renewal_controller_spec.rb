@@ -21,7 +21,8 @@ describe ParticipationsRenewalController, :type => :controller do
     let(:expected_members) { [player_from_previous_season,
                               player_from_previous_season_2,
                               coach_from_previous_season,
-                              player_and_coach_from_previous_season] }
+                              player_and_coach_from_previous_season]
+    }
 
     before do
       previous_season = Season.current.previous

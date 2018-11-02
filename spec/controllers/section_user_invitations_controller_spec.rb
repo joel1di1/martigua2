@@ -1,9 +1,7 @@
 require "rails_helper"
 
 describe SectionUserInvitationsController, :type => :controller do
-
   describe "POST create" do
-
     subject { post :create, params: request_params }
 
     let(:invited_user) { build :user }

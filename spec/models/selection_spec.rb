@@ -23,5 +23,4 @@ RSpec.describe Selection, :type => :model do
       end
     end
   end
-
 end

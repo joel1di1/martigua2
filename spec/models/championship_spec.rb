@@ -39,6 +39,4 @@ RSpec.describe Championship, :type => :model do
       it { expect(subject.enrolled_teams).to match_array([]) }
     end
   end
-
-
 end

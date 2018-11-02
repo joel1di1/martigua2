@@ -32,8 +32,8 @@ class SectionsController < ApplicationController
   end
 
   private 
+
     def section_params
       params.require(:section).permit(:name)
     end
-
 end

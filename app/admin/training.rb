@@ -11,5 +11,4 @@ ActiveAdmin.register Training do
       f.actions
     end
   end
-
 end

@@ -55,25 +55,6 @@ Layout/EmptyLines:
     - 'spec/rails_helper.rb'
     - 'spec/spec_helper.rb'
 
-# Offense count: 18
-# Cop supports --auto-correct.
-Layout/EmptyLinesAroundAccessModifier:
-  Enabled: false
-
-# Offense count: 81
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, no_empty_lines
-Layout/EmptyLinesAroundBlockBody:
-  Enabled: false
-
-# Offense count: 27
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: beginning_only, empty_lines, end_only, no_empty_lines
-Layout/EmptyLinesAroundClassBody:
-  Enabled: false
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Layout/EmptyLinesAroundMethodBody:

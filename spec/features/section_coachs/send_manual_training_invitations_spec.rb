@@ -3,7 +3,6 @@
 #   I want to invite a new user
 #   So he can access the site
 feature 'send training invitation', :devise do
-
   # Scenario: coach add new training
   #   Given I am a signed in coach 
   #   When I go to trainings page
@@ -19,5 +18,4 @@ feature 'send training invitation', :devise do
     submit_id = "training_invitations_#{training.id}"
     expect{click_button(submit_id)}.to change{training.invitations.count}.by(1)
   end
-
 end

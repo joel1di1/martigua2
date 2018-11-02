@@ -3,7 +3,6 @@
 #   I want to invite a new user
 #   So he can access the site
 feature 'Add training', :devise do
-
   # Scenario: section_coach add new training
   #   Given I am a signed in section_coach 
   #   When I go to trainings page
@@ -19,5 +18,4 @@ feature 'Add training', :devise do
     
     expect{ click_button('Ajouter l\'entrainement') }.to change{ Training.count }.by(1)
   end
-
 end

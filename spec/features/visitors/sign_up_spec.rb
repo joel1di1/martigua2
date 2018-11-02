@@ -3,7 +3,6 @@
 #   I want to sign up
 #   So I can visit protected areas of the site
 feature 'Sign Up', :devise do
-
   # Scenario: Visitor can sign up with valid email address and password
   #   Given I am not signed in
   #   When I sign up with a valid email address and password
@@ -57,5 +56,4 @@ feature 'Sign Up', :devise do
     sign_up_with(Faker::Internet::email, 'please123', 'mismatch')
     expect(page).to have_content "Password confirmation doesn't match"
   end
-
 end

@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe ChampionshipsController, :type => :controller do
-
   let(:championships) { create :championships }
   let(:section) { create :section }
   let(:user) { create :user, with_section_as_coach: section }

@@ -3,14 +3,12 @@
 #   I want to select members from last season
 #   To renew their participations
 feature 'Renew Participations', :devise do
-
   # Scenario:
   #   Given I am a signed in section_coach
   #   When I visit members page with no members
   #   Then I see a link to renew previous participations
   #   And I can go to this page, select members and renew their participations
   scenario 'section_coach sign in and invite player' do
-
     section = create :section
     coach = create :user, with_section_as_coach: section
 
@@ -37,5 +35,4 @@ feature 'Renew Participations', :devise do
     expect(current_path).to eq section_users_path(section)
     expect(page).to have_content previous_player.email
   end
-
 end

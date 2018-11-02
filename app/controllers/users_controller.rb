@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-
   before_action :find_user_by_id, except: :index
   skip_before_action :verify_authenticity_token, only: [:training_presences, :match_availabilities]
 
@@ -79,6 +78,7 @@ class UsersController < ApplicationController
   end
 
   protected
+
     def find_user_by_id
       user_key = params[:user_id] ? :user_id : :id
       @user = User.find params[user_key]
@@ -87,6 +87,7 @@ class UsersController < ApplicationController
     end
 
   private
+
     def user_params
       params.require(:user).permit(:email, :first_name, :last_name, :nickname, :phone_number)
     end

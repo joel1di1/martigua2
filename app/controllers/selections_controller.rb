@@ -1,5 +1,4 @@
 class SelectionsController < ApplicationController
-
   def index
     @day = Day.find(params[:day_id])
     @teams_with_matches = Team.team_with_match_on(@day, current_section)
@@ -20,5 +19,4 @@ class SelectionsController < ApplicationController
     Selection.find(params[:id]).destroy!
     redirect_to referer_url_or(root_path)
   end
-
 end

@@ -30,5 +30,4 @@ class DateTimePickerInput < SimpleForm::Inputs::Base
   def icon_table
     "<i class='glyphicon glyphicon-th'></i>".html_safe
   end
-
 end

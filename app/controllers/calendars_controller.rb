@@ -26,6 +26,7 @@ class CalendarsController < ApplicationController
   end
 
   protected
+
     def calendar_params
       if params[:calendar]
         params.require(:calendar).permit(:name, :season_id)

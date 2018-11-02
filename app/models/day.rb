@@ -9,6 +9,7 @@ class Day < ActiveRecord::Base
   # before_create :set_default_name
 
   protected
+
     def set_default_period_end_date
       if self.period_start_date_changed? && self.period_start_date && !self.period_end_date_changed?
         self.period_end_date = self.period_start_date + 1

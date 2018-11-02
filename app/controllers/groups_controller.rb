@@ -1,5 +1,4 @@
 class GroupsController < ApplicationController
-
   before_action :find_group
 
   def show
@@ -44,6 +43,7 @@ class GroupsController < ApplicationController
   end
 
   private
+
     def group_params
       params.require(:group).permit(:name, :color, :description)
     end
@@ -52,5 +52,4 @@ class GroupsController < ApplicationController
       id = params[:id] || params[:group_id]
       @group = Group.find id if id
     end
-
 end

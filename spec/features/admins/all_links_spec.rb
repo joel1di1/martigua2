@@ -1,5 +1,4 @@
 feature 'Active Admin', :devise do
-
   scenario 'admin can list any page in admin section' do
     admin = create :admin_user
 
@@ -37,5 +36,4 @@ feature 'Active Admin', :devise do
       expect(page.all('#page_title', :text => new_title).size).to eq 1
     end
   end
-
 end

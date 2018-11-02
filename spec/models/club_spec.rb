@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Club, :type => :model do
-
   let(:club) { create :club }
 
   it { should validate_presence_of :name }
@@ -29,5 +28,4 @@ RSpec.describe Club, :type => :model do
       it { expect{club.add_admin!(user)}.to_not change{club.admins.count} }
     end
   end
-
 end

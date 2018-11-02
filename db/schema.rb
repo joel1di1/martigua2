@@ -11,7 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20171204231461) do
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -361,5 +360,4 @@ ActiveRecord::Schema.define(version: 20171204231461) do
   add_foreign_key "days", "calendars"
   add_foreign_key "groups", "seasons"
   add_foreign_key "sms_notifications", "sections"
-
 end

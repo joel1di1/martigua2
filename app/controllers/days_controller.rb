@@ -11,6 +11,7 @@ class DaysController < InheritedResources::Base
   end
 
   protected
+
     def day_params
       params.require(:day).permit(:name, :period_start_date, :calendar_id)
     end

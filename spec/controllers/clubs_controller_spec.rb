@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe ClubsController, :type => :controller do
-
   let(:club) { create :club }
   let(:user) { create :user }
 

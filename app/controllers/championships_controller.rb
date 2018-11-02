@@ -43,6 +43,7 @@ class ChampionshipsController < ApplicationController
   end
 
   protected
+
     def championship_params
       if params[:championship]
         params.require(:championship).permit(:name, :calendar_id)

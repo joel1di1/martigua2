@@ -32,6 +32,7 @@ class Championship < ActiveRecord::Base
   end
 
   private
+
     def ensure_calendar
       return if calendar.present?
 

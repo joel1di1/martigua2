@@ -3,7 +3,6 @@
 #   I want to send messages
 #   So I provide information to them
 feature 'send sms notification', :devise do
-
   # Scenario: section_coach sign in and see invitation form
   #   Given I am a signed in section_coach 
   #   When I visit send notification page
@@ -29,5 +28,4 @@ feature 'send sms notification', :devise do
     signin section_member.email, section_member.password
     expect(page).not_to have_link 'Notification SMS'
   end
-
 end

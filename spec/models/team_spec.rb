@@ -38,7 +38,5 @@ RSpec.describe Team, :type => :model do
 
       it { is_expected.to match_array [[home_team_1, match_1], [home_team_2, match_1]] }
     end
-
-
   end
 end

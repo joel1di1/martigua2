@@ -1,5 +1,4 @@
 class Participation < ActiveRecord::Base
-
   PLAYER = 'player'
   COACH = 'coach'
 
@@ -17,5 +16,4 @@ class Participation < ActiveRecord::Base
   def renew!
     Participation.create!(user: user, section: section, role: role, season: Season.current)
   end
-
 end

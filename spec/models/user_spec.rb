@@ -1,5 +1,4 @@
 describe User do
-
   let(:user) { create :user }
   let(:section) { create :section }
   it { should validate_presence_of :email }
@@ -44,7 +43,6 @@ describe User do
   end
 
   describe '#is_coach_of?' do
-
     subject { user.is_coach_of?(section) }
 
     context 'with a user not in the section' do
@@ -93,7 +91,6 @@ describe User do
   end
 
   describe '#display_participations' do
-
     let(:display) { user.display_participations }
 
     context 'with one participation' do
@@ -104,7 +101,6 @@ describe User do
       it { expect(display).to include(participation.role) }
       it { expect(display).to include(participation.season.to_s) }
     end
-
   end
 
   describe '#present_for!' do
@@ -221,7 +217,6 @@ describe User do
   end
 
   describe '#is_available_for?' do
-
     subject { user.is_available_for?(match) }
     let(:match) { create :match }
 

@@ -1,5 +1,4 @@
 feature 'See group detail' do
-
   let(:section) { create :section }
   let(:user) { create :user, with_section: section }
 
@@ -20,5 +19,4 @@ feature 'See group detail' do
     expect(page).to have_content group_2.name
     expect(page).to have_content section.group_everybody.name
   end
-
 end

@@ -65,6 +65,7 @@ class MatchesController < ApplicationController
   end
 
   protected
+
     def match_params
       if params[:match].present?
         params.require(:match).permit(:visitor_team_id, :local_team_id, :start_datetime, :end_datetime,

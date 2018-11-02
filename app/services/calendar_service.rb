@@ -7,7 +7,6 @@ require 'fileutils'
 require 'date'
 
 class CalendarService
-
   OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'
   APPLICATION_NAME = 'Martigua2'
   CREDENTIALS_PATH = File.join(Dir.home, '.credentials', "calendar-ruby-quickstart.yaml")
@@ -122,7 +121,6 @@ class CalendarService
     end
     credentials
   end
-
 end
 
 

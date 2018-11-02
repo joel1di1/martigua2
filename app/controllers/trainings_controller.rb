@@ -1,5 +1,4 @@
 class TrainingsController < ApplicationController
-
   before_action :set_current_training
 
   def index
@@ -56,6 +55,7 @@ class TrainingsController < ApplicationController
   end
 
   private
+
     def training_params
       params.require(:training).permit(:start_datetime, :end_datetime, :location_id, :group_ids)
     end
@@ -63,5 +63,4 @@ class TrainingsController < ApplicationController
     def set_current_training
       @training = Training.of_section(current_section).where(id: params[:id]).take if params[:id]
     end
-
 end

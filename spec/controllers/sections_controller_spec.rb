@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe SectionsController, :type => :controller do
-
   let(:club) { create :club }
   let(:user) { create :user }
   let(:section) { create :section, club: club }
@@ -38,5 +37,4 @@ describe SectionsController, :type => :controller do
     it { expect(response).to have_http_status(:success) }
     it { expect(assigns[:next_trainings]).to eq :next_trainings_mock }
   end
-
 end

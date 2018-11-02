@@ -1,5 +1,4 @@
 class SmsNotification < ActiveRecord::Base
-
   belongs_to :section
   validates_presence_of :section
 
@@ -8,5 +7,4 @@ class SmsNotification < ActiveRecord::Base
   def send_all_sms!
     section.group_everybody.users.map{ |user| SendSmsJob.perform_later(self, user) }
   end
-
 end

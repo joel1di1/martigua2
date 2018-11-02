@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe CalendarsController, type: :controller do
-
   let(:section) { create :section }
   let(:user) { create :user, with_section_as_coach: section }
 
@@ -28,5 +27,4 @@ describe CalendarsController, type: :controller do
     it { expect(response).to have_http_status(:success) }
     it { expect(assigns(:calendar)).to eq calendar }
   end
-
 end

@@ -101,6 +101,7 @@ class User < ActiveRecord::Base
   end
 
   protected
+
     def ensure_authentication_token
       self.authentication_token ||= SecureRandom.urlsafe_base64(32)
     end

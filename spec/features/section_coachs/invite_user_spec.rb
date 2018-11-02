@@ -3,7 +3,6 @@
 #   I want to invite a new user
 #   So he can access the site
 feature 'Invite User', :devise do
-
   # Scenario: section_coach sign in and see invitation form
   #   Given I am a signed in section_coach 
   #   When I visit club root page
@@ -28,5 +27,4 @@ feature 'Invite User', :devise do
 
     expect{click_button('Inviter le joueur')}.to change{SectionUserInvitation.count}.by(1)
   end
-
 end

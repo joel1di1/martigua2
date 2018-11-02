@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe UsersController, :type => :controller do
-
   let(:section) { create :section }
   let(:user) { create :user, with_section: section }
 
@@ -44,7 +43,6 @@ describe UsersController, :type => :controller do
   end
 
   describe "PATCH edit" do
-
     let(:new_attributes) { attributes_for(:user).except(:password) }
 
     context 'within section' do
@@ -133,5 +131,4 @@ describe UsersController, :type => :controller do
       end
     end
   end
-
 end

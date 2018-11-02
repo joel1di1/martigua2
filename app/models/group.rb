@@ -24,5 +24,4 @@ class Group < ActiveRecord::Base
                   name: name, system: system, users: users,
                   color: color, description: description, role: role)
   end
-
 end

@@ -222,5 +222,4 @@ RSpec.describe Section, :type => :model do
       it { is_expected.to match_array previous_season_members }
     end
   end
-
 end

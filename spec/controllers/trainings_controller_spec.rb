@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe TrainingsController, :type => :controller do
-
   let(:request_params) { {} }
   let(:section) { create :section }
   let(:user) { create :user, with_section: section }

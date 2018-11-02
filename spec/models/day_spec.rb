@@ -79,6 +79,4 @@ RSpec.describe Day, :type => :model do
       end
     end
   end
-
-
 end

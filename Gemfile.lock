@@ -325,7 +325,7 @@ GEM
     orm_adapter (0.5.0)
     os (1.0.0)
     pg (1.0.0)
-    phony (2.16.3)
+    phony (2.16.5)
     postmark (1.11.0)
       json
       rake

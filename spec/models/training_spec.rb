@@ -5,16 +5,16 @@ RSpec::Matchers.define :db_object_eq do |x|
 end
 
 RSpec.describe Training, :type => :model do
+  let(:training) { create :training, with_section: section, group_ids: [group.id] }
+  let(:group)    { create :group, section: section }
+  let(:section)  { create :section }
+  let!(:nb_users) { [1,2,3,4].sample }
   it { should have_and_belong_to_many :sections }
   it { should have_and_belong_to_many :groups }
   it { should have_many :training_presences }
   it { should validate_presence_of :start_datetime }
 
-  let!(:nb_users) { [1,2,3,4].sample }
 
-  let(:section)  { create :section }
-  let(:group)    { create :group, section: section }
-  let(:training) { create :training, with_section: section, group_ids: [group.id] }
 
   describe '#nb_presents' do
     context 'with n users present' do

@@ -1,5 +1,7 @@
 describe User do
 
+  let(:user) { create :user }
+  let(:section) { create :section }
   it { should validate_presence_of :email }
   it { should have_db_column :first_name }
   it { should have_db_column :last_name }
@@ -11,8 +13,6 @@ describe User do
   it { should have_many :training_presences }
   it { should have_and_belong_to_many :groups }
 
-  let(:section) { create :section }
-  let(:user) { create :user }
 
   describe 'authentication token should be generated' do
     subject { create :user, authentication_token: nil }

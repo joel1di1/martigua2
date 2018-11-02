@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Club, :type => :model do
 
+  let(:club) { create :club }
   it { should validate_presence_of :name }
   it { should have_many :sections }
 
-  let(:club) { create :club }
 
   describe '#add_admin!' do
     let(:user) { create :user }

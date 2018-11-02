@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Section, :type => :model do
+  let(:section) { create :section }
   it { should validate_presence_of :club }
   it { should validate_presence_of :name }
   it { should have_many :teams }
@@ -9,7 +10,6 @@ RSpec.describe Section, :type => :model do
   it { should have_and_belong_to_many :trainings }
   it { should have_many :groups }
 
-  let(:section) { create :section }
 
   describe '#add_player!' do
     let(:user) { create :user }

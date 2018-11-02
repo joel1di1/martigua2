@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Season, :type => :model do
+  let(:season) { create :season }
   it { should have_many :participations }
   it { should have_many :calendars }
   it { should have_many :championships }
@@ -9,7 +10,6 @@ RSpec.describe Season, :type => :model do
   it { should validate_presence_of :start_date }
   it { should validate_presence_of :end_date }
 
-  let(:season) { create :season }
 
   describe '.current' do
     before { Season.destroy_all }

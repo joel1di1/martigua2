@@ -21,8 +21,8 @@ class Group < ActiveRecord::Base
 
   def copy_to_current_season
     Group.create!(section: section, season: Season.current,
-                          name: name, system: system, users: users,
-                          color: color, description: description, role: role)
+                  name: name, system: system, users: users,
+                  color: color, description: description, role: role)
   end
 
 end

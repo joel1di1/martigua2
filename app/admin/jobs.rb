@@ -47,12 +47,12 @@ ActiveAdmin.register Delayed::Job, as: 'Job' do
  
   action_item(:show) do
     link_to 'Schedule now', run_now_admin_job_path(resource), 'data-method' => :post,
-      :title => 'Cause a job scheduled in the future to run now.'
+                                                              :title => 'Cause a job scheduled in the future to run now.'
   end
  
   action_item(:show) do
     link_to 'Reset Job', reset_admin_job_path(resource), 'data-method' => :post,
-      :title => 'Resets the state caused by errors. Lets a worker give it another go ASAP.'
+                                                         :title => 'Resets the state caused by errors. Lets a worker give it another go ASAP.'
   end
  
   member_action :run_now, :method => :post do

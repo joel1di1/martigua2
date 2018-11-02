@@ -143,7 +143,7 @@ GEM
       rspec
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
-    codeclimate-test-reporter (1.0.8)
+    codeclimate-test-reporter (1.0.9)
       simplecov (<= 0.13)
     coderay (1.1.2)
     coffee-rails (4.2.2)

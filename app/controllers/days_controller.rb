@@ -5,7 +5,7 @@ class DaysController < InheritedResources::Base
     @day = Day.new day_params
     @day.save!
 
-    redirect_to_with(fallback: section_days_path(current_section),
+    redirect_with(fallback: section_days_path(current_section),
                      additionnal_params: { 'match[day_id]' => @day.id },
                      notice: 'Journée créée')
   end

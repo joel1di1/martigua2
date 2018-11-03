@@ -54,14 +54,14 @@ class MatchesController < ApplicationController
 
     respond_to do |format|
       format.json { render json: {}, status: :created }
-      format.html { redirect_to referer_url_or(section_match_path(current_section, match)) }
+      format.html { redirect_with(fallback: section_match_path(current_section, match)) }
     end
   end
 
   def destroy
     @match = Match.find params[:id]
     @match.destroy!
-    redirect_to referer_url_or(root_path)
+    redirect_with(fallback: root_path)
   end
 
   protected

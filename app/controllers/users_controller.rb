@@ -43,7 +43,7 @@ class UsersController < ApplicationController
       TrainingPresence.create! user: current_user, training: training, present: checked_ids.include?(training.id)
     end
 
-    redirect_to referer_url_or(root_path)
+    redirect_with(fallback: root_path)
   end
 
   def match_availabilities
@@ -62,7 +62,7 @@ class UsersController < ApplicationController
       MatchAvailability.create! user: @user, match: match, available: checked_ids.include?(match.id)
     end
 
-    redirect_to referer_url_or(root_path)
+    redirect_with(fallback: root_path)
   end
 
   def destroy

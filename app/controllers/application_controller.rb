@@ -22,19 +22,7 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def referer_url_or(default_path, additionnal_params: {})
-    referrer = request.referrer
-    if referrer &&
-       referrer.match(Rails.application.config.action_mailer.default_url_options[:host])
-      referrer += '&'
-      referrer += URI.encode_www_form(additionnal_params)
-      referrer
-    else
-      default_path
-    end
-  end
-
-  def redirect_to_with(fallback: root_path, additionnal_params: {}, use_referrer: true, **options)
+  def redirect_with(fallback: root_path, additionnal_params: {}, use_referrer: true, **options)
     if params[:_redirect_url].present?
       url = params[:_redirect_url].presence
       url += url['?'] ? '&' : '?'

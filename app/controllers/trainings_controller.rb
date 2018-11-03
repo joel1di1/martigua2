@@ -46,12 +46,12 @@ class TrainingsController < ApplicationController
 
   def cancellation
     @training.cancel!(reason: params[:cancellation][:reason])
-    redirect_to referer_url_or(section_training_path(current_section, @training))
+    redirect_with(fallback: section_training_path(current_section, @training))
   end
 
   def uncancel
     @training.uncancel!
-    redirect_to referer_url_or(section_training_path(current_section, @training))
+    redirect_with(fallback: section_training_path(current_section, @training))
   end
 
   private

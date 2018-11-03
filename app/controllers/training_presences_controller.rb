@@ -3,11 +3,11 @@ class TrainingPresencesController < ApplicationController
 
   def create
     current_user.present_for! Training.find(params[:training_id])
-    redirect_to referer_url_or(root_path)
+    redirect_with(fallback: root_path)
   end
 
   def destroy
     current_user.not_present_for! Training.find(params[:training_id])
-    redirect_to referer_url_or(root_path)
+    redirect_with(fallback: root_path)
   end
 end

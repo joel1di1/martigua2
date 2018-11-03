@@ -29,11 +29,11 @@ describe SectionsController, :type => :controller do
   end
 
   describe 'GET show' do
-    before { sign_in user }
-
-    before { expect_any_instance_of(Section).to receive(:next_trainings).and_return(:next_trainings_mock) }
-
-    before { get :show, params: { id: section.to_param } }
+    before do
+      sign_in user
+      expect_any_instance_of(Section).to receive(:next_trainings).and_return(:next_trainings_mock)
+      get :show, params: { id: section.to_param }
+    end
 
     it { expect(response).to have_http_status(:success) }
     it { expect(assigns[:next_trainings]).to eq :next_trainings_mock }

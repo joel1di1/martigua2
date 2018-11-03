@@ -40,11 +40,11 @@ RSpec.describe Training, :type => :model do
   describe '.send_presence_mail_for_next_week' do
     let(:users) { (1..nb_users).map { create :user, with_section: section, group_ids: [group.id] } }
 
-    before { User.delete_all }
-
-    before { allow(User).to receive(:active_this_season).and_return(users) }
-
-    before { users.each { |user| expect(user).to receive(:next_week_trainings).and_return(trainings) } }
+    before do
+      User.delete_all
+      allow(User).to receive(:active_this_season).and_return(users)
+      users.each { |user| expect(user).to receive(:next_week_trainings).and_return(trainings) }
+    end
 
     context 'with trainings for users' do
       let(:trainings) { [training] }

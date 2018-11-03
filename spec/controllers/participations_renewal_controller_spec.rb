@@ -35,14 +35,11 @@ describe ParticipationsRenewalController, :type => :controller do
       section.add_coach!(player_and_coach_from_previous_season, season: previous_season)
       section.add_player!(player_from_current_season)
       section.add_coach!(coach_from_current_season)
-    end
 
-    before { request }
+      request
+    end
 
     it { expect(assigns[:previous_season_members]).to match_array(expected_members) }
     it { expect(assigns[:previous_season]).to eq Season.current.previous }
-  end
-
-  describe 'POST create' do
   end
 end

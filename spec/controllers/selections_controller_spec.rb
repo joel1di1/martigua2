@@ -16,9 +16,10 @@ describe SelectionsController, type: :controller do
     let(:request) { get :index, params: request_params }
 
     describe "assigns" do
-      before { expect(Team).to receive(:team_with_match_on).with(day, section).and_return(matches_with_teams) }
-
-      before { request }
+      before do
+        expect(Team).to receive(:team_with_match_on).with(day, section).and_return(matches_with_teams)
+        request
+      end
 
       it { expect(assigns[:day]).to eq day }
       it { expect(assigns[:teams_with_matches]).to eq matches_with_teams }

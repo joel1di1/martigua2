@@ -13,12 +13,4 @@ class EnrolledTeamChampionshipsController < ApplicationController
     @championship.enroll_team!(@team)
     redirect_to action: :index
   end
-
-  def destroy
-    enrolled_team_championship = EnrolledTeamChampionship.find params[:id]
-    @championship = Championship.find params[:championship_id]
-    team = enrolled_team_championship.team
-
-    redirect_to action: :index
-  end
 end

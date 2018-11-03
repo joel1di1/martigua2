@@ -23,8 +23,6 @@ class Season < ActiveRecord::Base
     Season.find(id - 1)
   end
 
-  protected
-
   def self.create_default_season
     Season.create!(start_date: Date.new(2014, 8, 1), end_date: Date.new(2015, 7, 1), name: '2014-2015')
   end

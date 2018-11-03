@@ -22,9 +22,10 @@ RSpec.describe Club, :type => :model do
     end
 
     context 'with user already admin' do
-      before { club.add_admin!(user) }
-
-      before { club.add_admin!(user) }
+      before do
+        club.add_admin!(user)
+        club.add_admin!(user)
+      end
 
       it { expect(user.is_admin_of?(club)).to be_truthy }
       it { expect { club.add_admin!(user) }.not_to change { club.admins.count } }

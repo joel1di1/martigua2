@@ -120,13 +120,12 @@ describe UsersController, :type => :controller do
 
     context 'from section group' do
       let(:group) { create :group, section: section }
+      let(:do_request) { delete :destroy, params: { section_id: section.to_param, group_id: group.to_param, id: user.to_param } }
 
       before do
         group.add_user! user
         sign_in user
       end
-
-      let(:do_request) { delete :destroy, params: { section_id: section.to_param, group_id: group.to_param, id: user.to_param } }
 
       it { expect { do_request }.to change { section.users.count }.by(0) }
       it { expect { do_request }.to change { group.users.count }.by(-1) }

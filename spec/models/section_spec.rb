@@ -172,11 +172,11 @@ RSpec.describe Section, :type => :model do
     let(:remove_user!) { section.remove_member!(user) }
 
     context 'with user in section' do
-      before { section.add_player! user }
-
-      before { group.add_user! user }
-
-      before { remove_user! }
+      before do
+        section.add_player! user
+        group.add_user! user
+        remove_user!
+      end
 
       it { expect(section.users.include?(user)).to be_falsy }
       it { expect(section.group_everybody.users.include?(user)).to be_falsy }
@@ -187,11 +187,11 @@ RSpec.describe Section, :type => :model do
     context 'with user in section for a specific season' do
       let(:other_season) { create :season, start_date: 2.years.ago }
 
-      before { section.add_player! user, season: other_season }
-
-      before { section.add_player! user }
-
-      before { remove_user! }
+      before do
+        section.add_player! user, season: other_season
+        section.add_player! user
+        remove_user!
+      end
 
       it { expect(section.group_everybody.users.include?(user)).to be_falsy }
       it { expect(section.group_every_players.users.include?(user)).to be_falsy }

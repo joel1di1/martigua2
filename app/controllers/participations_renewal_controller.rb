@@ -8,7 +8,7 @@ class ParticipationsRenewalController < ApplicationController
     renew_players
     renew_coachs
     redirect_to section_users_path(current_section)
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound
     redirect_to section_participations_renewal_index_path(current_section), notice: "Erreur, un membre n'a pas été trouvé lors de son enregistrement, veuillez réessayer ou contacter JOE si ça continue à ne par marcher"
   end
 

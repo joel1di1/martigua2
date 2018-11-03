@@ -1,8 +1,8 @@
 class SectionsController < ApplicationController
   def show
     @section = Section.find(params[:id])
-    @next_trainings = @section.next_trainings
-    @next_matches = @section.next_matches
+    @next_trainings = @section.next_trainings.includes(:groups, :location)
+    @next_matches = @section.next_matches.includes(:local_team, :visitor_team, :day, :location)
   end
 
   def new

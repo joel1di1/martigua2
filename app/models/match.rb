@@ -33,7 +33,7 @@ class Match < ActiveRecord::Base
     User.joins(:participations).where(participations: {
       season: Season.current,
       role: Participation::PLAYER,
-      section: teams.map(&:sections).flatten,
+      section: teams.includes(:sections).map(&:sections).flatten,
     })
   end
 
@@ -83,7 +83,7 @@ class Match < ActiveRecord::Base
   end
 
   def teams
-    [local_team, visitor_team]
+    Team.where(id: [local_team_id, visitor_team_id])
   end
 
   def selections(team)

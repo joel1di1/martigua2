@@ -1,11 +1,11 @@
-include Warden::Test::Helpers
-Warden.test_mode!
-
 # Feature: User profile page
 #   As a user
 #   I want to visit my user profile page
 #   So I can see my personal account data
 feature 'User profile page', :devise do
+  include Warden::Test::Helpers
+  Warden.test_mode!
+
   after(:each) do
     Warden.test_reset!
   end

@@ -7,36 +7,40 @@
       .col-md-12.col-xs-12
         .panel.panel-success
           .panel-heading
-            Joueurs Dispos
-            = "(#{@available_players.count})"
-          %ul.list-group
+            %button.btn.btn-link.btn-block.text-left{'data-toggle' => "collapse", 'data-target' => '#available-players'}
+              Joueurs Dispos
+              = "(#{@available_players.count})"
+          %ul.list-group.collapse.in#available-players
             - @available_players.each do |player|
-              = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches}
+              = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil}
+
 
     .row
       .col-md-12.col-xs-12
         .panel.panel-warning
           .panel-heading
-            Joueurs sans réponses
-            = "(#{@no_response_players.count})"
-          %ul.list-group
+            %button.btn.btn-link.btn-block{'data-toggle' => "collapse", 'aria-expanded' => false, 'data-target' => '#no-response-players'}
+              Joueurs sans réponses
+              = "(#{@no_response_players.count})"
+          %ul.list-group.collapse.in#no-response-players
             - @no_response_players.each do |player|
-              = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches}
+              = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil}
     .row
       .col-md-12.col-xs-12
         .panel.panel-danger
           .panel-heading
-            Joueurs non dispos
-            = "(#{@non_available_players.count})"
-          %ul.list-group
+            %button.btn.btn-link.btn-block{'data-toggle' => "collapse", 'aria-expanded' => false, 'data-target' => '#non-available-players'}
+              Joueurs non dispos
+              = "(#{@non_available_players.count})"
+          %ul.list-group.collapse.in#non-available-players
             - @non_available_players.each do |player|
-              = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches}
+              = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil}
   .col-md-9.col-xs-9
     .row
       - @teams_with_matches.each do |team, match|
-        - selections = match.selections(team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
+        - selections = match.selections(team).includes(:match).includes(:team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
         .col-md-4.col-xs-4
-          .panel.panel-primary
+          .panel.panel-primary.team-droppable{'data-match_id' => match.id, 'data-team_id' => team.id}
             .panel-heading
               .text-center
                 %strong= team.name
@@ -46,26 +50,7 @@
                   %em= "#{match.local_team.name} - #{match.visitor_team.name}"
             %ul.list-group
               - selections.each do |selection|
-                %li.list-group-item
-                  .user.inline
-                    - user = selection.user
-                    = user.short_name
-                    = form_tag section_selection_path(current_section, match, selection), class: 'inline', role: 'form', method: :delete do
-                      %button.btn.btn-link.btn-xs{type: :submit}
-                        %span.glyphicon.glyphicon-remove
-                  .pull-right
-                    / pour les autres matchs,
-                    / si le joueur est dispo,
-                    / mettre un lien qui le déplace vers l'autre match
-                    - @teams_with_matches.reject{|t, m| m == match && t == team }.each do |other_team, other_match|
-                      = form_tag selection_section_match_path(current_section, other_match, user_id: user.id, team_id: other_team.id), class: 'inline', role: 'form' do
-                        %button.btn.btn-link.btn-xs{type: :submit}
-                          - if user.is_available_for?(other_match)
-                            = "#{other_team.name} !"
-                          - elsif user.has_respond_for?(other_match)
-                            %s.hidden-link.not-available= other_team.name
-                          - else
-                            %s.hidden-link.not-respond= other_team.name
+                = render partial: 'player', object: selection.user, locals: { teams_with_matches: @teams_with_matches,selection: selection }
     .row
       .col-md-9.col-xs-9
         %p

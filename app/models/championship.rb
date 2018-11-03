@@ -36,6 +36,6 @@ class Championship < ActiveRecord::Base
   def ensure_calendar
     return if calendar.present?
 
-    self.calendar = Calendar.create!(season: self.season, name: self.name)
+    self.calendar = Calendar.create!(season: season, name: name)
   end
 end

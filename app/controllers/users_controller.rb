@@ -47,7 +47,7 @@ class UsersController < ApplicationController
   end
 
   def match_availabilities
-    unless ((@user == current_user) || (current_user.is_coach_of?(current_section)))
+    if @user != current_user && !current_user.is_coach_of?(current_section)
       render(:file => File.join(Rails.root, 'public/403.html'), :status => 403, :layout => false)
       return
     end

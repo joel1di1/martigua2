@@ -1,6 +1,6 @@
 class Participation < ActiveRecord::Base
-  PLAYER = 'player'
-  COACH = 'coach'
+  PLAYER = 'player'.freeze
+  COACH = 'coach'.freeze
 
   belongs_to :user, inverse_of: :participations
   belongs_to :section, inverse_of: :participations

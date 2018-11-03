@@ -61,8 +61,8 @@ class Training < ActiveRecord::Base
 
   def repeat_until!(end_date)
     training = self
-    end_date = end_date - 1.week
-    while training.start_datetime < end_date do
+    end_date -= 1.week
+    while training.start_datetime < end_date
       training = training.repeat_next_week!
     end
   end

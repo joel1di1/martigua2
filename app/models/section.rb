@@ -51,11 +51,11 @@ class Section < ActiveRecord::Base
   end
 
   def to_param
-    "#{self.id}-#{self.name}"
+    "#{id}-#{name}"
   end
 
   def to_s
-    "Section #{self.name} - #{self.club.name}"
+    "Section #{name} - #{club.name}"
   end
 
   def next_trainings

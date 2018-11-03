@@ -1,17 +1,15 @@
-# rubocop:disable Layout/IndentationConsistency
-module LogAllRequests extend ActiveSupport::Concern
+module LogAllRequests
+  extend ActiveSupport::Concern
   included do
     around_action :log_requests
   end
 
   def log_requests(&block)
-    begin
-      yield
-      log_if_active "#{request_string} --RESP-- #{response.status};#{response.redirect_url}"
-    rescue Exception => ex
-      log_if_active "#{request_string} --RESP-- 500;#{ex.message};#{ex.backtrace}"
-      raise
-    end
+    yield
+    log_if_active "#{request_string} --RESP-- #{response.status};#{response.redirect_url}"
+  rescue Exception => ex
+    log_if_active "#{request_string} --RESP-- 500;#{ex.message};#{ex.backtrace}"
+    raise
   end
 
   def log_if_active(str)
@@ -32,4 +30,3 @@ module LogAllRequests extend ActiveSupport::Concern
     f.filter params
   end
 end
-# rubocop:enable Layout/IndentationConsistency

@@ -219,8 +219,20 @@ RSpec.describe Section, :type => :model do
     let(:current_season) { Season.current }
     let(:previous_season) { current_season.previous }
 
-    let(:current_season_members) { Array.new(5) { u = create :user; section.add_player!(u, season: current_season); u } }
-    let(:previous_season_members) { Array.new(6) { u = create :user; section.add_player!(u, season: previous_season); u } }
+    let(:current_season_members) do
+      Array.new(5) do
+        u = create :user
+        section.add_player!(u, season: current_season)
+        u
+      end
+    end
+    let(:previous_season_members) do
+      Array.new(6) do
+        u = create :user
+        section.add_player!(u, season: previous_season)
+        u
+      end
+    end
 
     context 'without specify season' do
       subject { section.members }

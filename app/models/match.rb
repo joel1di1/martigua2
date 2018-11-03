@@ -33,7 +33,7 @@ class Match < ActiveRecord::Base
     User.joins(:participations).where(participations: {
       season: Season.current,
       role: Participation::PLAYER,
-      section: teams.map(&:sections).flatten
+      section: teams.map(&:sections).flatten,
     })
   end
 
@@ -105,7 +105,7 @@ class Match < ActiveRecord::Base
       "#{location.try(:name)}, #{location.try(:address)}"
     )
 
-    self.update_columns shared_calendar_id: event.id, shared_calendar_url: event.html_link
+    update_columns shared_calendar_id: event.id, shared_calendar_url: event.html_link
   end
   handle_asynchronously :async_update_shared_calendar
 end

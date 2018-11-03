@@ -11,8 +11,8 @@ class Day < ActiveRecord::Base
   protected
 
   def set_default_period_end_date
-    if self.period_start_date_changed? && self.period_start_date && !self.period_end_date_changed?
-      self.period_end_date = self.period_start_date + 1
+    if period_start_date_changed? && period_start_date && !period_end_date_changed?
+      self.period_end_date = period_start_date + 1
     end
   end
   # def set_default_name

@@ -25,7 +25,7 @@ RSpec.describe Day, :type => :model do
       context 'and end_date set' do
         let(:end_date) { Date.parse("2010-09-12") }
 
-        it { is_expected.to eq (end_date) }
+        it { is_expected.to eq end_date }
       end
     end
 

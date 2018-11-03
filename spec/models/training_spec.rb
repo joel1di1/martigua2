@@ -83,7 +83,7 @@ RSpec.describe Training, :type => :model do
     context 'with user not in training group' do
       let(:group_ids) { [] }
 
-      it { expect(training.users).to_not include(user) }
+      it { expect(training.users).not_to include(user) }
     end
 
     context 'with user in training group' do

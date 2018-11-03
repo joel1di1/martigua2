@@ -134,7 +134,7 @@ RSpec.describe Section, :type => :model do
     describe '#group_everybody' do
       let(:group_everybody) { section.group_everybody }
 
-      it { expect(group_everybody).to_not be_nil }
+      it { expect(group_everybody).not_to be_nil }
       it { expect(group_everybody.name).to eq 'TOUS LES MEMBRES' }
       it { expect(group_everybody.system).to be_truthy }
       it { expect(group_everybody.role).to eq 'everybody' }
@@ -143,7 +143,7 @@ RSpec.describe Section, :type => :model do
     describe '#group_everyplayers' do
       let(:group_every_players) { section.group_every_players }
 
-      it { expect(group_every_players).to_not be_nil }
+      it { expect(group_every_players).not_to be_nil }
       it { expect(group_every_players.name).to eq 'TOUS LES JOUEURS' }
       it { expect(group_every_players.system).to be_truthy }
       it { expect(group_every_players.role).to eq 'every_players' }

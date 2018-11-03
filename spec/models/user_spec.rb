@@ -214,19 +214,19 @@ describe User do
     context 'when date is passed' do
       let(:training_date) { 1.day.ago }
 
-      it { expect(user.next_week_trainings).to_not include(training) }
+      it { expect(user.next_week_trainings).not_to include(training) }
     end
 
     context 'when date is in 2 weeks' do
       let(:training_date) { 2.weeks.from_now }
 
-      it { expect(user.next_week_trainings).to_not include(training) }
+      it { expect(user.next_week_trainings).not_to include(training) }
     end
 
     context 'when user is not in training groups' do
       let(:user_group_ids) { [] }
 
-      it { expect(user.next_week_trainings).to_not include(training) }
+      it { expect(user.next_week_trainings).not_to include(training) }
     end
 
     context 'when user is in 2 training groups' do

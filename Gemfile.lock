@@ -105,7 +105,7 @@ GEM
       activesupport (>= 3.0.0)
     arel (8.0.0)
     ast (2.4.0)
-    autoprefixer-rails (8.5.1)
+    autoprefixer-rails (9.3.1)
       execjs
     babel-source (5.8.35)
     babel-transpiler (0.7.0)

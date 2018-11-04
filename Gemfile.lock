@@ -191,6 +191,7 @@ GEM
     faraday (0.15.3)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.25)
+    flamegraph (0.9.5)
     font_assets (0.1.14)
       rack
     foreman (0.85.0)
@@ -495,6 +496,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stackprof (0.2.12)
     starburst (1.0.3)
       rails (>= 3.0)
     switch_user (1.5.1)
@@ -557,6 +559,7 @@ DEPENDENCIES
   devise_invitable
   factory_bot_rails
   faker
+  flamegraph
   font_assets
   foreman
   google-api-client
@@ -607,6 +610,7 @@ DEPENDENCIES
   simple_form
   spring
   spring-commands-rspec
+  stackprof
   starburst (~> 1.0)
   switch_user
   timecop

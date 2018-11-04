@@ -63,10 +63,12 @@ end
 
 group :development, :test do
   gem 'byebug'
+  gem 'flamegraph'
   gem 'foreman'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'pry-rescue'
+  gem 'stackprof'
 end
 group :production do
   gem 'heroku-deflater'

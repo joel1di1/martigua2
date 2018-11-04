@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+# Usage:
+# > ruby gem_auto_update.rb
+
 bundle_outdated_result = `bundle outdated`
 gem_names = bundle_outdated_result.split("\n").map{|s| /^\s*\*\s([^\s]*)/.match(s)&.send(:[], 1) }.compact
 

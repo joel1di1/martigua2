@@ -14,14 +14,14 @@
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
     = label_tag :section_team_id, 'Quelle équipe ?'
     = select_tag :section_team_id, options_for_select(current_section.teams.pluck(:name, :id))
-    = f.submit 'next'
+    = f.submit 'Next', class: 'btn btn-primary'
 
 - elsif params[:match].blank? || params[:match][:championship_id].blank?
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
     = hidden_field_tag :section_team_id, params[:section_team_id]
     = label_tag 'match[championship_id]', 'Quelle compétition ?'
     = select_tag 'match[championship_id]', options_for_select(@section_team.championships.of_current_season.pluck(:name, :id))
-    = f.submit 'next'
+    = f.submit 'Next', class: 'btn btn-primary'
 
   %a(href="#new-championship-collapse" data-toggle="collapse")
     Ajouter une compétition
@@ -34,7 +34,7 @@
     = hidden_field_tag 'match[championship_id]', params[:match][:championship_id]
     = label_tag 'match[day_id]', 'Quel jour ?'
     = select_tag 'match[day_id]', options_for_select(@championship.calendar.days.pluck(:name, :id))
-    = f.submit 'next'
+    = f.submit 'Next', class: 'btn btn-primary'
 
   %a(href="#new-day-collapse" data-toggle="collapse")
     Ajouter une journée
@@ -50,7 +50,7 @@
           = f.input :name, input_html: { 'data-default-name' => @new_day.name }
           = f.hidden_field :calendar_id
         .form-actions
-          = f.button :submit
+          = f.button :submit, class: 'btn btn-primary'
 
 - elsif params[:match].blank? || params[:match][:location_id].blank?
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
@@ -59,7 +59,7 @@
     = hidden_field_tag 'match[day_id]', params[:match][:day_id]
     = label_tag 'match[location_id]', 'Quel lieu ?'
     = select_tag 'match[location_id]', options_for_select(Location.all.pluck(:name, :id)), class: :select2
-    = f.submit 'next'
+    = f.submit 'Next', class: 'btn btn-primary'
 
   %a(href="#new-location-collapse" data-toggle="collapse")
     Ajouter un lieu
@@ -74,7 +74,7 @@
           = f.input :name
           = f.input :address
         .form-actions
-          = f.button :submit
+          = f.button :submit, class: 'btn btn-primary'
 
 - elsif params[:adversary_team_id].blank?
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
@@ -84,7 +84,7 @@
     = hidden_field_tag 'match[location_id]', params[:match][:location_id]
     = label_tag :adversary_team_id, 'Equipe adverse ?'
     = select_tag :adversary_team_id, options_for_select(Team.all.order('name').pluck(:name, :id)), class: :select2
-    = f.submit 'next'
+    = f.submit 'Next', class: 'btn btn-primary'
 
   %a(href="#new-location-collapse" data-toggle="collapse")
     Ajouter une équipe
@@ -99,5 +99,5 @@
           = hidden_field_tag :_redirect_url, request.original_url
           = f.input :name
         .form-actions
-          = f.button :submit
+          = f.button :submit, class: 'btn btn-primary'
 

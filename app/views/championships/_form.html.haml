@@ -7,4 +7,4 @@
     = f.association :calendar, collection: @championship.season.calendars
   = link_to "Calendriers (si le calendrier voulu n'apparaît pas dans la liste)", section_calendars_path(section: current_section)
   .form-actions
-    = f.button :submit
+    = f.button :submit, class: 'btn btn-primary'

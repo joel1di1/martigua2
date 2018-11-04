@@ -70,4 +70,3 @@ pickle-email-*.html
 SSL/*
 /google_client_secret.json
 /.byebug_history
-/gem_auto_update.rb

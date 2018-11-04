@@ -29,4 +29,8 @@ $(document).on('turbolinks:load', function() {
 
   $('.select2').select2();
 
+  $('form.with-waiter').submit(function(evt) {
+    $("body").addClass("loading");
+  });
+
 });

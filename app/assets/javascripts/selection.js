@@ -29,12 +29,9 @@ $(document).on('turbolinks:load', function(){
   $('.team-droppable').droppable({
     activate: function(event, ui) {},
     drop: function( event, ui ) {
-        let playerId = ui.draggable.data('player_id');
-        let matchId = $(this).data('match_id');
-        let teamId = $(this).data('team_id');
-        console.log(playerId);
-        console.log(matchId);
-        console.log(teamId);
+        var playerId = ui.draggable.data('player_id');
+        var matchId = $(this).data('match_id');
+        var teamId = $(this).data('team_id');
 
         $('form#mtp-' + matchId + '-' + teamId + '-' + playerId).submit();
     },

@@ -14,7 +14,7 @@ feature 'Add Match', :devise do
 
     assert_text 'Quelle équipe ?'
     select(team.name, from: "Quelle équipe ?")
-    click_on 'next'
+    click_on 'Next'
 
     assert_text 'Quelle compétition ?'
     click_on 'Ajouter une compétition'

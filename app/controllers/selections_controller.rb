@@ -5,15 +5,9 @@ class SelectionsController < ApplicationController
 
     @day_selections = Selection.joins(match: :day).where(matches: { day_id: @day.id }).includes(:user)
     @users_already_selected = @day_selections.map(&:user).uniq
-    @available_players = @day.matches.includes(:local_team).map { |match| match.availables - @users_already_selected }.flatten.compact.uniq
-    @available_players.sort! { |a, b| a.short_name <=> b.short_name }
 
-    @non_available_players = User.joins(:match_availabilities).where(match_availabilities: { match: @day.matches, available: false })
-    @non_available_players -= @available_players
-    @non_available_players -= @users_already_selected
-
-    @no_response_players = current_section.players.includes(:match_availabilities) - @available_players - @users_already_selected - @non_available_players
-
+    @available_players = Set.new
+    @non_available_players = Set.new
 
     matches = @teams_with_matches.map(&:second)
     players = current_section.players
@@ -24,10 +18,20 @@ class SelectionsController < ApplicationController
       matches.each { |match| @availabilities_by_user_and_match[player.id][match.id] = nil }
     end
 
-    availabilities = MatchAvailability.where(match: matches)
+    availabilities = MatchAvailability.includes(:user).where(match: matches)
     availabilities.each do |availability|
       @availabilities_by_user_and_match[availability.user_id][availability.match_id] = availability.available if @availabilities_by_user_and_match[availability.user_id]
+      (availability.available ? @available_players : @non_available_players) << availability.user
     end
+
+    @available_players = (@available_players - @users_already_selected).to_a
+    @available_players.sort! { |a, b| a.short_name <=> b.short_name }
+
+    @non_available_players = (@non_available_players - @available_players - @users_already_selected).to_a
+    @non_available_players.sort! { |a, b| a.short_name <=> b.short_name }
+
+    @no_response_players = (players - @available_players - @non_available_players - @users_already_selected).to_a
+    @no_response_players.sort! { |a, b| a.short_name <=> b.short_name }
 
   end
 

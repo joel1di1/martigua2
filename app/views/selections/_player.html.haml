@@ -9,9 +9,10 @@
             - teams_with_matches.each do |team, match|
               = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter', role: 'form', id: "mtp-#{match.id}-#{team.id}-#{player.id}" do
                 %button.btn.btn-link.btn-xs{type: :submit}
-                  - if player.is_available_for?(match)
+                  - case @availabilities_by_user_and_match[player.id][match.id]
+                  - when true
                     = "#{team.name} !"
-                  - elsif player.has_respond_for?(match)
+                  - when false
                     %s.hidden-link.not-available= team.name
                   - else
                     %s.hidden-link.not-respond= team.name
@@ -24,12 +25,13 @@
                 %li
                   = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter', role: 'form', id: "mtp-#{match.id}-#{team.id}-#{player.id}" do
                     %button.btn.btn-link.btn-xs{type: :submit}
-                      - if player.is_available_for?(match)
-                        = "#{team.name} !"
-                      - elsif player.has_respond_for?(match)
-                        %s.hidden-link.not-available= team.name
-                      - else
-                        %s.hidden-link.not-respond= team.name
+                    - case @availabilities_by_user_and_match[player.id][match.id]
+                    - when true
+                      = "#{team.name} !"
+                    - when false
+                      %s.hidden-link.not-available= team.name
+                    - else
+                      %s.hidden-link.not-respond= team.name
       - else
         = player.short_name
     .col-md-1

@@ -33,6 +33,7 @@ def update_test_and_commit(gem_name: nil)
         exec_system "git commit -m 'auto update #{gem_name || 'all'}'"
       else
         log("error, do not update #{gem_name || 'all'}")
+        exec_system 'git checkout Gemfile.lock', desc: 'Revert Gemfile.lock'
       end
     end
   end

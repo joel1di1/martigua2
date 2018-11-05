@@ -1,27 +1,38 @@
 %li.list-group-item.player-draggable{'data-player_id' => player.id}
   .row
-    .col-md-10
+    .col-md-11
       - teams_with_matches = teams_with_matches.reject{|t, m| m == selection.match && t == selection.team } if selection.present?
       - if teams_with_matches.present?
-        .dropdown
-          %button.btn.btn-link.btn-xs{id: "assign-#{player.id}", type: :button, 'data-toggle' => "dropdown", 'aria-haspopup' => true, 'aria-expanded' => "false"}
-            = player.short_name
-          %ul.dropdown-menu{'aria-labelledby' => "assign-#{player.id}"}
+        - if display_teams
+          = player.short_name
+          .inline.pull-right
             - teams_with_matches.each do |team, match|
-              %li
-                = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter', role: 'form', id: "mtp-#{match.id}-#{team.id}-#{player.id}" do
-                  %button.btn.btn-link.btn-xs{type: :submit}
-                    - case @availabilities_by_user_and_match[player.id][match.id]
-                    - when nil
-                      %s.hidden-link.not-respond= team.name
-                    - when true
-                      = "#{team.name} !"
-                    - when false
-                      %s.hidden-link.not-available= team.name
-
+              = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter', role: 'form', id: "mtp-#{match.id}-#{team.id}-#{player.id}" do
+                %button.btn.btn-link.btn-xs{type: :submit}
+                  - if player.is_available_for?(match)
+                    = "#{team.name} !"
+                  - elsif player.has_respond_for?(match)
+                    %s.hidden-link.not-available= team.name
+                  - else
+                    %s.hidden-link.not-respond= team.name
+        - else
+          .dropdown
+            %button.btn.btn-link.btn-xs{id: "assign-#{player.id}", type: :button, 'data-toggle' => "dropdown", 'aria-haspopup' => true, 'aria-expanded' => "false"}
+              = player.short_name
+            %ul.dropdown-menu{'aria-labelledby' => "assign-#{player.id}"}
+              - teams_with_matches.each do |team, match|
+                %li
+                  = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter', role: 'form', id: "mtp-#{match.id}-#{team.id}-#{player.id}" do
+                    %button.btn.btn-link.btn-xs{type: :submit}
+                      - if player.is_available_for?(match)
+                        = "#{team.name} !"
+                      - elsif player.has_respond_for?(match)
+                        %s.hidden-link.not-available= team.name
+                      - else
+                        %s.hidden-link.not-respond= team.name
       - else
         = player.short_name
-    .col-md-2
+    .col-md-1
       - if selection.present?
         = form_tag section_selection_path(current_section, selection.match, selection), class: 'inline with-waiter', role: 'form', method: :delete do
           %button.btn.btn-link.btn-xs{type: :submit}

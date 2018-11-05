@@ -7,7 +7,7 @@ describe SelectionsController, type: :controller do
   let(:match_1) { create :match, day: day }
   let(:match_2) { create :match, day: day }
   let(:match_3) { create :match, day: day }
-  let(:matches_with_teams) { double }
+  let(:team_with_matches) { double }
 
   before { sign_in coach }
 
@@ -17,12 +17,13 @@ describe SelectionsController, type: :controller do
 
     describe "assigns" do
       before do
-        expect(Team).to receive(:team_with_match_on).with(day, section).and_return(matches_with_teams)
+        expect(Team).to receive(:team_with_match_on).with(day, section).and_return(team_with_matches)
+        expect(team_with_matches).to receive(:map).and_return([])
         request
       end
 
       it { expect(assigns[:day]).to eq day }
-      it { expect(assigns[:teams_with_matches]).to eq matches_with_teams }
+      it { expect(assigns[:teams_with_matches]).to eq team_with_matches }
     end
   end
 

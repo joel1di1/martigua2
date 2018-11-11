@@ -12,6 +12,8 @@
   .collapse.navbar-collapse
     - if current_section
       %ul.nav.navbar-nav.navbar-left
+        %li{class: active_if_current_path(scrapped_rankings_path)}
+          = link_to "Classements FFHB", scrapped_rankings_path
         %li{class: active_if_current_path(section_users_path(current_section))}
           = link_to "Membres", section_users_path(current_section)
         %li{class: active_if_current_path(section_trainings_path(current_section))}

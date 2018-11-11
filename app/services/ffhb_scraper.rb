@@ -12,12 +12,16 @@ class FfhbScraper
 
     rankings = championnats_seniors_martigua.map{ |championnat| championnat.css('.cls').first&.to_html }.compact
 
-    return if (rankings - ScrappedRanking.all.pluck(:scrapped_content)).empty?
+    return if rankings.empty? # do not update on scrapping errors
 
-    ScrappedRanking.transaction do
-      ScrappedRanking.all.update_all deleted_at: Time.current
-      rankings.each do |ranking|
-        ScrappedRanking.create! scrapped_content: ranking
+    if (rankings - ScrappedRanking.all.pluck(:scrapped_content)).empty?
+      ScrappedRanking.all.update_all updated_at: Time.current
+    else
+      ScrappedRanking.transaction do
+        ScrappedRanking.all.update_all deleted_at: Time.current
+        rankings.each do |ranking|
+          ScrappedRanking.create! scrapped_content: ranking
+        end
       end
     end
   end

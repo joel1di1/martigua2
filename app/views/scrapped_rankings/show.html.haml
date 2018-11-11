@@ -1,0 +1,9 @@
+%p#notice= notice
+
+%p
+  %b Scrapped content:
+  = @scrapped_ranking.scrapped_content.html_safe
+
+= link_to 'Edit', edit_scrapped_ranking_path(@scrapped_ranking)
+\|
+= link_to 'Back', scrapped_rankings_path

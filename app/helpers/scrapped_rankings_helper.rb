@@ -1,0 +1,2 @@
+module ScrappedRankingsHelper
+end

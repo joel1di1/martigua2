@@ -10,8 +10,15 @@ class FfhbScraper
       championnat.css('.eq p').map(&:text).any?{ |name| name[/MARTIGUA/]}
     end
 
-    classements = championnats_seniors_martigua.map{ |championnat| championnat.css('.cls').first&.to_html }
+    rankings = championnats_seniors_martigua.map{ |championnat| championnat.css('.cls').first&.to_html }.compact
 
+    return if (rankings - ScrappedRanking.all.pluck(:scrapped_content)).empty?
 
+    ScrappedRanking.transaction do
+      ScrappedRanking.all.update_all deleted_at: Time.current
+      rankings.each do |ranking|
+        ScrappedRanking.create! scrapped_content: ranking
+      end
+    end
   end
 end

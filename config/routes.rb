@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :scrapped_rankings, only: [:index]
   resources :days
 
   resources :championships

@@ -1,0 +1,9 @@
+%h1 Résultats de la FFHB
+%p.small
+  = "mise à jour : #{@scrapped_rankings.first.created_at}"
+
+%table
+  %tbody
+    - @scrapped_rankings.each do |scrapped_ranking|
+      %tr
+        %td= scrapped_ranking.scrapped_content.html_safe

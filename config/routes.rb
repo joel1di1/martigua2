@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
-  resources :scrapped_rankings, only: [:index]
   resources :days
 
   resources :championships
 
   resources :sections, only: [:show] do
+    resources :scrapped_rankings, only: [:index]
     resources :section_user_invitations, path: 'user_invitations', only: [:new, :show, :create, :index]
     resources :trainings do
       member do

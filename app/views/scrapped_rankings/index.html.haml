@@ -6,4 +6,4 @@
   %tbody
     - @scrapped_rankings.each do |scrapped_ranking|
       %tr
-        %td= scrapped_ranking.scrapped_content.html_safe
+        %td= sanitize scrapped_ranking.scrapped_content, tags: %w(table tr th td em strong)

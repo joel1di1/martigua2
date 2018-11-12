@@ -34,6 +34,7 @@ gem 'ransack', git: 'https://github.com/activerecord-hackery/ransack.git'
 gem 'redis'
 gem 'rest-client'
 gem 'sdoc', group: :doc
+gem 'sentry-raven'
 gem 'simple_form'
 gem 'starburst', '~> 1.0'
 gem 'switch_user'

@@ -31,6 +31,13 @@ module Martigua2
       end
     end
 
+    sentry_dsn = ENV['SENTRY_DSN']
+    if sentry_dsn
+      Raven.configure do |config|
+        config.dsn = sentry_dsn
+      end
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

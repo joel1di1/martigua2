@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user_from_token!, except: :catch_404
   before_action :authenticate_user!, except: :catch_404
+  before_action :set_raven_context
 
   helper_method :current_section, :origin_path_or
 
@@ -56,6 +57,11 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def set_raven_context
+    Raven.user_context(id: current_user&.id, email: current_user&.email)
+    Raven.extra_context(params: params.to_unsafe_h, url: request.url)
+  end
 
   def authenticate_user_from_token!
     user_email = params[:user_email].presence

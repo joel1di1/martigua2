@@ -4,12 +4,9 @@ class FfhbScraper
 
     championnats = page.css('.phase_list > ul > li')
 
-    championnats_seniors = championnats.select do |championnat|
-      championnat.css('.div-toggler').text[/Plus 16 Ans.*Masculine/]
-    end
-
-    championnats_seniors_martigua = championnats_seniors.select do |championnat|
-      championnat.css('.eq p').map(&:text).any?{ |name| name[/MARTIGUA/]}
+    championnats_seniors_martigua = championnats.select do |championnat|
+      championnat.css('.div-toggler').text[/Plus 16 Ans.*Masculine/] &&
+        championnat.css('.eq p').map(&:text).any?{ |name| name[/MARTIGUA/]}
     end
 
     rankings = championnats_seniors_martigua.map{ |championnat| championnat.css('.cls').first&.to_html }.compact

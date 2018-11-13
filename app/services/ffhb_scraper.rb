@@ -11,7 +11,7 @@ class FfhbScraper
 
     rankings = championnats_seniors_martigua.map{ |championnat| championnat.css('.cls').first&.to_html }.compact
 
-    return if rankings.empty? # do not update on scrapping errors
+    raise 'Unable to scrape FFHB' if rankings.empty? # do not update on scrapping errors
 
     if (rankings - ScrappedRanking.all.pluck(:scrapped_content)).empty?
       ScrappedRanking.all.update_all updated_at: Time.current

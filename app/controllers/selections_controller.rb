@@ -32,7 +32,6 @@ class SelectionsController < ApplicationController
 
     @no_response_players = (players - @available_players - @non_available_players - @users_already_selected).to_a
     @no_response_players.sort! { |a, b| a.short_name <=> b.short_name }
-
   end
 
   def destroy

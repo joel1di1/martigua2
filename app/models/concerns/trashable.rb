@@ -7,7 +7,7 @@ module Trashable
 
   module ClassMethods
     def trashed
-      self.unscoped.where(self.arel_table[:deleted_at].not_eq(nil))
+      unscoped.where(arel_table[:deleted_at].not_eq(nil))
     end
   end
 
@@ -18,7 +18,7 @@ module Trashable
   end
 
   def destroy
-    self.trash
+    trash
   end
 
   def recover

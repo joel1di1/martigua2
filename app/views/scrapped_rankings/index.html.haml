@@ -1,9 +1,8 @@
-%h1 Classements FFHB
-%p.small
-  = "mise à jour : #{@scrapped_rankings.first.updated_at}"
-
-%table
-  %tbody
-    - @scrapped_rankings.each do |scrapped_ranking|
-      %tr
-        %td= sanitize scrapped_ranking.scrapped_content, tags: %w(table tr th td em strong)
+.row
+  - @scrapped_rankings.each do |scrapped_ranking|
+    .col-md-4
+      %h3.text-center= scrapped_ranking.championship_number
+      %p.small.text-center
+        = "dernière mise à jour : #{scrapped_ranking.updated_at.strftime("%d %b - %Hh%M")}"
+      %p
+        = sanitize scrapped_ranking.scrapped_content, tags: %w(table tr th td em strong)

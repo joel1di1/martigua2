@@ -5,7 +5,6 @@
 
 # try to update everything
 
-
 def log(msg)
   puts "=== #{msg}\n"
 end
@@ -18,7 +17,7 @@ def exec_thick(cmd, desc: nil)
   _exec(cmd, desc: nil, mode: :thick)
 end
 
-def _exec(cmd, desc: nil, mode: )
+def _exec(cmd, desc: nil, mode:)
   log("execute `#{cmd}` (using #{mode} mode) -- #{desc}")
   mode == :thick ? `#{cmd}` : system(cmd)
 end
@@ -39,14 +38,13 @@ def update_test_and_commit(gem_name: nil)
   end
 end
 
-
 exec_system 'git checkout Gemfile.lock'
 exec_system 'bundle update'
 
 update_test_and_commit
 
 bundle_outdated_result = exec_thick 'bundle outdated'
-gem_names = bundle_outdated_result.split("\n").map{|s| /^\s*\*\s([^\s]*)/.match(s)&.send(:[], 1) }.compact
+gem_names = bundle_outdated_result.split("\n").map { |s| /^\s*\*\s([^\s]*)/.match(s)&.send(:[], 1) }.compact
 
 gem_names.each do |gem_name|
   exec_system 'git checkout Gemfile.lock'

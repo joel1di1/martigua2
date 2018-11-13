@@ -19,9 +19,9 @@ class ChampionshipsController < ApplicationController
       end
 
       redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
-                       fallback: section_championship_path(current_section, @championship),
-                       use_referrer: false,
-                       notice: 'Compétition créée'
+                    fallback: section_championship_path(current_section, @championship),
+                    use_referrer: false,
+                    notice: 'Compétition créée'
     else
       render :new
     end

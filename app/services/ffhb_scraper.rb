@@ -5,7 +5,7 @@ class FfhbScraper
     championnats = page.css('.chpts > li')
 
     championnats_seniors_martigua = championnats.select do |championnat|
-      championnat.css('.div-toggler').text[/Plus 16 Ans.*Masculine/] &&
+      championnat.css('.div-toggler').text[/\+16 Ans.*Masculine/] &&
         championnat.css('.eq p').map(&:text).any? { |name| name[/MARTIGUA/] }
     end
 

@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
   end
 
   def filtered_referrer
-    request.referrer && request.referrer[/^https:\/\/www.martigua.org/]
+    request.referrer if request.referrer && request.referrer[/^https:\/\/www.martigua.org/]
   end
 
   def current_section

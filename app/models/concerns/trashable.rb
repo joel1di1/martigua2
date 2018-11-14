@@ -2,7 +2,7 @@ module Trashable
   extend ActiveSupport::Concern
 
   included do
-    default_scope { where(deleted_at: nil) }
+    default_scope { where(deleted_at: nil) } # rubocop:disable Airbnb/DefaultScope
   end
 
   module ClassMethods

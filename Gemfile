@@ -51,6 +51,7 @@ group :development do
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'html2haml'
+  gem 'overcommit'
   gem 'query_diet'
   gem 'rails_layout'
   gem 'rb-fchange', :require => false

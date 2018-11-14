@@ -29,9 +29,7 @@ class ApplicationController < ActionController::Base
       url += url['?'] ? '&' : '?'
       url += URI.encode_www_form(additionnal_params)
     else
-      url = request.referrer if use_referrer
-      url = nil if request.referrer && !request.referrer[/^https:\/\/www.martigua.org/]
-      url ||= fallback
+      url = (use_referrer && request.referrer[/^https:\/\/www.martigua.org/]) ? request.referrer : fallback
     end
     redirect_to url, options
   end

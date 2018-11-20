@@ -25,7 +25,7 @@
                 %li
                   = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter', role: 'form', id: "mtp-#{match.id}-#{team.id}-#{player.id}" do
                     %button.btn.btn-link.btn-xs{type: :submit}
-                      - case @availabilities_by_user_and_match[player.id][match.id]
+                      - case @availabilities_by_user_and_match[player.id].try(:[], match.id)
                       - when true
                         = "#{team.name} !"
                       - when false

@@ -317,5 +317,14 @@ describe User do
         end
       end
     end
+
+    context 'with an user player and coach' do
+      before do
+        section.add_player! user
+        section.add_coach! user
+      end
+
+      it { expect(active_users.count).to eq 1 }
+    end
   end
 end

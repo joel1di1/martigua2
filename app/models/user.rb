@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
 
   default_scope { order 'first_name' }
 
-  scope :active_this_season, -> { joins(:participations).where(participations: { season: Season.current }) }
+  scope :active_this_season, -> { includes(:participations).where(participations: { season: Season.current }) }
 
   def has_only_one_section?
     sections.count == 1

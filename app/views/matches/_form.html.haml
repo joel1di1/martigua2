@@ -2,7 +2,7 @@
   = f.error_notification
 
   .form-inputs
-    = hidden_field_tag 'match[championship_id]', params[:match][:championship_id]
+    = hidden_field_tag 'match[championship_id]', params[:match][:championship_id] if params[:match]
     = f.association :local_team, collection: @championship.teams.order(:name)
     = f.association :visitor_team, collection: @championship.teams.order(:name)
     = f.association :location, input_html: { class: 'select2' }

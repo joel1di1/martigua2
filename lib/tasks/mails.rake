@@ -8,4 +8,12 @@ namespace :mails do
       Training.delay.send_presence_mail_for_next_week
     end
   end
+
+  task :send_for_matches => :environment do
+    Match.delay.send_availability_mail_for_next_weekend
+  end
+
+  task :send_for_trainings => :environment do
+    Training.delay.send_presence_mail_for_next_week
+  end
 end

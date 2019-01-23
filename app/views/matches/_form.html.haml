@@ -4,6 +4,9 @@
   .form-inputs
     = hidden_field_tag 'match[championship_id]', params[:match][:championship_id] if params[:match]
     = f.association :local_team, collection: @championship.teams.order(:name)
+    .switch-teams
+      %a#switch-teams.btn(title='switch teams' href='#')
+        %span.glyphicon.glyphicon-retweet
     = f.association :visitor_team, collection: @championship.teams.order(:name)
     = f.association :location, input_html: { class: 'select2' }
     = f.association :day, collection: @championship.calendar.days.order('period_start_date ASC'), hint: "Jour de match"

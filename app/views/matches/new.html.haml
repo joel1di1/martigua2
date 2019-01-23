@@ -8,6 +8,8 @@
     = Championship.find(params[:championship_id]).name
 
 - if params[:section_team_id].present? && params[:adversary_team_id].present? && (params[:match].present? && params[:match][:championship_id].present? && params[:match][:day_id].present? && params[:match][:location_id].present? )
+  - @match.local_team_id = params[:section_team_id]
+  - @match.visitor_team_id = params[:adversary_team_id]
   = render 'form'
 
 - elsif params[:section_team_id].blank?

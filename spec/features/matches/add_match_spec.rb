@@ -38,11 +38,11 @@ feature 'Add Match', :devise do
     fill_in 'team[name]', with: adversary_team_name
     expect { click_on 'Create Team' }.to change(Team, :count)
 
-    select team.name, from: 'Local team'
-    select adversary_team_name, from: 'Visitor team'
-    select location_name, from: 'Location'
-    select day_name, from: 'Day'
-
     expect { click_on 'Create Match' }.to change(Match, :count)
+    match = Match.last
+    expect(match.local_team).to eq(team)
+    expect(match.visitor_team.name).to eq(adversary_team_name)
+    expect(match.day.name).to eq(day_name)
+    expect(match.location.name).to eq(location_name)
   end
 end

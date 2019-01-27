@@ -18,7 +18,7 @@ development:
   encoding: unicode
   database: martigua2_development
   pool:     5
-  username: joel1di1
+  username: martigua2
   password:
   template: template0
 
@@ -48,7 +48,7 @@ test:
   encoding: unicode
   database: martigua2_test
   pool:     5
-  username: joel1di1
+  username: martigua2
   password:
   template: template0
 
@@ -58,6 +58,6 @@ production:
   encoding: unicode
   database: martigua2_production
   pool:     5
-  username: joel1di1
+  username: martigua2
   password:
   template: template0

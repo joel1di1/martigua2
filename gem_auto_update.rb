@@ -46,6 +46,7 @@ exec_system 'bundle update'
 
 if update_test_and_commit
   log 'Bundle update successful, stop here'
+  return
 end
 
 bundle_outdated_result = exec_thick 'bundle outdated'

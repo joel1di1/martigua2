@@ -16,7 +16,7 @@ class FfhbScraper
     raise 'Unable to scrape FFHB' if links.empty? # do not update on scrapping errors
 
     links.each do |link|
-      all_matches_page = Mechanize.new.get("#{FFHB_ROOT}#{link.attribute('href').value}")
+      all_matches_page = Mechanize.new.get("#{FFHB_94_URL}#{link.attribute('href').value}")
       inner = all_matches_page.css('.inner')
       team_name = inner.css('.eq').find { |eq| eq.text[/MARTIGUA/] }&.text
       next unless team_name

@@ -1,8 +1,8 @@
 class FfhbScraper
-  FFHB_94_URL = 'http://www.ff-handball.org/competitions/championnats-departementaux/94-comite-du-val-de-marne.html'
+  FFHB_94_URL = 'http://www.ff-handball.org/'
 
   def scrape_results
-    page = Mechanize.new.get(FFHB_94_URL)
+    page = Mechanize.new.get("#{FFHB_94_URL}competitions/championnats-departementaux/94-comite-du-val-de-marne.html")
 
     championnats = page.css('.chpts > li')
 

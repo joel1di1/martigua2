@@ -11,16 +11,21 @@ class FfhbScraper
         championnat.css('.eq p').map(&:text).any? { |name| name[/MARTIGUA/] }
     end
 
-    rankings = championnats_seniors_martigua.map { |championnat| championnat.css('.cls') }.flatten.compact
+    links = championnats_seniors_martigua.map { |championnat| championnat.css('.plus a') }.flatten
 
-    raise 'Unable to scrape FFHB' if rankings.empty? # do not update on scrapping errors
+    raise 'Unable to scrape FFHB' if links.empty? # do not update on scrapping errors
 
-    rankings.each do |ranking|
-      team_name = ranking.css('.eq').find { |eq| eq.text[/MARTIGUA/] }&.text
+    links.each do |link|
+      all_matches_page = Mechanize.new.get("#{FFHB_ROOT}#{link.attribute('href').value}")
+      inner = all_matches_page.css('.inner')
+      team_name = inner.css('.eq').find { |eq| eq.text[/MARTIGUA/] }&.text
       next unless team_name
 
       scrapped_ranking = ScrappedRanking.find_or_initialize_by(championship_number: team_name)
-      scrapped_ranking.update! scrapped_content: ranking.to_html, updated_at: Time.current # force update
+
+      content = "<div class=\"bloc contenu\">#{inner.css('.cls').to_html}#{inner.css('#journeeCarousel').to_html}</div>"
+      scrapped_ranking.update! scrapped_content: content, updated_at: Time.current # force update
     end
+    'ok'
   end
 end

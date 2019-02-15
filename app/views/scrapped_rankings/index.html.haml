@@ -5,4 +5,4 @@
       %p.small.text-center
         = "dernière mise à jour : #{scrapped_ranking.updated_at.strftime("%d %b - %Hh%M")}"
       %p
-        = sanitize scrapped_ranking.scrapped_content, tags: %w(table tr th td em strong)
+        = sanitize scrapped_ranking.scrapped_content, tags: %w(table tr th td em strong ul li div p br a)

@@ -60,7 +60,10 @@ table.res .eq {
     border-right: 1px solid #d1d3d4;
     padding: 0;
     text-transform: uppercase;
-    background: url(img/pixGris.png) 0 50% repeat-x;
+
+    & > :first-child{
+      border-bottom: 1px solid lightgrey;
+    }
 }
 
 .bloc.contenu table.res .eq p {

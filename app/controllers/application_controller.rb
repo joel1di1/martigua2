@@ -19,6 +19,8 @@ class ApplicationController < ActionController::Base
       format.html { render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found }
       format.xml  { head :not_found }
     end
+  rescue ActionController::UnknownFormat
+    render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found
   end
 
   protected

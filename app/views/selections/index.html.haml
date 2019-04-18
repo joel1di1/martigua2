@@ -88,7 +88,9 @@
                     = render partial: 'locations/gmaps_link', locals: { location: match.location }
 
                 %p
-                  Composition :
+                  Composition
+                  = selections.size
+                  ':
                   %strong
                     = selections.map(&:user).map(&:short_name).join(', ')
 

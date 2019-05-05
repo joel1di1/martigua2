@@ -27,7 +27,7 @@ gem 'newrelic_rpm'
 gem 'nokogiri'
 gem 'phony'
 gem 'pg', group: [:production, :development]
-gem 'polyamorous', git: 'https://github.com/activerecord-hackery/polyamorous.git'
+gem 'polyamorous'
 gem 'puma'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'ransack', git: 'https://github.com/activerecord-hackery/ransack.git'

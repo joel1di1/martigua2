@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FfhbScraper
   FFHB_94_URL = 'http://www.ff-handball.org/'
 

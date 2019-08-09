@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Championship < ActiveRecord::Base
   belongs_to :season
   belongs_to :calendar

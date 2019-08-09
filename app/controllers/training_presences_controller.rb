@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TrainingPresencesController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:training_presences, :match_availabilities]
 

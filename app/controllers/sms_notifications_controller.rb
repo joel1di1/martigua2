@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SmsNotificationsController < ApplicationController
   def new
     @sms_notification = SmsNotification.new(params[:sms_notification] ? sms_notification_params : nil)

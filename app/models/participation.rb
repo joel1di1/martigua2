@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Participation < ActiveRecord::Base
-  PLAYER = 'player'.freeze
-  COACH = 'coach'.freeze
+  PLAYER = 'player'
+  COACH = 'coach'
 
   belongs_to :user, inverse_of: :participations
   belongs_to :section, inverse_of: :participations

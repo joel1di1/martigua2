@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Feature: send sms notification
 #   As a section_coach
 #   I want to send messages

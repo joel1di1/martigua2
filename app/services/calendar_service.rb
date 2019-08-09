@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'google/apis/calendar_v3'
 require 'googleauth'
 require 'googleauth/stores/file_token_store'
@@ -7,11 +9,11 @@ require 'fileutils'
 require 'date'
 
 class CalendarService
-  OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'.freeze
-  APPLICATION_NAME = 'Martigua2'.freeze
+  OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'
+  APPLICATION_NAME = 'Martigua2'
   CREDENTIALS_PATH = File.join(Dir.home, '.credentials', "calendar-ruby-quickstart.yaml")
   SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
-  CLIENT_SECRETS_PATH = 'google_client_secret.json'.freeze
+  CLIENT_SECRETS_PATH = 'google_client_secret.json'
   GOOGLE_CALENDAR_ID = ENV['GOOGLE_CALENDAR_ID'] || '24l3f4bf1u4fut3gdjpb2pfq94@group.calendar.google.com'
 
   include Singleton

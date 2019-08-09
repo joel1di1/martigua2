@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SectionUserInvitation < ActiveRecord::Base
   belongs_to :section
 

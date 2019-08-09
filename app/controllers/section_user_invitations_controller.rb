@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SectionUserInvitationsController < ApplicationController
   def new
     @section_user_invitation = SectionUserInvitation.new section: current_section

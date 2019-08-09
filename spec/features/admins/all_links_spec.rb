@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 feature 'Active Admin', :devise do
   scenario 'admin can list any page in admin section' do
     admin = create :admin_user

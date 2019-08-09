@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateEnrolledTeamChampionships < ActiveRecord::Migration[4.2]
   def change
     create_table :enrolled_team_championships do |t|

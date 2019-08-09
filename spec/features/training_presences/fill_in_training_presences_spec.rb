@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 feature 'fill in training presences', :devise do
   scenario 'section_coach sign in and invite player' do
     section = create :section

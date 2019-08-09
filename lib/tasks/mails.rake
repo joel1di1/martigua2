@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :mails do
   task :send_daily_mails => :environment do
     today = Date.today

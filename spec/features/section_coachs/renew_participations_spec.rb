@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Feature: Renew participations
 #   As a section_coach
 #   I want to select members from last season

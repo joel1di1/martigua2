@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Training do
   permit_params :start_datetime, :end_datetime, :location_id, :canceled, :cancelation_reason
 

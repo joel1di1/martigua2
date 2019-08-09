@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ParticipationsRenewalController < ApplicationController
   def index
     @previous_season = Season.current.previous

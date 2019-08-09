@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe User do
   let(:user) { create :user }
   let(:section) { create :section }

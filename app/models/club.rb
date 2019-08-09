@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Club < ActiveRecord::Base
   validates_presence_of :name
 

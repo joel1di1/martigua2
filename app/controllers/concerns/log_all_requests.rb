@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LogAllRequests
   extend ActiveSupport::Concern
   included do

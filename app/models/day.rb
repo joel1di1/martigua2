@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Day < ActiveRecord::Base
   belongs_to :calendar
   has_many :matches, inverse_of: :day

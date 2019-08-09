@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CalendarsController < ApplicationController
   before_action :find_calendar_by_id, only: [:edit, :update]
 

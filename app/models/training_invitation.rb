@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TrainingInvitation < ActiveRecord::Base
   belongs_to :training
 

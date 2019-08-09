@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Starburst
   Announcement.class_eval do
     scope :unread_by, lambda { |current_user|

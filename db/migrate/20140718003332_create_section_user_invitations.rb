@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateSectionUserInvitations < ActiveRecord::Migration[4.2]
   def change
     create_table :section_user_invitations do |t|

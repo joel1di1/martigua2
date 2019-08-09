@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SmsNotification < ActiveRecord::Base
   belongs_to :section
   validates_presence_of :section

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Delayed::Job, as: 'Job' do
   menu parent: 'Admin'
 

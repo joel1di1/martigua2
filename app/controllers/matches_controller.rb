@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MatchesController < ApplicationController
   def new
     @section_team = Team.find_by_id(params[:section_team_id])

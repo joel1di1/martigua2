@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 feature 'See group detail' do
   let(:section) { create :section }
   let(:user) { create :user, with_section: section }

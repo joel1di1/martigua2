@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Feature: Invite user
 #   As a section_coach
 #   I want to invite a new user

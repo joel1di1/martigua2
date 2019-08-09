@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MatchSelection < ActiveRecord::Base
   belongs_to :match
   belongs_to :team

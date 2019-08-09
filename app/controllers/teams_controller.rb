@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TeamsController < InheritedResources::Base
   def create
     @team = Team.new team_params

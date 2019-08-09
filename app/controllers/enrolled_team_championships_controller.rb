@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EnrolledTeamChampionshipsController < ApplicationController
   # before_action :find_championship_by_id, except: [:index, :new, :create]
 

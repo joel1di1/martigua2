@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SelectionsController < ApplicationController
   def index
     @day = Day.find(params[:day_id])

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Team < ActiveRecord::Base
   belongs_to :club
 

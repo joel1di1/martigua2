@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateScrappedRankings < ActiveRecord::Migration[5.1]
   def change
     create_table :scrapped_rankings do |t|

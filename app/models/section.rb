@@ -3,6 +3,7 @@ class Section < ActiveRecord::Base
 
   has_many :team_sections, dependent: :destroy, inverse_of: :section
   has_many :teams, through: :team_sections, inverse_of: :sections
+  has_many :championships, -> { distinct }, through: :teams
 
   has_many :participations, inverse_of: :section, dependent: :destroy
   has_many :users, -> { distinct }, through: :participations, inverse_of: :sections
@@ -87,10 +88,6 @@ class Section < ActiveRecord::Base
     season ||= Season.current
     participations.where(user: user, season: season).delete_all
     groups.where(season: season).map { |group| group.remove_user! user, force: true }
-  end
-
-  def championships
-    teams.includes(:championships).map(&:championships).flatten.uniq
   end
 
   def copy_from_previous_season

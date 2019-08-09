@@ -208,9 +208,11 @@ RSpec.describe Section, :type => :model do
     let(:championship_2) { create :championship }
     let(:championship_3) { create :championship }
 
-    let!(:enrolled_team_championship_1) { create :enrolled_team_championship, team: team_1, championship: championship_1 }
-    let!(:enrolled_team_championship_2) { create :enrolled_team_championship, team: team_2, championship: championship_2 }
-    let!(:enrolled_team_championship_3) { create :enrolled_team_championship, team: team_1, championship: championship_2 }
+    before do
+      championship_1.enroll_team!(team_1)
+      championship_2.enroll_team!(team_1)
+      championship_2.enroll_team!(team_2)
+    end
 
     it { expect(section.championships).to match_array([championship_1, championship_2]) }
   end

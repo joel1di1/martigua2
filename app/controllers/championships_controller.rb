@@ -2,8 +2,8 @@ class ChampionshipsController < ApplicationController
   before_action :find_championship_by_id, except: [:index, :new, :create]
 
   def index
-    @championships = current_section ? current_section.championships : Championship.all
-    @championships = @championships.select { |c| c.season == Season.current }
+    scope = current_section ? current_section.championships : Championship
+    @championships = scope.where(season: Season.current).order(created_at: :desc)
   end
 
   def new

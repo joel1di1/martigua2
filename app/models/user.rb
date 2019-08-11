@@ -20,8 +20,6 @@ class User < ActiveRecord::Base
   before_validation :ensure_authentication_token
   before_save :format_phone_number
 
-  default_scope { order 'first_name' }
-
   scope :active_this_season, -> { includes(:participations).where(participations: { season: Season.current }) }
 
   def has_only_one_section?

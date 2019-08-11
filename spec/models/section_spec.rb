@@ -258,11 +258,25 @@ RSpec.describe Section, :type => :model do
 
     context 'with duties taks accomplished' do
       it {
-        user_1, user_2, user_3, user_4 = create_list :user, 4, with_section: section
+        user_1, user_2, user_3, user_4, old_user = create_list :user, 5, with_section: section
         user_1.realised_task!(task, 1.day.ago)
         user_2.realised_task!(task, 2.days.ago)
         user_3.realised_task!(task, 3.days.ago)
         user_4.realised_task!(task, 4.days.ago)
+        user_4.realised_task!(task, 5.days.ago)
+
+        old_user.participations.update_all(season_id: create(:season, start_date: 3.years.ago).id)
+
+        expect(next_duties).to match_array([user_4, user_3, user_2])
+      }
+    end
+
+    context 'with one users who never did any' do
+      it {
+        user_1, user_2, user_3, user_4 = create_list :user, 4, with_section: section
+        user_1.realised_task!(task, 1.day.ago)
+        user_2.realised_task!(task, 2.days.ago)
+        user_3.realised_task!(task, 3.days.ago)
 
         expect(next_duties).to match_array([user_4, user_3, user_2])
       }

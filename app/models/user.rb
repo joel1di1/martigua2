@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :participations, dependent: :destroy
   has_many :sections, -> { distinct }, through: :participations, inverse_of: :users
   has_many :training_presences, inverse_of: :user, dependent: :destroy
-
+  has_many :duty_tasks, inverse_of: :user, dependent: :destroy
   has_many :match_availabilities, inverse_of: :user, dependent: :destroy
 
   has_and_belongs_to_many :groups, inverse_of: :users
@@ -98,6 +98,14 @@ class User < ActiveRecord::Base
   def next_weekend_matches
     next_matches = Match.of_next_weekend.includes(local_team: :sections, visitor_team: :sections)
     next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select { |s| is_player_of?(s) }.size > 0 }
+  end
+
+  def realised_task!(task_name, realised_at)
+    duty_tasks << DutyTask.create(name: task_name, realised_at: realised_at)
+  end
+
+  def last_time_duty(task_name)
+    duty_tasks.where(name: task_name).order('name DESC').first&.realised_at
   end
 
   protected

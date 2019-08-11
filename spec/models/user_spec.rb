@@ -13,6 +13,7 @@ describe User do
   it { should have_many :participations }
   it { should have_many :sections }
   it { should have_many :training_presences }
+  it { should have_many :duty_tasks }
   it { should have_and_belong_to_many :groups }
 
   describe 'authentication token should be generated' do
@@ -327,6 +328,14 @@ describe User do
       end
 
       it { expect(active_users.count).to eq 1 }
+    end
+  end
+
+  describe '#realised_task!' do
+    let(:task) { Faker::Lorem.word }
+
+    it 'create a duty_task' do
+      expect { user.realised_task!(task, 1.day.ago) }.to change { user.duty_tasks.reload.count }
     end
   end
 end

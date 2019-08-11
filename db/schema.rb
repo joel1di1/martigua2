@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181111222300) do
+ActiveRecord::Schema.define(version: 20190810083558) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -104,6 +103,15 @@ ActiveRecord::Schema.define(version: 20181111222300) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "duty_tasks", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "user_id", null: false
+    t.datetime "realised_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_duty_tasks_on_user_id"
   end
 
   create_table "enrolled_team_championships", force: :cascade do |t|
@@ -368,6 +376,7 @@ ActiveRecord::Schema.define(version: 20181111222300) do
   add_foreign_key "calendars", "seasons"
   add_foreign_key "championships", "calendars"
   add_foreign_key "days", "calendars"
+  add_foreign_key "duty_tasks", "users"
   add_foreign_key "groups", "seasons"
   add_foreign_key "sms_notifications", "sections"
 end

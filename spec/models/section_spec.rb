@@ -250,4 +250,22 @@ RSpec.describe Section, :type => :model do
       it { is_expected.to match_array previous_season_members }
     end
   end
+
+  describe '#next_duties_for' do
+    subject(:next_duties) { section.next_duties_for(task) }
+
+    let(:task) { 'a_task' }
+
+    context 'with duties taks accomplished' do
+      it {
+        user_1, user_2, user_3, user_4 = create_list :user, 4, with_section: section
+        user_1.realised_task!(task, 1.day.ago)
+        user_2.realised_task!(task, 2.days.ago)
+        user_3.realised_task!(task, 3.days.ago)
+        user_4.realised_task!(task, 4.days.ago)
+
+        expect(next_duties).to match_array([user_4, user_3, user_2])
+      }
+    end
+  end
 end

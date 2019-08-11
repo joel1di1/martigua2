@@ -104,6 +104,15 @@ class Section < ActiveRecord::Base
     Group.where(season: previous_season, section: self).each(&:copy_to_current_season)
   end
 
+  def next_duties_for(task_name)
+    users.left_joins(:duty_tasks).
+      where(duty_tasks: { name: task_name }).
+      select('users.id, users.*, max(duty_tasks.realised_at) as last_realised_at').
+      group('users.id').
+      order('last_realised_at ASC').
+      limit(3)
+  end
+
   protected
 
   def add_user!(user, role, season: nil)

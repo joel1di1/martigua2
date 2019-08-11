@@ -87,6 +87,10 @@ class User < ActiveRecord::Base
     nickname.blank? ? "#{first_name} #{last_name}" : "#{first_name} #{last_name} - #{nickname}"
   end
 
+  def to_s
+    full_name
+  end
+
   def short_name
     nickname.blank? ? "#{first_name} #{last_name}" : "#{nickname}"
   end

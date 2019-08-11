@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @duty_task.name
+%p
+  %b User:
+  = @duty_task.user
+%p
+  %b Realised at:
+  = @duty_task.realised_at
+
+= link_to 'Edit', edit_duty_task_path(@duty_task)
+\|
+= link_to 'Back', duty_tasks_path

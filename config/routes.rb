@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :championships
 
   resources :sections, only: [:show] do
+    resources :duty_tasks
     resources :scrapped_rankings, only: [:index]
     resources :section_user_invitations, path: 'user_invitations', only: [:new, :show, :create, :index]
     resources :trainings do

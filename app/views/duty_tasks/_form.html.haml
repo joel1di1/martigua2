@@ -1,0 +1,10 @@
+= simple_form_for [current_section, @duty_task] do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name, collection: ['Laver les chasubles', "Apporter l'eau au match", "Faire la table"]
+    = f.association :user, collection: current_section.users.sort_by(&:full_name), input_html: { class: 'select2' }
+    = f.input :realised_at
+
+  .form-actions
+    = f.button :submit, class: 'btn-primary'

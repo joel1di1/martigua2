@@ -25,6 +25,5 @@ feature 'duty_tasks', :devise do
 
     click_on 'Tigs'
     click_on 'Nouvelle tache'
-
   end
 end

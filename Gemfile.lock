@@ -17,9 +17,9 @@ GIT
 
 GIT
   remote: https://github.com/activeadmin/inherited_resources.git
-  revision: 7ed39c832e866ba9f89f4a197fc65b000e0712dc
+  revision: 4cf737a9c4dd47d5f6cc5aeacfe45edcf3a65277
   specs:
-    inherited_resources (1.10.0)
+    inherited_resources (1.11.0)
       actionpack (>= 5.0, < 6.1)
       has_scope (~> 0.6)
       railties (>= 5.0, < 6.1)
@@ -386,7 +386,7 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.1.0)
+    rails-html-sanitizer (1.2.0)
       loofah (~> 2.2, >= 2.2.2)
     rails_12factor (0.0.3)
       rails_serve_static_assets

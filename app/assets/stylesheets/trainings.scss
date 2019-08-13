@@ -45,3 +45,28 @@ td.training-cancelled {
 .d-inline-block {
   display: inline-block;
 }
+
+
+.yellow{
+  background-color: #fcf8e3;
+  min-height: 100px;
+}
+
+.red{
+  background-color: #f2dede;
+}
+
+.green{
+  background-color: #dff0d8;
+}
+
+td.big {
+  padding: 20px 0 !important;
+
+}
+
+td.big input{
+    width: 30px;
+    height: 30px;
+  }
+

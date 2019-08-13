@@ -1,0 +1,28 @@
+.table-responsive
+  %table.table.table-hover
+    %tbody
+
+      - players = @training.presents.sort_by(&:full_name)
+      - players.each do |player|
+        %tr{ class: 'green' }
+          %td.big
+            = player.full_name
+          %td.big
+            %input{type: 'checkbox', checked: 'checked'}
+
+      - players = @training.not_presents.sort_by(&:full_name)
+      - players.each do |player|
+        %tr{ class: 'red' }
+          %td.big
+            = player.full_name
+          %td.big
+            %input{type: 'checkbox'}
+
+      - players = @training.presence_not_set.sort_by(&:full_name)
+      - players.each do |player|
+        %tr{ class: 'yellow' }
+          %td.big
+            = player.full_name
+          %td.big
+            %input{type: 'checkbox'}
+

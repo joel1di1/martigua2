@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :section_user_invitations, path: 'user_invitations', only: [:new, :show, :create, :index]
     resources :trainings do
       member do
+        get 'presence_validation'
         post 'invitations'
         post 'cancellation'
         delete 'uncancel'

@@ -62,7 +62,7 @@ class Section < ActiveRecord::Base
   end
 
   def next_trainings
-    now = DateTime.now
+    now = 1.day.ago
     end_date = (now + 2.days).end_of_week + 1.weeks
     trainings.where('start_datetime > ? AND start_datetime < ?', now, end_date)
   end

@@ -5,7 +5,7 @@ class TrainingsController < ApplicationController
 
   def index
     section_trainings = Training.of_section(current_section)
-    @trainings = section_trainings.page(params[:page]).padding(section_trainings.where('start_datetime < ?', DateTime.now).count)
+    @trainings = section_trainings.page(params[:page]).padding(section_trainings.where('start_datetime < ?', 1.day.ago).count)
   end
 
   def create

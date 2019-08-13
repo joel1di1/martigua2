@@ -8,6 +8,6 @@ FactoryBot.define do
     description { Faker::Lorem.sentence }
     section { create :section }
     season { Season.current }
-    color { Faker::Number.number(6) }
+    color { Faker::Number.number(digits: 6) }
   end
 end

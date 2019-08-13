@@ -6,7 +6,7 @@ FactoryBot.define do
     last_name { Faker::Name.last_name }
     phone_number { Faker::PhoneNumber.cell_phone }
     email { Faker::Internet.email }
-    password { Faker::Lorem.characters(6) }
+    password { Faker::Lorem.characters(number: 6) }
 
     trait :section_coach do
       after(:create) do |user|

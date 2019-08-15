@@ -112,6 +112,22 @@ class User < ActiveRecord::Base
     duty_tasks.where(name: task_name).order('name DESC').first&.realised_at
   end
 
+  def was_present?(training)
+    training_presence = training_presences.where(training: training).first
+    return unless training_presence
+    training_presence.presence_validated? || (training_presence.present? && training_presence.presence_validated.nil?)
+  end
+
+  def confirm_presence!(training)
+    training_presence = training_presences.find_or_create_by(training: training)
+    training_presence.update!(presence_validated: true)
+  end
+
+  def confirm_no_presence!(training)
+    training_presence = training_presences.find_or_create_by(training: training)
+    training_presence.update!(presence_validated: false)
+  end
+
   protected
 
   def ensure_authentication_token

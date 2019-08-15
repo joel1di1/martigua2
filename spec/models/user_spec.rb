@@ -338,4 +338,69 @@ describe User do
       expect { user.realised_task!(task, 1.day.ago) }.to change { user.duty_tasks.reload.count }
     end
   end
+
+  describe 'validates presence on trainings' do
+    subject(:was_present) { user.was_present?(training) }
+
+    let(:section) { create :section }
+    let(:user) { create :user, with_section: section }
+    let(:training) { create :training, with_section: section }
+
+    context 'with availability not set' do
+      it { expect(was_present).to be_falsy }
+    end
+
+    context 'with availability set to false' do
+      before { user.not_present_for!(training) }
+
+      context 'no validation by coach' do
+        it { expect(was_present).to be_falsy }
+      end
+      context 'with presence validation by coach' do
+        before { user.confirm_presence!(training) }
+
+        it { expect(was_present).to be_truthy }
+      end
+    end
+  end
+
+  describe '#confirm_presence!' do
+    let(:section) { create :section }
+    let(:user) { create :user, with_section: section }
+    let(:training) { create :training, with_section: section }
+
+    context 'with availability not set' do
+      it 'create presence and presence matchs confirmation' do
+        expect(user.was_present?(training)).to be_falsy
+        expect { user.confirm_presence!(training) }.to change(user.training_presences, :count).by(1)
+        expect(user.was_present?(training)).to be_truthy
+        user.confirm_no_presence!(training)
+        expect(user.was_present?(training)).to be_falsy
+      end
+    end
+
+    context 'with availability set to false' do
+      before { user.not_present_for!(training) }
+
+      it 'presence matchs confirmation' do
+        expect(user.was_present?(training)).to be_falsy
+        user.confirm_presence!(training)
+        expect(user.was_present?(training)).to be_truthy
+        user.confirm_no_presence!(training)
+        expect(user.was_present?(training)).to be_falsy
+      end
+    end
+
+    context 'with availability set to true' do
+      before { user.present_for!(training) }
+
+      it 'presence matchs confirmation' do
+        expect(user.was_present?(training)).to be_truthy
+        user.confirm_no_presence!(training)
+        expect(user.was_present?(training)).to be_falsy
+        user.confirm_presence!(training)
+        expect(user.was_present?(training)).to be_truthy
+      end
+    end
+  end
 end

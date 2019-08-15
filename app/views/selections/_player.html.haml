@@ -17,16 +17,9 @@
                   - else
                     %s.hidden-link.not-respond= team.name
     .col-md-5.presence-box.text-right.flex-nowrap
-      %span.glyphicon.glyphicon-stop.green
-      %span.glyphicon.glyphicon-stop.green
-      %span.glyphicon.glyphicon-stop.green
-      %span.glyphicon.glyphicon-stop.green
-      %span.glyphicon.glyphicon-stop.red
-      %span.glyphicon.glyphicon-stop.red
-      %span.glyphicon.glyphicon-stop.red
-      %span.glyphicon.glyphicon-stop.red
-      %span.glyphicon.glyphicon-stop.green
-      %span.glyphicon.glyphicon-stop.red
+      - @last_trainings ||= Training.of_section(current_section).with_start_between(2.months.ago, 6.hours.from_now).last(10)
+      - @last_trainings.each do |training|
+        %span.glyphicon.glyphicon-stop{class: player.was_present?(training) ? 'green' : 'red'}
     .col-md-4.text-right
       - teams_with_matches = teams_with_matches.reject{|t, m| m == selection.match && t == selection.team } if selection.present?
       - teams_with_matches.each do |team, match|

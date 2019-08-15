@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
 
   helper Starburst::AnnouncementsHelper
 
+  LOCAL_REFERRER_RE = /^(https:\/\/www.martigua.org)|(https?:\/\/localhost)/
+
   include LogAllRequests
 
   def catch_404
@@ -40,7 +42,11 @@ class ApplicationController < ActionController::Base
   end
 
   def filtered_referrer
-    request.referrer if request.referrer && request.referrer[/^https:\/\/www.martigua.org/]
+    request.referrer if local_referrer?
+  end
+
+  def local_referrer?
+    request.referrer && request.referrer[LOCAL_REFERRER_RE]
   end
 
   def current_section

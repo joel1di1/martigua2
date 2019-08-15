@@ -24,6 +24,6 @@ feature 'duty_tasks', :devise do
     signin user.email, user.password
 
     click_on 'Tigs'
-    click_on 'Nouvelle tache'
+    click_on 'créer une nouvelle tache'
   end
 end

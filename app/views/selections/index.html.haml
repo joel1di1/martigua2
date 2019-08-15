@@ -39,7 +39,7 @@
     .row
       - @teams_with_matches.each do |team, match|
         - selections = match.selections(team).includes(:match).includes(:team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
-        .col-md-4.col-xs-4
+        .col-md-6.col-xs-6
           .panel.panel-primary.team-droppable{'data-match_id' => match.id, 'data-team_id' => team.id}
             .panel-heading
               .text-center

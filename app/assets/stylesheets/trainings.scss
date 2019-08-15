@@ -47,6 +47,7 @@ td.training-cancelled {
 }
 
 
+
 .yellow{
   background-color: #fcf8e3;
   min-height: 100px;
@@ -60,6 +61,18 @@ td.training-cancelled {
   background-color: #dff0d8;
 }
 
+.presence-box{
+  span.green{
+    background-color: white;
+    color: #3c763d;
+  }
+
+  span.red{
+    background-color: white;
+    color: #a94442;
+  }
+}
+
 td.big {
   padding: 20px 0 !important;
 
@@ -69,4 +82,16 @@ td.big input{
     width: 30px;
     height: 30px;
   }
+
+span.carres{
+  font-size: 65px;
+}
+
+.compact{
+  .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8,  .col-md-9,  .col-md-10,  .col-md-11,  .col-md-12 {
+    padding-right:2px;
+    padding-left:2px;
+  }
+}
+
 

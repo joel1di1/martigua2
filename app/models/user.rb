@@ -119,13 +119,16 @@ class User < ActiveRecord::Base
   end
 
   def confirm_presence!(training)
-    training_presence = training_presences.find_or_create_by(training: training)
-    training_presence.update!(presence_validated: true)
+    _confirm_presence!(training, true)
   end
 
   def confirm_no_presence!(training)
+    _confirm_presence!(training, false)
+  end
+
+  def _confirm_presence!(training, presence)
     training_presence = training_presences.find_or_create_by(training: training)
-    training_presence.update!(presence_validated: false)
+    training_presence.update!(presence_validated: presence)
   end
 
   protected

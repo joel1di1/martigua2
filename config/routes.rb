@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       resources :trainings, only: [] do
         resources :training_presences, only: [:create]
         delete 'training_presences' => 'training_presences#destroy'
+        post 'confirm_presence' => 'training_presences#confirm_presence'
       end
       match 'training_presences', via: [:get, :post]
       match 'match_availabilities', via: [:get, :post]

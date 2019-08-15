@@ -1,28 +1,14 @@
 .table-responsive
   %table.table.table-hover
     %tbody
+      - players_and_color = [[@training.presents.sort_by(&:full_name), :green], [@training.not_presents.sort_by(&:full_name), :red], [@training.presence_not_set.sort_by(&:full_name), :yellow]]
 
-      - players = @training.presents.sort_by(&:full_name)
-      - players.each do |player|
-        %tr{ class: 'green' }
-          %td.big
-            = player.full_name
-          %td.big
-            %input{type: 'checkbox', checked: 'checked'}
-
-      - players = @training.not_presents.sort_by(&:full_name)
-      - players.each do |player|
-        %tr{ class: 'red' }
-          %td.big
-            = player.full_name
-          %td.big
-            %input{type: 'checkbox'}
-
-      - players = @training.presence_not_set.sort_by(&:full_name)
-      - players.each do |player|
-        %tr{ class: 'yellow' }
-          %td.big
-            = player.full_name
-          %td.big
-            %input{type: 'checkbox'}
-
+      - players_and_color.each do |players, color|
+        - players.each do |player|
+          %tr{ class: color }
+            %td.big
+              = player.full_name
+            %td.big{class: "checkbox-player-#{player.id}"}
+              = simple_form_for player, url: section_user_training_confirm_presence_path(current_section, player, @training), method: :post, remote: true do |f|
+                %input{type: 'checkbox', class: 'auto-submit', name: 'present', value: 'present', checked: player.was_present?(@training)}
+            }

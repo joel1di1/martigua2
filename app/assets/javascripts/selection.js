@@ -32,8 +32,7 @@ $(document).on('turbolinks:load', function(){
         var playerId = ui.draggable.data('player_id');
         var matchId = $(this).data('match_id');
         var teamId = $(this).data('team_id');
-
-        $('form#mtp-' + matchId + '-' + teamId + '-' + playerId).submit();
+        $('form#mtp-' + matchId + '-' + teamId + '-' + playerId).first().submit();
     },
   });
 });

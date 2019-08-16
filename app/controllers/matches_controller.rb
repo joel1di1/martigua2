@@ -56,6 +56,7 @@ class MatchesController < ApplicationController
 
     respond_to do |format|
       format.js do
+        @players_target = "selection-match-#{@match.id}"
         @teams_with_matches = Team.team_with_match_on(@match.day, current_section)
         @availabilities_by_user_and_match = {}
         player = @user

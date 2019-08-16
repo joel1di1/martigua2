@@ -33,6 +33,6 @@
             - else
               %s.hidden-link.not-respond= team.name
       - if selection.present?
-        = form_tag section_selection_path(current_section, selection.match, selection), class: 'inline with-waiter', role: 'form', method: :delete do
+        = form_tag section_selection_path(current_section, selection.match, selection), class: 'inline with-waiter', role: 'form', method: :delete, remote: true do
           %button.btn.btn-link.btn-xs{type: :submit}
             %span.glyphicon.glyphicon-remove

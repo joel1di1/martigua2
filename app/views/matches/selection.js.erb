@@ -1,9 +1,24 @@
 // remove old player row
 $("li[data-player_id='<%= @user.id %>']").remove()
 
-// append pleyr new player row into match
-target = $("#selection-match-<%= @match.id%>")
-target.append("<%= j render(partial: 'selections/player', locals: { player: @user, teams_with_matches: @teams_with_matches, selection: @selection, display_teams: false } ) %>")
+// append new player row into match
+target = $("#<%= @players_target %>")
+
+name = "<%= @user.short_name %>"
+to_insert = "<%= j render(partial: 'selections/player', locals: { player: @user, teams_with_matches: @teams_with_matches, selection: @selection, display_teams: false } ) %>"
+
+var i = 0;
+var inserted = false;
+while(!inserted && i < target.children().length){
+  if (name < target.children()[i].innerText.trim()) {
+    $(target.children()[i]).before(to_insert);
+    inserted = true;
+  }
+  i++
+}
+if (!inserted){
+  target.append(to_insert)
+}
 
 // remove waiter
 $("body").removeClass("loading");

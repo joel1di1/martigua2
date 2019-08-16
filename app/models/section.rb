@@ -42,7 +42,7 @@ class Section < ActiveRecord::Base
 
   def members(season: nil)
     season ||= Season.current
-    User.joins(:participations).where(participations: { season: season, section: self }).distinct
+    User.joins(:participations).where(participations: { season: season, section: self })
   end
 
   def players(season: Season.current)
@@ -50,7 +50,7 @@ class Section < ActiveRecord::Base
   end
 
   def coachs(season: Season.current)
-    User.joins(:participations).where(participations: { season: season, role: Participation::COACH, section: self })
+    User.left_joins(:participations).where(participations: { season: season, role: Participation::COACH, section: self })
   end
 
   def to_param

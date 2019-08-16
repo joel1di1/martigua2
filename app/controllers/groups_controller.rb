@@ -4,6 +4,7 @@ class GroupsController < ApplicationController
   before_action :find_group
 
   def show
+    @users = @group.users.includes(:participations, :groups)
   end
 
   def new

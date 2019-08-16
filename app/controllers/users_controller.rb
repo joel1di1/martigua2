@@ -6,11 +6,11 @@ class UsersController < ApplicationController
 
   def index
     if current_section
-      @users = User.joins(:participations).where(participations: { section: current_section, season: Season.current })
+      @users = current_section.members.includes(:participations, :groups)
     else
       @users = User.all
     end
-    @users = @users.order('last_name ASC').distinct
+    @users = @users.order('first_name, last_name')
   end
 
   def show

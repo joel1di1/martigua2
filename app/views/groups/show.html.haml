@@ -20,12 +20,12 @@
   - else
     - style = ''
   .panel-heading{style: style}
-    %strong= "#{@group.users.count} membres"
+    %strong= "#{@users.count} membres"
   .panel-body
     - if !@group.system? && current_section && current_user.is_coach_of?(current_section)
       = form_tag section_group_add_users_path(current_section, @group), class: 'form-inline' do
-        = select_tag 'user_id', options_from_collection_for_select(current_section.members - @group.users, :id, :full_name), include_blank: true, class: 'form-control'
+        = select_tag 'user_id', options_from_collection_for_select(current_section.members - @users, :id, :full_name), include_blank: true, class: 'form-control'
         %button.btn{type: :submit} Ajouter
-    = render partial: 'users/users', object: @group.users, locals: { group: @group }
+    = render partial: 'users/users', object: @users, locals: { group: @group }
 
 

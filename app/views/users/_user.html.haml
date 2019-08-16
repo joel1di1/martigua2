@@ -12,12 +12,12 @@
     - if user.phone_number
       = link_to user.phone_number, "tel:#{user.phone_number}"
   %td
-    - user.groups.where(section: current_section, season: Season.current).non_system.each do |group|
+    - user.groups.to_a.select { |group| group.section_id == current_section.id && group.season_id == Season.current.id && !group.system }.each do |group|
       = link_to section_group_path(current_section, group) do
         .group-box{style: "background-color: #{group.color}", 'data-toggle' => "tooltip", 'data-title' => group.name}
   - if current_section
     %td
-      = user.participations.where(section: current_section, season: Season.current).map(&:role).sort.reverse.join(", ")
+      = user.participations.to_a.select{ |participation| participation.section_id == current_section.id && participation.season_id == Season.current.id }.map(&:role).sort.reverse.join(", ")
 
   - if current_user.is_coach_of?(current_section)
     %td.action
@@ -30,3 +30,5 @@
       - else
         = link_to section_user_path(current_section, user), :method => :delete, :data => { :confirm => 'Supprimer de la section ?' } do
           %span.glyphicon.glyphicon-trash
+
+

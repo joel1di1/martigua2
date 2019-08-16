@@ -71,6 +71,7 @@ class MatchesController < ApplicationController
         end
       end
       format.html { redirect_with(fallback: section_match_path(current_section, @match)) }
+      format.json { render json: {}, status: :created }
     end
   end
 

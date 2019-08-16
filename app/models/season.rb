@@ -8,14 +8,18 @@ class Season < ActiveRecord::Base
   has_many :championships, inverse_of: :season, dependent: :destroy
   has_many :calendars, inverse_of: :season, dependent: :destroy
 
-  def self.current
-    return @current if @current
-    @current = Season.order('end_date DESC').limit(1).first
-    @current ||= create_default_season
-    while @current.end_date < Date.today
-      @current = create_next_season(@current)
+  def self._current
+    current = Season.order('end_date DESC').limit(1).first
+    current ||= create_default_season
+    while current.end_date < Date.today
+      current = create_next_season(current)
     end
-    @current
+    current
+  end
+
+  def self.current
+    return _current if Rails.env.test?
+    Thread.current[:current_season] ||= _current
   end
 
   def to_s

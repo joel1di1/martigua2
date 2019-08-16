@@ -3,7 +3,7 @@
 class ParticipationsRenewalController < ApplicationController
   def index
     @previous_season = Season.current.previous
-    @previous_season_members = current_section.members(season: @previous_season)
+    @previous_season_members = current_section.members(season: @previous_season).distinct
   end
 
   def create

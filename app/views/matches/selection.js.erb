@@ -20,5 +20,9 @@ if (!inserted){
   target.append(to_insert)
 }
 
-// remove waiter
-$("body").removeClass("loading");
+
+$("li[data-player_id='<%= @user.id %>']").draggable({
+  revert: true,
+  revertDuration: 200,
+  zIndex: 100,
+});

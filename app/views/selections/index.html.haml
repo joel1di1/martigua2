@@ -48,9 +48,9 @@
               .text-center.white
                 = link_to section_match_path(current_section, match) do
                   %em= "#{match.local_team.name} - #{match.visitor_team.name}"
-            %ul.list-group
+            %ul.list-group{'id' => "selection-match-#{match.id}"}
               - selections.each do |selection|
-                = render partial: 'player', object: selection.user, locals: { teams_with_matches: @teams_with_matches,selection: selection, display_teams: false}
+                = render partial: 'player', object: selection.user, locals: { teams_with_matches: @teams_with_matches, selection: selection, display_teams: false}
     .row
       .col-md-9.col-xs-9
         %p

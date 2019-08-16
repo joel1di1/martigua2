@@ -48,15 +48,28 @@ class MatchesController < ApplicationController
   end
 
   def selection
-    user = User.find(params[:user_id])
+    @user = User.find(params[:user_id])
     team = Team.find(params[:team_id])
-    match = Match.find(params[:id])
+    @match = Match.find(params[:id])
 
-    Selection.create! user: user, team: team, match: match
+    @selection = Selection.create! user: @user, team: team, match: @match
 
     respond_to do |format|
-      format.json { render json: {}, status: :created }
-      format.html { redirect_with(fallback: section_match_path(current_section, match)) }
+      format.js do
+        @teams_with_matches = Team.team_with_match_on(@match.day, current_section)
+        @availabilities_by_user_and_match = {}
+        player = @user
+        @availabilities_by_user_and_match[player.id] = {}
+
+        matches = @match.day.matches
+        matches.each { |match| @availabilities_by_user_and_match[player.id][match.id] = nil }
+
+        availabilities = MatchAvailability.includes(:user).where(match: matches, user: @user)
+        availabilities.each do |availability|
+          @availabilities_by_user_and_match[availability.user_id][availability.match_id] = availability.available if @availabilities_by_user_and_match[availability.user_id]
+        end
+      end
+      format.html { redirect_with(fallback: section_match_path(current_section, @match)) }
     end
   end
 

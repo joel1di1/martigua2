@@ -1,0 +1,9 @@
+// remove old player row
+$("li[data-player_id='<%= @user.id %>']").remove()
+
+// append pleyr new player row into match
+target = $("#selection-match-<%= @match.id%>")
+target.append("<%= j render(partial: 'selections/player', locals: { player: @user, teams_with_matches: @teams_with_matches, selection: @selection, display_teams: false } ) %>")
+
+// remove waiter
+$("body").removeClass("loading");

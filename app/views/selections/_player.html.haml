@@ -7,7 +7,7 @@
         %ul.dropdown-menu{'aria-labelledby' => "assign-#{player.id}"}
           - teams_with_matches.each do |team, match|
             %li
-              = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter', role: 'form', id: "mtp-#{match.id}-#{team.id}-#{player.id}" do
+              = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter', role: 'form', id: "mtp-#{match.id}-#{team.id}-#{player.id}", remote: true do
                 %button.btn.btn-link.btn-xs{type: :submit}
                   - case @availabilities_by_user_and_match[player.id].try(:[], match.id)
                   - when true
@@ -23,7 +23,7 @@
     .col-md-4.text-right
       - teams_with_matches = teams_with_matches.reject{|t, m| m == selection.match && t == selection.team } if selection.present?
       - teams_with_matches.each do |team, match|
-        = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter', role: 'form', id: "mtp-#{match.id}-#{team.id}-#{player.id}" do
+        = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter', role: 'form', id: "mtp-#{match.id}-#{team.id}-#{player.id}", remote: true do
           %button.btn.btn-link.btn-xs{type: :submit}
             - case @availabilities_by_user_and_match[player.id][match.id]
             - when true

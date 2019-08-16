@@ -9,12 +9,13 @@ class Season < ActiveRecord::Base
   has_many :calendars, inverse_of: :season, dependent: :destroy
 
   def self.current
-    current = Season.order('end_date DESC').limit(1).first
-    current ||= create_default_season
-    while current.end_date < Date.today
-      current = create_next_season(current)
+    return @current if @current
+    @current = Season.order('end_date DESC').limit(1).first
+    @current ||= create_default_season
+    while @current.end_date < Date.today
+      @current = create_next_season(@current)
     end
-    current
+    @current
   end
 
   def to_s

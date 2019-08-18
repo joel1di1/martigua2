@@ -8,13 +8,14 @@
         %th Groupes
         - if current_section
           %th Roles
-        - if current_user.is_coach_of?(current_section) 
+          %th Présences entrainements
+        - if current_user.is_coach_of?(current_section)
           - if defined?(group) && group
             - unless group.system?
               %th
           - else
             %th
-  
+
     %tbody
       - group = nil unless defined?(group)
       = render partial: 'users/user', collection: users, locals: { group: group }

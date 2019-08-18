@@ -12,10 +12,10 @@ class SelectionsController < ApplicationController
     @non_available_players = Set.new
 
     matches = @teams_with_matches.map(&:second)
-    players = current_section.players
+    @players = current_section.players
 
     @availabilities_by_user_and_match = {}
-    players.each do |player|
+    @players.each do |player|
       @availabilities_by_user_and_match[player.id] = {}
       matches.each { |match| @availabilities_by_user_and_match[player.id][match.id] = nil }
     end
@@ -32,8 +32,12 @@ class SelectionsController < ApplicationController
     @non_available_players = (@non_available_players - @available_players - @users_already_selected).to_a
     @non_available_players.sort! { |a, b| a.short_name <=> b.short_name }
 
-    @no_response_players = (players - @available_players - @non_available_players - @users_already_selected).to_a
+    @no_response_players = (@players - @available_players - @non_available_players - @users_already_selected).to_a
     @no_response_players.sort! { |a, b| a.short_name <=> b.short_name }
+
+    @last_trainings ||= Training.of_section(current_section).with_start_between(2.months.ago, 6.hours.from_now).last(10)
+    presences = TrainingPresence.where(user: @players).where(training: @last_trainings)
+    @presences_by_user_and_training = presences.map{|pres| [[pres.user_id, pres.training_id], pres]}.to_h
   end
 
   def destroy
@@ -63,6 +67,7 @@ class SelectionsController < ApplicationController
           end
         end
 
+        @last_trainings ||= Training.of_section(current_section).with_start_between(2.months.ago, 6.hours.from_now).last(10)
         render 'matches/selection'
       end
       format.html { redirect_with(fallback: root_path) }

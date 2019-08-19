@@ -40,9 +40,9 @@ GIT
 
 GIT
   remote: https://github.com/rails/sass-rails.git
-  revision: 8dbe4dcf69790e3a5691dab7a61e6fff429feaaf
+  revision: a77240c30e98e2e7461868ece3d75799dfaa73f8
   specs:
-    sass-rails (6.0.0.beta3)
+    sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
 
 GEM

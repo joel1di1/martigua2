@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: https://github.com/activeadmin/inherited_resources.git
-  revision: 7f9f5319c32c384fe15a3317af9ece0e21decfd2
+  revision: 47acbb1b0859b68639b85ebe95f99e67c34e8e1d
   specs:
     inherited_resources (1.11.0)
       actionpack (>= 5.0, < 6.1)

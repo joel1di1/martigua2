@@ -15,10 +15,14 @@ feature 'See group detail' do
     group_1 = create :group, section: section
     group_2 = create :group, section: section
 
+    group_1.add_user!(user)
     click_link 'Groupes'
 
     expect(page).to have_content group_1.name
     expect(page).to have_content group_2.name
     expect(page).to have_content section.group_everybody.name
+
+    click_link group_1.name
+    expect(page).to have_content group_1.name
   end
 end

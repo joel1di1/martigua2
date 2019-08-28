@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: https://github.com/activeadmin/inherited_resources.git
-  revision: 4cf737a9c4dd47d5f6cc5aeacfe45edcf3a65277
+  revision: 7f9f5319c32c384fe15a3317af9ece0e21decfd2
   specs:
     inherited_resources (1.11.0)
       actionpack (>= 5.0, < 6.1)
@@ -40,9 +40,9 @@ GIT
 
 GIT
   remote: https://github.com/rails/sass-rails.git
-  revision: 8dbe4dcf69790e3a5691dab7a61e6fff429feaaf
+  revision: a77240c30e98e2e7461868ece3d75799dfaa73f8
   specs:
-    sass-rails (6.0.0.beta3)
+    sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
 
 GEM
@@ -123,7 +123,7 @@ GEM
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
     builder (3.2.3)
-    bullet (6.0.1)
+    bullet (6.0.2)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     byebug (11.0.1)
@@ -158,10 +158,10 @@ GEM
     debug_inspector (0.0.3)
     declarative (0.0.10)
     declarative-option (0.1.0)
-    delayed_job (4.1.5)
-      activesupport (>= 3.0, < 5.3)
-    delayed_job_active_record (4.1.3)
-      activerecord (>= 3.0, < 5.3)
+    delayed_job (4.1.8)
+      activesupport (>= 3.0, < 6.1)
+    delayed_job_active_record (4.1.4)
+      activerecord (>= 3.0, < 6.1)
       delayed_job (>= 3.0, < 5)
     devise (4.6.2)
       bcrypt (~> 3.0)
@@ -174,7 +174,7 @@ GEM
       devise (>= 4.6)
     diff-lcs (1.3)
     docile (1.1.5)
-    domain_name (0.5.20180417)
+    domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     erubi (1.8.0)
     erubis (2.7.0)
@@ -255,6 +255,7 @@ GEM
       haml (>= 4.0, < 6)
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
+    http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     httpclient (2.8.3)
@@ -328,7 +329,7 @@ GEM
       connection_pool (~> 2.2)
     netrc (0.11.0)
     newrelic_rpm (6.5.0.357)
-    nio4r (2.4.0)
+    nio4r (2.5.0)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     notiffany (0.1.1)
@@ -341,7 +342,7 @@ GEM
       oboe (>= 2.7.14.1)
     orm_adapter (0.5.0)
     os (1.0.1)
-    overcommit (0.49.0)
+    overcommit (0.49.1)
       childprocess (>= 0.6.3, < 2.0)
       iniparse (~> 1.4)
     parallel (1.17.0)
@@ -425,7 +426,8 @@ GEM
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
-    rest-client (2.0.2)
+    rest-client (2.1.0)
+      http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
@@ -531,7 +533,7 @@ GEM
     turbolinks (5.2.0)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
-    twilio-ruby (5.25.3)
+    twilio-ruby (5.25.4)
       faraday (~> 0.9)
       jwt (>= 1.5, <= 2.5)
       nokogiri (>= 1.6, < 2.0)

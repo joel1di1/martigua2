@@ -14,6 +14,6 @@ FactoryBot.define do
     location { nil }
     meeting_datetime { "2014-09-14 22:05:02" }
     meeting_location { "MyString" }
-    day { create :day }
+    day
   end
 end

@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '2.5.0'
 
-gem 'rails', '~> 5.1.3'
+gem 'rails', '~> 5.2.3'
 gem 'coffee-rails'
 gem 'sass-rails', git: 'https://github.com/rails/sass-rails.git'
 

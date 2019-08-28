@@ -356,6 +356,7 @@ describe User do
       context 'no validation by coach' do
         it { expect(was_present).to be_falsy }
       end
+
       context 'with presence validation by coach' do
         before { user.confirm_presence!(training) }
 

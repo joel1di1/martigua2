@@ -13,7 +13,6 @@ class Championship < ActiveRecord::Base
   scope :of_current_season, -> { where(season: Season.current) }
 
   after_initialize :init
-  before_create :ensure_calendar
 
   def init
     self.season = Season.current
@@ -31,13 +30,5 @@ class Championship < ActiveRecord::Base
 
   def enrolled_teams
     teams
-  end
-
-  private
-
-  def ensure_calendar
-    return if calendar.present?
-
-    self.calendar = Calendar.create!(season: season, name: name)
   end
 end

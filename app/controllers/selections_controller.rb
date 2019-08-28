@@ -37,7 +37,7 @@ class SelectionsController < ApplicationController
 
     @last_trainings ||= Training.of_section(current_section).with_start_between(2.months.ago, 6.hours.from_now).last(10)
     presences = TrainingPresence.where(user: @players).where(training: @last_trainings)
-    @presences_by_user_and_training = presences.map{|pres| [[pres.user_id, pres.training_id], pres]}.to_h
+    @presences_by_user_and_training = presences.map { |pres| [[pres.user_id, pres.training_id], pres] }.to_h
   end
 
   def destroy

@@ -11,4 +11,3 @@
             %td.big{class: "checkbox-player-#{player.id}"}
               = simple_form_for player, url: section_user_training_confirm_presence_path(current_section, player, @training), method: :post, remote: true do |f|
                 %input{type: 'checkbox', class: 'auto-submit', name: 'present', value: 'present', checked: player.was_present?(@training)}
-            }

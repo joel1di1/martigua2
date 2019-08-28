@@ -5,6 +5,7 @@
 FactoryBot.define do
   factory :championship do
     season
+    calendar
     name { Faker::Company.name }
   end
 end

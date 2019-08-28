@@ -27,6 +27,8 @@ describe ChampionshipsController, :type => :controller do
 
     before { sign_in user }
 
+    it { expect { do_request }.to change{ Championship.count } }
+
     describe 'response' do
       before { do_request }
 

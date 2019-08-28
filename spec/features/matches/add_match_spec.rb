@@ -10,6 +10,8 @@ feature 'Add Match', :devise do
     coach = create :coach
     team = coach.sections.first.teams.sample
 
+    calendar = create :calendar
+
     signin_user coach
 
     click_on 'add-match'
@@ -21,6 +23,9 @@ feature 'Add Match', :devise do
     assert_text 'Quelle compétition ?'
     click_on 'Ajouter une compétition'
     fill_in 'championship[name]', with: Faker::Company.name
+
+    select calendar.name, from: 'Calendar'
+
     expect { click_on 'Create Championship' }.to change(Championship, :count)
 
     assert_text 'Quel jour ?'

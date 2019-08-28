@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :calendar do
-    season
+    season { Season.current }
     name { Faker::Company.name }
   end
 end

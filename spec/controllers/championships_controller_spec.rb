@@ -6,6 +6,7 @@ describe ChampionshipsController, :type => :controller do
   let(:championships) { create :championships }
   let(:section) { create :section }
   let(:user) { create :user, with_section_as_coach: section }
+  let(:calendar) { create :calendar }
 
   describe "GET new" do
     let(:do_request) { get :new, params: { section_id: section } }
@@ -21,7 +22,7 @@ describe ChampionshipsController, :type => :controller do
   end
 
   describe "POST create" do
-    let(:championship_params) { { name: Faker::Company.name } }
+    let(:championship_params) { { name: Faker::Company.name, calendar_id: calendar.id } }
     let(:params) { { section_id: section.to_param, championship: championship_params } }
     let(:do_request) { post :create, params: params }
 

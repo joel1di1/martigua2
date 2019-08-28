@@ -2,7 +2,7 @@
 
 class Match < ActiveRecord::Base
   belongs_to :championship
-  belongs_to :location
+  belongs_to :location, optional: true
   belongs_to :day
   belongs_to :local_team, class_name: 'Team', foreign_key: :local_team_id
   belongs_to :visitor_team, class_name: 'Team', foreign_key: :visitor_team_id

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Training < ActiveRecord::Base
-  belongs_to :location
+  belongs_to :location, optional: true
 
   has_and_belongs_to_many :sections, inverse_of: :trainings
   has_and_belongs_to_many :groups, inverse_of: :trainings

@@ -145,5 +145,9 @@ RSpec.describe Training, :type => :model do
         end
       end
     end
+
+    describe '.send_tig_mail_for_next_training' do
+      it 'is not tested'
+    end
   end
 end

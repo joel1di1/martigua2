@@ -88,6 +88,21 @@ class Training < ActiveRecord::Base
     end
   end
 
+  def self.send_tig_mail_for_next_training(day_range=1)
+    tomorrow = Date.tomorrow
+    trainings = Training.where('start_datetime between ? and ?', tomorrow.to_datetime, (tomorrow + day_range.days).to_datetime)
+
+    next_duties = DutyTask.next_duties(5 * trainings.size)
+
+    duty_index = 0
+    trainings.each do |training|
+      next_training_duties = next_duties[duty_index..duty_index+5]
+      next_training_duties.each do |user|
+        UserMailer.delay.send_tig_mail_for_training(training, next_training_duties, user)
+      end
+    end
+  end
+
   def self.of_next_week(section: nil, date: DateTime.now)
     start_period = date.next_week
     end_period = start_period.end_of_week

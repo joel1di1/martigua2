@@ -16,4 +16,13 @@ class UserMailer < ActionMailer::Base
     match_dates = @matches.map { |match| match.start_datetime.strftime("%-d/%-m") }.join(', ')
     mail to: user.email, subject: "Matches : #{match_dates}"
   end
+
+  def send_tig_mail_for_training(training, next_training_duties, user)
+    @next_training_duties = next_training_duties
+    @training = training
+    @user = user
+
+    subject = @next_training_duties.first == @user ? 'Chasubles, c\'est ton tour' : 'Chasubles, c\'est bientôt à toi'
+    mail to: 'joel1di1@gmail.com', subject: subject
+  end
 end

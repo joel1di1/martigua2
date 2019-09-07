@@ -17,12 +17,12 @@ class UserMailer < ActionMailer::Base
     mail to: user.email, subject: "Matches : #{match_dates}"
   end
 
-  def send_tig_mail_for_training(training, next_training_duties, user)
+  def send_tig_mail_for_training(training, next_training_duties)
     @next_training_duties = next_training_duties
     @training = training
-    @user = user
+    @user = next_training_duties.first
 
-    subject = @next_training_duties.first == @user ? 'Chasubles, c\'est ton tour' : 'Chasubles, c\'est bientôt à toi'
-    mail to: 'joel1di1@gmail.com', cc: 'admin@martigua.org', subject: subject
+    subject = "Chasubles, c'est ton tour : (#{training.start_datetime.strftime("%-d/%-m")})"
+    mail to: @user.email, cc: next_training_duties[1, -1], subject: subject
   end
 end

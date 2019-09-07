@@ -19,7 +19,7 @@ class Training < ActiveRecord::Base
 
   paginates_per 10
 
-  DUTY_PER_TRAINING = 5
+  DUTY_PER_TRAINING = 4
 
   def send_invitations!
     invitations << TrainingInvitation.new
@@ -94,7 +94,7 @@ class Training < ActiveRecord::Base
     tomorrow = Date.tomorrow
     trainings = Training.where('start_datetime between ? and ?', tomorrow.to_datetime, (tomorrow + day_range.days).to_datetime).order(:start_datetime)
 
-    next_duties = DutyTask.next_duties(5 * trainings.size)
+    next_duties = DutyTask.next_duties(DUTY_PER_TRAINING * trainings.size)
 
     trainings.each_with_index do |training, index|
       next_training_duties = next_duties[index*DUTY_PER_TRAINING, (index*DUTY_PER_TRAINING)+DUTY_PER_TRAINING]

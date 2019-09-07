@@ -23,7 +23,6 @@ class UserMailer < ActionMailer::Base
     @user = next_training_duties.first
 
     subject = "Chasubles, c'est ton tour : (#{training.start_datetime.strftime("%-d/%-m")})"
-    # mail to: @user.email, cc: next_training_duties[1, -1], subject: subject
-    mail to: 'joel1di1@gmail.com', cc: ['bla@doctolib.com, bla+2@doctolib.com'], subject: subject
+    mail to: @user.email, cc: next_training_duties[1, -1], subject: subject
   end
 end

@@ -98,8 +98,7 @@ class Training < ActiveRecord::Base
 
     trainings.each_with_index do |training, index|
       next_training_duties = next_duties[index*DUTY_PER_TRAINING, (index*DUTY_PER_TRAINING)+DUTY_PER_TRAINING]
-      next_training_duties.each do |user|
-        UserMailer.delay.send_tig_mail_for_training(training, next_training_duties)
+      UserMailer.delay.send_tig_mail_for_training(training, next_training_duties)
       end
     end
   end

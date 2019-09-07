@@ -23,6 +23,6 @@ class UserMailer < ActionMailer::Base
     @user = user
 
     subject = @next_training_duties.first == @user ? 'Chasubles, c\'est ton tour' : 'Chasubles, c\'est bientôt à toi'
-    mail to: 'joel1di1@gmail.com', subject: subject
+    mail to: 'joel1di1@gmail.com', cc: 'admin@martigua.org', subject: subject
   end
 end

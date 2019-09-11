@@ -30,6 +30,7 @@ feature 'Active Admin', :devise do
     admins_pages = ['Admin Users', 'Calendar', 'Championships', 'Clubs', 'Days', 'Locations', 'Seasons', 'Sections', 'Team Sections', 'Teams', 'Trainings', 'Training Presences', 'Users']
 
     admins_pages.each do |admin_page|
+      puts admin_page
       click_link admin_page
       expect(page.all('#page_title', :text => admin_page).size).to eq 1
 

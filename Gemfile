@@ -32,7 +32,6 @@ gem 'pg', group: [:production, :development]
 gem 'polyamorous'
 gem 'puma'
 gem 'rack-cors', :require => 'rack/cors'
-gem 'ransack', git: 'https://github.com/activerecord-hackery/ransack.git'
 gem 'redis'
 gem 'rest-client'
 gem 'sdoc', group: :doc

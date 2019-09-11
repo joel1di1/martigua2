@@ -26,19 +26,6 @@ GIT
       responders (>= 2, < 4)
 
 GIT
-  remote: https://github.com/activerecord-hackery/ransack.git
-  revision: d44bfe6fe21ab374ceea9d060267d0d38b09ef28
-  specs:
-    polyamorous (2.1.1)
-      activerecord (>= 5.0)
-    ransack (2.1.1)
-      actionpack (>= 5.0)
-      activerecord (>= 5.0)
-      activesupport (>= 5.0)
-      i18n
-      polyamorous (= 2.1.1)
-
-GIT
   remote: https://github.com/rails/sass-rails.git
   revision: a77240c30e98e2e7461868ece3d75799dfaa73f8
   specs:
@@ -350,6 +337,8 @@ GEM
       ast (~> 2.4.0)
     pg (1.1.4)
     phony (2.18.5)
+    polyamorous (2.3.0)
+      activerecord (>= 5.0)
     postmark (1.15.0)
       json
     postmark-rails (0.19.0)
@@ -410,6 +399,12 @@ GEM
       thor (>= 0.19.0, < 2.0)
     rainbow (3.0.0)
     rake (12.3.3)
+    ransack (2.3.0)
+      actionpack (>= 5.0)
+      activerecord (>= 5.0)
+      activesupport (>= 5.0)
+      i18n
+      polyamorous (= 2.3.0)
     rb-fchange (0.0.6)
       ffi
     rb-fsevent (0.10.3)
@@ -616,7 +611,6 @@ DEPENDENCIES
   rails-controller-testing
   rails_12factor
   rails_layout
-  ransack!
   rb-fchange
   rb-fsevent
   rb-inotify

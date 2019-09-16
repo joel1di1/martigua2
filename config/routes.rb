@@ -1,6 +1,36 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  namespace :admin do
+      resources :users
+      resources :club_admin_roles
+      resources :days
+      resources :teams
+      resources :admin_users
+      resources :championships
+      resources :clubs
+      resources :enrolled_team_championships
+      resources :groups
+      resources :locations
+      resources :matches
+      resources :match_availabilities
+      resources :match_selections
+      resources :participations
+      resources :seasons
+      resources :sections
+      resources :section_user_invitations
+      resources :selections
+      resources :sms_notifications
+      resources :team_sections
+      resources :trainings
+      resources :training_invitations
+      resources :training_presences
+      resources :duty_tasks
+      resources :scrapped_rankings
+      resources :calendars
+
+      root to: "users#index"
+    end
   resources :days
 
   resources :championships
@@ -72,8 +102,6 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
   root to: 'visitors#index'
 
   get 'switch_user', to: 'switch_user#set_current_user'

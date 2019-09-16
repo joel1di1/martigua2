@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/sass-rails.git
-  revision: a77240c30e98e2e7461868ece3d75799dfaa73f8
+  revision: 551251bddec4d6b75446cb1c1630ed26e5318f8e
   specs:
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -464,9 +464,8 @@ GEM
     ruby_parser (3.13.1)
       sexp_processor (~> 4.9)
     rubyzip (1.2.3)
-    sassc (2.0.1)
+    sassc (2.2.0)
       ffi (~> 1.9)
-      rake
     sassc-rails (2.1.2)
       railties (>= 4.0.0)
       sassc (>= 2.0)

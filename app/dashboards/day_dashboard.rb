@@ -24,21 +24,21 @@ class DayDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-  calendar
-  matches
   id
+  calendar
   name
+  matches
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  calendar
-  matches
   id
+  calendar
   name
   period_start_date
   period_end_date
+  matches
   created_at
   updated_at
   ].freeze
@@ -47,9 +47,9 @@ class DayDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
+  name
   calendar
   matches
-  name
   period_start_date
   period_end_date
   ].freeze
@@ -69,7 +69,7 @@ class DayDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how days are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(day)
-  #   "Day ##{day.id}"
-  # end
+  def display_resource(day)
+    day.name
+  end
 end

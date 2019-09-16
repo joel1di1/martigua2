@@ -84,7 +84,7 @@ class TrainingDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how trainings are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(training)
-  #   "Training ##{training.id}"
-  # end
+  def display_resource(training)
+    "Training <#{training.start_datetime}>"
+  end
 end

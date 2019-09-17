@@ -2,16 +2,13 @@
 
 feature 'Active Admin', :devise do
   scenario 'admin can list any page in admin section' do
-    admin = create :admin_user
+    admin = create :user
+    create :admin_user, email: admin.email
 
+    signin admin.email, admin.password
     visit '/admin'
 
-    fill_in 'admin_user_email', with: admin.email
-    fill_in 'admin_user_password', with: admin.password
-
-    click_button 'Login'
-
-    expect(page).to have_content 'Dashboard'
+    expect(page).to have_content 'Users'
 
     create :admin_user
     create :championship
@@ -27,15 +24,14 @@ feature 'Active Admin', :devise do
     create :training_presence
     create :user
 
-    admins_pages = ['Admin Users', 'Calendar', 'Championships', 'Clubs', 'Days', 'Locations', 'Seasons', 'Sections', 'Team Sections', 'Trainings', 'Training Presences', 'Users']
+    admins_pages = ['Admin Users', 'Calendar', 'Championships', 'Clubs', 'Days', 'Locations', 'Seasons', 'Sections', 'Trainings', 'Training Presences', 'Users']
 
     admins_pages.each do |admin_page|
       click_link admin_page
-      expect(page.all('#page_title', :text => admin_page).size).to eq 1
+      expect(page.all('#page-title', :text => admin_page).size).to eq 1
 
-      new_title = "New #{admin_page.chop}"
-      click_link new_title
-      expect(page.all('#page_title', :text => new_title).size).to eq 1
+      click_link "New #{admin_page.chop.downcase}"
+      expect(page.all('h1.main-content__page-title', :text => "New #{admin_page.chop}").size).to eq(1), admin_page
     end
   end
 end

@@ -9,7 +9,7 @@ module Admin
     before_action :authenticate_admin
 
     def authenticate_admin
-      unless ['joel1di1@gmail.com'].include?(current_user.email)
+      unless AdminUser.find_by_email(current_user.email)
         render :file => File.join(Rails.root, 'public/403.html'), :status => 403, :layout => false
       end
     end

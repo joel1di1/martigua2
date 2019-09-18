@@ -100,7 +100,11 @@ class Training < ActiveRecord::Base
 
   def self.send_tig_mail_for_next_training(day_range=1)
     tomorrow = Date.tomorrow
-    trainings = Training.where('start_datetime between ? and ?', tomorrow.to_datetime, (tomorrow + day_range.days).to_datetime).order(:start_datetime)
+    trainings =
+      Training
+        .where(cancelled: [false, nil])
+        .where('start_datetime between ? and ?', tomorrow.to_datetime, (tomorrow + day_range.days).to_datetime)
+        .order(:start_datetime)
 
     trainings.each_with_index do |training, index|
       next_duties = training.next_duties(DUTY_PER_TRAINING)

@@ -150,4 +150,29 @@ RSpec.describe Training, :type => :model do
       it 'is not tested'
     end
   end
+
+  describe '#next_duties' do
+    let(:present_player) { create :user }
+    let(:not_present_player) { create :user }
+    let(:no_response_player) { create :user }
+    let(:section)  { create :section }
+    let(:group)    { create :group, section: section }
+    let(:training) { create :training, with_section: section, group_ids: [group.id] }
+
+    before do
+      group.add_user!(present_player)
+      group.add_user!(not_present_player)
+
+      present_player.present_for!(training)
+      not_present_player.not_present_for!(training)
+    end
+
+    it 'select present players' do
+      next_duties = training.next_duties(10)
+
+      expect(next_duties).to include(present_player)
+      expect(next_duties).not_to include(not_present_player)
+      expect(next_duties).not_to include(no_response_player)
+    end
+  end
 end

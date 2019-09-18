@@ -8,6 +8,7 @@ class Training < ActiveRecord::Base
 
   has_many :invitations, class_name: 'TrainingInvitation'
   has_many :training_presences, inverse_of: :training, dependent: :destroy
+  has_many :present_players, -> { where(training_presences: { present: true }) }, through: :training_presences, source: :user
   has_many :users, through: :groups
 
   validates_presence_of :start_datetime
@@ -83,6 +84,13 @@ class Training < ActiveRecord::Base
     save!
   end
 
+  def next_duties(limit)
+    present_players.left_outer_joins(:duty_tasks)
+      .distinct.select('users.*, max(duty_tasks.created_at) as last_duty_date')
+      .group('users.id').order('last_duty_date DESC, authentication_token ASC')
+      .limit(limit)
+  end
+
   def self.send_presence_mail_for_next_week
     User.active_this_season.each do |user|
       next_week_trainings = user.next_week_trainings
@@ -94,11 +102,8 @@ class Training < ActiveRecord::Base
     tomorrow = Date.tomorrow
     trainings = Training.where('start_datetime between ? and ?', tomorrow.to_datetime, (tomorrow + day_range.days).to_datetime).order(:start_datetime)
 
-    next_duties = DutyTask.next_duties(DUTY_PER_TRAINING * trainings.size)
-
     trainings.each_with_index do |training, index|
-      next_training_duties = next_duties[index*DUTY_PER_TRAINING, (index*DUTY_PER_TRAINING)+DUTY_PER_TRAINING]
-      UserMailer.delay.send_tig_mail_for_training(training, next_training_duties)
+      UserMailer.delay.send_tig_mail_for_training(training, training.next_duties(DUTY_PER_TRAINING))
     end
   end
 

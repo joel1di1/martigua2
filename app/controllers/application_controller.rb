@@ -69,6 +69,13 @@ class ApplicationController < ActionController::Base
     params[:section_id] if params[:section_id]
   end
 
+  def prepare_training_presences(section, users)
+    last_trainings ||= Training.of_section(section).with_start_between(2.months.ago, 6.hours.from_now).last(10)
+    presences = TrainingPresence.where(user: users).where(training: last_trainings)
+    presences_by_user_and_training = presences.map { |pres| [[pres.user_id, pres.training_id], pres] }.to_h
+    [last_trainings, presences_by_user_and_training]
+  end
+
   private
 
   def set_raven_context

@@ -95,8 +95,8 @@ class User < ActiveRecord::Base
     nickname.blank? ? "#{first_name} #{last_name}" : "#{nickname}"
   end
 
-  def next_week_trainings
-    Training.of_next_week.joins(:groups).where(groups: { id: group_ids }).distinct
+  def next_week_trainings(date: DateTime.now)
+    Training.of_next_week(date: date).joins(:groups).where(groups: { id: group_ids }).distinct
   end
 
   def next_weekend_matches

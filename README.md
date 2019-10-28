@@ -33,12 +33,7 @@ Pour que ça marche en local et que vous puissiez développer :
 6. appelez-moi :)
 
 
-Credits
---
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
 License
 --
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+MIT

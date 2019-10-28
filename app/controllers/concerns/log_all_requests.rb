@@ -28,7 +28,7 @@ module LogAllRequests
 
   def filter_params(params)
     filters = Rails.application.config.filter_parameters
-    f = ActionDispatch::Http::ParameterFilter.new filters
+    f = ActiveSupport::ParameterFilter.new filters
     f.filter params
   end
 end

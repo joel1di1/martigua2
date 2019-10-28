@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '2.6.5'
 
-gem 'rails', '~> 5.2.3'
+gem 'rails', '6.0.0'
 gem 'coffee-rails'
 gem 'sass-rails', git: 'https://github.com/rails/sass-rails.git'
 
@@ -38,7 +38,6 @@ gem 'rest-client'
 gem 'sdoc', group: :doc
 gem 'sentry-raven'
 gem 'simple_form'
-gem 'starburst', '~> 1.0'
 gem 'switch_user'
 gem 'turbolinks'
 gem 'twilio-ruby'
@@ -85,7 +84,7 @@ group :test do
   gem "codeclimate-test-reporter", require: nil
 
   gem 'factory_bot_rails'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '4.0.0.beta3'
   gem 'rspec-its'
   gem 'capybara'
   gem 'capybara-select2'

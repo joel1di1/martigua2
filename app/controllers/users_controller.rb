@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user.update_attributes! user_params
+    @user.update! user_params
     if params[:return_to]
       redirect_to params[:return_to]
     elsif current_section

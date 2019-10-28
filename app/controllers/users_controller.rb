@@ -43,7 +43,7 @@ class UsersController < ApplicationController
 
     trainings = Training.where(id: present_ids)
     trainings.each do |training|
-      TrainingPresence.create! user: current_user, training: training, present: checked_ids.include?(training.id)
+      TrainingPresence.create! user: current_user, training: training, is_present: checked_ids.include?(training.id)
     end
 
     redirect_with(fallback: root_path)

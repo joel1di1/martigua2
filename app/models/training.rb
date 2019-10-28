@@ -8,7 +8,7 @@ class Training < ActiveRecord::Base
 
   has_many :invitations, class_name: 'TrainingInvitation'
   has_many :training_presences, inverse_of: :training, dependent: :destroy
-  has_many :present_players, -> { where(training_presences: { present: true }) }, through: :training_presences, source: :user
+  has_many :present_players, -> { where(training_presences: { is_present: true }) }, through: :training_presences, source: :user
   has_many :users, through: :groups
 
   validates_presence_of :start_datetime
@@ -27,7 +27,7 @@ class Training < ActiveRecord::Base
   end
 
   def presents
-    training_presences.includes(:user).where(present: true).map(&:user)
+    training_presences.includes(:user).where(is_present: true).map(&:user)
   end
 
   def nb_presents
@@ -35,7 +35,7 @@ class Training < ActiveRecord::Base
   end
 
   def not_presents
-    training_presences.includes(:user).where(present: false).map(&:user)
+    training_presences.includes(:user).where(is_present: false).map(&:user)
   end
 
   def nb_not_presents

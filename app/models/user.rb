@@ -60,15 +60,15 @@ class User < ActiveRecord::Base
     [*trainings].each do |training|
       presence = presences[training.id]
       if presence.nil?
-        training_presences << TrainingPresence.new(training: training, user: self, present: present)
+        training_presences << TrainingPresence.new(training: training, user: self, is_present: present)
       else
-        presence.update present: present
+        presence.update is_present: present
       end
     end
   end
 
   def is_present_for?(training)
-    training_presences.where(training: training).first.try(:present)
+    training_presences.where(training: training).first.try(:is_present)
   end
 
   def is_available_for?(match)
@@ -115,7 +115,7 @@ class User < ActiveRecord::Base
   def was_present?(training, presences_by_user_and_training = nil)
     training_presence = presences_by_user_and_training.present? ? presences_by_user_and_training[[id, training.id]] : training_presences.where(training: training).first
     return unless training_presence
-    training_presence.presence_validated? || (training_presence.present? && training_presence.presence_validated.nil?)
+    training_presence.presence_validated? || (training_presence.is_present? && training_presence.presence_validated.nil?)
   end
 
   def confirm_presence!(training)

@@ -11,7 +11,7 @@ class TrainingPresenceDashboard < Administrate::BaseDashboard
     user: Field::BelongsTo,
     training: Field::BelongsTo,
     id: Field::Number,
-    present: Field::Boolean,
+    is_present: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     presence_validated: Field::Boolean,
@@ -26,7 +26,7 @@ class TrainingPresenceDashboard < Administrate::BaseDashboard
   id
   user
   training
-  present
+  is_present
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -35,7 +35,7 @@ class TrainingPresenceDashboard < Administrate::BaseDashboard
   id
   user
   training
-  present
+  is_present
   created_at
   updated_at
   presence_validated
@@ -47,7 +47,7 @@ class TrainingPresenceDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
   user
   training
-  present
+  is_present
   presence_validated
   ].freeze
 

@@ -168,19 +168,19 @@ describe User do
     end
 
     context 'without a nil response' do
-      let!(:training_presence) { create :training_presence, training: training, user: user, present: nil }
+      let!(:training_presence) { create :training_presence, training: training, user: user, is_present: nil }
 
       it { expect(user.is_present_for?(training)).to be_nil }
     end
 
     context 'without a true response' do
-      let!(:training_presence) { create :training_presence, training: training, user: user, present: true }
+      let!(:training_presence) { create :training_presence, training: training, user: user, is_present: true }
 
       it { expect(user.is_present_for?(training)).to be_truthy }
     end
 
     context 'without a false response' do
-      let!(:training_presence) { create :training_presence, training: training, user: user, present: false }
+      let!(:training_presence) { create :training_presence, training: training, user: user, is_present: false }
 
       it { expect(user.is_present_for?(training)).to be_falsy }
     end

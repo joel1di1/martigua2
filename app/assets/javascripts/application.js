@@ -38,4 +38,3 @@
 //= require trainings
 //= require users
 //= require visitors
-//= require starburst

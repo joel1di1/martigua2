@@ -38,7 +38,6 @@ gem 'rest-client'
 gem 'sdoc', group: :doc
 gem 'sentry-raven'
 gem 'simple_form'
-gem 'starburst', '~> 1.0'
 gem 'switch_user'
 gem 'turbolinks'
 gem 'twilio-ruby'

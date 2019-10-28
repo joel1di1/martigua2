@@ -7,8 +7,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_section, :origin_path_or
 
-  helper Starburst::AnnouncementsHelper
-
   LOCAL_REFERRER_RE = /^(https:\/\/www.martigua.org)|(https?:\/\/localhost)/
 
   include LogAllRequests

@@ -36,7 +36,7 @@ class ChampionshipsController < ApplicationController
   end
 
   def update
-    if @championship.update_attributes(championship_params)
+    if @championship.update(championship_params)
       redirect_to section_championship_path(current_section, @championship), notice: 'Compétition sauvegardée'
     else
       prepare_form

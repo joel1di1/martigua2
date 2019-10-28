@@ -40,7 +40,7 @@ class MatchesController < ApplicationController
   def update
     @championship = Championship.find(params[:championship_id])
     @match = Match.find params[:id]
-    if @match.update_attributes match_params
+    if @match.update match_params
       redirect_to section_championship_path(current_section, @championship)
     else
       render :edit

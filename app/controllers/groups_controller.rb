@@ -39,7 +39,7 @@ class GroupsController < ApplicationController
   end
 
   def update
-    if @group.update_attributes group_params
+    if @group.update group_params
       redirect_to section_group_path(current_section, @group), notice: 'Groupe modifié'
     else
       render :edit

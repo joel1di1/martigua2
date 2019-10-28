@@ -19,7 +19,7 @@ class CalendarsController < ApplicationController
   end
 
   def update
-    if @calendar.update_attributes(calendar_params)
+    if @calendar.update(calendar_params)
       redirect_to edit_section_calendar_path(current_section, @calendar), notice: 'Calendrier mis à jour'
     else
       flash.now[:error] = 'Erreur lors de la mise à jour'

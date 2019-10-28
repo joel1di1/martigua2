@@ -85,7 +85,7 @@ group :test do
   gem "codeclimate-test-reporter", require: nil
 
   gem 'factory_bot_rails'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '4.0.0.beta3'
   gem 'rspec-its'
   gem 'capybara'
   gem 'capybara-select2'

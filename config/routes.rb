@@ -16,7 +16,6 @@ Rails.application.routes.draw do
       resources :match_availabilities
       resources :match_selections
       resources :participations
-      resources :scrapped_rankings
       resources :seasons
       resources :sections
       resources :section_user_invitations
@@ -36,7 +35,6 @@ Rails.application.routes.draw do
 
   resources :sections, only: [:show] do
     resources :duty_tasks
-    resources :scrapped_rankings, only: [:index]
     resources :section_user_invitations, path: 'user_invitations', only: [:new, :show, :create, :index]
     resources :trainings do
       member do

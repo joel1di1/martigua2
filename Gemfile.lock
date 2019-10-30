@@ -83,13 +83,7 @@ GEM
     best_in_place (3.1.1)
       actionpack (>= 3.2)
       railties (>= 3.2)
-    better_errors (2.5.1)
-      coderay (>= 1.0.0)
-      erubi (>= 1.0.0)
-      rack (>= 0.9.0)
     bindex (0.7.0)
-    binding_of_caller (0.8.0)
-      debug_inspector (>= 0.0.1)
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
@@ -127,7 +121,6 @@ GEM
     database_cleaner (1.7.0)
     datetime_picker_rails (0.0.7)
       momentjs-rails (>= 2.8.1)
-    debug_inspector (0.0.3)
     declarative (0.0.10)
     declarative-option (0.1.0)
     delayed_job (4.1.8)
@@ -546,8 +539,6 @@ DEPENDENCIES
   activerecord-session_store
   administrate
   best_in_place
-  better_errors
-  binding_of_caller
   bootstrap-sass
   bullet
   byebug

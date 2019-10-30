@@ -4,7 +4,7 @@
 Martigua2
 =========
 
-Ceci est le code du magnifique site www.martigua.org
+Code of the amazing site www.martigua.org
 
 Contributing
 --
@@ -23,13 +23,14 @@ me and I’ll add a note to the README so that others can find your work.
 Dev Setup
 --
 
-Pour que ça marche en local et que vous puissiez développer :
 1. sur mac c'est quand même plus facile
-2. installez homebrew : https://brew.sh/
-3. installez rvm : https://rvm.io/  (sauf si vous ne jure que par rbenv)
+2. Install homebrew : https://brew.sh/
+3. Install rvm or rbenv
 4. git clone ...
-5. il va falloir un postgres (a installer avec brew)
-6. appelez-moi :)
+5. bundle
+6. docker-compose up
+7. rails db:reset
+8. rspec
 
 
 License

@@ -21,13 +21,6 @@ GIT
       i18n
       polyamorous (= 2.3.0)
 
-GIT
-  remote: https://github.com/rails/sass-rails.git
-  revision: 551251bddec4d6b75446cb1c1630ed26e5318f8e
-  specs:
-    sass-rails (6.0.0)
-      sassc-rails (~> 2.1, >= 2.1.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -471,6 +464,8 @@ GEM
     ruby_parser (3.13.1)
       sexp_processor (~> 4.9)
     rubyzip (2.0.0)
+    sass-rails (6.0.0)
+      sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.2.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -623,7 +618,7 @@ DEPENDENCIES
   rspec-rails (= 4.0.0.beta3)
   rubocop
   rubocop-rspec
-  sass-rails!
+  sass-rails
   sdoc
   selenium-webdriver
   sentry-raven

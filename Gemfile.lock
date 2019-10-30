@@ -1,14 +1,4 @@
 GIT
-  remote: https://github.com/activeadmin/inherited_resources.git
-  revision: f5c5ddcf3f3e577c3cec5e6c502e3a5e0a1095e8
-  specs:
-    inherited_resources (1.11.0)
-      actionpack (>= 5.2, < 6.1)
-      has_scope (~> 0.6)
-      railties (>= 5.2, < 6.1)
-      responders (>= 2, < 4)
-
-GIT
   remote: https://github.com/activerecord-hackery/ransack.git
   revision: 2c0df02091819d58c52539ca962ed8070f2d2e47
   specs:
@@ -252,6 +242,11 @@ GEM
     httpclient (2.8.3)
     i18n (1.7.0)
       concurrent-ruby (~> 1.0)
+    inherited_resources (1.11.0)
+      actionpack (>= 5.0, < 6.1)
+      has_scope (~> 0.6)
+      railties (>= 5.0, < 6.1)
+      responders (>= 2, < 4)
     iniparse (1.4.4)
     interception (0.5)
     jaro_winkler (1.5.3)
@@ -582,7 +577,7 @@ DEPENDENCIES
   haml-rails
   heroku-deflater
   html2haml
-  inherited_resources!
+  inherited_resources
   jbuilder
   jquery-rails
   jquery-turbolinks

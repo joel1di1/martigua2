@@ -38,7 +38,7 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   # config.active_storage.service = :local
 
-  # Mount Action Cable outside main process or domain.
+  # Mount Action Cable outside  process or do.
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
@@ -84,6 +84,9 @@ Rails.application.configure do
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
+    time    = 5
+    message = "Processing of the data has finished in %d seconds" % [time]
+    puts message
   end
 
   # Do not dump schema after migrations.

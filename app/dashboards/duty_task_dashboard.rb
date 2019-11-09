@@ -10,7 +10,9 @@ class DutyTaskDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     user: Field::BelongsTo,
     id: Field::Number,
+    key: Field::String,
     name: Field::String,
+    weight: Field::Number,
     realised_at: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -24,7 +26,9 @@ class DutyTaskDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
   user
   id
+  key
   name
+  weight
   realised_at
   ].freeze
 
@@ -33,7 +37,9 @@ class DutyTaskDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
   user
   id
+  key
   name
+  weight
   realised_at
   created_at
   updated_at
@@ -44,7 +50,9 @@ class DutyTaskDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
   user
+  key
   name
+  weight
   realised_at
   ].freeze
 

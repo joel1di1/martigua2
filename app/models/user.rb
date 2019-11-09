@@ -104,12 +104,12 @@ class User < ActiveRecord::Base
     next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select { |s| is_player_of?(s) }.size > 0 }
   end
 
-  def realised_task!(task_name, realised_at)
-    duty_tasks << DutyTask.create(name: task_name, realised_at: realised_at)
+  def realised_task!(task_key, realised_at)
+    duty_tasks << DutyTask.create!(key: task_key, realised_at: realised_at, user: self)
   end
 
-  def last_time_duty(task_name)
-    duty_tasks.where(name: task_name).order('name DESC').first&.realised_at
+  def last_time_duty(task_key)
+    duty_tasks.where(name: task_key).order('name DESC').first&.realised_at
   end
 
   def was_present?(training, presences_by_user_and_training = nil)

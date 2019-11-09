@@ -8,6 +8,7 @@ describe PingController do
 
     context 'not signed in' do
       it { expect(response.status).to eq(200) }
+
       describe 'response' do
         subject { JSON.parse(response.body) }
 
@@ -22,6 +23,7 @@ describe PingController do
       let(:user) { create :user }
 
       it { expect(response.status).to eq(200) }
+
       describe 'response' do
         subject { JSON.parse(response.body) }
 

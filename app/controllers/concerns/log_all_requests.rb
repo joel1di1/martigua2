@@ -9,8 +9,8 @@ module LogAllRequests
   def log_requests
     yield
     log_if_active "#{request_string} --RESP-- #{response.status};#{response.redirect_url}"
-  rescue Exception => ex
-    log_if_active "#{request_string} --RESP-- 500;#{ex.message};#{ex.backtrace}"
+  rescue Exception => e
+    log_if_active "#{request_string} --RESP-- 500;#{e.message};#{e.backtrace}"
     raise
   end
 

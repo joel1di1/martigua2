@@ -102,6 +102,7 @@ describe UsersController, :type => :controller do
       expect(user.reload.is_present_for?(training_1)).to be_truthy
       expect(user.reload.is_present_for?(training_2)).to be_falsy
     end
+
     it { expect(response).to redirect_to(root_path) }
   end
 

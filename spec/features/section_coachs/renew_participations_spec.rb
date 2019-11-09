@@ -24,17 +24,17 @@ feature 'Renew Participations', :devise do
     signin coach.email, coach.password
     expect(page).to have_link 'Membres'
     click_link 'Membres'
-    expect(current_path).to eq section_users_path(section)
+    expect(page).to have_current_path section_users_path(section), ignore_query: true
     expect(page).not_to have_content previous_player.email
     expect(page).to have_link renouveller
     click_link renouveller
 
-    expect(current_path).to eq section_participations_renewal_index_path(section)
+    expect(page).to have_current_path section_participations_renewal_index_path(section), ignore_query: true
     expect(page).to have_button 'submit_btn'
 
     click_button 'submit_btn'
 
-    expect(current_path).to eq section_users_path(section)
+    expect(page).to have_current_path section_users_path(section), ignore_query: true
     expect(page).to have_content previous_player.email
   end
 end

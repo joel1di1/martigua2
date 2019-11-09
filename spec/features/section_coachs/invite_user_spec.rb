@@ -15,10 +15,10 @@ feature 'Invite User', :devise do
     signin section_coach.email, section_coach.password
     expect(page).to have_link 'Membres'
     click_link 'Membres'
-    expect(current_path).to eq section_users_path(section_coach.sections.first)
+    expect(page).to have_current_path section_users_path(section_coach.sections.first), ignore_query: true
     expect(page).to have_link 'Ajouter un joueur'
     click_link 'Ajouter un joueur'
-    expect(current_path).to eq new_section_section_user_invitation_path(section_coach.sections.first)
+    expect(page).to have_current_path new_section_section_user_invitation_path(section_coach.sections.first), ignore_query: true
 
     invited_user = build :user
     fill_in 'section_user_invitation[email]', with: invited_user.email

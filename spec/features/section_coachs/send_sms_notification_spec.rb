@@ -16,7 +16,7 @@ feature 'send sms notification', :devise do
     expect(page).to have_link 'Notification SMS'
 
     click_link 'Notification SMS'
-    expect(current_path).to eq new_section_sms_notification_path(section_coach.sections.first)
+    expect(page).to have_current_path new_section_sms_notification_path(section_coach.sections.first), ignore_query: true
 
     sms_notification = build :sms_notification
     fill_in 'sms_notification[title]', with: sms_notification.title

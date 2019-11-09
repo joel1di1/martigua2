@@ -14,7 +14,6 @@ guard 'rails' do
   watch(%r{^(config|lib)/.*})
 end
 
-
 guard :rspec, failed_mode: :keep, cmd: 'bin/rspec' do # all_after_pass: true,
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
@@ -33,6 +32,6 @@ guard :rspec, failed_mode: :keep, cmd: 'bin/rspec' do # all_after_pass: true,
 
   # Turnip features and steps
   watch(%r{^spec/acceptance/(.+)\.feature$})
-  watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$})   { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
+  watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
 end
 

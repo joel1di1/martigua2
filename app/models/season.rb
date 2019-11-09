@@ -19,6 +19,7 @@ class Season < ActiveRecord::Base
 
   def self.current
     return _current if Rails.env.test?
+
     Thread.current[:current_season] ||= _current
   end
 

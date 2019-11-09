@@ -115,6 +115,7 @@ class User < ActiveRecord::Base
   def was_present?(training, presences_by_user_and_training = nil)
     training_presence = presences_by_user_and_training.present? ? presences_by_user_and_training[[id, training.id]] : training_presences.where(training: training).first
     return unless training_presence
+
     training_presence.presence_validated? || (training_presence.is_present? && training_presence.presence_validated.nil?)
   end
 

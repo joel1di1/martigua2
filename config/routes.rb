@@ -2,33 +2,33 @@
 
 Rails.application.routes.draw do
   namespace :admin do
-      resources :admin_users
-      resources :calendars
-      resources :championships
-      resources :clubs
-      resources :club_admin_roles
-      resources :days
-      resources :duty_tasks
-      resources :enrolled_team_championships
-      resources :groups
-      resources :locations
-      resources :matches
-      resources :match_availabilities
-      resources :match_selections
-      resources :participations
-      resources :seasons
-      resources :sections
-      resources :section_user_invitations
-      resources :selections
-      resources :sms_notifications
-      resources :teams
-      resources :trainings
-      resources :training_invitations
-      resources :training_presences
-      resources :users
+    resources :admin_users
+    resources :calendars
+    resources :championships
+    resources :clubs
+    resources :club_admin_roles
+    resources :days
+    resources :duty_tasks
+    resources :enrolled_team_championships
+    resources :groups
+    resources :locations
+    resources :matches
+    resources :match_availabilities
+    resources :match_selections
+    resources :participations
+    resources :seasons
+    resources :sections
+    resources :section_user_invitations
+    resources :selections
+    resources :sms_notifications
+    resources :teams
+    resources :trainings
+    resources :training_invitations
+    resources :training_presences
+    resources :users
 
-      root to: "users#index"
-    end
+    root to: "users#index"
+  end
   resources :days
 
   resources :championships

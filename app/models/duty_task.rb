@@ -18,8 +18,10 @@ class DutyTask < ApplicationRecord
 
   def set_name_weight_from_key
     return if key.blank?
+
     task_details = TASKS[key.to_sym]
     raise "No details for duty task #{key}" if task_details.blank?
+
     self.weight ||= task_details[:weight]
     self.name ||= task_details[:name]
   end

@@ -106,12 +106,12 @@ class Section < ActiveRecord::Base
 
   def next_duties_for(task_key)
     left_join = 'LEFT OUTER JOIN "duty_tasks" ON "duty_tasks"."user_id" = "users"."id" AND "duty_tasks"."key" ='
-    users.joins("#{left_join} '#{Arel.sql(task_key.to_s)}'").
-      where('participations.season_id = ?', Season.current.id).
-      select("users.id, users.*, coalesce(max(duty_tasks.realised_at), '1900-01-01') as last_realised_at").
-      group('users.id').
-      order('last_realised_at ASC, authentication_token').
-      limit(3)
+    users.joins("#{left_join} '#{Arel.sql(task_key.to_s)}'")
+         .where('participations.season_id = ?', Season.current.id)
+         .select("users.id, users.*, coalesce(max(duty_tasks.realised_at), '1900-01-01') as last_realised_at")
+         .group('users.id')
+         .order('last_realised_at ASC, authentication_token')
+         .limit(3)
   end
 
   protected

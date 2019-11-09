@@ -10,7 +10,6 @@ class DutyTasksController < InheritedResources::Base
     end
   end
 
-
   private
 
   def duty_task_params

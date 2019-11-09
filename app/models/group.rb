@@ -20,6 +20,7 @@ class Group < ActiveRecord::Base
     if system? && !force
       raise 'You cannot remove user from system group'
     end
+
     users.delete(user)
   end
 

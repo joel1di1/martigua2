@@ -28,7 +28,7 @@ SwitchUser.setup do |config|
   # if you switch from "admin" to user, the current_user param is "admin"
   config.controller_guard = lambda { |current_user, request, original_user|
     (current_user && current_user.email == 'joel1di1@gmail.com') ||
-                                   (original_user && original_user.email == 'joel1di1@gmail.com')
+      (original_user && original_user.email == 'joel1di1@gmail.com')
   }
 
   # view_guard is a block,
@@ -37,7 +37,7 @@ SwitchUser.setup do |config|
   # if you switch from admin to "user", the current_user param is "user"
   config.view_guard = lambda { |current_user, request, original_user|
     (current_user && current_user.email == 'joel1di1@gmail.com') ||
-                                   (original_user && original_user.email == 'joel1di1@gmail.com')
+      (original_user && original_user.email == 'joel1di1@gmail.com')
   }
 
   # redirect_path is a block, it returns which page will be redirected

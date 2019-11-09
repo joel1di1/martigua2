@@ -33,10 +33,10 @@ class Match < ActiveRecord::Base
 
   def users
     User.joins(:participations).where(participations: {
-      season: Season.current,
-      role: Participation::PLAYER,
-      section: teams.includes(:sections).map(&:sections).flatten,
-    })
+                                        season: Season.current,
+                                        role: Participation::PLAYER,
+                                        section: teams.includes(:sections).map(&:sections).flatten,
+                                      })
   end
 
   def _availables

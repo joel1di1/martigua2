@@ -86,9 +86,9 @@ class Training < ActiveRecord::Base
 
   def next_duties(limit)
     present_players.left_outer_joins(:duty_tasks)
-      .distinct.select('users.*, max(duty_tasks.created_at) as last_duty_date')
-      .group('users.id').order('last_duty_date DESC, authentication_token ASC')
-      .limit(limit)
+                   .distinct.select('users.*, max(duty_tasks.created_at) as last_duty_date')
+                   .group('users.id').order('last_duty_date DESC, authentication_token ASC')
+                   .limit(limit)
   end
 
   def self.send_presence_mail_for_next_week(date: DateTime.now)
@@ -98,13 +98,13 @@ class Training < ActiveRecord::Base
     end
   end
 
-  def self.send_tig_mail_for_next_training(day_range=1)
+  def self.send_tig_mail_for_next_training(day_range = 1)
     tomorrow = Date.tomorrow
     trainings =
       Training
-        .where(cancelled: [false, nil])
-        .where('start_datetime between ? and ?', tomorrow.to_datetime, (tomorrow + day_range.days).to_datetime)
-        .order(:start_datetime)
+      .where(cancelled: [false, nil])
+      .where('start_datetime between ? and ?', tomorrow.to_datetime, (tomorrow + day_range.days).to_datetime)
+      .order(:start_datetime)
 
     trainings.each_with_index do |training, index|
       next_duties = training.next_duties(DUTY_PER_TRAINING)

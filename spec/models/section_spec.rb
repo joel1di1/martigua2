@@ -278,7 +278,6 @@ RSpec.describe Section, :type => :model do
         user_2.realised_task!(task, 2.days.ago)
         user_3.realised_task!(task, 3.days.ago)
 
-        binding.pry
         expect(next_duties).to match_array([user_4, user_3, user_2])
       }
     end

@@ -4,7 +4,7 @@ class DutyTask < ApplicationRecord
   TASKS = {
     youth_training: { weight: 12, name: 'Entraînement jeunes' },
     mark_table: { weight: 6, name: 'Faire la table' },
-    training_bibs: { weight: 12, name: 'Laver les chasubles' }
+    training_bibs: { weight: 3, name: 'Laver les chasubles' }
   }.freeze
 
   TASK_NAMES_COLLECTION = TASKS.map { |task_id, hash| [hash[:name], task_id] }

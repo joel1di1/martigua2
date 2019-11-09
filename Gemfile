@@ -3,8 +3,8 @@
 source 'https://rubygems.org'
 ruby '2.6.5'
 
-gem 'rails', '6.0.0'
 gem 'coffee-rails'
+gem 'rails', '6.0.0'
 gem 'sass-rails'
 
 gem 'activerecord-session_store'
@@ -18,21 +18,21 @@ gem 'devise_invitable'
 gem 'font_assets'
 gem 'google-api-client'
 gem 'haml-rails'
-gem 'kaminari'
 gem 'inherited_resources'
 gem 'jbuilder'
 gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
+gem 'kaminari'
 gem 'mechanize'
 gem 'newrelic_rpm'
 gem 'nokogiri'
-gem 'phony'
 gem 'pg', group: [:production, :development]
+gem 'phony'
 gem 'polyamorous'
 gem 'puma'
-gem 'ransack'
 gem 'rack-cors', :require => 'rack/cors'
+gem 'ransack'
 gem 'redis'
 gem 'rest-client'
 gem 'sdoc', group: :doc
@@ -81,11 +81,11 @@ end
 group :test do
   gem "codeclimate-test-reporter", require: nil
 
-  gem 'factory_bot_rails'
-  gem 'rspec-rails', '4.0.0.beta3'
-  gem 'rspec-its'
   gem 'capybara'
   gem 'capybara-select2'
+  gem 'factory_bot_rails'
+  gem 'rspec-its'
+  gem 'rspec-rails', '4.0.0.beta3'
 
   gem 'database_cleaner'
   gem 'faker'

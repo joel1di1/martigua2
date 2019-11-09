@@ -8,7 +8,7 @@ describe 'User profile page', :devise do
   include Warden::Test::Helpers
   Warden.test_mode!
 
-  after(:each) do
+  after do
     Warden.test_reset!
   end
 

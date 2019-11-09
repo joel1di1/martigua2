@@ -139,16 +139,6 @@ RSpec/ExpectInHook:
     - 'spec/controllers/selections_controller_spec.rb'
     - 'spec/models/training_spec.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: implicit, each, example
-RSpec/HookArgument:
-  Exclude:
-    - 'spec/features/users/user_edit_spec.rb'
-    - 'spec/features/users/user_index_spec.rb'
-    - 'spec/features/users/user_show_spec.rb'
-
 # Offense count: 111
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

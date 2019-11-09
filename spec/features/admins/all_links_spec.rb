@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-feature 'Active Admin', :devise do
-  scenario 'admin can list any page in admin section' do
+describe 'Active Admin', :devise do
+  it 'admin can list any page in admin section' do
     admin = create :user
     create :admin_user, email: admin.email
 

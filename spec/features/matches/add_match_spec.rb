@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-feature 'Add Match', :devise do
-  scenario 'coach sign in and add new match' do
+describe 'Add Match', :devise do
+  it 'coach sign in and add new match' do
     adversary_team_name = Faker::Team.name
     location_name = Faker::Address.street_name
     location_address = Faker::Address.full_address

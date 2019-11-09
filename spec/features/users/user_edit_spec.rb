@@ -4,7 +4,7 @@
 #   As a user
 #   I want to edit my user profile
 #   So I can change my email address
-feature 'User edit', :devise do
+describe 'User edit', :devise do
   include Warden::Test::Helpers
   Warden.test_mode!
 
@@ -16,7 +16,7 @@ feature 'User edit', :devise do
   #   Given I am signed in
   #   When I change my email address
   #   Then I see an account updated message
-  scenario 'user changes email address' do
+  it 'user changes email address' do
     section = create :section
     user = create :user, with_section: section
     new_email = Faker::Internet.email
@@ -32,7 +32,7 @@ feature 'User edit', :devise do
   #   Given I am signed in
   #   When I try to edit another user's profile
   #   Then I see my own 'edit profile' page
-  scenario "user cannot cannot edit another user's profile", :me do
+  it "user cannot cannot edit another user's profile", :me do
     section = create :section
     me = create :user, with_section: section
     other_email = Faker::Internet.email

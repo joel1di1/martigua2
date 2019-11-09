@@ -4,12 +4,12 @@
 #   As a user
 #   I want to sign out
 #   So I can protect my account from unauthorized access
-feature 'Sign out', :devise do
+describe 'Sign out', :devise do
   # Scenario: User signs out successfully
   #   Given I am signed in
   #   When I sign out
   #   Then I see a signed out message
-  scenario 'user signs out successfully' do
+  it 'user signs out successfully' do
     section = create :section
     user = create :user, with_section: section
     signin(user.email, user.password)

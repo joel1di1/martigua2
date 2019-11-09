@@ -4,7 +4,7 @@
 #   As a user
 #   I want to see a list of users
 #   So I can see who has registered
-feature 'User index page', :devise do
+describe 'User index page', :devise do
   include Warden::Test::Helpers
   Warden.test_mode!
 
@@ -16,7 +16,7 @@ feature 'User index page', :devise do
   #   Given I am signed in
   #   When I visit the user index page
   #   Then I see my own email address
-  scenario 'user sees own email address' do
+  it 'user sees own email address' do
     section = create :section
     user = create :user, with_section: section
     login_as(user, scope: :user)

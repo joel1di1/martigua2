@@ -4,13 +4,13 @@
 #   As a section_coach
 #   I want to invite a new user
 #   So he can access the site
-feature 'Invite User', :devise do
+describe 'Invite User', :devise do
   # Scenario: section_coach sign in and see invitation form
   #   Given I am a signed in section_coach
   #   When I visit club root page
   #   Then I see members page
   #   And I can invite new users
-  scenario 'section_coach sign in and invite player' do
+  it 'section_coach sign in and invite player' do
     section_coach = create :user, :section_coach
     signin section_coach.email, section_coach.password
     expect(page).to have_link 'Membres'

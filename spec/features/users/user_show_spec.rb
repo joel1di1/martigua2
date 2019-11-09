@@ -4,7 +4,7 @@
 #   As a user
 #   I want to visit my user profile page
 #   So I can see my personal account data
-feature 'User profile page', :devise do
+describe 'User profile page', :devise do
   include Warden::Test::Helpers
   Warden.test_mode!
 
@@ -16,7 +16,7 @@ feature 'User profile page', :devise do
   #   Given I am signed in
   #   When I visit the user profile page
   #   Then I see my own email address
-  scenario 'user sees own profile' do
+  it 'user sees own profile' do
     user = FactoryBot.create(:user)
     login_as(user, :scope => :user)
     visit user_path(user)
@@ -27,7 +27,7 @@ feature 'User profile page', :devise do
   #   Given I am signed in
   #   When I visit another user's profile
   #   Then I see an 'access denied' message
-  scenario "user cannot see another user's profile" do
+  it "user cannot see another user's profile" do
     me = FactoryBot.create(:user)
     other_email = Faker::Internet.email
     other = FactoryBot.create(:user, email: other_email)

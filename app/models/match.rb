@@ -93,9 +93,7 @@ class Match < ActiveRecord::Base
   end
 
   def update_shared_calendar
-    if !Rails.env.test? && start_datetime
-      async_update_shared_calendar
-    end
+    async_update_shared_calendar if !Rails.env.test? && start_datetime
   end
 
   def async_update_shared_calendar

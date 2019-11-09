@@ -54,9 +54,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_section_id_from_params_id
-    if params[:controller] == 'sections' && params[:id]
-      params[:id]
-    end
+    params[:id] if params[:controller] == 'sections' && params[:id]
   end
 
   def get_section_id_from_params_section_id
@@ -81,8 +79,6 @@ class ApplicationController < ActionController::Base
     user_email = params[:user_email].presence
     user       = user_email && User.find_by_email(user_email)
 
-    if user && Devise.secure_compare(user.authentication_token, params[:user_token])
-      sign_in user
-    end
+    sign_in user if user && Devise.secure_compare(user.authentication_token, params[:user_token])
   end
 end

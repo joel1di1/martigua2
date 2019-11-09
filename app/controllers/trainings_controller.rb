@@ -26,9 +26,7 @@ class TrainingsController < ApplicationController
   end
 
   def show
-    if current_user.is_coach_of?(current_section)
-      redirect_to presence_validation_section_training_path(current_section, @training)
-    end
+    redirect_to presence_validation_section_training_path(current_section, @training) if current_user.is_coach_of?(current_section)
   end
 
   def edit

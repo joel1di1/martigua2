@@ -106,7 +106,7 @@ class Training < ActiveRecord::Base
       .where('start_datetime between ? and ?', tomorrow.to_datetime, (tomorrow + day_range.days).to_datetime)
       .order(:start_datetime)
 
-    trainings.each_with_index do |training, index|
+    trainings.each_with_index do |training, _index|
       next_duties = training.next_duties(DUTY_PER_TRAINING)
       UserMailer.delay.send_tig_mail_for_training(training, next_duties) if next_duties.present?
     end

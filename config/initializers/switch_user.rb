@@ -26,7 +26,7 @@ SwitchUser.setup do |config|
   # if it returns true, the request will continue,
   # else the request will be refused and returns "Permission Denied"
   # if you switch from "admin" to user, the current_user param is "admin"
-  config.controller_guard = lambda { |current_user, request, original_user|
+  config.controller_guard = lambda { |current_user, _request, original_user|
     (current_user && current_user.email == 'joel1di1@gmail.com') ||
       (original_user && original_user.email == 'joel1di1@gmail.com')
   }
@@ -35,14 +35,14 @@ SwitchUser.setup do |config|
   # if it returns true, the switch user select box will be shown,
   # else the select box will not be shown
   # if you switch from admin to "user", the current_user param is "user"
-  config.view_guard = lambda { |current_user, request, original_user|
+  config.view_guard = lambda { |current_user, _request, original_user|
     (current_user && current_user.email == 'joel1di1@gmail.com') ||
       (original_user && original_user.email == 'joel1di1@gmail.com')
   }
 
   # redirect_path is a block, it returns which page will be redirected
   # after switching a user.
-  config.redirect_path = lambda { |request, params| '/' }
+  config.redirect_path = lambda { |_request, _params| '/' }
 
   # helper_with_guest is a boolean value, if it set to false
   # the guest item in the helper won't be shown

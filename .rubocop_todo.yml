@@ -6,14 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: final_newline, final_blank_line
-Layout/TrailingBlankLines:
-  Exclude:
-    - 'Guardfile'
-
 # Offense count: 3
 Lint/AmbiguousBlockAssociation:
   Exclude:
@@ -33,29 +25,7 @@ Lint/ParenthesesAsGroupedExpression:
     - 'spec/models/season_spec.rb'
 
 # Offense count: 1
-# Cop supports --auto-correct.
-Lint/RedundantCopDisableDirective:
-  Exclude:
-    - 'app/models/concerns/trashable.rb'
-
-# Offense count: 1
 Lint/RescueException:
-  Exclude:
-    - 'app/controllers/concerns/log_all_requests.rb'
-
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoreEmptyBlocks, AllowUnusedKeywordArguments.
-Lint/UnusedBlockArgument:
-  Exclude:
-    - 'app/models/section.rb'
-    - 'app/models/training.rb'
-    - 'config/initializers/switch_user.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
-Lint/UnusedMethodArgument:
   Exclude:
     - 'app/controllers/concerns/log_all_requests.rb'
 

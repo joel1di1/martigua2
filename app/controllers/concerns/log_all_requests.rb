@@ -6,7 +6,7 @@ module LogAllRequests
     around_action :log_requests
   end
 
-  def log_requests(&block)
+  def log_requests
     yield
     log_if_active "#{request_string} --RESP-- #{response.status};#{response.redirect_url}"
   rescue Exception => ex

@@ -26,7 +26,7 @@ class Section < ActiveRecord::Base
     invitation = SectionUserInvitation.create!(params_only_with_section)
 
     user = User.find_by_email(invitation.email)
-    user ||= User.invite!(params_only.delete_if { |k, v| k.to_s == 'roles' }, inviter)
+    user ||= User.invite!(params_only.delete_if { |k, _v| k.to_s == 'roles' }, inviter)
 
     add_user! user, params[:roles]
     user

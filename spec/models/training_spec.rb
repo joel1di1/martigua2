@@ -137,6 +137,7 @@ RSpec.describe Training, :type => :model do
 
         it { is_expected.to be_truthy }
         it { expect(training.cancel_reason).to eq reason }
+
         context 'when uncancelled' do
           before { training.uncancel! }
 

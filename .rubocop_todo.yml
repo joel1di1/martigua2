@@ -118,15 +118,6 @@ RSpec/DescribedClass:
     - 'spec/models/training_spec.rb'
     - 'spec/models/user_spec.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: AllowConsecutiveOneLiners.
-RSpec/EmptyLineAfterExample:
-  Exclude:
-    - 'spec/controllers/ping_controller_spec.rb'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/models/training_spec.rb'
-
 # Offense count: 17
 # Configuration parameters: Max.
 RSpec/ExampleLength:

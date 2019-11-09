@@ -7,7 +7,7 @@ SwitchUser.setup do |config|
   # available_users is a hash,
   # key is the model name of user (:user, :admin, or any name you use),
   # value is a block that return the users that can be switched.
-  config.available_users = { user: lambda { User.order('email ASC') } }
+  config.available_users = { user: -> { User.order('email ASC') } }
 
   # available_users_identifiers is a hash,
   # keys in this hash should match a key in the available_users hash
@@ -42,7 +42,7 @@ SwitchUser.setup do |config|
 
   # redirect_path is a block, it returns which page will be redirected
   # after switching a user.
-  config.redirect_path = lambda { |_request, _params| '/' }
+  config.redirect_path = ->(_request, _params) { '/' }
 
   # helper_with_guest is a boolean value, if it set to false
   # the guest item in the helper won't be shown

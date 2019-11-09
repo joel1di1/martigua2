@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe ParticipationsRenewalController, :type => :controller do
+describe ParticipationsRenewalController, type: :controller do
   let(:section) { create :section }
   let(:coach) { create :user, with_section_as_coach: section }
 

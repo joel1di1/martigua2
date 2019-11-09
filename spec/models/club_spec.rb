@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Club, :type => :model do
+RSpec.describe Club, type: :model do
   let(:club) { create :club }
 
   it { should validate_presence_of :name }

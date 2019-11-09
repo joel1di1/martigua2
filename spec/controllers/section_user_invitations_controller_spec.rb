@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe SectionUserInvitationsController, :type => :controller do
+describe SectionUserInvitationsController, type: :controller do
   describe "POST create" do
     subject { post :create, params: request_params }
 

@@ -6,7 +6,7 @@ class Club < ActiveRecord::Base
   has_many :sections, inverse_of: :club, dependent: :destroy
 
   has_many :club_admin_roles
-  has_many :admins, :through => :club_admin_roles, :source => :user
+  has_many :admins, through: :club_admin_roles, source: :user
 
   def add_admin!(user)
     ClubAdminRole.create! club: self, user: user, name: ClubAdminRole::ADMIN unless user.is_admin_of?(self)

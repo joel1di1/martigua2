@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe SmsNotificationsController, :type => :controller do
+describe SmsNotificationsController, type: :controller do
   let(:section) { create :section }
   let(:sms_notification) { create :sms_notification, section: section }
   let(:user) { create :user, with_section: section }

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe MatchesController, :type => :controller do
+describe MatchesController, type: :controller do
   let(:section) { create :section }
   let(:user) { create :user, with_section: section }
   let(:championship) { create :championship }

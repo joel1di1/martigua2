@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe VisitorsController, :type => :controller do
+describe VisitorsController, type: :controller do
   describe "GET index" do
     context 'not signed in' do
       before { get :index }

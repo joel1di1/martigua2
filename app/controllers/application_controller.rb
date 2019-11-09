@@ -14,11 +14,11 @@ class ApplicationController < ActionController::Base
   def catch_404
     p "404 : #{request.url}"
     respond_to do |format|
-      format.html { render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found }
+      format.html { render file: "#{Rails.root}/public/404", layout: false, status: :not_found }
       format.xml  { head :not_found }
     end
   rescue ActionController::UnknownFormat
-    render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found
+    render file: "#{Rails.root}/public/404", layout: false, status: :not_found
   end
 
   protected

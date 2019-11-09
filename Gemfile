@@ -31,7 +31,7 @@ gem 'pg', group: [:production, :development]
 gem 'phony'
 gem 'polyamorous'
 gem 'puma'
-gem 'rack-cors', :require => 'rack/cors'
+gem 'rack-cors', require: 'rack/cors'
 gem 'ransack'
 gem 'redis'
 gem 'rest-client'
@@ -53,9 +53,9 @@ group :development do
   gem 'overcommit'
   gem 'query_diet'
   gem 'rails_layout'
-  gem 'rb-fchange', :require => false
-  gem 'rb-fsevent', :require => false
-  gem 'rb-inotify', :require => false
+  gem 'rb-fchange', require: false
+  gem 'rb-fsevent', require: false
+  gem 'rb-inotify', require: false
   gem 'rubocop'
   gem 'rubocop-rspec'
   gem 'spring'

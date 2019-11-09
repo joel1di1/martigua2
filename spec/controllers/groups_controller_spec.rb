@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe GroupsController, :type => :controller do
+describe GroupsController, type: :controller do
   let(:section) { create :section }
   let(:user) { create :user, with_section: section }
   let(:group) { create :group, section: section }

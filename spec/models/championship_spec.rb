@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Championship, :type => :model do
+RSpec.describe Championship, type: :model do
   let(:championship) { create :championship }
 
   it { should validate_presence_of :name }

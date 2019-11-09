@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Day, :type => :model do
+RSpec.describe Day, type: :model do
   it { should belong_to :calendar }
   it { should have_many :matches }
 

@@ -25,9 +25,9 @@ class SendSmsJob < ActiveJob::Base
 
     if user.phone_number
       france = Phony["33"]
-      phone_number = france.normalize(france.format(user.phone_number, :format => :local))
+      phone_number = france.normalize(france.format(user.phone_number, format: :local))
       if france.plausible?(phone_number)
-        phone_number = france.normalize(france.format(phone_number, :format => :international))
+        phone_number = france.normalize(france.format(phone_number, format: :international))
         phone_number = "+#{phone_number}"
         text = "#{sms_notification.title}\n#{sms_notification.description}"
 

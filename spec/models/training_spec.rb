@@ -6,7 +6,7 @@ RSpec::Matchers.define :db_object_eq do |x|
   match { |actual| actual == x }
 end
 
-RSpec.describe Training, :type => :model do
+RSpec.describe Training, type: :model do
   let(:training) { create :training, with_section: section, group_ids: [group.id] }
   let(:group)    { create :group, section: section }
   let(:section)  { create :section }

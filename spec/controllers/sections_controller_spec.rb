@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe SectionsController, :type => :controller do
+describe SectionsController, type: :controller do
   let(:club) { create :club }
   let(:user) { create :user }
   let(:section) { create :section, club: club }

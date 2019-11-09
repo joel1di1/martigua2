@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Group, :type => :model do
+RSpec.describe Group, type: :model do
   let(:user) { create :user }
   let(:group) { create :group }
 

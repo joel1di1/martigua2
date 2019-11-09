@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe UsersController, :type => :controller do
+describe UsersController, type: :controller do
   let(:section) { create :section }
   let(:user) { create :user, with_section: section }
 

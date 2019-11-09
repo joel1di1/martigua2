@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Section, :type => :model do
+RSpec.describe Section, type: :model do
   let(:section) { create :section }
 
   it { should validate_presence_of :club }

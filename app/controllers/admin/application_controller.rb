@@ -12,7 +12,7 @@ module Admin
 
     def authenticate_admin
       unless AdminUser.find_by_email(current_user.email)
-        render :file => File.join(Rails.root, 'public/403.html'), :status => 403, :layout => false
+        render file: File.join(Rails.root, 'public/403.html'), status: 403, layout: false
       end
     end
 

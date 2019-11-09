@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe UserMailer, :type => :mailer do
+RSpec.describe UserMailer, type: :mailer do
   describe '#send_training_invitation' do
     let(:user) { create :user }
     let(:training_1) { create :training }

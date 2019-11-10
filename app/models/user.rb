@@ -145,6 +145,6 @@ class User < ActiveRecord::Base
   end
 
   def format_phone_number
-    self.phone_number = phone_number.gsub(' ', '').gsub(/(\d\d)/, '\1 ').chop if phone_number && phone_number.match('^[\s\d]*$')
+    self.phone_number = phone_number.gsub(' ', '').gsub(/(\d\d)/, '\1 ').chop if phone_number&.match('^[\s\d]*$')
   end
 end

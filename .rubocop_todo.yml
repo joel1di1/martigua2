@@ -225,15 +225,6 @@ Style/GuardClause:
     - 'app/models/match.rb'
     - 'app/models/user.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: ConvertCodeThatCanStartToReturnNil, Whitelist.
-# Whitelist: present?, blank?, presence, try, try!
-Style/SafeNavigation:
-  Exclude:
-    - 'app/models/user.rb'
-    - 'spec/factories/users.rb'
-
 # Offense count: 149
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.

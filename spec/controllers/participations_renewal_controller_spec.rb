@@ -24,7 +24,7 @@ describe ParticipationsRenewalController, type: :controller do
         player_from_previous_season,
         player_from_previous_season_2,
         coach_from_previous_season,
-        player_and_coach_from_previous_season,
+        player_and_coach_from_previous_season
       ]
     end
 

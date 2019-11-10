@@ -225,15 +225,6 @@ Style/GuardClause:
     - 'app/models/match.rb'
     - 'app/models/user.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInArrayLiteral:
-  Exclude:
-    - 'spec/controllers/participations_renewal_controller_spec.rb'
-    - 'spec/models/training_spec.rb'
-
 # Offense count: 26
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyleForMultiline.

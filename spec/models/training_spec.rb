@@ -70,7 +70,7 @@ RSpec.describe Training, type: :model do
         now + 6.days, # monday 25
         now + 7.days, # tuesday 26
         now + 12.days, # sunday 31
-        now + 2.weeks,
+        now + 2.weeks
       ]
     end
 

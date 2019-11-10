@@ -29,8 +29,7 @@ class TrainingsController < ApplicationController
     redirect_to presence_validation_section_training_path(current_section, @training) if current_user.is_coach_of?(current_section)
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     @training.assign_attributes(training_params)

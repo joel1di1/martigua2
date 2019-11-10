@@ -204,15 +204,6 @@ RSpec/VerifiedDoubles:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: compact, expanded
-Style/EmptyMethod:
-  Exclude:
-    - 'app/controllers/championships_controller.rb'
-    - 'app/controllers/trainings_controller.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Style/ExpandPathArguments:

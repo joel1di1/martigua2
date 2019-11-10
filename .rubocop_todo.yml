@@ -43,14 +43,6 @@ Naming/PredicateName:
     - 'app/models/section.rb'
     - 'app/models/user.rb'
 
-# Offense count: 10
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: snake_case, normalcase, non_integer
-Naming/VariableNumber:
-  Exclude:
-    - 'spec/features/groups/see_group_detail_spec.rb'
-    - 'spec/models/section_spec.rb'
-
 # Offense count: 2
 RSpec/AnyInstance:
   Exclude:

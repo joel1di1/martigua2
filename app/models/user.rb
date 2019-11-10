@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
   end
 
   def has_respond_for?(match)
-    match_availabilities.select { |ma| ma.match_id == match.id }.size > 0
+    match_availabilities.select { |ma| ma.match_id == match.id }.positive?
   end
 
   def is_admin_of?(club)
@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
 
   def next_weekend_matches
     next_matches = Match.of_next_weekend.includes(local_team: :sections, visitor_team: :sections)
-    next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select { |s| is_player_of?(s) }.size > 0 }
+    next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select { |s| is_player_of?(s) }.positive? }
   end
 
   def realised_task!(task_key, realised_at)
@@ -141,7 +141,7 @@ class User < ActiveRecord::Base
   def is_member_of?(section, role, season: nil)
     season ||= Season.current
     @membership_cache ||= {}
-    @membership_cache[{ section: section, role: role, season: season }] ||= participations.where(section: section, role: role, season: season).size > 0
+    @membership_cache[{ section: section, role: role, season: season }] ||= participations.where(section: section, role: role, season: season).positive?
   end
 
   def format_phone_number

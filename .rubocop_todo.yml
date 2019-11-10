@@ -225,23 +225,6 @@ Style/GuardClause:
     - 'app/models/match.rb'
     - 'app/models/user.rb'
 
-# Offense count: 24
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, MinSize.
-# SupportedStyles: percent, brackets
-Style/SymbolArray:
-  Exclude:
-    - 'Gemfile'
-    - 'app/controllers/calendars_controller.rb'
-    - 'app/controllers/championships_controller.rb'
-    - 'app/controllers/training_presences_controller.rb'
-    - 'app/controllers/users_controller.rb'
-    - 'config/initializers/filter_parameter_logging.rb'
-    - 'config/routes.rb'
-    - 'db/migrate/20140711204344_create_active_admin_comments.rb'
-    - 'db/migrate/20140720162906_create_delayed_jobs.rb'
-    - 'db/migrate/20171204231461_add_index_and_uniqueness_to_announcement_views.starburst.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyleForMultiline.

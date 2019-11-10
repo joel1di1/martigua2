@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TrainingPresencesController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:training_presences, :match_availabilities]
+  skip_before_action :verify_authenticity_token, only: %i[training_presences match_availabilities]
 
   def create
     current_user.present_for! Training.find(params[:training_id])

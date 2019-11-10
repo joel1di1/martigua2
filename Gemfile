@@ -27,7 +27,7 @@ gem 'kaminari'
 gem 'mechanize'
 gem 'newrelic_rpm'
 gem 'nokogiri'
-gem 'pg', group: [:production, :development]
+gem 'pg', group: %i[production development]
 gem 'phony'
 gem 'polyamorous'
 gem 'puma'

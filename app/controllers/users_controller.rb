@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :find_user_by_id, except: :index
-  skip_before_action :verify_authenticity_token, only: [:training_presences, :match_availabilities]
+  skip_before_action :verify_authenticity_token, only: %i[training_presences match_availabilities]
 
   def index
     if current_section

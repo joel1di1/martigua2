@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ChampionshipsController < ApplicationController
-  before_action :find_championship_by_id, except: [:index, :new, :create]
+  before_action :find_championship_by_id, except: %i[index new create]
 
   def index
     scope = current_section ? current_section.championships : Championship

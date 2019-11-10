@@ -353,7 +353,7 @@ describe User do
     context 'with availability set to false' do
       before { user.not_present_for!(training) }
 
-      context 'no validation by coach' do
+      context 'with no validation by coach' do
         it { expect(was_present).to be_falsy }
       end
 

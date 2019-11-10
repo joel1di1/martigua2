@@ -48,17 +48,12 @@ class ApplicationController < ActionController::Base
   end
 
   def current_section_from_params
-    section_id = get_section_id_from_params_id
-    section_id ||= get_section_id_from_params_section_id
+    section_id = section_id_from_params_id || params[:section_id]
     section_id ? Section.find(section_id) : nil
   end
 
-  def get_section_id_from_params_id
+  def section_id_from_params_id
     params[:id] if params[:controller] == 'sections' && params[:id]
-  end
-
-  def get_section_id_from_params_section_id
-    params[:section_id]
   end
 
   def prepare_training_presences(section, users)

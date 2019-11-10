@@ -31,10 +31,6 @@ Metrics/MethodLength:
 Metrics/ParameterLists:
   Max: 6
 
-# Offense count: 2
-Naming/AccessorMethodName:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
 
 # Offense count: 9
 # Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist, MethodDefinitionMacros.

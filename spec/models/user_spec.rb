@@ -23,6 +23,16 @@ describe User do
     its(:id) { should_not be_nil }
   end
 
+  describe '#short_name' do
+    it 'returns nickname or full name' do
+      user = create :user, nickname: nil
+      expect(user.short_name).to eq "#{user.first_name} #{user.last_name}"
+      nickname = Faker::Name.first_name
+      user.update!(nickname: nickname)
+      expect(user.short_name).to eq nickname
+    end
+  end
+
   describe '#has_only_one_section?' do
     subject { user.has_only_one_section? }
 

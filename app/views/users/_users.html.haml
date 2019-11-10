@@ -9,7 +9,7 @@
         - if current_section
           %th Roles
           %th Présences entrainements
-        - if current_user.is_coach_of?(current_section)
+        - if current_user.coach_of?(current_section)
           - if defined?(group) && group
             - unless group.system?
               %th

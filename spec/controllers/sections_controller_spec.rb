@@ -27,7 +27,7 @@ describe SectionsController, type: :controller do
     before { do_request }
 
     it { expect(response).to have_http_status(:created) }
-    it { expect(user).to be_is_coach_of(Section.where(club: club, name: section_attributes[:name])) }
+    it { expect(user).to be_coach_of(Section.where(club: club, name: section_attributes[:name])) }
   end
 
   describe 'GET show' do

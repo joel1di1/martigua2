@@ -2,14 +2,14 @@
   %table.table.table-hover.table-striped
     %thead
       %tr
-        - if current_user.is_coach_of?(current_section)
+        - if current_user.coach_of?(current_section)
           %th
         %th Date et lieu
         %th Match
         %th
-        - if current_user.is_player_of?(current_section)
+        - if current_user.player_of?(current_section)
           %th Ma dispo
-        - if current_user.is_coach_of?(current_section)
+        - if current_user.coach_of?(current_section)
           %th
     %tbody
       - locals = {}

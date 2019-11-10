@@ -96,7 +96,7 @@ RSpec.describe Section, type: :model do
 
         it 'add user as a section player' do
           user = invite_user
-          expect(user.is_player_of?(section)).to eq true
+          expect(user.player_of?(section)).to eq true
         end
       end
 

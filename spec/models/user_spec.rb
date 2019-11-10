@@ -52,8 +52,8 @@ describe User do
     end
   end
 
-  describe '#is_coach_of?' do
-    subject { user.is_coach_of?(section) }
+  describe '#coach_of?' do
+    subject { user.coach_of?(section) }
 
     context 'with a user not in the section' do
       it { should eq false }
@@ -80,8 +80,8 @@ describe User do
     end
   end
 
-  describe '#is_player_of?' do
-    subject { user.is_player_of?(section) }
+  describe '#player_of?' do
+    subject { user.player_of?(section) }
 
     let(:section) { create :section }
 
@@ -134,7 +134,7 @@ describe User do
       describe 'user availability' do
         before { set_presence }
 
-        it { expect(user).to be_is_present_for(training) }
+        it { expect(user).to be_present_for(training) }
       end
 
       describe 'double presence set' do
@@ -176,13 +176,13 @@ describe User do
     context 'without a true response' do
       let!(:training_presence) { create :training_presence, training: training, user: user, is_present: true }
 
-      it { expect(user).to be_is_present_for(training) }
+      it { expect(user).to be_present_for(training) }
     end
 
     context 'without a false response' do
       let!(:training_presence) { create :training_presence, training: training, user: user, is_present: false }
 
-      it { expect(user).not_to be_is_present_for(training) }
+      it { expect(user).not_to be_present_for(training) }
     end
   end
 
@@ -190,13 +190,13 @@ describe User do
     let(:club) { create :club }
 
     context 'with other club' do
-      it { expect(user).not_to be_is_admin_of(club) }
+      it { expect(user).not_to be_admin_of(club) }
     end
 
     context 'with club as admin' do
       before { club.add_admin!(user) }
 
-      it { expect(user).to be_is_admin_of(club) }
+      it { expect(user).to be_admin_of(club) }
     end
   end
 

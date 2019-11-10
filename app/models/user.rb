@@ -26,11 +26,11 @@ class User < ActiveRecord::Base
     sections.count == 1
   end
 
-  def is_coach_of?(section, season: nil)
+  def coach_of?(section, season: nil)
     is_member_of? section, Participation::COACH, season: season
   end
 
-  def is_player_of?(section, season: nil)
+  def player_of?(section, season: nil)
     is_member_of? section, Participation::PLAYER, season: season
   end
 
@@ -97,7 +97,7 @@ class User < ActiveRecord::Base
 
   def next_weekend_matches
     next_matches = Match.of_next_weekend.includes(local_team: :sections, visitor_team: :sections)
-    next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select { |s| is_player_of?(s) }.positive? }
+    next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select { |s| player_of?(s) }.positive? }
   end
 
   def realised_task!(task_key, realised_at)

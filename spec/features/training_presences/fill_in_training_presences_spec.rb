@@ -13,13 +13,13 @@ describe 'fill in training presences', :devise do
     signin player.email, player.password
 
     click_on 'Présent ?'
-    expect(player.reload).to be_is_present_for(training)
+    expect(player.reload).to be_present_for(training)
 
     click_on 'Non présent'
     expect(player.reload.present_for?(training)).to eq false
 
     click_on 'Présent'
-    expect(player.reload).to be_is_present_for(training)
+    expect(player.reload).to be_present_for(training)
 
     click_on 'Non présent'
     expect(player.reload.present_for?(training)).to eq false

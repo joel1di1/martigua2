@@ -1,6 +1,6 @@
 %h2
   = @championship.name
-  - if current_section && current_user.is_coach_of?(current_section)
+  - if current_section && current_user.coach_of?(current_section)
     .action
       = link_to edit_section_championship_path(current_section, @championship) do
         %span.glyphicon.glyphicon-pencil
@@ -37,6 +37,6 @@
         - else
           - @championship.teams.each do |team|
             %li.list-group-item= team.name
-        - if current_section && current_user.is_coach_of?(current_section)
+        - if current_section && current_user.coach_of?(current_section)
           %li.list-group-item
             = link_to 'Modifier les équipes de cette compétition', section_championship_enrolled_team_championships_path(current_section, @championship), class: 'btn'

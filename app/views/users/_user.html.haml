@@ -22,7 +22,7 @@
       - @last_trainings.each do |training|
         %span.glyphicon.glyphicon-stop{class: user.was_present?(training, @presences_by_user_and_training) ? 'green' : 'red'}
 
-  - if current_user.is_coach_of?(current_section)
+  - if current_user.coach_of?(current_section)
     %td.action
       = link_to edit_section_user_path(current_section, user, returns_to: request.env['PATH_INFO']) do
         %span.glyphicon.glyphicon-edit

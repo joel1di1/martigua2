@@ -17,7 +17,7 @@ class Section < ActiveRecord::Base
   validates_presence_of :club, :name
 
   def invite_user!(params, inviter)
-    raise "Inviter (#{inviter.email}) is not coach of #{self}" unless inviter.is_coach_of?(self)
+    raise "Inviter (#{inviter.email}) is not coach of #{self}" unless inviter.coach_of?(self)
 
     column_names = SectionUserInvitation.column_names
     column_syms = column_names.map(&:to_sym)

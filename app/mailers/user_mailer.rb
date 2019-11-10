@@ -22,7 +22,7 @@ class UserMailer < ActionMailer::Base
     @training = training
     @user = next_training_duties.first
 
-    subject = "Chasubles, c'est ton tour : (#{training.start_datetime.strftime("%-d/%-m")})"
+    subject = "Chasubles, c'est ton tour : (#{training.start_datetime.strftime('%-d/%-m')})"
     ccs = next_training_duties[1..-1].map(&:email) + ['joel1di1@gmail.com', 'guillaume.pech@gmail.com']
     mail to: @user.email, cc: ccs, subject: subject
   end

@@ -92,7 +92,7 @@ class User < ActiveRecord::Base
   end
 
   def short_name
-    nickname.blank? ? "#{first_name} #{last_name}" : "#{nickname}"
+    nickname.blank? || "#{first_name} #{last_name}"
   end
 
   def next_week_trainings(date: DateTime.now)

@@ -283,12 +283,6 @@ Style/RedundantCondition:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Style/RedundantInterpolation:
-  Exclude:
-    - 'app/models/user.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, AllowInnerSlashes.
 # SupportedStyles: slashes, percent_r, mixed
 Style/RegexpLiteral:

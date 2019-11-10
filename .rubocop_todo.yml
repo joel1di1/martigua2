@@ -204,13 +204,6 @@ RSpec/VerifiedDoubles:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/ExpandPathArguments:
-  Exclude:
-    - 'Rakefile'
-    - 'spec/rails_helper.rb'
-
 # Offense count: 1
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:

@@ -99,8 +99,8 @@ describe UsersController, type: :controller do
     before { post_training_presences }
 
     it 'updates training presences' do
-      expect(user.reload.is_present_for?(training_1)).to be_truthy
-      expect(user.reload.is_present_for?(training_2)).to be_falsy
+      expect(user.reload).to be_is_present_for(training_1)
+      expect(user.reload).not_to be_is_present_for(training_2)
     end
 
     it { expect(response).to redirect_to(root_path) }

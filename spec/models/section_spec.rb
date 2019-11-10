@@ -180,10 +180,10 @@ RSpec.describe Section, type: :model do
         remove_user!
       end
 
-      it { expect(section.users.include?(user)).to be_falsy }
-      it { expect(section.group_everybody.users.include?(user)).to be_falsy }
-      it { expect(section.group_every_players.users.include?(user)).to be_falsy }
-      it { expect(group.users.reload.include?(user)).to be_falsy }
+      it { expect(section.users).not_to include(user) }
+      it { expect(section.group_everybody.users).not_to include(user) }
+      it { expect(section.group_every_players.users).not_to include(user) }
+      it { expect(group.users.reload).not_to include(user) }
     end
 
     context 'with user in section for a specific season' do
@@ -195,10 +195,10 @@ RSpec.describe Section, type: :model do
         remove_user!
       end
 
-      it { expect(section.group_everybody.users.include?(user)).to be_falsy }
-      it { expect(section.group_every_players.users.include?(user)).to be_falsy }
-      it { expect(section.group_everybody(season: other_season).users.include?(user)).to be_truthy }
-      it { expect(section.group_every_players(season: other_season).users.include?(user)).to be_truthy }
+      it { expect(section.group_everybody.users).not_to include(user) }
+      it { expect(section.group_every_players.users).not_to include(user) }
+      it { expect(section.group_everybody(season: other_season).users).to include(user) }
+      it { expect(section.group_every_players(season: other_season).users).to include(user) }
     end
   end
 

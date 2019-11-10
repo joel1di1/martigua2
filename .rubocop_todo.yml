@@ -14,7 +14,7 @@ Metrics/AbcSize:
 # Configuration parameters: CountComments, ExcludedMethods.
 # ExcludedMethods: refine
 Metrics/BlockLength:
-  Max: 294
+  Max: 350
 
 # Offense count: 3
 # Configuration parameters: CountComments.
@@ -167,12 +167,6 @@ RSpec/VerifiedDoubles:
 # Offense count: 125
 Style/Documentation:
   Enabled: false
-
-# Offense count: 1
-# Configuration parameters: AllowedVariables.
-Style/GlobalVars:
-  Exclude:
-    - 'config/initializers/redis.rb'
 
 # Offense count: 412
 # Cop supports --auto-correct.

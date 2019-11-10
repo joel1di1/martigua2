@@ -160,17 +160,17 @@ describe User do
     end
   end
 
-  describe '#is_present_for?' do
+  describe '#present_for?' do
     let(:training) { create :training }
 
     context 'without any response' do
-      it { expect(user.is_present_for?(training)).to be_nil }
+      it { expect(user.present_for?(training)).to be_nil }
     end
 
     context 'without a nil response' do
       let!(:training_presence) { create :training_presence, training: training, user: user, is_present: nil }
 
-      it { expect(user.is_present_for?(training)).to be_nil }
+      it { expect(user.present_for?(training)).to be_nil }
     end
 
     context 'without a true response' do

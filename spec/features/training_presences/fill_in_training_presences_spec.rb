@@ -8,7 +8,7 @@ describe 'fill in training presences', :devise do
     group.add_user! player
     training = create :training, sections: [section], groups: [group]
 
-    expect(player.is_present_for?(training)).to be_nil
+    expect(player.present_for?(training)).to be_nil
 
     signin player.email, player.password
 
@@ -16,12 +16,12 @@ describe 'fill in training presences', :devise do
     expect(player.reload).to be_is_present_for(training)
 
     click_on 'Non présent'
-    expect(player.reload.is_present_for?(training)).to eq false
+    expect(player.reload.present_for?(training)).to eq false
 
     click_on 'Présent'
     expect(player.reload).to be_is_present_for(training)
 
     click_on 'Non présent'
-    expect(player.reload.is_present_for?(training)).to eq false
+    expect(player.reload.present_for?(training)).to eq false
   end
 end

@@ -4,5 +4,5 @@
 %ul
   = render @club.sections
 
-- if current_user.is_admin_of?(@club)
+- if current_user.admin_of?(@club)
   = link_to "Ajouter une section", new_club_section_path(club_id: @club.to_param), class: 'btn btn-primary'

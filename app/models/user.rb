@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def is_present_for?(training)
+  def present_for?(training)
     training_presences.where(training: training).first.try(:is_present)
   end
 
@@ -75,11 +75,7 @@ class User < ActiveRecord::Base
     match_availabilities.select { |ma| ma.match_id == match.id }.first.try(:available)
   end
 
-  def has_respond_for?(match)
-    match_availabilities.select { |ma| ma.match_id == match.id }.positive?
-  end
-
-  def is_admin_of?(club)
+  def admin_of?(club)
     club_admin_roles.where(club: club).exists?
   end
 

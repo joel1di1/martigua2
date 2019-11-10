@@ -58,7 +58,7 @@ class TrainingsController < ApplicationController
 
   def presence_validation
     @players = current_section.players.sort_by(&:full_name)
-    # .sort{ |a, b| a.is_present_for?(@training) <=> b.is_present_for?(@training) }
+    # .sort{ |a, b| a.present_for?(@training) <=> b.present_for?(@training) }
   end
 
   private

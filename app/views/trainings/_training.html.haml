@@ -26,10 +26,10 @@
     - if current_user.is_player_of?(current_section)
       %td
         - if training.users.include?(current_user)
-          - if current_user.is_present_for?(training).nil?
+          - if current_user.present_for?(training).nil?
             = link_to 'Présent ?', section_user_training_training_presences_path(current_section, current_user, training), method: :post, class: 'btn btn-sm btn-success text-nowrap'
             = link_to 'Non présent ?', section_user_training_training_presences_path(current_section, current_user, training), method: :delete, class: 'btn btn-sm btn-danger text-nowrap'
-          - elsif current_user.is_present_for?(training) == true
+          - elsif current_user.present_for?(training) == true
             %div.training_presence{class: 'bg-success text-nowrap'} Présent !
             = link_to 'Non présent', section_user_training_training_presences_path(current_section, current_user, training), method: :delete, class: 'change_presence not_present text-nowrap'
           - else

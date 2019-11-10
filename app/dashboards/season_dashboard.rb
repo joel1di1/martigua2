@@ -19,7 +19,7 @@ class SeasonDashboard < Administrate::BaseDashboard
     start_date: Field::DateTime,
     end_date: Field::DateTime,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

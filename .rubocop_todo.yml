@@ -225,27 +225,6 @@ Style/GuardClause:
     - 'app/models/match.rb'
     - 'app/models/user.rb'
 
-# Offense count: 26
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInHashLiteral:
-  Enabled: false
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/WhileUntilModifier:
-  Exclude:
-    - 'app/models/season.rb'
-    - 'app/models/training.rb'
-
-# Offense count: 4
-# Cop supports --auto-correct.
-Style/ZeroLengthPredicate:
-  Exclude:
-    - 'app/controllers/visitors_controller.rb'
-    - 'app/models/user.rb'
-
 # Offense count: 412
 # Cop supports --auto-correct.
 # Configuration parameters: AutoCorrect, AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.

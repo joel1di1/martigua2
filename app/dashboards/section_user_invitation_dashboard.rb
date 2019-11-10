@@ -19,7 +19,7 @@ class SectionUserInvitationDashboard < Administrate::BaseDashboard
     phone_number: Field::String,
     roles: Field::String,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

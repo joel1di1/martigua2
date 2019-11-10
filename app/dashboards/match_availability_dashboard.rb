@@ -15,7 +15,7 @@ class MatchAvailabilityDashboard < Administrate::BaseDashboard
     id: Field::Number,
     available: Field::Boolean,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

@@ -17,7 +17,7 @@ class DayDashboard < Administrate::BaseDashboard
     period_start_date: Field::DateTime,
     period_end_date: Field::DateTime,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

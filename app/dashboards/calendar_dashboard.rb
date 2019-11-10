@@ -15,7 +15,7 @@ class CalendarDashboard < Administrate::BaseDashboard
     name: Field::String,
     days: Field::HasMany,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

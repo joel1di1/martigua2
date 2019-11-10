@@ -15,7 +15,7 @@ class SmsNotificationDashboard < Administrate::BaseDashboard
     title: Field::String,
     description: Field::Text,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

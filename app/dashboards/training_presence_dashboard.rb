@@ -16,7 +16,7 @@ class TrainingPresenceDashboard < Administrate::BaseDashboard
     is_present: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    presence_validated: Field::Boolean,
+    presence_validated: Field::Boolean
   }.freeze
 
   # COLLECTION_ATTRIBUTES

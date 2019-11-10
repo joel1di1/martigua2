@@ -31,7 +31,7 @@ class MatchDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     shared_calendar_id: Field::String,
-    shared_calendar_url: Field::String,
+    shared_calendar_url: Field::String
   }.freeze
 
   # COLLECTION_ATTRIBUTES

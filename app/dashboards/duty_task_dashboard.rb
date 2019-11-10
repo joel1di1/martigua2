@@ -17,7 +17,7 @@ class DutyTaskDashboard < Administrate::BaseDashboard
     weight: Field::Number,
     realised_at: Field::DateTime,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

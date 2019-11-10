@@ -92,7 +92,7 @@ describe UsersController, type: :controller do
     let(:post_training_presences) do
       post :training_presences, params: {
         id: user.to_param, user_email: user.email, user_token: user.authentication_token,
-        present_ids: [training_1.id, training_2.id], checked_ids: [training_1.id],
+        present_ids: [training_1.id, training_2.id], checked_ids: [training_1.id]
       }
     end
 

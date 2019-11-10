@@ -21,7 +21,7 @@ class GroupDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     system: Field::Boolean,
-    role: Field::String,
+    role: Field::String
   }.freeze
 
   # COLLECTION_ATTRIBUTES

@@ -22,7 +22,7 @@ class TrainingDashboard < Administrate::BaseDashboard
     cancelled: Field::Boolean,
     cancel_reason: Field::Text,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

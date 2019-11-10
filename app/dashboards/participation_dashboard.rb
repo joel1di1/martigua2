@@ -16,7 +16,7 @@ class ParticipationDashboard < Administrate::BaseDashboard
     id: Field::Number,
     role: Field::String,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

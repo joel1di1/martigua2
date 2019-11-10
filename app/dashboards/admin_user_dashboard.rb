@@ -22,7 +22,7 @@ class AdminUserDashboard < Administrate::BaseDashboard
     current_sign_in_ip: Field::String,
     last_sign_in_ip: Field::String,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

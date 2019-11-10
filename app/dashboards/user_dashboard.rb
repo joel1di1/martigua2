@@ -41,7 +41,7 @@ class UserDashboard < Administrate::BaseDashboard
     invitation_sent_at: Field::DateTime,
     invitation_accepted_at: Field::DateTime,
     invitation_limit: Field::Number,
-    invitations_count: Field::Number,
+    invitations_count: Field::Number
   }.freeze
 
   # COLLECTION_ATTRIBUTES

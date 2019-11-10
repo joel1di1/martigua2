@@ -11,9 +11,7 @@ class Season < ActiveRecord::Base
   def self._current
     current = Season.order('end_date DESC').limit(1).first
     current ||= create_default_season
-    while current.end_date < Date.today
-      current = create_next_season(current)
-    end
+    current = create_next_season(current) while current.end_date < Date.today
     current
   end
 

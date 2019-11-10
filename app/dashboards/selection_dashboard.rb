@@ -15,7 +15,7 @@ class SelectionDashboard < Administrate::BaseDashboard
     team: Field::BelongsTo,
     id: Field::Number,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

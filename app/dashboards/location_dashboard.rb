@@ -14,7 +14,7 @@ class LocationDashboard < Administrate::BaseDashboard
     name: Field::String,
     address: Field::Text,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

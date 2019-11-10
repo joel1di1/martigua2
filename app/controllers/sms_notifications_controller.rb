@@ -11,7 +11,7 @@ class SmsNotificationsController < ApplicationController
     sms_notification.section = current_section
     sms_notification.save!
 
-    redirect_to new_section_sms_notification_path(current_section), notice: "SMS envoyé !!"
+    redirect_to new_section_sms_notification_path(current_section), notice: 'SMS envoyé !!'
   end
 
   private

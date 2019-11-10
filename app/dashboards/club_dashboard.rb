@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "administrate/base_dashboard"
+require 'administrate/base_dashboard'
 
 class ClubDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -12,7 +12,7 @@ class ClubDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     sections: Field::HasMany,
     club_admin_roles: Field::HasMany,
-    admins: Field::HasMany.with_options(class_name: "User"),
+    admins: Field::HasMany.with_options(class_name: 'User'),
     id: Field::Number,
     name: Field::String,
     created_at: Field::DateTime,

@@ -15,7 +15,7 @@ class Match < ActiveRecord::Base
   scope :join_day, -> { joins('LEFT OUTER JOIN days ON days.id = matches.day_id') }
   scope :date_ordered, -> { order('LEAST(days.period_end_date, start_datetime) ASC') unless Rails.env.test? }
 
-  scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period) }
+  scope :with_start_between, ->(start_period, end_period) { where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period) }
 
   after_save :update_shared_calendar
 
@@ -27,7 +27,7 @@ class Match < ActiveRecord::Base
     elsif prevision_period_start && prevision_period_end
       "(#{prevision_period_start.to_s(:short)} - #{prevision_period_end.to_s(:short)})"
     else
-      ""
+      ''
     end
   end
 

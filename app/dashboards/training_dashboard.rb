@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "administrate/base_dashboard"
+require 'administrate/base_dashboard'
 
 class TrainingDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -13,7 +13,7 @@ class TrainingDashboard < Administrate::BaseDashboard
     location: Field::BelongsTo,
     sections: Field::HasMany,
     groups: Field::HasMany,
-    invitations: Field::HasMany.with_options(class_name: "TrainingInvitation"),
+    invitations: Field::HasMany.with_options(class_name: 'TrainingInvitation'),
     training_presences: Field::HasMany,
     users: Field::HasMany,
     id: Field::Number,

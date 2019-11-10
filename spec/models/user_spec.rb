@@ -269,13 +269,13 @@ describe User do
       subject { create(:user, phone_number: phone_number).phone_number }
 
       context 'with phone number 0123456789' do
-        let(:phone_number) { "0123456789" }
+        let(:phone_number) { '0123456789' }
 
         it { is_expected.to eq '01 23 45 67 89' }
       end
 
       context 'with phone number \'01 23 45 67 89\'' do
-        let(:phone_number) { "01 23 45 67 89" }
+        let(:phone_number) { '01 23 45 67 89' }
 
         it { is_expected.to eq '01 23 45 67 89' }
       end

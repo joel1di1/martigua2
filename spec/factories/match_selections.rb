@@ -5,7 +5,7 @@
 FactoryBot.define do
   factory :match_selection do
     match { nil }
-    team { "" }
+    team { '' }
     user { nil }
   end
 end

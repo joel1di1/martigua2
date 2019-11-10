@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     resources :training_presences
     resources :users
 
-    root to: "users#index"
+    root to: 'users#index'
   end
   resources :days
 
@@ -104,5 +104,5 @@ Rails.application.routes.draw do
   get 'switch_user', to: 'switch_user#set_current_user'
   get 'switch_user/remember_user', to: 'switch_user#remember_user'
 
-  match "*path", to: "application#catch_404", via: :all
+  match '*path', to: 'application#catch_404', via: :all
 end

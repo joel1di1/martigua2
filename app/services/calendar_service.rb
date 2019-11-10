@@ -11,7 +11,7 @@ require 'date'
 class CalendarService
   OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'
   APPLICATION_NAME = 'Martigua2'
-  CREDENTIALS_PATH = File.join(Dir.home, '.credentials', "calendar-ruby-quickstart.yaml")
+  CREDENTIALS_PATH = File.join(Dir.home, '.credentials', 'calendar-ruby-quickstart.yaml')
   SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
   CLIENT_SECRETS_PATH = 'google_client_secret.json'
   GOOGLE_CALENDAR_ID = ENV['GOOGLE_CALENDAR_ID'] || '24l3f4bf1u4fut3gdjpb2pfq94@group.calendar.google.com'
@@ -91,8 +91,8 @@ class CalendarService
                                              order_by: 'startTime',
                                              time_min: Time.now.iso8601)
 
-    puts "Upcoming events:"
-    puts "No upcoming events found" if response.items.empty?
+    puts 'Upcoming events:'
+    puts 'No upcoming events found' if response.items.empty?
     response.items.each do |event|
       start = event.start.date || event.start.date_time
       puts "- #{event.summary} (#{start})"
@@ -116,8 +116,8 @@ class CalendarService
       url = authorizer.get_authorization_url(
         base_url: OOB_URI
       )
-      puts "Open the following URL in the browser and enter the " \
-           "resulting code after authorization"
+      puts 'Open the following URL in the browser and enter the ' \
+           'resulting code after authorization'
       puts url
       code = gets
       credentials = authorizer.get_and_store_credentials_from_code(

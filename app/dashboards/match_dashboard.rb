@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "administrate/base_dashboard"
+require 'administrate/base_dashboard'
 
 class MatchDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -13,8 +13,8 @@ class MatchDashboard < Administrate::BaseDashboard
     championship: Field::BelongsTo,
     location: Field::BelongsTo,
     day: Field::BelongsTo,
-    local_team: Field::BelongsTo.with_options(class_name: "Team"),
-    visitor_team: Field::BelongsTo.with_options(class_name: "Team"),
+    local_team: Field::BelongsTo.with_options(class_name: 'Team'),
+    visitor_team: Field::BelongsTo.with_options(class_name: 'Team'),
     selections: Field::HasMany,
     match_availabilities: Field::HasMany,
     id: Field::Number,

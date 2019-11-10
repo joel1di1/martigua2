@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 describe UsersController, type: :controller do
   let(:section) { create :section }
   let(:user) { create :user, with_section: section }
 
-  describe "GET index" do
+  describe 'GET index' do
     let(:request_params) { {} }
     let(:request) { get :index, params: request_params }
 
@@ -33,7 +33,7 @@ describe UsersController, type: :controller do
     end
   end
 
-  describe "GET edit" do
+  describe 'GET edit' do
     it 'assign @user' do
       sign_in user
       get :edit, params: { id: user.to_param, section_id: section.to_param }
@@ -44,7 +44,7 @@ describe UsersController, type: :controller do
     end
   end
 
-  describe "PATCH edit" do
+  describe 'PATCH edit' do
     let(:new_attributes) { attributes_for(:user).except(:password) }
 
     context 'within section' do

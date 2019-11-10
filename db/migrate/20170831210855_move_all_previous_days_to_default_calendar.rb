@@ -12,7 +12,7 @@ class Day < ActiveRecord::Base
 end
 
 class MoveAllPreviousDaysToDefaultCalendar < ActiveRecord::Migration[5.1]
-  DEFAULT_NAME = "*DEFAULT_CALENDAR_FOR_MIGRATION*"
+  DEFAULT_NAME = '*DEFAULT_CALENDAR_FOR_MIGRATION*'
 
   def up
     Season.all.each do |season|

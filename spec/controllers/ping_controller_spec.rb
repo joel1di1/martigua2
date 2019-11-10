@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 describe PingController do
-  describe "GET index" do
+  describe 'GET index' do
     subject { get :index }
 
     context 'not signed in' do

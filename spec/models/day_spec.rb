@@ -25,7 +25,7 @@ RSpec.describe Day, type: :model do
       end
 
       context 'and end_date set' do
-        let(:end_date) { Date.parse("2010-09-12") }
+        let(:end_date) { Date.parse('2010-09-12') }
 
         it { is_expected.to eq end_date }
       end
@@ -35,7 +35,7 @@ RSpec.describe Day, type: :model do
       let(:start_date) { nil }
 
       context 'and end_date not nil' do
-        let(:end_date) { Date.parse("2010-09-12") }
+        let(:end_date) { Date.parse('2010-09-12') }
 
         it { is_expected.to eq end_date }
       end
@@ -51,8 +51,8 @@ RSpec.describe Day, type: :model do
   describe 'update period_start_date should set defaut period_end_date' do
     subject { day.period_end_date }
 
-    let(:new_end_date) { Date.parse("2010-09-12") }
-    let(:old_end_date) { Date.parse("2003-03-06") }
+    let(:new_end_date) { Date.parse('2010-09-12') }
+    let(:old_end_date) { Date.parse('2003-03-06') }
     let(:day) { create :day, period_end_date: old_end_date }
 
     before { day.update(params) }

@@ -13,8 +13,8 @@ class Training < ActiveRecord::Base
 
   validates_presence_of :start_datetime
 
-  scope :of_section, ->(section) { joins(:sections).where("sections.id = ?", section.id) }
-  scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period) }
+  scope :of_section, ->(section) { joins(:sections).where('sections.id = ?', section.id) }
+  scope :with_start_between, ->(start_period, end_period) { where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period) }
 
   default_scope { order 'start_datetime, location_id' }
 
@@ -72,7 +72,7 @@ class Training < ActiveRecord::Base
     end
   end
 
-  def cancel!(reason: "Raison inconnue")
+  def cancel!(reason: 'Raison inconnue')
     self.cancelled = true
     self.cancel_reason = reason
     save!

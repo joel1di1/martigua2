@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    render body: "Access denied." if current_user != @user
+    render body: 'Access denied.' if current_user != @user
   end
 
   def edit

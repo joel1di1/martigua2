@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 describe SelectionsController, type: :controller do
   let(:section) { create :section }
@@ -13,11 +13,11 @@ describe SelectionsController, type: :controller do
 
   before { sign_in coach }
 
-  describe "GET index" do
+  describe 'GET index' do
     let(:request_params) { { section_id: section.to_param, day_id: day.id } }
     let(:request) { get :index, params: request_params }
 
-    describe "assigns" do
+    describe 'assigns' do
       before do
         expect(Team).to receive(:team_with_match_on).with(day, section).and_return(team_with_matches)
         expect(team_with_matches).to receive(:map).and_return([])
@@ -29,7 +29,7 @@ describe SelectionsController, type: :controller do
     end
   end
 
-  describe "DELETE destroy" do
+  describe 'DELETE destroy' do
     subject { delete :destroy, params: request_params }
 
     let(:match) { create :match, day: day }

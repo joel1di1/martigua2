@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe SendSmsJob, type: :job do
-  describe ".perform", skip: "SMS tests are skipped (need to pay for real tests)" do
+  describe '.perform', skip: 'SMS tests are skipped (need to pay for real tests)' do
     let(:sms_notification) { create :sms_notification }
     let(:user) { create :user, phone_number: '0656564343' }
 
     it 'sends SMS' do
       expected_text = sms_notification.title + "\n" + sms_notification.description
 
-      messages = double("Messages")
+      messages = double('Messages')
 
       expect_any_instance_of(Twilio::REST::Client).to receive(:messages).and_return(messages)
 

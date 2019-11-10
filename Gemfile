@@ -79,7 +79,7 @@ group :production do
   gem 'rails_12factor'
 end
 group :test do
-  gem "codeclimate-test-reporter", require: nil
+  gem 'codeclimate-test-reporter', require: nil
 
   gem 'capybara'
   gem 'capybara-select2'

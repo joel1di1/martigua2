@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "administrate/base_dashboard"
+require 'administrate/base_dashboard'
 
 class MatchSelectionDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES

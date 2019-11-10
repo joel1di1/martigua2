@@ -101,7 +101,7 @@ RSpec.describe Training, type: :model do
     let(:group_ids) { [group_1.id, group_2.id] }
     let(:training) { create :training, with_section: section, group_ids: group_ids }
 
-    it { expect(training.group_names).to eq "AA TEST, TEST" }
+    it { expect(training.group_names).to eq 'AA TEST, TEST' }
   end
 
   describe '#repeat_next_week!' do
@@ -123,7 +123,7 @@ RSpec.describe Training, type: :model do
   end
 
   describe 'cancel uncancel' do
-    let(:reason) { "For this reason " + Faker::Lorem.sentence }
+    let(:reason) { 'For this reason ' + Faker::Lorem.sentence }
 
     describe '#cancelled?' do
       subject { training.cancelled? }

@@ -24,7 +24,7 @@ class SendSmsJob < ActiveJob::Base
     @client = Twilio::REST::Client.new
 
     if user.phone_number
-      france = Phony["33"]
+      france = Phony['33']
       phone_number = france.normalize(france.format(user.phone_number, format: :local))
       if france.plausible?(phone_number)
         phone_number = france.normalize(france.format(phone_number, format: :international))

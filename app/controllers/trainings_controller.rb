@@ -13,7 +13,7 @@ class TrainingsController < ApplicationController
     @training.sections << current_section
     @training.groups = current_section.groups.where(id: params[:training][:group_ids])
     @training.save!
-    redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Entrainement créé"
+    redirect_to section_trainings_path(section_id: current_section.to_param), notice: 'Entrainement créé'
   end
 
   def new
@@ -22,7 +22,7 @@ class TrainingsController < ApplicationController
 
   def invitations
     @training.send_invitations!
-    redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Notifications envoyées"
+    redirect_to section_trainings_path(section_id: current_section.to_param), notice: 'Notifications envoyées'
   end
 
   def show
@@ -35,7 +35,7 @@ class TrainingsController < ApplicationController
     @training.assign_attributes(training_params)
     @training.groups = current_section.groups.where(id: params[:training][:group_ids])
     if @training.save
-      redirect_to section_training_path(section_id: current_section.to_param, id: @training.to_param), notice: "Entrainement modifié"
+      redirect_to section_training_path(section_id: current_section.to_param, id: @training.to_param), notice: 'Entrainement modifié'
     else
       render :edit
     end
@@ -43,7 +43,7 @@ class TrainingsController < ApplicationController
 
   def destroy
     @training.destroy
-    redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Entrainement supprimé"
+    redirect_to section_trainings_path(section_id: current_section.to_param), notice: 'Entrainement supprimé'
   end
 
   def cancellation

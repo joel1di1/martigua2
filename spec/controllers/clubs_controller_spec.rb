@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 describe ClubsController, type: :controller do
   let(:club) { create :club }
   let(:user) { create :user }
 
-  describe "GET show" do
+  describe 'GET show' do
     let(:do_request) { get :show, params: { id: club.to_param, user_email: user.email, user_token: user.authentication_token } }
 
     before { do_request }

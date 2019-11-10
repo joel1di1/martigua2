@@ -30,7 +30,7 @@ RSpec.describe Club, type: :model do
       end
 
       it { expect(user).to be_is_admin_of(club) }
-      it { expect { club.add_admin!(user) }.not_to change { club.admins.count } }
+      it { expect { club.add_admin!(user) }.not_to(change { club.admins.count }) }
     end
   end
 end

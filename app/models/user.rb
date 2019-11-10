@@ -141,7 +141,7 @@ class User < ActiveRecord::Base
   def is_member_of?(section, role, season: nil)
     season ||= Season.current
     @membership_cache ||= {}
-    @membership_cache[{ section: section, role: role, season: season }] ||= participations.where(section: section, role: role, season: season).positive?
+    @membership_cache[{ section: section, role: role, season: season }] ||= participations.where(section: section, role: role, season: season).count.positive?
   end
 
   def format_phone_number

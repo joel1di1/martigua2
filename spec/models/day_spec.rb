@@ -21,7 +21,7 @@ RSpec.describe Day, type: :model do
       context 'and end_date not set' do
         let(:end_date) { nil }
 
-        it { is_expected.to eq (start_date + 1) }
+        it { is_expected.to eq(start_date + 1) }
       end
 
       context 'and end_date set' do

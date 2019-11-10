@@ -21,9 +21,9 @@ FactoryBot.define do
     end
 
     after(:create) do |user, evaluator|
-      evaluator.with_section.add_player!(user) if evaluator.with_section
-      evaluator.with_section_as_coach.add_coach!(user) if evaluator.with_section_as_coach
-      evaluator.with_group.add_user!(user) if evaluator.with_group
+      evaluator.with_section&.add_player!(user)
+      evaluator.with_section_as_coach&.add_coach!(user)
+      evaluator.with_group&.add_user!(user)
     end
   end
 

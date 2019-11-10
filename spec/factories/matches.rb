@@ -12,8 +12,8 @@ FactoryBot.define do
     local_score { 1 }
     visitor_score { 1 }
     location { nil }
-    meeting_datetime { "2014-09-14 22:05:02" }
-    meeting_location { "MyString" }
+    meeting_datetime { '2014-09-14 22:05:02' }
+    meeting_location { 'MyString' }
     day
   end
 end

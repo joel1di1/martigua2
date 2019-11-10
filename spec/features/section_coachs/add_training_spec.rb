@@ -16,7 +16,7 @@ describe 'Add training', :devise do
     click_link 'Entrainements'
     click_link 'Ajouter un entrainement'
 
-    select(location.name, :from => 'training_location_id')
+    select(location.name, from: 'training_location_id')
 
     expect { click_button('Ajouter l\'entrainement') }.to change(Training, :count).by(1)
   end

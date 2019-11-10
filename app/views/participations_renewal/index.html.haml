@@ -17,15 +17,15 @@
           %tr
             %td= previous_member.full_name
             %td
-              - previous_member.is_coach_of?(current_section)
+              - previous_member.coach_of?(current_section)
               .checkbox
                 %label
-                  %input{ type: :checkbox, name: "players_ids[]", value: previous_member.id, checked: previous_member.is_player_of?(current_section, season: @previous_season) }
+                  %input{ type: :checkbox, name: "players_ids[]", value: previous_member.id, checked: previous_member.player_of?(current_section, season: @previous_season) }
 
             %td
               .checkbox
                 %label
-                  %input{ type: :checkbox, name: "coachs_ids[]", value: previous_member.id, checked: previous_member.is_coach_of?(current_section, season: @previous_season) }
+                  %input{ type: :checkbox, name: "coachs_ids[]", value: previous_member.id, checked: previous_member.coach_of?(current_section, season: @previous_season) }
   .text-center
     %button#submit_btn.btn.btn-primary{type: :submit}
       Renouveller tous les membres sélectionnés

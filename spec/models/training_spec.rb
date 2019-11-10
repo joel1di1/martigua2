@@ -6,7 +6,7 @@ RSpec::Matchers.define :db_object_eq do |x|
   match { |actual| actual == x }
 end
 
-RSpec.describe Training, :type => :model do
+RSpec.describe Training, type: :model do
   let(:training) { create :training, with_section: section, group_ids: [group.id] }
   let(:group)    { create :group, section: section }
   let(:section)  { create :section }
@@ -70,7 +70,7 @@ RSpec.describe Training, :type => :model do
         now + 6.days, # monday 25
         now + 7.days, # tuesday 26
         now + 12.days, # sunday 31
-        now + 2.weeks,
+        now + 2.weeks
       ]
     end
 
@@ -101,7 +101,7 @@ RSpec.describe Training, :type => :model do
     let(:group_ids) { [group_1.id, group_2.id] }
     let(:training) { create :training, with_section: section, group_ids: group_ids }
 
-    it { expect(training.group_names).to eq "AA TEST, TEST" }
+    it { expect(training.group_names).to eq 'AA TEST, TEST' }
   end
 
   describe '#repeat_next_week!' do
@@ -123,7 +123,7 @@ RSpec.describe Training, :type => :model do
   end
 
   describe 'cancel uncancel' do
-    let(:reason) { "For this reason " + Faker::Lorem.sentence }
+    let(:reason) { 'For this reason ' + Faker::Lorem.sentence }
 
     describe '#cancelled?' do
       subject { training.cancelled? }
@@ -137,6 +137,7 @@ RSpec.describe Training, :type => :model do
 
         it { is_expected.to be_truthy }
         it { expect(training.cancel_reason).to eq reason }
+
         context 'when uncancelled' do
           before { training.uncancel! }
 

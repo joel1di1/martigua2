@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
-describe UsersController, :type => :controller do
+describe UsersController, type: :controller do
   let(:section) { create :section }
   let(:user) { create :user, with_section: section }
 
-  describe "GET index" do
+  describe 'GET index' do
     let(:request_params) { {} }
     let(:request) { get :index, params: request_params }
 
@@ -33,7 +33,7 @@ describe UsersController, :type => :controller do
     end
   end
 
-  describe "GET edit" do
+  describe 'GET edit' do
     it 'assign @user' do
       sign_in user
       get :edit, params: { id: user.to_param, section_id: section.to_param }
@@ -44,7 +44,7 @@ describe UsersController, :type => :controller do
     end
   end
 
-  describe "PATCH edit" do
+  describe 'PATCH edit' do
     let(:new_attributes) { attributes_for(:user).except(:password) }
 
     context 'within section' do
@@ -92,16 +92,17 @@ describe UsersController, :type => :controller do
     let(:post_training_presences) do
       post :training_presences, params: {
         id: user.to_param, user_email: user.email, user_token: user.authentication_token,
-        present_ids: [training_1.id, training_2.id], checked_ids: [training_1.id],
+        present_ids: [training_1.id, training_2.id], checked_ids: [training_1.id]
       }
     end
 
     before { post_training_presences }
 
     it 'updates training presences' do
-      expect(user.reload.is_present_for?(training_1)).to be_truthy
-      expect(user.reload.is_present_for?(training_2)).to be_falsy
+      expect(user.reload).to be_present_for(training_1)
+      expect(user.reload).not_to be_present_for(training_2)
     end
+
     it { expect(response).to redirect_to(root_path) }
   end
 

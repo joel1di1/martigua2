@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
-describe ParticipationsRenewalController, :type => :controller do
+describe ParticipationsRenewalController, type: :controller do
   let(:section) { create :section }
   let(:coach) { create :user, with_section_as_coach: section }
 
@@ -24,7 +24,7 @@ describe ParticipationsRenewalController, :type => :controller do
         player_from_previous_season,
         player_from_previous_season_2,
         coach_from_previous_season,
-        player_and_coach_from_previous_season,
+        player_and_coach_from_previous_season
       ]
     end
 

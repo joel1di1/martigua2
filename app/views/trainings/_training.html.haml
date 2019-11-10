@@ -2,7 +2,7 @@
   %td.link_column
     = link_to section_training_path(training, section_id: current_section.to_param), class: :eye_link do
       %span.glyphicon.glyphicon-eye-open
-    - if current_user.is_coach_of?(current_section)
+    - if current_user.coach_of?(current_section)
       = link_to edit_section_training_path(training, section_id: current_section.to_param), class: :eye_link do
         %span.glyphicon.glyphicon-pencil
   %td
@@ -16,26 +16,26 @@
     %td.training-cancelled(colspan='2')
       ENTRAINEMENT ANNULÉ :
       = training.cancel_reason
-    - if current_user.is_coach_of?(current_section)
+    - if current_user.coach_of?(current_section)
       %td
         = button_to 'Ne plus annuler', uncancel_section_training_path(training, section_id: current_section), method: :delete, id: "training_invitations_#{training.id}", class: 'btn btn-danger btn-sm', form_class: 'd-inline-block'
   - else
     %td.hidden-xs
       - tooltip = "#{training.nb_presents} présents<br/>#{training.nb_not_presents} absents<br/>#{training.nb_presence_not_set} sans réponse"
       = render partial: 'matches/presences', locals: {tooltip: tooltip, link_url: section_training_path(training, section_id: current_section.to_param), nb_presents: training.nb_presents, nb_not_presents: training.nb_not_presents, nb_no_response: training.nb_presence_not_set}
-    - if current_user.is_player_of?(current_section)
+    - if current_user.player_of?(current_section)
       %td
         - if training.users.include?(current_user)
-          - if current_user.is_present_for?(training).nil?
+          - if current_user.present_for?(training).nil?
             = link_to 'Présent ?', section_user_training_training_presences_path(current_section, current_user, training), method: :post, class: 'btn btn-sm btn-success text-nowrap'
             = link_to 'Non présent ?', section_user_training_training_presences_path(current_section, current_user, training), method: :delete, class: 'btn btn-sm btn-danger text-nowrap'
-          - elsif current_user.is_present_for?(training) == true
+          - elsif current_user.present_for?(training) == true
             %div.training_presence{class: 'bg-success text-nowrap'} Présent !
             = link_to 'Non présent', section_user_training_training_presences_path(current_section, current_user, training), method: :delete, class: 'change_presence not_present text-nowrap'
           - else
             %div.training_presence{class: 'bg-danger text-nowrap'} Non présent !
             = link_to 'Présent', section_user_training_training_presences_path(current_section, current_user, training), method: :post, class: 'change_presence present text-nowrap'
-    - if current_user.is_coach_of?(current_section)
+    - if current_user.coach_of?(current_section)
       %td
         = button_to 'Relancer les indécits', invitations_section_training_path(training, section_id: current_section), id: "training_invitations_#{training.id}", class: 'btn btn-warning btn-sm', form_class: 'd-inline-block'
         %a{href: "#cancel-training-#{training.id}", 'data-toggle'=>"collapse"}

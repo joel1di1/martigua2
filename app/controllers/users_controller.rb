@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :find_user_by_id, except: :index
-  skip_before_action :verify_authenticity_token, only: [:training_presences, :match_availabilities]
+  skip_before_action :verify_authenticity_token, only: %i[training_presences match_availabilities]
 
   def index
     if current_section
@@ -15,9 +15,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    if current_user != @user
-      render body: "Access denied."
-    end
+    render body: 'Access denied.' if current_user != @user
   end
 
   def edit
@@ -50,8 +48,8 @@ class UsersController < ApplicationController
   end
 
   def match_availabilities
-    if @user != current_user && !current_user.is_coach_of?(current_section)
-      render(:file => File.join(Rails.root, 'public/403.html'), :status => 403, :layout => false)
+    if @user != current_user && !current_user.coach_of?(current_section)
+      render(file: File.join(Rails.root, 'public/403.html'), status: 403, layout: false)
       return
     end
 

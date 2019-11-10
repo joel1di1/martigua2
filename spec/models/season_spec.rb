@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Season, :type => :model do
+RSpec.describe Season, type: :model do
   let(:season) { create :season }
 
   it { should have_many :participations }
@@ -46,6 +46,6 @@ RSpec.describe Season, :type => :model do
   describe '#previous' do
     subject { Season.current.previous }
 
-    it { expect(subject.start_date).to eq (Season.current.start_date - 1.year) }
+    it { expect(subject.start_date).to eq(Season.current.start_date - 1.year) }
   end
 end

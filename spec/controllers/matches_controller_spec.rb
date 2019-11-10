@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
-describe MatchesController, :type => :controller do
+describe MatchesController, type: :controller do
   let(:section) { create :section }
   let(:user) { create :user, with_section: section }
   let(:championship) { create :championship }
@@ -26,7 +26,7 @@ describe MatchesController, :type => :controller do
 
     let(:do_request) { post :selection, params: params }
 
-    describe "response" do
+    describe 'response' do
       before { do_request }
 
       context 'with json' do

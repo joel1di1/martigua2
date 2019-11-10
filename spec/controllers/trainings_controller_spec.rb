@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
-describe TrainingsController, :type => :controller do
+describe TrainingsController, type: :controller do
   let(:request_params) { {} }
   let(:section) { create :section }
   let(:user) { create :user, with_section: section }
 
-  describe "GET index" do
+  describe 'GET index' do
     let(:request) { get :index, params: request_params }
 
     context 'within section' do
@@ -31,7 +31,7 @@ describe TrainingsController, :type => :controller do
     end
   end
 
-  describe "GET edit" do
+  describe 'GET edit' do
     let(:request) { get :edit, params: request_params }
 
     context 'with existing training' do
@@ -47,7 +47,7 @@ describe TrainingsController, :type => :controller do
     end
   end
 
-  describe "PATCH edit" do
+  describe 'PATCH edit' do
     context 'with existing training' do
       subject { patch :update, params: request_params }
 
@@ -60,7 +60,7 @@ describe TrainingsController, :type => :controller do
     end
   end
 
-  describe "POST create" do
+  describe 'POST create' do
     let(:new_training) { build :training }
 
     context 'signed as user' do
@@ -83,7 +83,7 @@ describe TrainingsController, :type => :controller do
     end
   end
 
-  describe "POST invitations" do
+  describe 'POST invitations' do
     subject { post :invitations, params: { section_id: section.to_param, id: training.to_param } }
 
     let(:section) { create :section }
@@ -95,8 +95,8 @@ describe TrainingsController, :type => :controller do
     it { expect(subject).to redirect_to(section_trainings_path(section_id: section.to_param)) }
   end
 
-  describe "POST cancellation" do
-    subject { post :cancellation, params: { section_id: section.to_param, id: training.to_param, cancellation: { reason: "TEST" } } }
+  describe 'POST cancellation' do
+    subject { post :cancellation, params: { section_id: section.to_param, id: training.to_param, cancellation: { reason: 'TEST' } } }
 
     let(:section) { create :section }
     let(:coach) { create :user, with_section_as_coach: section }
@@ -108,7 +108,7 @@ describe TrainingsController, :type => :controller do
     it { expect(subject && training.reload.cancelled?).to be_truthy }
   end
 
-  describe "DELETE cancellation" do
+  describe 'DELETE cancellation' do
     subject { delete :uncancel, params: { section_id: section.to_param, id: training.to_param } }
 
     let(:section) { create :section }

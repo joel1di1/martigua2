@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Section, :type => :model do
+RSpec.describe Section, type: :model do
   let(:section) { create :section }
 
   it { should validate_presence_of :club }
@@ -77,7 +77,7 @@ RSpec.describe Section, :type => :model do
   describe '#invite_user!' do
     let(:user_params) { attributes_for(:user) }
     let(:roles) { [Participation::PLAYER, Participation::COACH].sample }
-    let(:params) { user_params.merge({ roles: roles }) }
+    let(:params) { user_params.merge(roles: roles) }
 
     let(:invite_user) { section.invite_user!(params, coach) }
 
@@ -96,7 +96,7 @@ RSpec.describe Section, :type => :model do
 
         it 'add user as a section player' do
           user = invite_user
-          expect(user.is_player_of?(section)).to eq true
+          expect(user.player_of?(section)).to eq true
         end
       end
 
@@ -180,10 +180,10 @@ RSpec.describe Section, :type => :model do
         remove_user!
       end
 
-      it { expect(section.users.include?(user)).to be_falsy }
-      it { expect(section.group_everybody.users.include?(user)).to be_falsy }
-      it { expect(section.group_every_players.users.include?(user)).to be_falsy }
-      it { expect(group.users.reload.include?(user)).to be_falsy }
+      it { expect(section.users).not_to include(user) }
+      it { expect(section.group_everybody.users).not_to include(user) }
+      it { expect(section.group_every_players.users).not_to include(user) }
+      it { expect(group.users.reload).not_to include(user) }
     end
 
     context 'with user in section for a specific season' do
@@ -195,10 +195,10 @@ RSpec.describe Section, :type => :model do
         remove_user!
       end
 
-      it { expect(section.group_everybody.users.include?(user)).to be_falsy }
-      it { expect(section.group_every_players.users.include?(user)).to be_falsy }
-      it { expect(section.group_everybody(season: other_season).users.include?(user)).to be_truthy }
-      it { expect(section.group_every_players(season: other_season).users.include?(user)).to be_truthy }
+      it { expect(section.group_everybody.users).not_to include(user) }
+      it { expect(section.group_every_players.users).not_to include(user) }
+      it { expect(section.group_everybody(season: other_season).users).to include(user) }
+      it { expect(section.group_every_players(season: other_season).users).to include(user) }
     end
   end
 
@@ -258,27 +258,27 @@ RSpec.describe Section, :type => :model do
 
     context 'with duties taks accomplished' do
       it {
-        user_1, user_2, user_3, user_4, old_user = create_list :user, 5, with_section: section
-        user_1.realised_task!(task, 1.day.ago)
-        user_2.realised_task!(task, 2.days.ago)
-        user_3.realised_task!(task, 3.days.ago)
-        user_4.realised_task!(task, 4.days.ago)
-        user_4.realised_task!(task, 5.days.ago)
+        user1, user2, user3, user4, old_user = create_list :user, 5, with_section: section
+        user1.realised_task!(task, 1.day.ago)
+        user2.realised_task!(task, 2.days.ago)
+        user3.realised_task!(task, 3.days.ago)
+        user4.realised_task!(task, 4.days.ago)
+        user4.realised_task!(task, 5.days.ago)
 
         old_user.participations.update_all(season_id: create(:season, start_date: 3.years.ago).id)
 
-        expect(next_duties).to match_array([user_4, user_3, user_2])
+        expect(next_duties).to match_array([user4, user3, user2])
       }
     end
 
     context 'with one users who never did any' do
       it {
-        user_1, user_2, user_3, user_4 = create_list :user, 4, with_section: section
-        user_1.realised_task!(task, 1.day.ago)
-        user_2.realised_task!(task, 2.days.ago)
-        user_3.realised_task!(task, 3.days.ago)
+        user1, user2, user3, user4 = create_list :user, 4, with_section: section
+        user1.realised_task!(task, 1.day.ago)
+        user2.realised_task!(task, 2.days.ago)
+        user3.realised_task!(task, 3.days.ago)
 
-        expect(next_duties).to match_array([user_4, user_3, user_2])
+        expect(next_duties).to match_array([user4, user3, user2])
       }
     end
   end

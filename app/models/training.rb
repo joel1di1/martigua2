@@ -13,8 +13,8 @@ class Training < ActiveRecord::Base
 
   validates_presence_of :start_datetime
 
-  scope :of_section, ->(section) { joins(:sections).where("sections.id = ?", section.id) }
-  scope :with_start_between, ->(start_period, end_period) { where("start_datetime >= ? AND start_datetime <= ?", start_period, end_period) }
+  scope :of_section, ->(section) { joins(:sections).where('sections.id = ?', section.id) }
+  scope :with_start_between, ->(start_period, end_period) { where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period) }
 
   default_scope { order 'start_datetime, location_id' }
 
@@ -67,12 +67,10 @@ class Training < ActiveRecord::Base
   def repeat_until!(end_date)
     training = self
     end_date -= 1.week
-    while training.start_datetime < end_date
-      training = training.repeat_next_week!
-    end
+    training = training.repeat_next_week! while training.start_datetime < end_date
   end
 
-  def cancel!(reason: "Raison inconnue")
+  def cancel!(reason: 'Raison inconnue')
     self.cancelled = true
     self.cancel_reason = reason
     save!
@@ -86,9 +84,9 @@ class Training < ActiveRecord::Base
 
   def next_duties(limit)
     present_players.left_outer_joins(:duty_tasks)
-      .distinct.select('users.*, max(duty_tasks.created_at) as last_duty_date')
-      .group('users.id').order('last_duty_date DESC, authentication_token ASC')
-      .limit(limit)
+                   .distinct.select('users.*, max(duty_tasks.created_at) as last_duty_date')
+                   .group('users.id').order('last_duty_date DESC, authentication_token ASC')
+                   .limit(limit)
   end
 
   def self.send_presence_mail_for_next_week(date: DateTime.now)
@@ -98,15 +96,15 @@ class Training < ActiveRecord::Base
     end
   end
 
-  def self.send_tig_mail_for_next_training(day_range=1)
+  def self.send_tig_mail_for_next_training(day_range = 1)
     tomorrow = Date.tomorrow
     trainings =
       Training
-        .where(cancelled: [false, nil])
-        .where('start_datetime between ? and ?', tomorrow.to_datetime, (tomorrow + day_range.days).to_datetime)
-        .order(:start_datetime)
+      .where(cancelled: [false, nil])
+      .where('start_datetime between ? and ?', tomorrow.to_datetime, (tomorrow + day_range.days).to_datetime)
+      .order(:start_datetime)
 
-    trainings.each_with_index do |training, index|
+    trainings.each_with_index do |training, _index|
       next_duties = training.next_duties(DUTY_PER_TRAINING)
       UserMailer.delay.send_tig_mail_for_training(training, next_duties) if next_duties.present?
     end

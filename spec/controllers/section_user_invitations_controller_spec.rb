@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
-describe SectionUserInvitationsController, :type => :controller do
-  describe "POST create" do
+describe SectionUserInvitationsController, type: :controller do
+  describe 'POST create' do
     subject { post :create, params: request_params }
 
     let(:invited_user) { build :user }

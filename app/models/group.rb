@@ -17,9 +17,7 @@ class Group < ActiveRecord::Base
   end
 
   def remove_user!(user, force: false)
-    if system? && !force
-      raise 'You cannot remove user from system group'
-    end
+    raise 'You cannot remove user from system group' if system? && !force
 
     users.delete(user)
   end

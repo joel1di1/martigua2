@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "administrate/base_dashboard"
+require 'administrate/base_dashboard'
 
 class DayDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -17,7 +17,7 @@ class DayDashboard < Administrate::BaseDashboard
     period_start_date: Field::DateTime,
     period_end_date: Field::DateTime,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -26,34 +26,34 @@ class DayDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-  id
-  calendar
-  name
-  matches
+    id
+    calendar
+    name
+    matches
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  id
-  calendar
-  name
-  period_start_date
-  period_end_date
-  matches
-  created_at
-  updated_at
+    id
+    calendar
+    name
+    period_start_date
+    period_end_date
+    matches
+    created_at
+    updated_at
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  name
-  calendar
-  matches
-  period_start_date
-  period_end_date
+    name
+    calendar
+    matches
+    period_start_date
+    period_end_date
   ].freeze
 
   # COLLECTION_FILTERS

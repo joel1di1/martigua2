@@ -23,6 +23,16 @@ describe User do
     its(:id) { should_not be_nil }
   end
 
+  describe '#short_name' do
+    it 'returns nickname or full name' do
+      user = create :user, nickname: nil
+      expect(user.short_name).to eq "#{user.first_name} #{user.last_name}"
+      nickname = Faker::Name.first_name
+      user.update!(nickname: nickname)
+      expect(user.short_name).to eq nickname
+    end
+  end
+
   describe '#has_only_one_section?' do
     subject { user.has_only_one_section? }
 
@@ -52,8 +62,8 @@ describe User do
     end
   end
 
-  describe '#is_coach_of?' do
-    subject { user.is_coach_of?(section) }
+  describe '#coach_of?' do
+    subject { user.coach_of?(section) }
 
     context 'with a user not in the section' do
       it { should eq false }
@@ -80,8 +90,8 @@ describe User do
     end
   end
 
-  describe '#is_player_of?' do
-    subject { user.is_player_of?(section) }
+  describe '#player_of?' do
+    subject { user.player_of?(section) }
 
     let(:section) { create :section }
 
@@ -134,7 +144,7 @@ describe User do
       describe 'user availability' do
         before { set_presence }
 
-        it { expect(user.is_present_for?(training)).to be_truthy }
+        it { expect(user).to be_present_for(training) }
       end
 
       describe 'double presence set' do
@@ -160,29 +170,29 @@ describe User do
     end
   end
 
-  describe '#is_present_for?' do
+  describe '#present_for?' do
     let(:training) { create :training }
 
     context 'without any response' do
-      it { expect(user.is_present_for?(training)).to be_nil }
+      it { expect(user.present_for?(training)).to be_nil }
     end
 
     context 'without a nil response' do
       let!(:training_presence) { create :training_presence, training: training, user: user, is_present: nil }
 
-      it { expect(user.is_present_for?(training)).to be_nil }
+      it { expect(user.present_for?(training)).to be_nil }
     end
 
     context 'without a true response' do
       let!(:training_presence) { create :training_presence, training: training, user: user, is_present: true }
 
-      it { expect(user.is_present_for?(training)).to be_truthy }
+      it { expect(user).to be_present_for(training) }
     end
 
     context 'without a false response' do
       let!(:training_presence) { create :training_presence, training: training, user: user, is_present: false }
 
-      it { expect(user.is_present_for?(training)).to be_falsy }
+      it { expect(user).not_to be_present_for(training) }
     end
   end
 
@@ -190,13 +200,13 @@ describe User do
     let(:club) { create :club }
 
     context 'with other club' do
-      it { expect(user.is_admin_of?(club)).to be_falsy }
+      it { expect(user).not_to be_admin_of(club) }
     end
 
     context 'with club as admin' do
       before { club.add_admin!(user) }
 
-      it { expect(user.is_admin_of?(club)).to be_truthy }
+      it { expect(user).to be_admin_of(club) }
     end
   end
 
@@ -269,13 +279,13 @@ describe User do
       subject { create(:user, phone_number: phone_number).phone_number }
 
       context 'with phone number 0123456789' do
-        let(:phone_number) { "0123456789" }
+        let(:phone_number) { '0123456789' }
 
         it { is_expected.to eq '01 23 45 67 89' }
       end
 
       context 'with phone number \'01 23 45 67 89\'' do
-        let(:phone_number) { "01 23 45 67 89" }
+        let(:phone_number) { '01 23 45 67 89' }
 
         it { is_expected.to eq '01 23 45 67 89' }
       end
@@ -335,7 +345,7 @@ describe User do
     let(:task) { DutyTask::TASKS.keys.sample }
 
     it 'create a duty_task' do
-      expect { user.realised_task!(task, 1.day.ago) }.to change { user.duty_tasks.reload.count }
+      expect { user.realised_task!(task, 1.day.ago) }.to(change { user.duty_tasks.reload.count })
     end
   end
 
@@ -353,7 +363,7 @@ describe User do
     context 'with availability set to false' do
       before { user.not_present_for!(training) }
 
-      context 'no validation by coach' do
+      context 'with no validation by coach' do
         it { expect(was_present).to be_falsy }
       end
 
@@ -372,11 +382,11 @@ describe User do
 
     context 'with availability not set' do
       it 'create presence and presence matchs confirmation' do
-        expect(user.was_present?(training)).to be_falsy
+        expect(user).not_to be_was_present(training)
         expect { user.confirm_presence!(training) }.to change(user.training_presences, :count).by(1)
-        expect(user.was_present?(training)).to be_truthy
+        expect(user).to be_was_present(training)
         user.confirm_no_presence!(training)
-        expect(user.was_present?(training)).to be_falsy
+        expect(user).not_to be_was_present(training)
       end
     end
 
@@ -384,11 +394,11 @@ describe User do
       before { user.not_present_for!(training) }
 
       it 'presence matchs confirmation' do
-        expect(user.was_present?(training)).to be_falsy
+        expect(user).not_to be_was_present(training)
         user.confirm_presence!(training)
-        expect(user.was_present?(training)).to be_truthy
+        expect(user).to be_was_present(training)
         user.confirm_no_presence!(training)
-        expect(user.was_present?(training)).to be_falsy
+        expect(user).not_to be_was_present(training)
       end
     end
 
@@ -396,11 +406,11 @@ describe User do
       before { user.present_for!(training) }
 
       it 'presence matchs confirmation' do
-        expect(user.was_present?(training)).to be_truthy
+        expect(user).to be_was_present(training)
         user.confirm_no_presence!(training)
-        expect(user.was_present?(training)).to be_falsy
+        expect(user).not_to be_was_present(training)
         user.confirm_presence!(training)
-        expect(user.was_present?(training)).to be_truthy
+        expect(user).to be_was_present(training)
       end
     end
   end

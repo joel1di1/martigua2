@@ -19,9 +19,7 @@ class Team < ActiveRecord::Base
     teams.map do |team|
       match = nil
       day.matches.each do |m|
-        if m.teams.include? team
-          match = m
-        end
+        match = m if m.teams.include? team
       end
       [team, match]
     end

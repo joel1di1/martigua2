@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CalendarsController < ApplicationController
-  before_action :find_calendar_by_id, only: [:edit, :update]
+  before_action :find_calendar_by_id, only: %i[edit update]
 
   def index
     @calendars = Calendar.order(season_id: :DESC)

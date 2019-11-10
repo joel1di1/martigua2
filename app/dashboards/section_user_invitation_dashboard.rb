@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "administrate/base_dashboard"
+require 'administrate/base_dashboard'
 
 class SectionUserInvitationDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -19,7 +19,7 @@ class SectionUserInvitationDashboard < Administrate::BaseDashboard
     phone_number: Field::String,
     roles: Field::String,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -28,38 +28,38 @@ class SectionUserInvitationDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-  section
-  id
-  email
-  first_name
+    section
+    id
+    email
+    first_name
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  section
-  id
-  email
-  first_name
-  last_name
-  nickname
-  phone_number
-  roles
-  created_at
-  updated_at
+    section
+    id
+    email
+    first_name
+    last_name
+    nickname
+    phone_number
+    roles
+    created_at
+    updated_at
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  section
-  email
-  first_name
-  last_name
-  nickname
-  phone_number
-  roles
+    section
+    email
+    first_name
+    last_name
+    nickname
+    phone_number
+    roles
   ].freeze
 
   # COLLECTION_FILTERS

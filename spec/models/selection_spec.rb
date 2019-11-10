@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Selection, :type => :model do
+RSpec.describe Selection, type: :model do
   it { should belong_to :user }
   it { should belong_to :match }
   it { should belong_to :team }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "administrate/base_dashboard"
+require 'administrate/base_dashboard'
 
 class MatchDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -13,8 +13,8 @@ class MatchDashboard < Administrate::BaseDashboard
     championship: Field::BelongsTo,
     location: Field::BelongsTo,
     day: Field::BelongsTo,
-    local_team: Field::BelongsTo.with_options(class_name: "Team"),
-    visitor_team: Field::BelongsTo.with_options(class_name: "Team"),
+    local_team: Field::BelongsTo.with_options(class_name: 'Team'),
+    visitor_team: Field::BelongsTo.with_options(class_name: 'Team'),
     selections: Field::HasMany,
     match_availabilities: Field::HasMany,
     id: Field::Number,
@@ -31,7 +31,7 @@ class MatchDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     shared_calendar_id: Field::String,
-    shared_calendar_url: Field::String,
+    shared_calendar_url: Field::String
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -40,62 +40,62 @@ class MatchDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-  championship
-  location
-  day
-  local_team
+    championship
+    location
+    day
+    local_team
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  championship
-  location
-  day
-  local_team
-  visitor_team
-  selections
-  match_availabilities
-  id
-  local_team_id
-  visitor_team_id
-  start_datetime
-  end_datetime
-  prevision_period_start
-  prevision_period_end
-  local_score
-  visitor_score
-  meeting_datetime
-  meeting_location
-  created_at
-  updated_at
-  shared_calendar_id
-  shared_calendar_url
+    championship
+    location
+    day
+    local_team
+    visitor_team
+    selections
+    match_availabilities
+    id
+    local_team_id
+    visitor_team_id
+    start_datetime
+    end_datetime
+    prevision_period_start
+    prevision_period_end
+    local_score
+    visitor_score
+    meeting_datetime
+    meeting_location
+    created_at
+    updated_at
+    shared_calendar_id
+    shared_calendar_url
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  championship
-  location
-  day
-  local_team
-  visitor_team
-  selections
-  match_availabilities
-  local_team_id
-  visitor_team_id
-  start_datetime
-  end_datetime
-  prevision_period_start
-  prevision_period_end
-  local_score
-  visitor_score
-  meeting_datetime
-  meeting_location
-  shared_calendar_id
-  shared_calendar_url
+    championship
+    location
+    day
+    local_team
+    visitor_team
+    selections
+    match_availabilities
+    local_team_id
+    visitor_team_id
+    start_datetime
+    end_datetime
+    prevision_period_start
+    prevision_period_end
+    local_score
+    visitor_score
+    meeting_datetime
+    meeting_location
+    shared_calendar_id
+    shared_calendar_url
   ].freeze
 
   # COLLECTION_FILTERS

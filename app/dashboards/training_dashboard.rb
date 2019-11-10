@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "administrate/base_dashboard"
+require 'administrate/base_dashboard'
 
 class TrainingDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -13,7 +13,7 @@ class TrainingDashboard < Administrate::BaseDashboard
     location: Field::BelongsTo,
     sections: Field::HasMany,
     groups: Field::HasMany,
-    invitations: Field::HasMany.with_options(class_name: "TrainingInvitation"),
+    invitations: Field::HasMany.with_options(class_name: 'TrainingInvitation'),
     training_presences: Field::HasMany,
     users: Field::HasMany,
     id: Field::Number,
@@ -22,7 +22,7 @@ class TrainingDashboard < Administrate::BaseDashboard
     cancelled: Field::Boolean,
     cancel_reason: Field::Text,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -31,44 +31,44 @@ class TrainingDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-  location
-  sections
-  groups
-  invitations
+    location
+    sections
+    groups
+    invitations
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  location
-  sections
-  groups
-  invitations
-  training_presences
-  users
-  id
-  start_datetime
-  end_datetime
-  cancelled
-  cancel_reason
-  created_at
-  updated_at
+    location
+    sections
+    groups
+    invitations
+    training_presences
+    users
+    id
+    start_datetime
+    end_datetime
+    cancelled
+    cancel_reason
+    created_at
+    updated_at
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  location
-  sections
-  groups
-  invitations
-  training_presences
-  users
-  start_datetime
-  end_datetime
-  cancelled
-  cancel_reason
+    location
+    sections
+    groups
+    invitations
+    training_presences
+    users
+    start_datetime
+    end_datetime
+    cancelled
+    cancel_reason
   ].freeze
 
   # COLLECTION_FILTERS

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 describe CalendarsController, type: :controller do
   let(:section) { create :section }
@@ -8,7 +8,7 @@ describe CalendarsController, type: :controller do
 
   before { sign_in user }
 
-  describe "GET index" do
+  describe 'GET index' do
     let!(:calendar_1) { create :calendar }
     let!(:calendar_2) { create :calendar }
 
@@ -20,7 +20,7 @@ describe CalendarsController, type: :controller do
     it { expect(assigns(:calendars)).to match_array([calendar_1, calendar_2]) }
   end
 
-  describe "GET edit" do
+  describe 'GET edit' do
     let(:calendar) { create :calendar }
     let(:do_request) { get :edit, params: { section_id: section.to_param, id: calendar.id } }
 

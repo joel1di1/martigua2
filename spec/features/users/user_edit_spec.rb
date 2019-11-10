@@ -8,7 +8,7 @@ describe 'User edit', :devise do
   include Warden::Test::Helpers
   Warden.test_mode!
 
-  after(:each) do
+  after do
     Warden.test_reset!
   end
 
@@ -20,10 +20,10 @@ describe 'User edit', :devise do
     section = create :section
     user = create :user, with_section: section
     new_email = Faker::Internet.email
-    login_as(user, :scope => :user)
+    login_as(user, scope: :user)
     visit edit_user_registration_path(user)
-    fill_in 'Email', :with => new_email
-    fill_in 'Current password', :with => user.password
+    fill_in 'Email', with: new_email
+    fill_in 'Current password', with: user.password
     click_button 'Update'
     expect(page).to have_content 'You updated your account successfully.'
   end
@@ -37,7 +37,7 @@ describe 'User edit', :devise do
     me = create :user, with_section: section
     other_email = Faker::Internet.email
     other = FactoryBot.create(:user, email: other_email)
-    login_as(me, :scope => :user)
+    login_as(me, scope: :user)
     visit edit_user_registration_path(other)
     expect(page).to have_content 'Edit User'
     expect(page).to have_field('Email', with: me.email)

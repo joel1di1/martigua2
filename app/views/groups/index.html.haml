@@ -1,4 +1,4 @@
-- if current_section && current_user.is_coach_of?(current_section)
+- if current_section && current_user.coach_of?(current_section)
   .text-center
     = link_to 'Ajouter un groupe', new_section_group_path(current_section), class: 'btn btn-primary'
 

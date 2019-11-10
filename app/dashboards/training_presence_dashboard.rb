@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "administrate/base_dashboard"
+require 'administrate/base_dashboard'
 
 class TrainingPresenceDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -16,7 +16,7 @@ class TrainingPresenceDashboard < Administrate::BaseDashboard
     is_present: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    presence_validated: Field::Boolean,
+    presence_validated: Field::Boolean
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -25,32 +25,32 @@ class TrainingPresenceDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-  id
-  user
-  training
-  is_present
+    id
+    user
+    training
+    is_present
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-  id
-  user
-  training
-  is_present
-  created_at
-  updated_at
-  presence_validated
+    id
+    user
+    training
+    is_present
+    created_at
+    updated_at
+    presence_validated
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  user
-  training
-  is_present
-  presence_validated
+    user
+    training
+    is_present
+    presence_validated
   ].freeze
 
   # COLLECTION_FILTERS

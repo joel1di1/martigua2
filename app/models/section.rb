@@ -17,7 +17,7 @@ class Section < ActiveRecord::Base
   validates_presence_of :club, :name
 
   def invite_user!(params, inviter)
-    raise "Inviter (#{inviter.email}) is not coach of #{self}" unless inviter.is_coach_of?(self)
+    raise "Inviter (#{inviter.email}) is not coach of #{self}" unless inviter.coach_of?(self)
 
     column_names = SectionUserInvitation.column_names
     column_syms = column_names.map(&:to_sym)
@@ -26,7 +26,7 @@ class Section < ActiveRecord::Base
     invitation = SectionUserInvitation.create!(params_only_with_section)
 
     user = User.find_by_email(invitation.email)
-    user ||= User.invite!(params_only.delete_if { |k, v| k.to_s == 'roles' }, inviter)
+    user ||= User.invite!(params_only.delete_if { |k, _v| k.to_s == 'roles' }, inviter)
 
     add_user! user, params[:roles]
     user

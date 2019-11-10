@@ -13,7 +13,7 @@ class TrainingsController < ApplicationController
     @training.sections << current_section
     @training.groups = current_section.groups.where(id: params[:training][:group_ids])
     @training.save!
-    redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Entrainement créé"
+    redirect_to section_trainings_path(section_id: current_section.to_param), notice: 'Entrainement créé'
   end
 
   def new
@@ -22,23 +22,20 @@ class TrainingsController < ApplicationController
 
   def invitations
     @training.send_invitations!
-    redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Notifications envoyées"
+    redirect_to section_trainings_path(section_id: current_section.to_param), notice: 'Notifications envoyées'
   end
 
   def show
-    if current_user.is_coach_of?(current_section)
-      redirect_to presence_validation_section_training_path(current_section, @training)
-    end
+    redirect_to presence_validation_section_training_path(current_section, @training) if current_user.coach_of?(current_section)
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     @training.assign_attributes(training_params)
     @training.groups = current_section.groups.where(id: params[:training][:group_ids])
     if @training.save
-      redirect_to section_training_path(section_id: current_section.to_param, id: @training.to_param), notice: "Entrainement modifié"
+      redirect_to section_training_path(section_id: current_section.to_param, id: @training.to_param), notice: 'Entrainement modifié'
     else
       render :edit
     end
@@ -46,7 +43,7 @@ class TrainingsController < ApplicationController
 
   def destroy
     @training.destroy
-    redirect_to section_trainings_path(section_id: current_section.to_param), notice: "Entrainement supprimé"
+    redirect_to section_trainings_path(section_id: current_section.to_param), notice: 'Entrainement supprimé'
   end
 
   def cancellation
@@ -61,7 +58,7 @@ class TrainingsController < ApplicationController
 
   def presence_validation
     @players = current_section.players.sort_by(&:full_name)
-    # .sort{ |a, b| a.is_present_for?(@training) <=> b.is_present_for?(@training) }
+    # .sort{ |a, b| a.present_for?(@training) <=> b.present_for?(@training) }
   end
 
   private

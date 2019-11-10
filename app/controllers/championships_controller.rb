@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ChampionshipsController < ApplicationController
-  before_action :find_championship_by_id, except: [:index, :new, :create]
+  before_action :find_championship_by_id, except: %i[index new create]
 
   def index
     scope = current_section ? current_section.championships : Championship
@@ -16,9 +16,7 @@ class ChampionshipsController < ApplicationController
     @championship = Championship.new championship_params
     @championship.season = Season.current
     if @championship.save
-      if params[:default_team_id].present?
-        @championship.enroll_team! Team.find_by_id(params[:default_team_id])
-      end
+      @championship.enroll_team! Team.find_by_id(params[:default_team_id]) if params[:default_team_id].present?
 
       redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
                     fallback: section_championship_path(current_section, @championship),
@@ -29,11 +27,9 @@ class ChampionshipsController < ApplicationController
     end
   end
 
-  def show
-  end
+  def show; end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @championship.update(championship_params)

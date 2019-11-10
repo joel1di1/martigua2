@@ -22,7 +22,7 @@
           = link_to "Compétitions", section_championships_path(current_section)
         %li{class: active_if_current_path(section_duty_tasks_path(current_section))}
           = link_to "Tigs", section_duty_tasks_path(current_section)
-        - if current_user.is_coach_of?(current_section)
+        - if current_user.coach_of?(current_section)
           %li{class: active_if_current_path(new_section_sms_notification_path(current_section))}
             = link_to "Notification SMS", new_section_sms_notification_path(current_section)
     %ul.nav.navbar-nav.navbar-right.user

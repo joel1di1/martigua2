@@ -6,9 +6,9 @@
         %th Date et lieu
         %th.hidden-xs Groupes
         %th.hidden-xs Présences
-        - if current_user.is_player_of?(current_section)
+        - if current_user.player_of?(current_section)
           %th Ma dispo
-        - if current_user.is_coach_of?(current_section)
+        - if current_user.coach_of?(current_section)
           %th Actions
     %tbody
       = render trainings

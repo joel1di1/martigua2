@@ -7,18 +7,18 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_section, :origin_path_or
 
-  LOCAL_REFERRER_RE = /^(https:\/\/www.martigua.org)|(https?:\/\/localhost)/
+  LOCAL_REFERRER_RE = %r{^(https://www.martigua.org)|(https?://localhost)}.freeze
 
   include LogAllRequests
 
   def catch_404
     p "404 : #{request.url}"
     respond_to do |format|
-      format.html { render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found }
+      format.html { render file: "#{Rails.root}/public/404", layout: false, status: :not_found }
       format.xml  { head :not_found }
     end
   rescue ActionController::UnknownFormat
-    render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found
+    render file: "#{Rails.root}/public/404", layout: false, status: :not_found
   end
 
   protected
@@ -48,19 +48,12 @@ class ApplicationController < ActionController::Base
   end
 
   def current_section_from_params
-    section_id = get_section_id_from_params_id
-    section_id ||= get_section_id_from_params_section_id
+    section_id = section_id_from_params_id || params[:section_id]
     section_id ? Section.find(section_id) : nil
   end
 
-  def get_section_id_from_params_id
-    if params[:controller] == 'sections' && params[:id]
-      params[:id]
-    end
-  end
-
-  def get_section_id_from_params_section_id
-    params[:section_id] if params[:section_id]
+  def section_id_from_params_id
+    params[:id] if params[:controller] == 'sections' && params[:id]
   end
 
   def prepare_training_presences(section, users)
@@ -81,8 +74,6 @@ class ApplicationController < ActionController::Base
     user_email = params[:user_email].presence
     user       = user_email && User.find_by_email(user_email)
 
-    if user && Devise.secure_compare(user.authentication_token, params[:user_token])
-      sign_in user
-    end
+    sign_in user if user && Devise.secure_compare(user.authentication_token, params[:user_token])
   end
 end

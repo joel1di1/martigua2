@@ -26,11 +26,11 @@ class User < ActiveRecord::Base
     sections.count == 1
   end
 
-  def is_coach_of?(section, season: nil)
+  def coach_of?(section, season: nil)
     is_member_of? section, Participation::COACH, season: season
   end
 
-  def is_player_of?(section, season: nil)
+  def player_of?(section, season: nil)
     is_member_of? section, Participation::PLAYER, season: season
   end
 
@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def is_present_for?(training)
+  def present_for?(training)
     training_presences.where(training: training).first.try(:is_present)
   end
 
@@ -75,11 +75,7 @@ class User < ActiveRecord::Base
     match_availabilities.select { |ma| ma.match_id == match.id }.first.try(:available)
   end
 
-  def has_respond_for?(match)
-    match_availabilities.select { |ma| ma.match_id == match.id }.size > 0
-  end
-
-  def is_admin_of?(club)
+  def admin_of?(club)
     club_admin_roles.where(club: club).exists?
   end
 
@@ -92,7 +88,7 @@ class User < ActiveRecord::Base
   end
 
   def short_name
-    nickname.blank? ? "#{first_name} #{last_name}" : "#{nickname}"
+    nickname.presence || "#{first_name} #{last_name}"
   end
 
   def next_week_trainings(date: DateTime.now)
@@ -101,7 +97,7 @@ class User < ActiveRecord::Base
 
   def next_weekend_matches
     next_matches = Match.of_next_weekend.includes(local_team: :sections, visitor_team: :sections)
-    next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select { |s| is_player_of?(s) }.size > 0 }
+    next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select { |s| player_of?(s) }.positive? }
   end
 
   def realised_task!(task_key, realised_at)
@@ -141,12 +137,10 @@ class User < ActiveRecord::Base
   def is_member_of?(section, role, season: nil)
     season ||= Season.current
     @membership_cache ||= {}
-    @membership_cache[{ section: section, role: role, season: season }] ||= participations.where(section: section, role: role, season: season).size > 0
+    @membership_cache[{ section: section, role: role, season: season }] ||= participations.where(section: section, role: role, season: season).count.positive?
   end
 
   def format_phone_number
-    if phone_number && phone_number.match('^[\s\d]*$')
-      self.phone_number = phone_number.gsub(' ', '').gsub(/(\d\d)/, '\1 ').chop
-    end
+    self.phone_number = phone_number.gsub(' ', '').gsub(/(\d\d)/, '\1 ').chop if phone_number&.match('^[\s\d]*$')
   end
 end

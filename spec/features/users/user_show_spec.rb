@@ -8,7 +8,7 @@ describe 'User profile page', :devise do
   include Warden::Test::Helpers
   Warden.test_mode!
 
-  after(:each) do
+  after do
     Warden.test_reset!
   end
 
@@ -18,7 +18,7 @@ describe 'User profile page', :devise do
   #   Then I see my own email address
   it 'user sees own profile' do
     user = FactoryBot.create(:user)
-    login_as(user, :scope => :user)
+    login_as(user, scope: :user)
     visit user_path(user)
     expect(page).to have_content user.email
   end
@@ -31,7 +31,7 @@ describe 'User profile page', :devise do
     me = FactoryBot.create(:user)
     other_email = Faker::Internet.email
     other = FactoryBot.create(:user, email: other_email)
-    login_as(me, :scope => :user)
+    login_as(me, scope: :user)
     Capybara.current_session.driver.header 'Referer', root_path
     visit user_path(other)
     expect(page).to have_content 'Access denied.'

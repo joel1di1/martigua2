@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_section_id_from_params_section_id
-    params[:section_id] if params[:section_id]
+    params[:section_id]
   end
 
   def prepare_training_presences(section, users)

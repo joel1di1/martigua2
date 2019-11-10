@@ -200,16 +200,6 @@ RSpec/VerifiedDoubles:
   Exclude:
     - 'spec/jobs/send_sms_job_spec.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: braces, no_braces, context_dependent
-Style/BracesAroundHashParameters:
-  Exclude:
-    - 'spec/controllers/sections_controller_spec.rb'
-    - 'spec/controllers/sms_notifications_controller_spec.rb'
-    - 'spec/models/section_spec.rb'
-
 # Offense count: 125
 Style/Documentation:
   Enabled: false

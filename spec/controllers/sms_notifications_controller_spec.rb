@@ -19,7 +19,7 @@ describe SmsNotificationsController, type: :controller do
     let(:sms_notification_attributes) { attributes_for(:sms_notification, section: nil) }
 
     let(:auth_params) { { section_id: section.to_param, user_email: user.email, user_token: user.authentication_token, format: :json } }
-    let(:req_params) { auth_params.merge({ sms_notification: sms_notification_attributes }) }
+    let(:req_params) { auth_params.merge(sms_notification: sms_notification_attributes) }
 
     let(:do_request) { post :create, params: req_params }
 

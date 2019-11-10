@@ -20,7 +20,7 @@ describe SectionsController, type: :controller do
     let(:section_attributes) { attributes_for(:section, club: nil) }
 
     let(:auth_params) { { club_id: club.to_param, user_email: user.email, user_token: user.authentication_token, format: :json } }
-    let(:req_params) { auth_params.merge({ section: section_attributes }) }
+    let(:req_params) { auth_params.merge(section: section_attributes) }
 
     let(:do_request) { post :create, params: req_params }
 

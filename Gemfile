@@ -73,10 +73,7 @@ group :development, :test do
   gem 'stackprof'
 end
 group :production do
-  gem 'heroku-deflater'
-  gem 'oboe-heroku'
   gem 'postmark-rails'
-  gem 'rails_12factor'
 end
 group :test do
   gem 'codeclimate-test-reporter', require: nil

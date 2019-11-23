@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :duty_task do
-    name { :youth_training }
+    key { :youth_training }
     user
     realised_at { Time.current }
   end

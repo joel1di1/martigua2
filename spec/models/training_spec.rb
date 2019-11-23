@@ -146,14 +146,16 @@ RSpec.describe Training, type: :model do
         end
       end
     end
+  end
 
-    describe '.send_tig_mail_for_next_training' do
-      it 'is not tested'
-    end
+  describe '.send_tig_mail_for_next_training' do
+    it 'is not tested'
   end
 
   describe '#next_duties' do
-    let(:present_player) { create :user }
+    let(:present_player_1) { create :user }
+    let(:present_player_2) { create :user }
+    let(:present_player_3) { create :user }
     let(:not_present_player) { create :user }
     let(:no_response_player) { create :user }
     let(:section)  { create :section }
@@ -161,19 +163,33 @@ RSpec.describe Training, type: :model do
     let(:training) { create :training, with_section: section, group_ids: [group.id] }
 
     before do
-      group.add_user!(present_player)
+      group.add_user!(present_player_1)
+      group.add_user!(present_player_2)
+      group.add_user!(present_player_3)
       group.add_user!(not_present_player)
 
-      present_player.present_for!(training)
+      present_player_1.present_for!(training)
+      present_player_2.present_for!(training)
+      present_player_3.present_for!(training)
       not_present_player.not_present_for!(training)
+
+      create :duty_task, user: present_player_1, weight: 2, realised_at: 1.day.ago
+      create :duty_task, user: present_player_2, weight: 1, realised_at: 6.months.ago
+      create :duty_task, user: present_player_2, weight: 1, realised_at: 6.months.ago
+      create :duty_task, user: present_player_2, weight: 1, realised_at: 6.months.ago
+      create :duty_task, user: present_player_3, weight: 2, realised_at: 2.months.ago
     end
 
-    it 'select present players' do
+    it 'select present players order by weight then date of last duties' do
       next_duties = training.next_duties(10)
 
-      expect(next_duties).to include(present_player)
+      expect(next_duties).to include(present_player_1)
+      expect(next_duties).to include(present_player_2)
+      expect(next_duties).to include(present_player_3)
       expect(next_duties).not_to include(not_present_player)
       expect(next_duties).not_to include(no_response_player)
+
+      expect(next_duties).to match([present_player_3, present_player_1, present_player_2])
     end
   end
 end

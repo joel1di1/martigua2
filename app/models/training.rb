@@ -84,8 +84,9 @@ class Training < ActiveRecord::Base
 
   def next_duties(limit)
     present_players.left_outer_joins(:duty_tasks)
-                   .distinct.select('users.*, max(duty_tasks.created_at) as last_duty_date')
-                   .group('users.id').order('last_duty_date DESC, authentication_token ASC')
+                   .distinct.select('users.*, max(duty_tasks.realised_at) as last_duty_date, '\
+                    'sum(duty_tasks.weight) as sum_duty_tasks_weight')
+                   .group('users.id').order('sum_duty_tasks_weight, last_duty_date ASC, authentication_token ASC')
                    .limit(limit)
   end
 

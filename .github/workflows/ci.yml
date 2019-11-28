@@ -35,7 +35,7 @@ jobs:
         uses: actions/cache@preview
         with:
           path: vendor/bundle
-          key: ${{ runner.os }}-ruby-${{ hashFiles('**/Gemfile.lock') }}
+          key: ${{ runner.os }}-ruby-${{ hashFiles('Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-ruby-
 
@@ -71,7 +71,7 @@ jobs:
         uses: actions/cache@preview
         with:
           path: vendor/bundle
-          key: ${{ runner.os }}-ruby-${{ hashFiles('**/Gemfile.lock') }}
+          key: ${{ runner.os }}-ruby-${{ hashFiles('Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-ruby-
 
@@ -104,7 +104,7 @@ jobs:
         uses: actions/cache@preview
         with:
           path: vendor/bundle
-          key: ${{ runner.os }}-ruby-${{ hashFiles('**/Gemfile.lock') }}
+          key: ${{ runner.os }}-ruby-${{ hashFiles('Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-ruby-
 

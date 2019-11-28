@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   def update
     @user.update! user_params
     if params[:return_to]
-      redirect_to params[:return_to]
+      redirect_to URI.parse(params[:return_to]).path
     elsif current_section
       redirect_to section_user_path(@user, section_id: current_section.to_param)
     else

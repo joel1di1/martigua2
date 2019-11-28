@@ -4,7 +4,9 @@ AllCops:
     - 'bin/*'
 
 require:
+  - rubocop-performance
   - rubocop-rspec
+  - rubocop-rails
 
 inherit_from:
   - .rubocop_todo.yml

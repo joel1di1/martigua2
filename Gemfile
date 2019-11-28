@@ -56,10 +56,6 @@ group :development do
   gem 'rb-fchange', require: false
   gem 'rb-fsevent', require: false
   gem 'rb-inotify', require: false
-  gem 'rubocop', require: false
-  gem 'rubocop-rspec', require: false
-  gem 'rubocop-performance', require: false
-  gem 'rubocop-rails', require: false
   gem 'spring'
   gem 'spring-commands-rspec'
   gem 'web-console'
@@ -73,11 +69,13 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'pry-rescue'
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rspec', require: false
+  gem 'rubocop-rails', require: false
   gem 'stackprof'
 end
-group :production do
-  gem 'postmark-rails'
-end
+
 group :test do
   gem 'codeclimate-test-reporter', require: nil
 
@@ -94,4 +92,8 @@ group :test do
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', require: false
   gem 'timecop'
+end
+
+group :production do
+  gem 'postmark-rails'
 end

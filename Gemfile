@@ -56,15 +56,17 @@ group :development do
   gem 'rb-fchange', require: false
   gem 'rb-fsevent', require: false
   gem 'rb-inotify', require: false
-  gem 'rubocop'
-  gem 'rubocop-rspec'
+  gem 'rubocop', require: false
+  gem 'rubocop-rspec', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
   gem 'spring'
   gem 'spring-commands-rspec'
   gem 'web-console'
 end
 
 group :development, :test do
-  gem 'brakeman'
+  gem 'brakeman', require: false
   gem 'byebug'
   gem 'flamegraph'
   gem 'foreman'

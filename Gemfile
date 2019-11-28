@@ -64,6 +64,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'brakeman'
   gem 'byebug'
   gem 'flamegraph'
   gem 'foreman'

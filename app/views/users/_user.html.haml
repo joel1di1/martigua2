@@ -20,7 +20,7 @@
       = user.participations.to_a.select{ |participation| participation.section_id == current_section.id && participation.season_id == Season.current.id }.map(&:role).sort.reverse.join(", ")
     %td.presence-box.flex-nowrap
       - @last_trainings.each do |training|
-        %span.glyphicon.glyphicon-stop{class: user.was_present?(training, @presences_by_user_and_training) ? 'green' : 'red'}
+        %span.glyphicon.glyphicon-stop{title: training.name, class: user.was_present?(training, @presences_by_user_and_training) ? 'green' : 'red'}
 
   - if current_user.coach_of?(current_section)
     %td.action

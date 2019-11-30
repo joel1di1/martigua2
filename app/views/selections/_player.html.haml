@@ -18,7 +18,7 @@
                     %s.hidden-link.not-respond= team.name
     .col-md-5.presence-box.text-right.flex-nowrap
       - @last_trainings.each do |training|
-        %span.glyphicon.glyphicon-stop{class: player.was_present?(training, @presences_by_user_and_training) ? 'green' : 'red'}
+        %span.glyphicon.glyphicon-stop{title: training.name, class: player.was_present?(training, @presences_by_user_and_training) ? 'green' : 'red'}
     .col-md-4.text-right
       - teams_with_matches = teams_with_matches.reject{|t, m| m == selection.match && t == selection.team } if selection.present?
       - teams_with_matches.each do |team, match|

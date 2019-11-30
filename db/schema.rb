@@ -314,11 +314,6 @@ ActiveRecord::Schema.define(version: 2019_11_09_141804) do
     t.index ["club_id"], name: "index_teams_on_club_id"
   end
 
-  create_table "tests", force: :cascade do |t|
-    t.string "test"
-    t.string "youpi"
-  end
-
   create_table "training_invitations", id: :serial, force: :cascade do |t|
     t.integer "training_id", null: false
     t.datetime "created_at"

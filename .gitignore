@@ -70,3 +70,4 @@ pickle-email-*.html
 SSL/*
 /google_client_secret.json
 /.byebug_history
+/latest.dump

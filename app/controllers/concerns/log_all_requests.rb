@@ -14,12 +14,8 @@ module LogAllRequests
     raise
   end
 
-  def log_if_active(str)
-    puts str if log_active?
-  end
-
-  def log_active?
-    !Rails.env.test?
+  def log_if_active(message)
+    Rails.logger.info(message) unless Rails.env.test?
   end
 
   def request_string

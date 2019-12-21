@@ -310,7 +310,7 @@ GEM
     parser (2.6.5.0)
       ast (~> 2.4.0)
     pg (1.1.4)
-    phony (2.18.10)
+    phony (2.18.12)
     polyamorous (2.3.0)
       activerecord (>= 5.0)
     postmark (1.15.0)

@@ -91,7 +91,7 @@ class Training < ActiveRecord::Base
   end
 
   def name
-    "#{start_datetime.strftime("%d %b")} - #{location.name}"
+    "#{start_datetime.strftime('%d %b')} - #{location.name}"
   end
 
   def self.send_presence_mail_for_next_week(date: DateTime.now)

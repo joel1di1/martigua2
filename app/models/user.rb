@@ -97,7 +97,7 @@ class User < ActiveRecord::Base
 
   def next_weekend_matches
     next_matches = Match.of_next_weekend.includes(local_team: :sections, visitor_team: :sections)
-    next_matches.select { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select { |s| player_of?(s) }.size > 0 }
+    next_matches.reject { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select { |s| player_of?(s) }.empty? }
   end
 
   def realised_task!(task_key, realised_at)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_09_141804) do
+ActiveRecord::Schema.define(version: 2020_01_11_153438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -336,7 +336,7 @@ ActiveRecord::Schema.define(version: 2019_11_09_141804) do
     t.datetime "start_datetime", null: false
     t.datetime "end_datetime"
     t.integer "location_id"
-    t.boolean "cancelled"
+    t.boolean "cancelled", default: false
     t.text "cancel_reason"
     t.datetime "created_at"
     t.datetime "updated_at"

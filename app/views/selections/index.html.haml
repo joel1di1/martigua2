@@ -9,7 +9,9 @@
           .panel-heading
             %button.btn.btn-link.btn-block.text-left{'data-toggle' => "collapse", 'data-target' => '#available-players'}
               Joueurs Dispos
-              = "(#{@available_players.count})"
+              (
+              %span.players-count= @available_players.count
+              )
           %ul.list-group.collapse.in#available-players
             - @available_players.each do |player|
               = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
@@ -21,7 +23,9 @@
           .panel-heading
             %button.btn.btn-link.btn-block{'data-toggle' => "collapse", 'aria-expanded' => false, 'data-target' => '#no-response-players'}
               Joueurs sans réponses
-              = "(#{@no_response_players.count})"
+              (
+              %span.players-count= @no_response_players.count
+              )
           %ul.list-group.collapse.in#no-response-players
             - @no_response_players.each do |player|
               = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: false}
@@ -31,7 +35,9 @@
           .panel-heading
             %button.btn.btn-link.btn-block{'data-toggle' => "collapse", 'aria-expanded' => false, 'data-target' => '#non-available-players'}
               Joueurs non dispos
-              = "(#{@non_available_players.count})"
+              (
+              %span.players-count= @non_available_players.count
+              )
           %ul.list-group.collapse.in#non-available-players
             - @non_available_players.each do |player|
               = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: false}
@@ -44,7 +50,9 @@
             .panel-heading
               .text-center
                 %strong= team.name
-                = "(#{selections.count})"
+                (
+                %span.players-count= selections.count
+                )
               .text-center.white
                 = link_to section_match_path(current_section, match) do
                   %em= "#{match.local_team.name} - #{match.visitor_team.name}"

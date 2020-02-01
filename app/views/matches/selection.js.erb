@@ -1,8 +1,13 @@
 // remove old player row
-$("li[data-player_id='<%= @user.id %>']").remove()
+var oldLi = $("li[data-player_id='<%= @user.id %>']")
+var playerCount = oldLi.closest('.ui-droppable').find('span.players-count')
+playerCount.text(+playerCount.text() - 1)
+oldLi.remove();
 
 // append new player row into match
 target = $("#<%= @players_target %>")
+var playerCount = target.closest('.ui-droppable').find('span.players-count')
+playerCount.text(+playerCount.text() + 1)
 
 name = "<%= @user.short_name %>"
 to_insert = "<%= j render(partial: 'selections/player', locals: { player: @user, teams_with_matches: @teams_with_matches, selection: @selection, display_teams: false } ) %>"

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get '/ping', to: 'visitors#ping'
+
   namespace :admin do
     resources :admin_users
     resources :calendars

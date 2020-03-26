@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 ruby '2.6.5'
 
 gem 'coffee-rails'
-gem 'rails', '6.0.2.1'
+gem 'rails', '6.0.2.2'
 gem 'sass-rails'
 
 gem 'activerecord-session_store'
@@ -82,7 +82,7 @@ group :test do
   gem 'capybara-select2'
   gem 'factory_bot_rails'
   gem 'rspec-its'
-  gem 'rspec-rails', '4.0.0.beta4'
+  gem 'rspec-rails', '4.0.0.rc1'
 
   gem 'database_cleaner'
   gem 'faker'

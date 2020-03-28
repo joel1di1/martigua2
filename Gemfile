@@ -82,7 +82,7 @@ group :test do
   gem 'capybara-select2'
   gem 'factory_bot_rails'
   gem 'rspec-its'
-  gem 'rspec-rails', '4.0.0.rc1'
+  gem 'rspec-rails', '4.0.0'
 
   gem 'database_cleaner'
   gem 'faker'

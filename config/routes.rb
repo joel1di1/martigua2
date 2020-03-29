@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get '/ping', to: 'visitors#ping'
-
   namespace :admin do
     resources :admin_users
     resources :calendars
@@ -86,8 +84,6 @@ Rails.application.routes.draw do
 
   resources :teams, only: %i[index show]
 
-  resources :ping, only: :index, constraints: { format: :json }
-
   resources :clubs, only: %i[index show] do
     resources :sections, only: %i[index new create]
   end
@@ -105,6 +101,4 @@ Rails.application.routes.draw do
 
   get 'switch_user', to: 'switch_user#set_current_user'
   get 'switch_user/remember_user', to: 'switch_user#remember_user'
-
-  match '*path', to: 'application#catch_404', via: :all
 end

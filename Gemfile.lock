@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/joel1di1/rails_ping.git
+  revision: 9639df48b768af6e593568ecaf226adbf50a1973
+  specs:
+    rails_ping (0.1.0)
+      rails
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -575,6 +582,7 @@ DEPENDENCIES
   rails (= 6.0.2.2)
   rails-controller-testing
   rails_layout
+  rails_ping!
   ransack
   rb-fchange
   rb-fsevent
@@ -605,4 +613,4 @@ RUBY VERSION
    ruby 2.6.5p114
 
 BUNDLED WITH
-   2.0.2
+   2.1.4

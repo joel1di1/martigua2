@@ -11,9 +11,10 @@ describe ApplicationController, type: :controller do
     subject(:last_trainings) { controller.send(:prepare_training_presences, section, users).first }
 
     let!(:training) { create :training, sections: [section], start_datetime: 1.month.ago }
-    let!(:cancelled_training) { create :training, sections: [section], start_datetime: 1.month.ago, cancelled: true }
 
     it 'filters cancelled trainings' do
+      create :training, sections: [section], start_datetime: 1.month.ago, cancelled: true
+
       expect(last_trainings).to eq([training])
     end
   end

@@ -2,7 +2,6 @@
 
 class ApplicationController < ActionController::Base
 
-
   before_action :authenticate_user_from_token!, except: :catch_404
   before_action :authenticate_user!, except: :catch_404
   before_action :set_raven_context

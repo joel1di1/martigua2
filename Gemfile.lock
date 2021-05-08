@@ -245,7 +245,7 @@ GEM
     httpclient (2.8.3)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
-    inherited_resources (1.12.0)
+    inherited_resources (1.13.0)
       actionpack (>= 5.2, < 6.2)
       has_scope (~> 0.6)
       railties (>= 5.2, < 6.2)
@@ -309,7 +309,7 @@ GEM
       nokogiri (~> 1)
       rake
     mini_mime (1.1.0)
-    mini_portile2 (2.5.0)
+    mini_portile2 (2.5.1)
     minitest (5.14.4)
     momentjs-rails (2.20.1)
       railties (>= 3.1)

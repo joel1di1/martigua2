@@ -412,7 +412,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rdoc (6.2.1)
-    redis (4.1.4)
+    redis (4.2.5)
     regexp_parser (1.8.2)
     representable (3.1.1)
       declarative (< 0.1.0)

@@ -516,7 +516,7 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     stackprof (0.2.15)
-    switch_user (1.5.2)
+    switch_user (1.5.4)
     temple (0.8.2)
     thor (1.1.0)
     thread_safe (0.3.6)

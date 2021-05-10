@@ -168,7 +168,7 @@ GEM
     flamegraph (0.9.5)
     font_assets (0.1.14)
       rack
-    foreman (0.87.1)
+    foreman (0.87.2)
     formatador (0.2.5)
     gems (1.2.0)
     globalid (0.4.2)

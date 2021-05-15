@@ -37,6 +37,7 @@ gem 'ransack'
 gem 'redis'
 gem 'rest-client'
 gem 'sdoc', group: :doc
+gem 'sentry-delayed_job'
 gem 'sentry-rails'
 gem 'sentry-ruby'
 gem 'simple_form'

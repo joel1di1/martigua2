@@ -62,4 +62,13 @@ RSpec.describe Match, type: :model do
       it { is_expected.to include(player) }
     end
   end
+
+  describe '#date_ordered' do
+    before do
+      create :match
+    end
+
+    subject { Match.date_ordered }
+    it { is_expected.not_to be_empty }
+  end
 end

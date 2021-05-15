@@ -13,7 +13,7 @@ class Match < ActiveRecord::Base
   validates_presence_of :day
 
   scope :join_day, -> { joins('LEFT OUTER JOIN days ON days.id = matches.day_id') }
-  scope :date_ordered, -> { order('LEAST(days.period_end_date, start_datetime) ASC') unless Rails.env.test? }
+  scope :date_ordered, -> { order(Arel.sql('LEAST(days.period_end_date, start_datetime) ASC')) }
 
   scope :with_start_between, ->(start_period, end_period) { where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period) }
 

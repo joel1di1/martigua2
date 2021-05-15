@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
-Raven.configure do |config|
-  config.sanitize_fields = Rails.application.config.filter_parameters.map(&:to_s)
+Sentry.init do |config|
+  config.dsn = 'https://5ece076e22c84413bdaa2ee34bf6a9db@o204687.ingest.sentry.io/1321452'
+  config.breadcrumbs_logger = [:active_support_logger, :http_logger]
+
+  # To activate performance monitoring, set one of these options.
+  # We recommend adjusting the value in production:
+  config.traces_sample_rate = 0.5
+  # or
+  config.traces_sampler = lambda do |context|
+    true
+  end
 end

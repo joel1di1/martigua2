@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '2.7.3'
+ruby '3.0.1'
 
 gem 'coffee-rails'
-gem 'rails', '6.0.2.2'
+gem 'rails', '>= 6.1'
 gem 'sass-rails'
 
 gem 'activerecord-session_store'
 gem 'administrate'
-gem 'best_in_place'
+gem 'best_in_place', git: 'https://github.com/mmotherwell/best_in_place'
 gem 'bootstrap-sass'
 gem 'colorist'
 gem 'delayed_job_active_record'

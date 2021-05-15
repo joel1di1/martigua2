@@ -12,7 +12,7 @@ class ClubDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     sections: Field::HasMany,
     club_admin_roles: Field::HasMany,
-    admins: Field::HasMany.with_options(class_name: 'User'),
+    admins: Field::HasMany,
     id: Field::Number,
     name: Field::String,
     created_at: Field::DateTime,

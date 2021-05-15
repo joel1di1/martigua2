@@ -13,7 +13,7 @@ class TrainingDashboard < Administrate::BaseDashboard
     location: Field::BelongsTo,
     sections: Field::HasMany,
     groups: Field::HasMany,
-    invitations: Field::HasMany.with_options(class_name: 'TrainingInvitation'),
+    invitations: Field::HasMany,
     training_presences: Field::HasMany,
     users: Field::HasMany,
     id: Field::Number,

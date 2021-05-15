@@ -44,12 +44,6 @@ module Martigua2
       end
     end
 
-    sentry_dsn = ENV['SENTRY_DSN']
-    if sentry_dsn
-      Raven.configure do |config|
-        config.dsn = sentry_dsn
-      end
-    end
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 

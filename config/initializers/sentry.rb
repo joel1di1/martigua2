@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Sentry.init do |config|
-  config.dsn = 'https://5ece076e22c84413bdaa2ee34bf6a9db@o204687.ingest.sentry.io/1321452'
+  config.dsn = ENV['SENTRY_DSN']
   config.breadcrumbs_logger = [:active_support_logger, :http_logger]
 
   # To activate performance monitoring, set one of these options.

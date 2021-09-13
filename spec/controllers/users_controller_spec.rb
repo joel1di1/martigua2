@@ -52,7 +52,7 @@ describe UsersController, type: :controller do
 
       before do
         sign_in user
-        patch :update, params: { id: user.to_param, section_id: section.to_param, user: new_attributes }
+        patch :update, params: { id: user.to_param, section_id: section.to_param, user: new_attributes, player: 'player' }
         user.reload
       end
 
@@ -65,7 +65,7 @@ describe UsersController, type: :controller do
         expect(user.valid_password?(old_password)).to eq true
       end
 
-      it 'redirect_toes section user path' do
+      it 'redirect_to section user path' do
         expect(response).to redirect_to(section_user_path(user, section_id: section.to_param))
       end
     end

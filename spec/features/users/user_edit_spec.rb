@@ -37,13 +37,17 @@ describe 'User edit', :devise do
     user = create :user, with_section: section
     coach = create :user, with_section_as_coach: section
     login_as(coach, scope: :user)
-    visit edit_section_user_path(user)
-    fill_in 'Email', with: new_email
-    fill_in 'Current password', with: user.password
+    visit edit_section_user_url(section, user)
+    check 'Coach'
+    uncheck 'Player'
     click_button 'Update User'
+
+    expect(page).to have_content 'Prochains matchs'
+    user.reload
+    expect(user.coach_of?(section, season: nil)).to be_truthy
+    expect(user.player_of?(section, season: nil)).to be_falsy
     # expect(page).to have_content 'You updated your account successfully.'
   end
-
 
   # Scenario: User cannot edit another user's profile
   #   Given I am signed in

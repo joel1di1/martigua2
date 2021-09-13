@@ -1,8 +1,17 @@
-= simple_form_for @user do |f|
+- url_objects = [current_section, @user].compact
+
+= simple_form_for url_objects do |f|
   = hidden_field_tag :return_to, @return_to
   = f.input :email
   = f.input :first_name
   = f.input :last_name
   = f.input :nickname
   = f.input :phone_number
+  - if current_section.present?
+    .form-group.optional
+      = check_box_tag :player, 'player', @user.player_of?(current_section)
+      = label_tag(:player, 'Player')
+    .form-group.optional
+      = check_box_tag :coach, 'coach', @user.coach_of?(current_section)
+      = label_tag(:coach, 'Coach')
   = f.button :submit

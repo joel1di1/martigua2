@@ -44,7 +44,7 @@ class ChampionshipsController < ApplicationController
 
   def championship_params
     if params[:championship]
-      params.require(:championship).permit(:name, :calendar_id)
+      params.require(:championship).permit(:name, :calendar_id, team_ids: [])
     else
       {}
     end

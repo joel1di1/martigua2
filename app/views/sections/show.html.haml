@@ -20,3 +20,17 @@
     - else
       = render partial: 'trainings/trainings', object: @next_trainings
 
+- if current_user.coach_of?(current_section)
+  .panel.panel-default
+    .panel-heading
+      %h3.panel-title
+        Équipes
+        = link_to new_section_team_path(current_section), id: 'add-team', class: 'btn btn-xs btn-default' do
+          %span.glyphicon.glyphicon-plus
+    .panel-body
+      - if @teams.empty?
+        Aucune équipe enregistrée
+      - else
+        = render partial: 'teams/teams', object: @teams
+
+

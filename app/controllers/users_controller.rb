@@ -23,7 +23,19 @@ class UsersController < ApplicationController
   end
 
   def update
+    if current_section.present? && [params[:coach], params[:player]].compact.empty?
+      flash[:error] = 'Gardez un role ou utilisez le bouton supprimer'
+      redirect_with(fallback: section_users_path(current_section))
+      return
+    end
+
     @user.update! user_params
+
+    if current_section.present?
+      roles = [params[:coach], params[:player]].compact
+      current_section.update_roles!(@user, roles)
+    end
+
     if params[:return_to]
       redirect_to params[:return_to]
     elsif current_section

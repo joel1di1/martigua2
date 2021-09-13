@@ -282,4 +282,27 @@ RSpec.describe Section, type: :model do
       }
     end
   end
+
+  describe '#update_roles!' do
+    it { assert_new_roles(old_roles: [], new_roles: 'player') }
+    it { assert_new_roles(old_roles: 'player', new_roles: 'player') }
+    it { assert_new_roles(old_roles: 'player', new_roles: 'coach') }
+    it { assert_new_roles(old_roles: 'coach', new_roles: 'player') }
+    it { assert_new_roles(old_roles: [], new_roles: 'coach') }
+    it { assert_new_roles(old_roles: %w[player coach], new_roles: 'coach') }
+    it { assert_new_roles(old_roles: %w[player coach], new_roles: 'player') }
+    it { assert_new_roles(old_roles: [], new_roles: %w[player coach]) }
+  end
+
+  def assert_new_roles(old_roles:, new_roles:)
+    old_roles = [*old_roles]
+    new_roles = [*new_roles]
+    section = create :section
+    user = create :user
+    old_roles.each { |old_role| section.add_user!(user, old_role) }
+
+    section.update_roles!(user, new_roles)
+
+    expect(user.roles_for(section).sort).to eq(new_roles.sort)
+  end
 end

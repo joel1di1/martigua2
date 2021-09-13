@@ -92,6 +92,10 @@ class Section < ActiveRecord::Base
     groups.where(season: season).map { |group| group.remove_user! user, force: true }
   end
 
+  def remove_roles!(user, roles, season: Season.current)
+    participations.where(user: user, role: roles, season: season).delete_all
+  end
+
   def copy_from_previous_season
     current_season = Season.current
     previous_season = current_season.previous
@@ -114,9 +118,19 @@ class Section < ActiveRecord::Base
          .limit(3)
   end
 
-  protected
+  def update_roles!(user, roles = [])
+    existing_roles = user.roles_for(self)
+    remove_roles!(user, existing_roles - roles)
+    add_roles!(user, roles - existing_roles)
+  end
+
+  def add_roles!(user, roles, season: Season.current)
+    roles.each { |role| add_user!(user, role, season: season) }
+  end
 
   def add_user!(user, role, season: nil)
+    raise "unknown role #{role}" unless Participation::ALL_ROLES.include?(role)
+
     season ||= Season.current
     params = { role: role, user: user, section: self, season: season }
     participations << Participation.create!(params) unless participations.where(params).exists?
@@ -124,6 +138,8 @@ class Section < ActiveRecord::Base
     group_every_players(season: season).add_user!(user) if role == Participation::PLAYER
     self
   end
+
+  protected
 
   def _default_group(players_role, group_name, color, season: nil)
     season ||= Season.current

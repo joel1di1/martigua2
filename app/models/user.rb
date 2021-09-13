@@ -34,6 +34,10 @@ class User < ActiveRecord::Base
     is_member_of? section, Participation::PLAYER, season: season
   end
 
+  def roles_for(section, season: Season.current)
+    participations.where(section: section, season: season).map(&:role)
+  end
+
   def display_participations
     participations.map { |participation| display_participation participation }.join("\n")
   end

@@ -28,6 +28,23 @@ describe 'User edit', :devise do
     expect(page).to have_content 'You updated your account successfully.'
   end
 
+  # Scenario: Change member role
+  #   Given I am signed in as admin
+  #   When I change user roles
+  #   Then I see an user updated roles
+  it 'user changes roles' do
+    section = create :section
+    user = create :user, with_section: section
+    coach = create :user, with_section_as_coach: section
+    login_as(coach, scope: :user)
+    visit edit_section_user_path(user)
+    fill_in 'Email', with: new_email
+    fill_in 'Current password', with: user.password
+    click_button 'Update User'
+    # expect(page).to have_content 'You updated your account successfully.'
+  end
+
+
   # Scenario: User cannot edit another user's profile
   #   Given I am signed in
   #   When I try to edit another user's profile

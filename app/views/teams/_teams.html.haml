@@ -1,0 +1,9 @@
+.table-responsive
+  %table.table.table-hover.table-striped
+    %thead
+      %tr
+        %th
+        - if current_user.coach_of?(current_section)
+          %th Actions
+    %tbody
+      = render teams

@@ -1,8 +1,9 @@
-= simple_form_for(@team) do |f|
+= simple_form_for [current_section, @team] do |f|
   = f.error_notification
 
   .form-inputs
     = f.association :club
+    = f.association :sections, selected: current_section&.id
     = f.input :name
 
   .form-actions

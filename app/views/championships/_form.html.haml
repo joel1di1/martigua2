@@ -4,7 +4,9 @@
   = hidden_field_tag :default_team_id, params[:section_team_id]
   .form-inputs
     = f.input :name
+    = link_to "Calendriers (si le calendrier voulu n'apparaît pas dans la liste)", section_calendars_path(section: current_section)
     = f.association :calendar, collection: @championship.season.calendars
-  = link_to "Calendriers (si le calendrier voulu n'apparaît pas dans la liste)", section_calendars_path(section: current_section)
+    'Sélectionnez obligatoirement au moins une équipe du club
+    = f.association :teams, label_method: :full_name, input_html: { size: 10 }, collection: Team.includes(:club).sort_by(&:full_name)
   .form-actions
     = f.button :submit, class: 'btn btn-primary'

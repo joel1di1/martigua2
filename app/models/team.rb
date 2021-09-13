@@ -24,4 +24,8 @@ class Team < ActiveRecord::Base
       [team, match]
     end
   end
+
+  def full_name
+    "#{name} - \[#{club.name}\]"
+  end
 end

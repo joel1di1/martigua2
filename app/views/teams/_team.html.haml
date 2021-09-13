@@ -1,0 +1,10 @@
+%tr
+  %td
+    = link_to section_team_path(team, section_id: current_section.to_param) do
+      = team.name
+
+  - if current_user.coach_of?(current_section)
+    %td.action
+      = link_to section_team_path(current_section, team), :method => :delete, :data => { :confirm => "Supprimer l'équipe ?" } do
+        %span.glyphicon.glyphicon-trash
+

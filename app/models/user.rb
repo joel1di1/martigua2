@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   end
 
   def coach_of?(section, season: nil)
-    is_member_of? section, Participation::COACH, season: season
+    is_member_of?(section, Participation::COACH, season: season)
   end
 
   def player_of?(section, season: nil)

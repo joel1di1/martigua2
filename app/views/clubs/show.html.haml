@@ -1,8 +1,18 @@
 %h2= @club.name
 
-%h3 Sections
-%ul
-  = render @club.sections
+
+%h3= "#{@club.sections.count} sections"
+
+
+.table-responsive
+  %table.table.table-hover.table-striped
+    %thead
+      %tr
+        %th Section
+        - if current_user.admin_of?(@club)
+          %th
+    %tbody
+      = render @club.sections
 
 - if current_user.admin_of?(@club)
   = link_to "Ajouter une section", new_club_section_path(club_id: @club.to_param), class: 'btn btn-primary'

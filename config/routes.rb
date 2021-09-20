@@ -85,7 +85,7 @@ Rails.application.routes.draw do
   resources :teams, only: %i[index show]
 
   resources :clubs, only: %i[index show] do
-    resources :sections, only: %i[index new create]
+    resources :sections, only: %i[index new create destroy]
   end
 
   devise_for :users

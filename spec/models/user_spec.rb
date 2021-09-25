@@ -196,11 +196,15 @@ describe User do
     end
   end
 
-  describe '#is_club_admin?' do
+  describe '#admin_of?' do
     let(:club) { create :club }
 
     context 'with other club' do
       it { expect(user).not_to be_admin_of(club) }
+    end
+
+    context 'with club nil' do
+      it { expect(user).not_to be_admin_of(nil) }
     end
 
     context 'with club as admin' do

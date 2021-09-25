@@ -80,6 +80,7 @@ class User < ActiveRecord::Base
   end
 
   def admin_of?(club)
+    return if club.nil?
     club_admin_roles.where(club: club).exists?
   end
 

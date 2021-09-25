@@ -25,7 +25,7 @@ class SectionsController < ApplicationController
       @section.add_coach!(current_user)
       respond_to do |format|
         format.json { render json: @section, status: 201 }
-        format.html { redirect_to section_users_path(section_id: @section.to_param, notice: 'Section créée') }
+        format.html { redirect_to(section_users_path(section_id: @section.to_param), notice: "Section #{@section.name} créée") }
       end
     else
       respond_to do |format|

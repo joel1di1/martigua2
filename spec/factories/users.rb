@@ -17,6 +17,7 @@ FactoryBot.define do
     transient do
       with_section { nil }
       with_section_as_coach { nil }
+      with_club_as_admin { nil }
       with_group { nil }
     end
 
@@ -24,6 +25,7 @@ FactoryBot.define do
       evaluator.with_section&.add_player!(user)
       evaluator.with_section_as_coach&.add_coach!(user)
       evaluator.with_group&.add_user!(user)
+      evaluator.with_club_as_admin&.add_admin!(user)
     end
   end
 

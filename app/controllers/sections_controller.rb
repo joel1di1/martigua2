@@ -39,8 +39,8 @@ class SectionsController < ApplicationController
     raise 'forbidden' unless current_user.admin_of?(@section.club)
 
     @section.destroy!
-    redirect_with(fallback: clubs_path(@section.club),
-                  notice: 'Section supprimée')
+    redirect_with(fallback: club_path(@section.club),
+                  notice: "Section #{@section.name} supprimée")
   end
 
   private

@@ -6,7 +6,7 @@ Capybara.asset_host = 'http://localhost:3000'
 #   Capybara::Selenium::Driver.new(app, browser: :chrome)
 # end
 
-if ['false', 'FALSE', '0'].include? ENV['headless']
+if %w[false FALSE 0].include? ENV['headless']
   Capybara.register_driver :headless_chrome do |app|
     capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
       chromeOptions: {
@@ -15,8 +15,8 @@ if ['false', 'FALSE', '0'].include? ENV['headless']
     )
 
     Capybara::Selenium::Driver.new app,
-      browser: :chrome,
-      desired_capabilities: capabilities
+                                   browser: :chrome,
+                                   desired_capabilities: capabilities
   end
 
   Capybara.default_driver = :headless_chrome

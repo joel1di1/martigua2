@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class SectionsController < ApplicationController
+  before_action :set_section, only: %i[show destroy]
+
   def show
-    @section = Section.find(params[:id])
     @next_trainings = @section.next_trainings.includes(:groups, :location)
     @next_matches = @section.next_matches.includes(:local_team, :visitor_team, :day, :location)
     @teams = @section.teams
@@ -24,7 +25,7 @@ class SectionsController < ApplicationController
       @section.add_coach!(current_user)
       respond_to do |format|
         format.json { render json: @section, status: 201 }
-        format.html { redirect_to section_users_path(section_id: @section.to_param) }
+        format.html { redirect_to(section_users_path(section_id: @section.to_param), notice: "Section #{@section.name} créée") }
       end
     else
       respond_to do |format|
@@ -34,9 +35,21 @@ class SectionsController < ApplicationController
     end
   end
 
+  def destroy
+    raise 'forbidden' unless current_user.admin_of?(@section.club)
+
+    @section.destroy!
+    redirect_with(fallback: club_path(@section.club),
+                  notice: "Section #{@section.name} supprimée")
+  end
+
   private
 
   def section_params
     params.require(:section).permit(:name)
+  end
+
+  def set_section
+    @section = Section.find(params[:id])
   end
 end

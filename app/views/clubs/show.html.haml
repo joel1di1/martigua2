@@ -5,7 +5,7 @@
     %h3.panel-title
       #{@club.sections.count} sections
       - if current_user.admin_of?(@club)
-        = link_to new_club_section_path(club_id: @club.to_param), id: 'add-section', class: 'btn btn-xs btn-default' do
+        = link_to new_club_section_path(club_id: @club.to_param), id: 'add-section', class: 'btn btn-xs btn-default', title: 'Ajouter une section' do
           %span.glyphicon.glyphicon-plus
 
   .panel-body

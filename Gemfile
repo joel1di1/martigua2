@@ -31,6 +31,7 @@ gem 'pg', group: %i[production development]
 gem 'phony'
 gem 'polyamorous'
 gem 'puma'
+gem 'rack-attack'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rails_ping'
 gem 'ransack'
@@ -55,7 +56,6 @@ group :development do
   gem 'html2haml'
   gem 'overcommit'
   gem 'query_diet'
-  gem 'rack-attack'
   gem 'rails_layout'
   gem 'rb-fchange', require: false
   gem 'rb-fsevent', require: false

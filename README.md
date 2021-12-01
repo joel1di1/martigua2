@@ -39,7 +39,7 @@ Restore production database locally
 ```bash
 heroku pg:backups:capture
 heroku pg:backups:download
-pg_restore --verbose --clean --no-acl --no-owner -h localhost -U $USER -d martigua2_development latest.dump
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d martigua2_development latest.dump
 bin/rails db:environment:set RAILS_ENV=development
 bin/rails db:migrate
 ```

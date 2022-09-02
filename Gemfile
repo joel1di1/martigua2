@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '3.0.1'
+ruby '3.1.2'
 
 gem 'coffee-rails'
 gem 'rails', '>= 6.1'
@@ -25,6 +25,7 @@ gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
 gem 'kaminari'
 gem 'mechanize'
+gem 'net-smtp'
 gem 'newrelic_rpm'
 gem 'nokogiri'
 gem 'pg', group: %i[production development]

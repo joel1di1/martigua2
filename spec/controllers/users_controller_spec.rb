@@ -122,7 +122,7 @@ describe UsersController, type: :controller do
     end
 
     context 'from section group' do
-      let(:group) { create :group, section: section }
+      let(:group) { create :group, section: }
       let(:do_request) { delete :destroy, params: { section_id: section.to_param, group_id: group.to_param, id: user.to_param } }
 
       before do

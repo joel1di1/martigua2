@@ -21,10 +21,10 @@ describe MatchesController, type: :controller do
   describe 'POST selection' do
     let(:local_team) { create :team }
     let(:visitor_team) { create :team }
-    let(:match) { create :match, visitor_team: visitor_team, local_team: local_team }
-    let(:params) { { section_id: section, id: match, user_id: user.id, team_id: local_team.id, format: format } }
+    let(:match) { create :match, visitor_team:, local_team: }
+    let(:params) { { section_id: section, id: match, user_id: user.id, team_id: local_team.id, format: } }
 
-    let(:do_request) { post :selection, params: params }
+    let(:do_request) { post :selection, params: }
 
     describe 'response' do
       before { do_request }

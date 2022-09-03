@@ -52,15 +52,15 @@ class CalendarService
 
   def build_gcalendar_event(summary, description, starttime, endtime, location)
     Google::Apis::CalendarV3::Event.new(
-      summary: summary,
-      description: description,
+      summary:,
+      description:,
       start: Google::Apis::CalendarV3::EventDateTime.new(
         date_time: starttime.to_datetime.rfc3339
       ),
       end: Google::Apis::CalendarV3::EventDateTime.new(
         date_time: endtime.to_datetime.rfc3339
       ),
-      location: location,
+      location:,
       anyone_can_add_self: true
     )
   end
@@ -121,7 +121,7 @@ class CalendarService
       puts url
       code = gets
       credentials = authorizer.get_and_store_credentials_from_code(
-        user_id: user_id, code: code, base_url: OOB_URI
+        user_id:, code:, base_url: OOB_URI
       )
     end
     credentials

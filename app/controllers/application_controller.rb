@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_section, :origin_path_or
 
-  LOCAL_REFERRER_RE = %r{^(https://www.martigua.org)|(https?://localhost)}.freeze
+  LOCAL_REFERRER_RE = %r{^(https://www.martigua.org)|(https?://localhost)}
 
   include LogAllRequests
 

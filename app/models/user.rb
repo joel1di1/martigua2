@@ -27,15 +27,15 @@ class User < ActiveRecord::Base
   end
 
   def coach_of?(section, season: nil)
-    is_member_of?(section, Participation::COACH, season: season)
+    is_member_of?(section, Participation::COACH, season:)
   end
 
   def player_of?(section, season: nil)
-    is_member_of? section, Participation::PLAYER, season: season
+    is_member_of? section, Participation::PLAYER, season:
   end
 
   def roles_for(section, season: Season.current)
-    participations.where(section: section, season: season).map(&:role)
+    participations.where(section:, season:).map(&:role)
   end
 
   def display_participations
@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
     [*trainings].each do |training|
       presence = presences[training.id]
       if presence.nil?
-        training_presences << TrainingPresence.new(training: training, user: self, is_present: present)
+        training_presences << TrainingPresence.new(training:, user: self, is_present: present)
       else
         presence.update is_present: present
       end
@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
   end
 
   def present_for?(training)
-    training_presences.where(training: training).first.try(:is_present)
+    training_presences.where(training:).first.try(:is_present)
   end
 
   def is_available_for?(match)
@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
   def admin_of?(club)
     return if club.nil?
 
-    club_admin_roles.where(club: club).exists?
+    club_admin_roles.where(club:).exists?
   end
 
   def full_name
@@ -98,7 +98,7 @@ class User < ActiveRecord::Base
   end
 
   def next_week_trainings(date: DateTime.now)
-    Training.of_next_week(date: date).joins(:groups).where(groups: { id: group_ids }).distinct
+    Training.of_next_week(date:).joins(:groups).where(groups: { id: group_ids }).distinct
   end
 
   def next_weekend_matches
@@ -107,7 +107,7 @@ class User < ActiveRecord::Base
   end
 
   def realised_task!(task_key, realised_at)
-    duty_tasks << DutyTask.create!(key: task_key, realised_at: realised_at, user: self)
+    duty_tasks << DutyTask.create!(key: task_key, realised_at:, user: self)
   end
 
   def last_time_duty(task_key)
@@ -115,7 +115,7 @@ class User < ActiveRecord::Base
   end
 
   def was_present?(training, presences_by_user_and_training = nil)
-    training_presence = presences_by_user_and_training.present? ? presences_by_user_and_training[[id, training.id]] : training_presences.where(training: training).first
+    training_presence = presences_by_user_and_training.present? ? presences_by_user_and_training[[id, training.id]] : training_presences.where(training:).first
     return unless training_presence
 
     training_presence.presence_validated? || (training_presence.is_present? && training_presence.presence_validated.nil?)
@@ -130,7 +130,7 @@ class User < ActiveRecord::Base
   end
 
   def _confirm_presence!(training, presence)
-    training_presence = training_presences.find_or_create_by(training: training)
+    training_presence = training_presences.find_or_create_by(training:)
     training_presence.update!(presence_validated: presence)
   end
 
@@ -143,7 +143,7 @@ class User < ActiveRecord::Base
   def is_member_of?(section, role, season: nil)
     season ||= Season.current
     @membership_cache ||= {}
-    @membership_cache[{ section: section, role: role, season: season }] ||= participations.where(section: section, role: role, season: season).count.positive?
+    @membership_cache[{ section:, role:, season: }] ||= participations.where(section:, role:, season:).count.positive?
   end
 
   def format_phone_number

@@ -18,7 +18,7 @@ RSpec.describe SmsNotification, type: :model do
       section.players.each do |user|
         expect(SendSmsJob).to receive(:perform_later).with(kind_of(SmsNotification), user)
       end
-      create :sms_notification, section: section
+      create :sms_notification, section:
     end
   end
 end

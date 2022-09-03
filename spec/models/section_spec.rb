@@ -77,7 +77,7 @@ RSpec.describe Section, type: :model do
   describe '#invite_user!' do
     let(:user_params) { attributes_for(:user) }
     let(:roles) { [Participation::PLAYER, Participation::COACH].sample }
-    let(:params) { user_params.merge(roles: roles) }
+    let(:params) { user_params.merge(roles:) }
 
     let(:invite_user) { section.invite_user!(params, coach) }
 
@@ -170,7 +170,7 @@ RSpec.describe Section, type: :model do
 
   describe '.remove_member!' do
     let(:user) { create :user }
-    let(:group) { create :group, section: section }
+    let(:group) { create :group, section: }
     let(:remove_user!) { section.remove_member!(user) }
 
     context 'with user in section' do

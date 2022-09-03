@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe SmsNotificationsController, type: :controller do
   let(:section) { create :section }
-  let(:sms_notification) { create :sms_notification, section: section }
+  let(:sms_notification) { create :sms_notification, section: }
   let(:user) { create :user, with_section: section }
 
   describe 'GET new' do

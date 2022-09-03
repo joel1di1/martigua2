@@ -24,7 +24,7 @@ describe ChampionshipsController, type: :controller do
   describe 'POST create' do
     let(:championship_params) { { name: Faker::Company.name, calendar_id: calendar.id } }
     let(:params) { { section_id: section.to_param, championship: championship_params } }
-    let(:do_request) { post :create, params: params }
+    let(:do_request) { post :create, params: }
 
     before { sign_in user }
 
@@ -55,7 +55,7 @@ describe ChampionshipsController, type: :controller do
     let!(:championship) { create :championship }
     let(:new_championship_params) { { name: Faker::Company.name } }
     let(:params) { { section_id: section.to_param, id: championship.id, championship: new_championship_params } }
-    let(:do_request) { post :update, params: params }
+    let(:do_request) { post :update, params: }
 
     before { sign_in user }
 

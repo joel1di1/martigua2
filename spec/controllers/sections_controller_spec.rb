@@ -5,7 +5,7 @@ require 'rails_helper'
 describe SectionsController, type: :controller do
   let(:club) { create :club }
   let(:user) { create :user }
-  let(:section) { create :section, club: club }
+  let(:section) { create :section, club: }
 
   describe 'GET new' do
     let(:do_request) { get :new, params: { club_id: club.to_param, user_email: user.email, user_token: user.authentication_token } }
@@ -27,7 +27,7 @@ describe SectionsController, type: :controller do
     before { do_request }
 
     it { expect(response).to have_http_status(:created) }
-    it { expect(user).to be_coach_of(Section.where(club: club, name: section_attributes[:name])) }
+    it { expect(user).to be_coach_of(Section.where(club:, name: section_attributes[:name])) }
   end
 
   describe 'GET show' do

@@ -28,7 +28,7 @@ describe User do
       user = create :user, nickname: nil
       expect(user.short_name).to eq "#{user.first_name} #{user.last_name}"
       nickname = Faker::Name.first_name
-      user.update!(nickname: nickname)
+      user.update!(nickname:)
       expect(user.short_name).to eq nickname
     end
   end
@@ -41,22 +41,22 @@ describe User do
     end
 
     context 'user with two sections' do
-      let!(:participation_1) { create :participation, user: user }
-      let!(:participation_2) { create :participation, user: user }
+      let!(:participation_1) { create :participation, user: }
+      let!(:participation_2) { create :participation, user: }
 
       it { should eq false }
     end
 
     context 'user with one section' do
-      let!(:participation_1) { create :participation, user: user }
+      let!(:participation_1) { create :participation, user: }
 
       it { should eq true }
     end
 
     context 'user with two participations on one section' do
       let(:section) { create :section }
-      let!(:participation_1) { create :participation, user: user, section: section, role: Participation::PLAYER }
-      let!(:participation_2) { create :participation, user: user, section: section, role: Participation::COACH }
+      let!(:participation_1) { create :participation, user:, section:, role: Participation::PLAYER }
+      let!(:participation_2) { create :participation, user:, section:, role: Participation::COACH }
 
       it { should eq true }
     end
@@ -124,7 +124,7 @@ describe User do
     let(:display) { user.display_participations }
 
     context 'with one participation' do
-      let!(:participation) { create :participation, user: user }
+      let!(:participation) { create :participation, user: }
 
       it { expect(display).to include(participation.section.club.name) }
       it { expect(display).to include(participation.section.name) }
@@ -178,19 +178,19 @@ describe User do
     end
 
     context 'without a nil response' do
-      let!(:training_presence) { create :training_presence, training: training, user: user, is_present: nil }
+      let!(:training_presence) { create :training_presence, training:, user:, is_present: nil }
 
       it { expect(user.present_for?(training)).to be_nil }
     end
 
     context 'without a true response' do
-      let!(:training_presence) { create :training_presence, training: training, user: user, is_present: true }
+      let!(:training_presence) { create :training_presence, training:, user:, is_present: true }
 
       it { expect(user).to be_present_for(training) }
     end
 
     context 'without a false response' do
-      let!(:training_presence) { create :training_presence, training: training, user: user, is_present: false }
+      let!(:training_presence) { create :training_presence, training:, user:, is_present: false }
 
       it { expect(user).not_to be_present_for(training) }
     end
@@ -218,7 +218,7 @@ describe User do
     let(:training_group_ids) { [group.id] }
     let(:training_date) { 1.week.from_now }
     let(:user_group_ids) { [group.id] }
-    let(:group) { create :group, section: section }
+    let(:group) { create :group, section: }
     let(:user) { create :user, with_section: section, group_ids: user_group_ids }
     let(:training) { create :training, with_section: section, start_datetime: training_date, group_ids: training_group_ids }
 
@@ -247,7 +247,7 @@ describe User do
     end
 
     context 'when user is in 2 training groups' do
-      let(:group_2) { create :group, section: section }
+      let(:group_2) { create :group, section: }
       let(:user_group_ids) { [group.id, group_2.id] }
       let(:training_group_ids) { [group.id, group_2.id] }
 
@@ -266,13 +266,13 @@ describe User do
     end
 
     context 'when player has responded no' do
-      before { MatchAvailability.create! user: user, match: match, available: false }
+      before { MatchAvailability.create! user:, match:, available: false }
 
       it { is_expected.to be_falsy }
     end
 
     context 'when player has responded yes' do
-      before { MatchAvailability.create! user: user, match: match, available: true }
+      before { MatchAvailability.create! user:, match:, available: true }
 
       it { is_expected.to be_truthy }
     end
@@ -280,7 +280,7 @@ describe User do
 
   describe '.create' do
     describe '#format_phone_number' do
-      subject { create(:user, phone_number: phone_number).phone_number }
+      subject { create(:user, phone_number:).phone_number }
 
       context 'with phone number 0123456789' do
         let(:phone_number) { '0123456789' }

@@ -39,9 +39,7 @@ end
 #
 # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.ip}"
 Rack::Attack.throttle('logins/ip', limit: 5, period: 20.seconds) do |req|
-  if req.path == '/users/sign_in' && req.post?
-    req.ip
-  end
+  req.ip if req.path == '/users/sign_in' && req.post?
 end
 
 # Throttle POST requests to /login by email param
@@ -56,7 +54,7 @@ Rack::Attack.throttle('logins/email', limit: 5, period: 20.seconds) do |req|
   if req.path == '/users/sign_in' && req.post?
     # Normalize the email, using the same logic as your authentication process, to
     # protect against rate limit bypasses. Return the normalized email if present, nil otherwise.
-    req.params['email'].to_s.downcase.gsub(/\s+/, "").presence
+    req.params['email'].to_s.downcase.gsub(/\s+/, '').presence
   end
 end
 
@@ -68,10 +66,10 @@ Rack::Attack.blocklist('fail2ban pentesters') do |req|
   Rack::Attack::Fail2Ban.filter("pentesters-#{req.ip}", maxretry: 3, findtime: 10.minutes, bantime: 15.minutes) do
     # The count for the IP is incremented if the return value is truthy
     CGI.unescape(req.query_string) =~ %r{/etc/passwd} ||
-    req.path.include?('/etc/passwd') ||
-    req.path.include?('wp-admin') ||
-    req.path.include?('wp-login') ||
-    req.path.end_with?('.php')
+      req.path.include?('/etc/passwd') ||
+      req.path.include?('wp-admin') ||
+      req.path.include?('wp-login') ||
+      req.path.end_with?('.php')
   end
 end
 

@@ -53,7 +53,7 @@ class UsersController < ApplicationController
 
     trainings = Training.where(id: present_ids)
     trainings.each do |training|
-      TrainingPresence.create! user: current_user, training: training, is_present: checked_ids.include?(training.id)
+      TrainingPresence.create! user: current_user, training:, is_present: checked_ids.include?(training.id)
     end
 
     redirect_with(fallback: root_path)
@@ -72,7 +72,7 @@ class UsersController < ApplicationController
 
     matches = Match.where(id: present_ids)
     matches.each do |match|
-      MatchAvailability.create! user: @user, match: match, available: checked_ids.include?(match.id)
+      MatchAvailability.create! user: @user, match:, available: checked_ids.include?(match.id)
     end
 
     redirect_with(fallback: root_path)

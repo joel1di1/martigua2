@@ -89,7 +89,7 @@ class Match < ActiveRecord::Base
   end
 
   def selections(team)
-    Selection.includes(:user).where(match: self, team: team)
+    Selection.includes(:user).where(match: self, team:)
   end
 
   def update_shared_calendar

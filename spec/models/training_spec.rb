@@ -8,7 +8,7 @@ end
 
 RSpec.describe Training, type: :model do
   let(:training) { create :training, with_section: section, group_ids: [group.id] }
-  let(:group)    { create :group, section: section }
+  let(:group)    { create :group, section: }
   let(:section)  { create :section }
   let!(:nb_users) { [1, 2, 3, 4].sample }
 
@@ -76,11 +76,11 @@ RSpec.describe Training, type: :model do
 
     let!(:trainings) { dates.map { |date| create :training, with_section: section, start_datetime: date } }
 
-    it { expect(Training.of_next_week(section: section, date: now)).to eq trainings[2..4] }
+    it { expect(Training.of_next_week(section:, date: now)).to eq trainings[2..4] }
   end
 
   describe 'users' do
-    let(:user) { create :user, with_section: section, group_ids: group_ids }
+    let(:user) { create :user, with_section: section, group_ids: }
 
     context 'with user not in training group' do
       let(:group_ids) { [] }
@@ -96,10 +96,10 @@ RSpec.describe Training, type: :model do
   end
 
   describe '#group_names' do
-    let(:group_1)    { create :group, section: section, name: 'TEST' }
-    let(:group_2)    { create :group, section: section, name: 'AA TEST' }
+    let(:group_1)    { create :group, section:, name: 'TEST' }
+    let(:group_2)    { create :group, section:, name: 'AA TEST' }
     let(:group_ids) { [group_1.id, group_2.id] }
-    let(:training) { create :training, with_section: section, group_ids: group_ids }
+    let(:training) { create :training, with_section: section, group_ids: }
 
     it { expect(training.group_names).to eq 'AA TEST, TEST' }
   end
@@ -133,7 +133,7 @@ RSpec.describe Training, type: :model do
       end
 
       context 'when cancelled' do
-        before { training.cancel!(reason: reason) }
+        before { training.cancel!(reason:) }
 
         it { is_expected.to be_truthy }
         it { expect(training.cancel_reason).to eq reason }
@@ -160,7 +160,7 @@ RSpec.describe Training, type: :model do
     let(:not_present_player) { create :user }
     let(:no_response_player) { create :user }
     let(:section)  { create :section }
-    let(:group)    { create :group, section: section }
+    let(:group)    { create :group, section: }
     let(:training) { create :training, with_section: section, group_ids: [group.id] }
 
     before do

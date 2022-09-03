@@ -10,7 +10,7 @@ FactoryBot.define do
 
     trait :section_coach do
       after(:create) do |user|
-        create :participation, :coach, user: user
+        create :participation, :coach, user:
       end
     end
 
@@ -31,7 +31,7 @@ FactoryBot.define do
 
   factory :one_section_player, parent: :user do
     after(:create) do |user|
-      create :participation, :player, user: user
+      create :participation, :player, user:
     end
   end
 

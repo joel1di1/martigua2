@@ -13,7 +13,7 @@ RSpec.describe Match, type: :model do
 
   describe '#date' do
     let(:day) { create :day }
-    let(:match) { create :match, start_datetime: start_datetime, day: day }
+    let(:match) { create :match, start_datetime:, day: }
 
     context 'with specified start_datetime' do
       let(:start_datetime) { 1.week.from_now }
@@ -64,11 +64,12 @@ RSpec.describe Match, type: :model do
   end
 
   describe '#date_ordered' do
+    subject { Match.date_ordered }
+
     before do
       create :match
     end
 
-    subject { Match.date_ordered }
     it { is_expected.not_to be_empty }
   end
 end

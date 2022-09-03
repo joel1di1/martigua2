@@ -18,6 +18,6 @@ class Participation < ActiveRecord::Base
   scope :coachs, -> { where(role: COACH) }
 
   def renew!
-    Participation.create!(user: user, section: section, role: role, season: Season.current)
+    Participation.create!(user:, section:, role:, season: Season.current)
   end
 end

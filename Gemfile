@@ -83,8 +83,6 @@ group :production do
   gem 'postmark-rails'
 end
 group :test do
-  gem 'codeclimate-test-reporter', require: nil
-
   gem 'capybara'
   gem 'capybara-select2'
   gem 'factory_bot_rails'

@@ -1,23 +1,16 @@
-AllCops:
-  Exclude:
-    - 'db/schema.rb'
-    - 'bin/*'
-
 require:
   - rubocop-rspec
+  - rubocop-performance
+  - rubocop-rails
 
 inherit_from:
   - .rubocop_todo.yml
 
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'db/schema.rb'
+    - 'bin/*'
 
-Style/HashEachMethods:
-  Enabled: true
-
-Style/HashTransformKeys:
-  Enabled: true
-
-Style/HashTransformValues:
-  Enabled: true
-
-Style/FrozenStringLiteralComment:
-  Enabled: true
+Style/Documentation:
+  Enabled: false

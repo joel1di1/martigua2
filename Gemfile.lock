@@ -409,6 +409,8 @@ GEM
     rails-html-sanitizer (1.4.3)
       loofah (~> 2.3)
     rails_layout (1.0.42)
+    rails_ping (0.1.5)
+      rails (>= 5.0)
     railties (7.0.4)
       actionpack (= 7.0.4)
       activesupport (= 7.0.4)
@@ -649,6 +651,7 @@ DEPENDENCIES
   rails (~> 7.0.4)
   rails-controller-testing
   rails_layout
+  rails_ping
   ransack
   rb-fchange
   rb-fsevent
@@ -683,4 +686,4 @@ RUBY VERSION
    ruby 3.1.2p20
 
 BUNDLED WITH
-   2.3.21
+   2.3.22

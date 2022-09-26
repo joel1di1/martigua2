@@ -9,6 +9,8 @@
 # Read the Guide for Upgrading Ruby on Rails for more info on each option.
 # https://guides.rubyonrails.org/upgrading_ruby_on_rails.html
 
+Rails.application.config.active_record.legacy_connection_handling = false
+
 # `button_to` view helper will render `<button>` element, regardless of whether
 # or not the content is passed as the first argument or as a block.
 # Rails.application.config.action_view.button_to_generates_button_tag = true

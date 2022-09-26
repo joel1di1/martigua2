@@ -7,8 +7,7 @@ class Championship < ApplicationRecord
   has_many :teams, through: :enrolled_team_championships
   has_many :matches, inverse_of: :championship, dependent: :destroy
 
-  validates_presence_of :name
-  validates_presence_of :season
+  validates :name, :season, presence: true
 
   scope :of_current_season, -> { where(season: Season.current) }
 

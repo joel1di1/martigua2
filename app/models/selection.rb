@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-class Selection < ActiveRecord::Base
+class Selection < ApplicationRecord
   belongs_to :user
   belongs_to :match
   belongs_to :team
 
   before_create :destroy_all_selections_for_this_user_for_the_same_day
 
-  validates_presence_of :user, :team, :match
+  validates :user, :match, :team, presence: true
 
   protected
 

@@ -247,9 +247,9 @@ describe User do
     end
 
     context 'when user is in 2 training groups' do
-      let(:group_2) { create :group, section: }
-      let(:user_group_ids) { [group.id, group_2.id] }
-      let(:training_group_ids) { [group.id, group_2.id] }
+      let(:group2) { create :group, section: }
+      let(:user_group_ids) { [group.id, group2.id] }
+      let(:training_group_ids) { [group.id, group2.id] }
 
       it { expect(user.next_week_trainings).to include(training) }
       it { expect(user.next_week_trainings.count).to eq 1 }

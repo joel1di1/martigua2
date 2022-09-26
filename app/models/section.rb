@@ -14,7 +14,7 @@ class Section < ApplicationRecord
   has_and_belongs_to_many :trainings, inverse_of: :sections
 
   has_many :groups, inverse_of: :section, dependent: :destroy
-  validates_presence_of :club, :name
+  validates :name, :club, presence: true
 
   def invite_user!(params, inviter)
     raise "Inviter (#{inviter.email}) is not coach of #{self}" unless inviter.coach_of?(self) || inviter.admin_of?(club)

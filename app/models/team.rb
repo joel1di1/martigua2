@@ -9,8 +9,7 @@ class Team < ApplicationRecord
   has_many :enrolled_team_championships
   has_many :championships, through: :enrolled_team_championships
 
-  validates_presence_of :club
-  validates_presence_of :name
+  validates :name, :club, presence: true
 
   def self.team_with_match_on(day, section)
     section_teams = section.teams

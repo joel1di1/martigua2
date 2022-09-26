@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class Season < ActiveRecord::Base
-  validates_presence_of :name, :start_date, :end_date
+class Season < ApplicationRecord
+  validates :name, :start_date, :end_date, presence: true
 
   has_many :participations, inverse_of: :season, dependent: :destroy
   has_many :groups, inverse_of: :season, dependent: :destroy

@@ -3,9 +3,9 @@
 class TrainingInvitation < ApplicationRecord
   belongs_to :training
 
-  validates_presence_of :training
-
   after_create :send_invitations_for_undecided_users!
+
+  validates :training, presence: true
 
   def send_invitations_for_undecided_users!
     training.presence_not_set.each do |user|

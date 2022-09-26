@@ -544,7 +544,7 @@ DEPENDENCIES
   sentry-rails
   sentry-ruby
   shoulda-matchers
-  sidekiq (~> 6.5)
+  sidekiq
   simple_form
   sprockets-rails
   stimulus-rails

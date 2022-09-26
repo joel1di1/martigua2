@@ -39,7 +39,7 @@ gem 'redis'
 gem 'sentry-delayed_job'
 gem 'sentry-rails'
 gem 'sentry-ruby'
-gem 'sidekiq', '~> 6.5'
+gem 'sidekiq'
 gem 'simple_form'
 gem 'sprockets-rails'
 gem 'stimulus-rails'
@@ -86,5 +86,3 @@ group :test do
   gem 'timecop'
   gem 'webdrivers'
 end
-
-gem 'sidekiq', '~> 6.5'

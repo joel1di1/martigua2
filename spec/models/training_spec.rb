@@ -57,7 +57,7 @@ RSpec.describe Training, type: :model do
     context 'with no trainings for users' do
       let(:trainings) { [] }
 
-      it { expect { Training.send_presence_mail_for_next_week }.to change { ActionMailer::Base.deliveries.count }.by(0) }
+      it { expect { Training.send_presence_mail_for_next_week }.not_to change { ActionMailer::Base.deliveries.count } }
     end
   end
 
@@ -123,7 +123,7 @@ RSpec.describe Training, type: :model do
   end
 
   describe 'cancel uncancel' do
-    let(:reason) { 'For this reason ' + Faker::Lorem.sentence }
+    let(:reason) { "For this reason #{Faker::Lorem.sentence}" }
 
     describe '#cancelled?' do
       subject { training.cancelled? }

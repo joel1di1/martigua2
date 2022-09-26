@@ -62,7 +62,7 @@ describe UsersController, type: :controller do
         expect(user.nickname).to eq new_attributes[:nickname]
         expect(user.phone_number).to eq new_attributes[:phone_number]
         expect(user.email).to eq new_attributes[:email]
-        expect(user.valid_password?(old_password)).to eq true
+        expect(user.valid_password?(old_password)).to be true
       end
 
       it 'redirect_to section user path' do
@@ -130,7 +130,7 @@ describe UsersController, type: :controller do
         sign_in user
       end
 
-      it { expect { do_request }.to change { section.users.count }.by(0) }
+      it { expect { do_request }.not_to change { section.users.count } }
       it { expect { do_request }.to change { group.users.count }.by(-1) }
 
       describe 'response' do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   default from: 'admin@martigua.org'
 
   def send_training_invitation(trainings, user)
@@ -23,7 +23,7 @@ class UserMailer < ActionMailer::Base
     @user = next_training_duties.first
 
     subject = "Chasubles, c'est ton tour : (#{training.start_datetime.strftime('%-d/%-m')})"
-    ccs = next_training_duties[1..-1].map(&:email) + ['guillaume.pech@gmail.com']
+    ccs = next_training_duties[1..].map(&:email) + ['guillaume.pech@gmail.com']
     mail to: @user.email, cc: ccs, subject:
   end
 end

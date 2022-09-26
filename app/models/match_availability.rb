@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MatchAvailability < ActiveRecord::Base
+class MatchAvailability < ApplicationRecord
   belongs_to :match
   belongs_to :user
 end

@@ -15,7 +15,7 @@ module Trashable
 
   def trash
     run_callbacks :destroy do
-      update_column :deleted_at, Time.now
+      update_column :deleted_at, Time.zone.now
     end
   end
 

@@ -75,7 +75,7 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
   if ENV['RAILS_LOG_TO_STDOUT'].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger           = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
@@ -107,7 +107,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'www.martigua.org', protocol: 'https' }
 
   config.action_mailer.delivery_method   = :postmark
-  config.action_mailer.postmark_settings = { api_key: ENV['POSTMARK_API_KEY'] }
+  config.action_mailer.postmark_settings = { api_key: ENV.fetch('POSTMARK_API_KEY', nil) }
 
   config.font_assets.origin = 'https://www.martigua.org'
 end

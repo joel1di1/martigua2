@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Team < ActiveRecord::Base
+class Team < ApplicationRecord
   belongs_to :club
 
   has_many :team_sections, dependent: :destroy, inverse_of: :team

@@ -12,7 +12,7 @@ class VisitorsController < ApplicationController
   protected
 
   def revision
-    File.read(Rails.root.join('REVISION')).strip
+    Rails.root.join('REVISION').read.strip
   rescue StandardError
     'file-not-found'
   end

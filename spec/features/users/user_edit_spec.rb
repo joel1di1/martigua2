@@ -44,8 +44,8 @@ describe 'User edit', :devise do
 
     expect(page).to have_content 'Prochains matchs'
     user.reload
-    expect(user.coach_of?(section, season: nil)).to be_truthy
-    expect(user.player_of?(section, season: nil)).to be_falsy
+    expect(user).to be_coach_of(section, season: nil)
+    expect(user).not_to be_player_of(section, season: nil)
     # expect(page).to have_content 'You updated your account successfully.'
   end
 
@@ -57,7 +57,7 @@ describe 'User edit', :devise do
     section = create :section
     me = create :user, with_section: section
     other_email = Faker::Internet.email
-    other = FactoryBot.create(:user, email: other_email)
+    other = create(:user, email: other_email)
     login_as(me, scope: :user)
     visit edit_user_registration_path(other)
     expect(page).to have_content 'Edit User'

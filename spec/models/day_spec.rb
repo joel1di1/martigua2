@@ -43,7 +43,7 @@ RSpec.describe Day, type: :model do
       context 'and end_date nil' do
         let(:end_date) { nil }
 
-        it { is_expected.to eq nil }
+        it { is_expected.to be_nil }
       end
     end
   end

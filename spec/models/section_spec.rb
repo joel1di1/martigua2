@@ -96,7 +96,7 @@ RSpec.describe Section, type: :model do
 
         it 'add user as a section player' do
           user = invite_user
-          expect(user.player_of?(section)).to eq true
+          expect(user.player_of?(section)).to be true
         end
       end
 
@@ -107,7 +107,7 @@ RSpec.describe Section, type: :model do
       context 'with already known user' do
         before { User.create!(user_params) }
 
-        it { expect { invite_user }.to change(User, :count).by(0) }
+        it { expect { invite_user }.not_to change(User, :count) }
       end
     end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TrainingInvitation < ActiveRecord::Base
+class TrainingInvitation < ApplicationRecord
   belongs_to :training
 
   validates_presence_of :training

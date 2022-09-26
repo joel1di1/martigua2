@@ -17,7 +17,7 @@ describe 'User profile page', :devise do
   #   When I visit the user profile page
   #   Then I see my own email address
   it 'user sees own profile' do
-    user = FactoryBot.create(:user)
+    user = create(:user)
     login_as(user, scope: :user)
     visit user_path(user)
     expect(page).to have_content user.email
@@ -28,9 +28,9 @@ describe 'User profile page', :devise do
   #   When I visit another user's profile
   #   Then I see an 'access denied' message
   it "user cannot see another user's profile" do
-    me = FactoryBot.create(:user)
+    me = create(:user)
     other_email = Faker::Internet.email
-    other = FactoryBot.create(:user, email: other_email)
+    other = create(:user, email: other_email)
     login_as(me, scope: :user)
     Capybara.current_session.driver.header 'Referer', root_path
     visit user_path(other)

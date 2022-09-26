@@ -16,7 +16,7 @@ class ChampionshipsController < ApplicationController
     @championship = Championship.new championship_params
     @championship.season = Season.current
     if @championship.save
-      @championship.enroll_team! Team.find_by_id(params[:default_team_id]) if params[:default_team_id].present?
+      @championship.enroll_team! Team.find_by(id: params[:default_team_id]) if params[:default_team_id].present?
 
       redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
                     fallback: section_championship_path(current_section, @championship),

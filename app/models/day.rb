@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class Day < ActiveRecord::Base
+class Day < ApplicationRecord
   belongs_to :calendar
   has_many :matches, inverse_of: :day
 
-  validates_presence_of :name
+  validates :name, presence: true
 
   before_save :set_default_period_end_date
 

@@ -2,12 +2,12 @@
 
 require 'twilio-ruby'
 
-class SendSmsJob < ActiveJob::Base
+class SendSmsJob < ApplicationJob
   queue_as :default
 
-  TWILIO_ACCOUNT_ID = ENV['TWILIO_ACCOUNT_ID']
-  TWILIO_AUTH_TOKEN = ENV['TWILIO_AUTH_TOKEN']
-  TWILIO_PHONE_NUMBER = ENV['TWILIO_PHONE_NUMBER']
+  TWILIO_ACCOUNT_ID = ENV.fetch('TWILIO_ACCOUNT_ID', nil)
+  TWILIO_AUTH_TOKEN = ENV.fetch('TWILIO_AUTH_TOKEN', nil)
+  TWILIO_PHONE_NUMBER = ENV.fetch('TWILIO_PHONE_NUMBER', nil)
 
   def perform(sms_notification, user)
     return if user.phone_number.blank?

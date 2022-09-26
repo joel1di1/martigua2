@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   include LogAllRequests
 
   def catch_404
-    p "404 : #{request.url}"
+    Rails.logger.debug { "404 : #{request.url}" }
     respond_to do |format|
       format.html { render file: "#{Rails.root}/public/404", layout: false, status: :not_found }
       format.xml  { head :not_found }
@@ -36,11 +36,11 @@ class ApplicationController < ActionController::Base
   end
 
   def filtered_referrer
-    request.referrer if local_referrer?
+    request.referer if local_referrer?
   end
 
   def local_referrer?
-    request.referrer && request.referrer[LOCAL_REFERRER_RE]
+    request.referer && request.referer[LOCAL_REFERRER_RE]
   end
 
   def current_section
@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
   def prepare_training_presences(section, users)
     last_trainings ||= Training.not_cancelled.of_section(section).with_start_between(2.months.ago, 6.hours.from_now).last(10)
     presences = TrainingPresence.where(user: users).where(training: last_trainings)
-    presences_by_user_and_training = presences.map { |pres| [[pres.user_id, pres.training_id], pres] }.to_h
+    presences_by_user_and_training = presences.index_by { |pres| [pres.user_id, pres.training_id] }
     [last_trainings, presences_by_user_and_training]
   end
 
@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user_from_token!
     user_email = params[:user_email].presence
-    user       = user_email && User.find_by_email(user_email)
+    user       = user_email && User.find_by(email: user_email)
 
     sign_in user if user && Devise.secure_compare(user.authentication_token, params[:user_token])
   end

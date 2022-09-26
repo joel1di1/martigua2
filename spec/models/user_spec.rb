@@ -37,20 +37,20 @@ describe User do
     subject { user.has_only_one_section? }
 
     context 'user with no section' do
-      it { should eq false }
+      it { should be false }
     end
 
     context 'user with two sections' do
       let!(:participation_1) { create :participation, user: }
       let!(:participation_2) { create :participation, user: }
 
-      it { should eq false }
+      it { should be false }
     end
 
     context 'user with one section' do
       let!(:participation_1) { create :participation, user: }
 
-      it { should eq true }
+      it { should be true }
     end
 
     context 'user with two participations on one section' do
@@ -58,7 +58,7 @@ describe User do
       let!(:participation_1) { create :participation, user:, section:, role: Participation::PLAYER }
       let!(:participation_2) { create :participation, user:, section:, role: Participation::COACH }
 
-      it { should eq true }
+      it { should be true }
     end
   end
 
@@ -66,19 +66,19 @@ describe User do
     subject { user.coach_of?(section) }
 
     context 'with a user not in the section' do
-      it { should eq false }
+      it { should be false }
     end
 
     context 'with a player of the section' do
       before { section.add_player!(user) }
 
-      it { should eq false }
+      it { should be false }
     end
 
     context 'with a coach of the section' do
       before { section.add_coach!(user) }
 
-      it { should eq true }
+      it { should be true }
     end
 
     context 'with a last year coach of the section' do
@@ -96,19 +96,19 @@ describe User do
     let(:section) { create :section }
 
     context 'with a player not in the section' do
-      it { should eq false }
+      it { should be false }
     end
 
     context 'with a player of the section' do
       before { section.add_player!(user) }
 
-      it { should eq true }
+      it { should be true }
     end
 
     context 'with a coach of the section' do
       before { section.add_coach!(user) }
 
-      it { should eq false }
+      it { should be false }
     end
 
     context 'with a last year player of the section' do
@@ -294,7 +294,7 @@ describe User do
         it { is_expected.to eq '01 23 45 67 89' }
       end
 
-      context 'with phone number \' 01  2345 67 89 \'' do
+      context 'with phone number \' 01  2345 67 89 \'' do # rubocop:disable RSpec/ExcessiveDocstringSpacing
         let(:phone_number) { ' 01  2345 67 89 ' }
 
         it { is_expected.to eq '01 23 45 67 89' }

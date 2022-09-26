@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ### Configure Cache ###
 
 # If you don't want to use Rails.cache (Rack::Attack's default), then
@@ -22,9 +24,7 @@
 # Throttle all requests by IP (60rpm)
 #
 # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
-Rack::Attack.throttle('req/ip', limit: 300, period: 5.minutes) do |req|
-  req.ip # unless req.path.start_with?('/assets')
-end
+Rack::Attack.throttle('req/ip', limit: 300, period: 5.minutes, &:ip)
 
 ### Prevent Brute-Force Login Attacks ###
 
@@ -65,7 +65,7 @@ Rack::Attack.blocklist('fail2ban pentesters') do |req|
   # so the request is blocked
   Rack::Attack::Fail2Ban.filter("pentesters-#{req.ip}", maxretry: 3, findtime: 10.minutes, bantime: 15.minutes) do
     # The count for the IP is incremented if the return value is truthy
-    CGI.unescape(req.query_string) =~ %r{/etc/passwd} ||
+    CGI.unescape(req.query_string).include?('/etc/passwd') ||
       req.path.include?('/etc/passwd') ||
       req.path.include?('wp-admin') ||
       req.path.include?('wp-login') ||

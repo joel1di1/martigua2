@@ -7,7 +7,7 @@ describe VisitorsController, type: :controller do
     context 'not signed in' do
       before { get :index }
 
-      it { expect(response.status).to eq(200) }
+      it { expect(response).to have_http_status(:ok) }
       it { expect(response).to render_template('index') }
     end
 

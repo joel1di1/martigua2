@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Section < ActiveRecord::Base
+class Section < ApplicationRecord
   belongs_to :club
 
   has_many :team_sections, dependent: :destroy, inverse_of: :section
@@ -25,7 +25,7 @@ class Section < ActiveRecord::Base
     params_only_with_section = params_only.merge(section: self)
     invitation = SectionUserInvitation.create!(params_only_with_section)
 
-    user = User.find_by_email(invitation.email)
+    user = User.find_by(email: invitation.email)
     user ||= User.invite!(params_only.delete_if { |k, _v| k.to_s == 'roles' }, inviter)
 
     add_user! user, params[:roles]
@@ -63,7 +63,7 @@ class Section < ActiveRecord::Base
 
   def next_trainings
     now = 1.day.ago
-    end_date = (now + 2.days).end_of_week + 1.weeks
+    end_date = (now + 2.days).end_of_week + 1.week
     trainings.where('start_datetime > ? AND start_datetime < ?', now, end_date)
   end
 
@@ -105,13 +105,13 @@ class Section < ActiveRecord::Base
     coachs(season: previous_season).each do |coach|
       add_coach! coach
     end
-    Group.where(season: previous_season, section: self).each(&:copy_to_current_season)
+    Group.where(season: previous_season, section: self).find_each(&:copy_to_current_season)
   end
 
   def next_duties_for(task_key)
     left_join = 'LEFT OUTER JOIN "duty_tasks" ON "duty_tasks"."user_id" = "users"."id" AND "duty_tasks"."key" ='
     users.joins("#{left_join} '#{Arel.sql(task_key.to_s)}'")
-         .where('participations.season_id = ?', Season.current.id)
+         .where(participations: { season_id: Season.current.id })
          .select("users.id, users.*, coalesce(max(duty_tasks.realised_at), '1900-01-01') as last_realised_at")
          .group('users.id')
          .order('last_realised_at ASC, authentication_token')
@@ -143,7 +143,7 @@ class Section < ActiveRecord::Base
 
   def _default_group(players_role, group_name, color, season: nil)
     season ||= Season.current
-    group = groups.where(role: players_role, system: true, season:).take
+    group = groups.find_by(role: players_role, system: true, season:)
 
     unless group
       group = Group.new(role: players_role, system: true,

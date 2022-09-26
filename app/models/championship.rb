@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Championship < ActiveRecord::Base
+class Championship < ApplicationRecord
   belongs_to :season
   belongs_to :calendar
   has_many :enrolled_team_championships, inverse_of: :championship, dependent: :destroy

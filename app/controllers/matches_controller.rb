@@ -2,11 +2,11 @@
 
 class MatchesController < ApplicationController
   def new
-    @section_team = Team.find_by_id(params[:section_team_id])
+    @section_team = Team.find_by(id: params[:section_team_id])
     @match = Match.new match_params
     @championship = @match.championship || Championship.new
 
-    @championship.enroll_team! Team.find_by_id(params[:adversary_team_id]) if params[:adversary_team_id].present? && @championship.persisted?
+    @championship.enroll_team! Team.find_by(id: params[:adversary_team_id]) if params[:adversary_team_id].present? && @championship.persisted?
   end
 
   def create

@@ -45,7 +45,7 @@ describe GroupsController, type: :controller do
     context 'with empty name' do
       let(:new_group_attributes) { attributes_for(:group, section: nil, name: nil) }
 
-      it { expect { do_request }.to change(Group, :count).by(0) }
+      it { expect { do_request }.not_to change(Group, :count) }
 
       describe 'redirection' do
         before { do_request }

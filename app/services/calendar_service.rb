@@ -91,11 +91,11 @@ class CalendarService
                                              order_by: 'startTime',
                                              time_min: Time.now.iso8601)
 
-    puts 'Upcoming events:'
-    puts 'No upcoming events found' if response.items.empty?
+    Rails.logger.debug 'Upcoming events:'
+    Rails.logger.debug 'No upcoming events found' if response.items.empty?
     response.items.each do |event|
       start = event.start.date || event.start.date_time
-      puts "- #{event.summary} (#{start})"
+      Rails.logger.debug { "- #{event.summary} (#{start})" }
     end
   end
 
@@ -116,9 +116,11 @@ class CalendarService
       url = authorizer.get_authorization_url(
         base_url: OOB_URI
       )
-      puts 'Open the following URL in the browser and enter the ' \
-           'resulting code after authorization'
-      puts url
+      Rails.logger.debug do
+        'Open the following URL in the browser and enter the ' \
+          'resulting code after authorization'
+      end
+      Rails.logger.debug url
       code = gets
       credentials = authorizer.get_and_store_credentials_from_code(
         user_id:, code:, base_url: OOB_URI

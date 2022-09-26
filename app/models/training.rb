@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Training < ActiveRecord::Base
+class Training < ApplicationRecord
   belongs_to :location, optional: true
 
   has_and_belongs_to_many :sections, inverse_of: :trainings
@@ -11,9 +11,9 @@ class Training < ActiveRecord::Base
   has_many :present_players, -> { where(training_presences: { is_present: true }) }, through: :training_presences, source: :user
   has_many :users, through: :groups
 
-  validates_presence_of :start_datetime
+  validates :start_datetime, presence: true
 
-  scope :of_section, ->(section) { joins(:sections).where('sections.id = ?', section.id) }
+  scope :of_section, ->(section) { joins(:sections).where(sections: { id: section.id }) }
   scope :not_cancelled, -> { where.not('cancelled') }
   scope :with_start_between, ->(start_period, end_period) { where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period) }
 
@@ -85,8 +85,8 @@ class Training < ActiveRecord::Base
 
   def next_duties(limit)
     present_players.left_outer_joins(:duty_tasks)
-                   .distinct.select('users.*, max(duty_tasks.realised_at) as last_duty_date, '\
-                    'COALESCE(sum(duty_tasks.weight), -1) as sum_duty_tasks_weight')
+                   .distinct.select('users.*, max(duty_tasks.realised_at) as last_duty_date, ' \
+                                    'COALESCE(sum(duty_tasks.weight), -1) as sum_duty_tasks_weight')
                    .group('users.id').order('sum_duty_tasks_weight, last_duty_date ASC, authentication_token ASC')
                    .limit(limit)
   end

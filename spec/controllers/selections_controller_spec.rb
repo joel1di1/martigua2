@@ -37,6 +37,6 @@ describe SelectionsController, type: :controller do
     let(:request_params) { { section_id: section.to_param, match_id: match.id, id: selection.id } }
 
     it { expect(subject).to redirect_to(root_path) }
-    it { expect(subject && Selection.find_by_id(selection.id)).to be_nil }
+    it { expect(subject && Selection.find_by(id: selection.id)).to be_nil }
   end
 end

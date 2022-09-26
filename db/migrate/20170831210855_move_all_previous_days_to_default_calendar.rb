@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class Season < ActiveRecord::Base
+class Season < ApplicationRecord
   has_many :days, inverse_of: :season, dependent: :destroy
   has_many :championships, inverse_of: :season, dependent: :destroy
   has_many :calendars, inverse_of: :season, dependent: :destroy
 end
 
-class Day < ActiveRecord::Base
+class Day < ApplicationRecord
   belongs_to :calendar
   belongs_to :season
 end

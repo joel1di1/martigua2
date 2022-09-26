@@ -24,12 +24,12 @@ class SectionsController < ApplicationController
     if @section.save
       @section.add_coach!(current_user)
       respond_to do |format|
-        format.json { render json: @section, status: 201 }
+        format.json { render json: @section, status: :created }
         format.html { redirect_to(section_users_path(section_id: @section.to_param), notice: "Section #{@section.name} créée") }
       end
     else
       respond_to do |format|
-        format.json { render json: @section, status: 400 }
+        format.json { render json: @section, status: :bad_request }
         format.html { redirect_to new_club_section_path(club_id: club.to_param, section: section.attributes) }
       end
     end

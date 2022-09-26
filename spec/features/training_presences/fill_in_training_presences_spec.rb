@@ -16,12 +16,12 @@ describe 'fill in training presences', :devise do
     expect(player.reload).to be_present_for(training)
 
     click_on 'Non présent'
-    expect(player.reload.present_for?(training)).to eq false
+    expect(player.reload.present_for?(training)).to be false
 
     click_on 'Présent'
     expect(player.reload).to be_present_for(training)
 
     click_on 'Non présent'
-    expect(player.reload.present_for?(training)).to eq false
+    expect(player.reload.present_for?(training)).to be false
   end
 end

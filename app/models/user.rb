@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :groups, inverse_of: :users
 
-  validates_presence_of :authentication_token
+  validates :authentication_token, presence: true
 
   before_validation :ensure_authentication_token
   before_save :format_phone_number
@@ -76,13 +76,13 @@ class User < ActiveRecord::Base
   end
 
   def is_available_for?(match)
-    match_availabilities.select { |ma| ma.match_id == match.id }.first.try(:available)
+    match_availabilities.find { |ma| ma.match_id == match.id }.try(:available)
   end
 
   def admin_of?(club)
     return if club.nil?
 
-    club_admin_roles.where(club:).exists?
+    club_admin_roles.exists?(club:)
   end
 
   def full_name
@@ -147,6 +147,6 @@ class User < ActiveRecord::Base
   end
 
   def format_phone_number
-    self.phone_number = phone_number.gsub(' ', '').gsub(/(\d\d)/, '\1 ').chop if phone_number&.match('^[\s\d]*$')
+    self.phone_number = phone_number.delete(' ').gsub(/(\d\d)/, '\1 ').chop if phone_number&.match('^[\s\d]*$')
   end
 end

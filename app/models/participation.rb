@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Participation < ActiveRecord::Base
+class Participation < ApplicationRecord
   PLAYER = 'player'
   COACH = 'coach'
 

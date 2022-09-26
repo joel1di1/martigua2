@@ -23,7 +23,7 @@ RSpec.describe Group, type: :model do
       before { group.add_user!(user) }
 
       it { expect(group.add_user!(user).users).to include(user) }
-      it { expect { group.add_user!(user) }.to change { group.users.count }.by(0) }
+      it { expect { group.add_user!(user) }.not_to change { group.users.count } }
     end
   end
 end

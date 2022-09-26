@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class Club < ActiveRecord::Base
-  validates_presence_of :name
+class Club < ApplicationRecord
+  validates :name, presence: true
 
   has_many :sections, inverse_of: :club, dependent: :destroy
 

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe TrainingInvitation, type: :model do
-  it { should validate_presence_of :training }
+  it { should belong_to :training }
 
   describe '#send_invitations_for_undecided_users' do
     let(:section) { create :section }

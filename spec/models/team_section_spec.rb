@@ -3,6 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe TeamSection, type: :model do
-  it { should validate_presence_of :section }
-  it { should validate_presence_of :team }
+  it { should belong_to :section }
+  it { should belong_to :team }
 end

@@ -17,8 +17,6 @@ class Match < ApplicationRecord
 
   after_save :update_shared_calendar
 
-  validates :day, presence: true
-
   def date
     if start_datetime
       start_datetime.to_s(:short)

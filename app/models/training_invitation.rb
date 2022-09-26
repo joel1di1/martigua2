@@ -5,8 +5,6 @@ class TrainingInvitation < ApplicationRecord
 
   after_create :send_invitations_for_undecided_users!
 
-  validates :training, presence: true
-
   def send_invitations_for_undecided_users!
     training.presence_not_set.each do |user|
       UserMailer.send_training_invitation(training, user).deliver_now

@@ -10,7 +10,7 @@ class Participation < ApplicationRecord
   belongs_to :section, inverse_of: :participations
   belongs_to :season, inverse_of: :participations
 
-  validates :role, :user, :season, :section, presence: true
+  validates :role, presence: true
 
   scope :coachs, -> { where(role: COACH) }
 

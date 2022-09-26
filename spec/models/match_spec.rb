@@ -9,8 +9,6 @@ RSpec.describe Match, type: :model do
 
   it { should have_many :selections }
 
-  it { should validate_presence_of :day }
-
   describe '#date' do
     let(:day) { create :day }
     let(:match) { create :match, start_datetime:, day: }

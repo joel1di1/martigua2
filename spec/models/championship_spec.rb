@@ -6,10 +6,10 @@ RSpec.describe Championship, type: :model do
   let(:championship) { create :championship }
 
   it { should validate_presence_of :name }
-  it { should validate_presence_of :season }
+  it { should belong_to :season }
+  it { should belong_to :calendar }
   it { should have_many :teams }
   it { should have_many :matches }
-  it { should belong_to :calendar }
 
   describe '.enroll_team!' do
     subject { championship.enroll_team!(team) }

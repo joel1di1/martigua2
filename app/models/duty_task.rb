@@ -10,7 +10,7 @@ class DutyTask < ApplicationRecord
   TASK_NAMES_COLLECTION = TASKS.map { |task_id, hash| [hash[:name], task_id] }
 
   belongs_to :user, inverse_of: :duty_tasks
-  validates :key, :name, :weight, :user, presence: true
+  validates :key, :name, :weight, presence: true
 
   before_validation :set_name_weight_from_key
 

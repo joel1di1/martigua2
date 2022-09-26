@@ -3,5 +3,5 @@
 class SectionUserInvitation < ApplicationRecord
   belongs_to :section
 
-  validates :email, :section, presence: true
+  validates :email, presence: true
 end

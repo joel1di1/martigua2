@@ -6,5 +6,5 @@ class ClubAdminRole < ApplicationRecord
   belongs_to :club
   belongs_to :user
 
-  validates :name, :club, :user, presence: true
+  validates :name, presence: true
 end

@@ -3,6 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe TrainingPresence, type: :model do
-  it { should validate_presence_of :training }
-  it { should validate_presence_of :user }
+  it { should belong_to :training }
+  it { should belong_to :user }
 end

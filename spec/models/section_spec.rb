@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Section, type: :model do
   let(:section) { create :section }
 
-  it { should validate_presence_of :club }
+  it { should belong_to :club }
   it { should validate_presence_of :name }
   it { should have_many :teams }
   it { should have_many :participations }

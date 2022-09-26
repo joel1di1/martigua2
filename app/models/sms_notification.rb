@@ -5,8 +5,6 @@ class SmsNotification < ApplicationRecord
 
   after_create :send_all_sms!
 
-  validates :section, presence: true
-
   def send_all_sms!
     section.group_everybody.users.map { |user| SendSmsJob.perform_later(self, user) }
   end

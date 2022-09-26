@@ -7,8 +7,6 @@ class Selection < ApplicationRecord
 
   before_create :destroy_all_selections_for_this_user_for_the_same_day
 
-  validates :user, :match, :team, presence: true
-
   protected
 
   def destroy_all_selections_for_this_user_for_the_same_day

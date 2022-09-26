@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe SmsNotification, type: :model do
   it { should belong_to :section }
-  it { should validate_presence_of :section }
 
   describe '.create' do
     let(:section) { create :section }

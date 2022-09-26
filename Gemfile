@@ -67,6 +67,7 @@ group :development do
   gem 'rubocop-rspec'
   gem 'spring'
   gem 'spring-commands-rspec'
+  gem 'spring-commands-parallel-tests'
   gem 'web-console'
 end
 
@@ -78,6 +79,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'stackprof'
+  gem 'parallel_tests'
 end
 group :production do
   gem 'postmark-rails'

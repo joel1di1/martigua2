@@ -30,7 +30,10 @@ module Martigua2
       end
     end
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 6.1
+
+    # remove this line when config.load_defaults 7.0
+    config.active_support.cache_format_version
 
     # Configuration for the application, engines, and railties goes here.
     #

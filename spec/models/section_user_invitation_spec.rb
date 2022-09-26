@@ -3,6 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe SectionUserInvitation, type: :model do
-  it { should belong_to :section }
-  it { should validate_presence_of :email }
+  it { is_expected.to belong_to :section }
+  it { is_expected.to validate_presence_of :email }
 end

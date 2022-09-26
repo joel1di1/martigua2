@@ -11,6 +11,7 @@ class Day < ApplicationRecord
   belongs_to :season
 end
 
+# rubocop:disable Rails/SkipsModelValidations
 class MoveAllPreviousDaysToDefaultCalendar < ActiveRecord::Migration[5.1]
   DEFAULT_NAME = '*DEFAULT_CALENDAR_FOR_MIGRATION*'
 
@@ -31,3 +32,4 @@ class MoveAllPreviousDaysToDefaultCalendar < ActiveRecord::Migration[5.1]
     end
   end
 end
+# rubocop:enable Rails/SkipsModelValidations

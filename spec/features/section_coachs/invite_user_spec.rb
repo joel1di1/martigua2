@@ -18,7 +18,8 @@ describe 'Invite User', :devise do
     expect(page).to have_current_path section_users_path(section_coach.sections.first), ignore_query: true
     expect(page).to have_link 'Ajouter un joueur'
     click_link 'Ajouter un joueur'
-    expect(page).to have_current_path new_section_section_user_invitation_path(section_coach.sections.first), ignore_query: true
+    expect(page).to have_current_path new_section_section_user_invitation_path(section_coach.sections.first),
+                                      ignore_query: true
 
     invited_user = build :user
     fill_in 'section_user_invitation[email]', with: invited_user.email

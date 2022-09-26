@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe Match, type: :model do
-  it { should belong_to :local_team }
-  it { should belong_to :visitor_team }
-  it { should belong_to :day }
+  it { is_expected.to belong_to :local_team }
+  it { is_expected.to belong_to :visitor_team }
+  it { is_expected.to belong_to :day }
 
-  it { should have_many :selections }
+  it { is_expected.to have_many :selections }
 
   describe '#date' do
     let(:day) { create :day }

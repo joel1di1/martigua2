@@ -6,16 +6,20 @@ class Training < ApplicationRecord
   has_and_belongs_to_many :sections, inverse_of: :trainings
   has_and_belongs_to_many :groups, inverse_of: :trainings
 
-  has_many :invitations, class_name: 'TrainingInvitation'
+  has_many :invitations, class_name: 'TrainingInvitation', dependent: :destroy
   has_many :training_presences, inverse_of: :training, dependent: :destroy
-  has_many :present_players, -> { where(training_presences: { is_present: true }) }, through: :training_presences, source: :user
+  has_many :present_players, lambda {
+                               where(training_presences: { is_present: true })
+                             }, through: :training_presences, source: :user
   has_many :users, through: :groups
 
   validates :start_datetime, presence: true
 
   scope :of_section, ->(section) { joins(:sections).where(sections: { id: section.id }) }
   scope :not_cancelled, -> { where.not('cancelled') }
-  scope :with_start_between, ->(start_period, end_period) { where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period) }
+  scope :with_start_between, lambda { |start_period, end_period|
+                               where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period)
+                             }
 
   default_scope { order 'start_datetime, location_id' }
 

@@ -8,7 +8,9 @@ describe SectionsController, type: :controller do
   let(:section) { create :section, club: }
 
   describe 'GET new' do
-    let(:do_request) { get :new, params: { club_id: club.to_param, user_email: user.email, user_token: user.authentication_token } }
+    let(:do_request) do
+      get :new, params: { club_id: club.to_param, user_email: user.email, user_token: user.authentication_token }
+    end
 
     before { do_request }
 
@@ -19,7 +21,9 @@ describe SectionsController, type: :controller do
   describe 'POST create' do
     let(:section_attributes) { attributes_for(:section, club: nil) }
 
-    let(:auth_params) { { club_id: club.to_param, user_email: user.email, user_token: user.authentication_token, format: :json } }
+    let(:auth_params) do
+      { club_id: club.to_param, user_email: user.email, user_token: user.authentication_token, format: :json }
+    end
     let(:req_params) { auth_params.merge(section: section_attributes) }
 
     let(:do_request) { post :create, params: req_params }
@@ -35,7 +39,7 @@ describe SectionsController, type: :controller do
       sign_in user
       @next_trainings_double = double
       allow(@next_trainings_double).to receive(:includes) { @next_trainings_double }
-      expect_any_instance_of(Section).to receive(:next_trainings).and_return(@next_trainings_double)
+      allow_any_instance_of(Section).to receive(:next_trainings).and_return(@next_trainings_double)
       get :show, params: { id: section.to_param }
     end
 

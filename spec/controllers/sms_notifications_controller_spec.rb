@@ -8,7 +8,9 @@ describe SmsNotificationsController, type: :controller do
   let(:user) { create :user, with_section: section }
 
   describe 'GET new' do
-    let(:do_request) { get :new, params: { section_id: section.to_param, user_email: user.email, user_token: user.authentication_token } }
+    let(:do_request) do
+      get :new, params: { section_id: section.to_param, user_email: user.email, user_token: user.authentication_token }
+    end
 
     before { do_request }
 
@@ -18,7 +20,9 @@ describe SmsNotificationsController, type: :controller do
   describe 'POST create', skip: 'SMS tests are skipped (need to pay for real tests)' do
     let(:sms_notification_attributes) { attributes_for(:sms_notification, section: nil) }
 
-    let(:auth_params) { { section_id: section.to_param, user_email: user.email, user_token: user.authentication_token, format: :json } }
+    let(:auth_params) do
+      { section_id: section.to_param, user_email: user.email, user_token: user.authentication_token, format: :json }
+    end
     let(:req_params) { auth_params.merge(sms_notification: sms_notification_attributes) }
 
     let(:do_request) { post :create, params: req_params }

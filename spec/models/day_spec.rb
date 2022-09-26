@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Day, type: :model do
-  it { should belong_to :calendar }
-  it { should have_many :matches }
+  it { is_expected.to belong_to :calendar }
+  it { is_expected.to have_many :matches }
 
-  it { should validate_presence_of :name }
+  it { is_expected.to validate_presence_of :name }
 
   describe 'create with period_start_date should set defaut period_end_date' do
     subject { day.period_end_date }
@@ -16,7 +16,7 @@ RSpec.describe Day, type: :model do
     before { day.save! }
 
     context 'with start_date random' do
-      let(:start_date) { Date.today + 3 }
+      let(:start_date) { Time.zone.today + 3 }
 
       context 'and end_date not set' do
         let(:end_date) { nil }
@@ -58,7 +58,7 @@ RSpec.describe Day, type: :model do
     before { day.update(params) }
 
     context 'with start_date random' do
-      let(:new_start_date) { Date.today + 3 }
+      let(:new_start_date) { Time.zone.today + 3 }
 
       context 'and end_date not set' do
         let(:params) { { period_start_date: new_start_date } }

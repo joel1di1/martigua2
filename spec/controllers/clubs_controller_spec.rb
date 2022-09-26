@@ -7,7 +7,9 @@ describe ClubsController, type: :controller do
   let(:user) { create :user }
 
   describe 'GET show' do
-    let(:do_request) { get :show, params: { id: club.to_param, user_email: user.email, user_token: user.authentication_token } }
+    let(:do_request) do
+      get :show, params: { id: club.to_param, user_email: user.email, user_token: user.authentication_token }
+    end
 
     before { do_request }
 

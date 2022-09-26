@@ -3,6 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe EnrolledTeamChampionship, type: :model do
-  it { should belong_to :team }
-  it { should belong_to :championship }
+  it { is_expected.to belong_to :team }
+  it { is_expected.to belong_to :championship }
 end

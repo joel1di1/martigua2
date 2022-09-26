@@ -10,15 +10,17 @@ describe GroupsController, type: :controller do
   before { sign_in user }
 
   describe 'POST add_users' do
-    let(:do_request) { post :add_users, params: { section_id: section.to_param, group_id: group.to_param, user_id: user.id } }
+    let(:do_request) do
+      post :add_users, params: { section_id: section.to_param, group_id: group.to_param, user_id: user.id }
+    end
 
     it { expect { do_request }.to change { group.users.count }.by(1) }
 
     describe 'method call' do
       before do
-        expect(User).to receive(:find).with(user.id.to_s).and_return(user)
-        expect(Group).to receive(:find).with(group.to_param).and_return(group)
-        expect(group).to receive(:add_user!).with(user)
+        allow(User).to receive(:find).with(user.id.to_s).and_return(user)
+        allow(Group).to receive(:find).with(group.to_param).and_return(group)
+        allow(group).to receive(:add_user!).with(user)
 
         do_request
       end

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe SmsNotification, type: :model do
-  it { should belong_to :section }
+  it { is_expected.to belong_to :section }
 
   describe '.create' do
     let(:section) { create :section }
@@ -15,7 +15,7 @@ RSpec.describe SmsNotification, type: :model do
 
     it 'calls SendSmsJob' do
       section.players.each do |user|
-        expect(SendSmsJob).to receive(:perform_later).with(kind_of(SmsNotification), user)
+        expect(SendSmsJob).to receive(:perform_later).with(kind_of(described_class), user)
       end
       create :sms_notification, section:
     end

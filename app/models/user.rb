@@ -103,7 +103,11 @@ class User < ApplicationRecord
 
   def next_weekend_matches
     next_matches = Match.of_next_weekend.includes(local_team: :sections, visitor_team: :sections)
-    next_matches.reject { |match| (match.local_team.sections + match.visitor_team.sections).flatten.select { |s| player_of?(s) }.empty? }
+    next_matches.reject do |match|
+      (match.local_team.sections + match.visitor_team.sections).flatten.select do |s|
+        player_of?(s)
+      end.empty?
+    end
   end
 
   def realised_task!(task_key, realised_at)
@@ -115,7 +119,12 @@ class User < ApplicationRecord
   end
 
   def was_present?(training, presences_by_user_and_training = nil)
-    training_presence = presences_by_user_and_training.present? ? presences_by_user_and_training[[id, training.id]] : training_presences.where(training:).first
+    training_presence = if presences_by_user_and_training.present?
+                          presences_by_user_and_training[[id,
+                                                          training.id]]
+                        else
+                          training_presences.where(training:).first
+                        end
     return unless training_presence
 
     training_presence.presence_validated? || (training_presence.is_present? && training_presence.presence_validated.nil?)

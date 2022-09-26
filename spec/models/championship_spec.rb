@@ -5,11 +5,11 @@ require 'rails_helper'
 RSpec.describe Championship, type: :model do
   let(:championship) { create :championship }
 
-  it { should validate_presence_of :name }
-  it { should belong_to :season }
-  it { should belong_to :calendar }
-  it { should have_many :teams }
-  it { should have_many :matches }
+  it { is_expected.to validate_presence_of :name }
+  it { is_expected.to belong_to :season }
+  it { is_expected.to belong_to :calendar }
+  it { is_expected.to have_many :teams }
+  it { is_expected.to have_many :matches }
 
   describe '.enroll_team!' do
     subject { championship.enroll_team!(team) }

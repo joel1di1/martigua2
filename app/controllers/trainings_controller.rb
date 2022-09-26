@@ -5,7 +5,8 @@ class TrainingsController < ApplicationController
 
   def index
     section_trainings = Training.of_section(current_section)
-    @trainings = section_trainings.page(params[:page]).padding(section_trainings.where('start_datetime < ?', 1.day.ago).count)
+    @trainings = section_trainings.page(params[:page]).padding(section_trainings.where('start_datetime < ?',
+                                                                                       1.day.ago).count)
   end
 
   def create
@@ -26,7 +27,10 @@ class TrainingsController < ApplicationController
   end
 
   def show
-    redirect_to presence_validation_section_training_path(current_section, @training) if current_user.coach_of?(current_section)
+    if current_user.coach_of?(current_section)
+      redirect_to presence_validation_section_training_path(current_section,
+                                                            @training)
+    end
   end
 
   def edit; end
@@ -35,7 +39,8 @@ class TrainingsController < ApplicationController
     @training.assign_attributes(training_params)
     @training.groups = current_section.groups.where(id: params[:training][:group_ids])
     if @training.save
-      redirect_to section_training_path(section_id: current_section.to_param, id: @training.to_param), notice: 'Entrainement modifié'
+      redirect_to section_training_path(section_id: current_section.to_param, id: @training.to_param),
+                  notice: 'Entrainement modifié'
     else
       render :edit
     end

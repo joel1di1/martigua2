@@ -11,7 +11,10 @@ module Admin
     before_action :authenticate_admin
 
     def authenticate_admin
-      render file: Rails.public_path.join('403.html'), status: :forbidden, layout: false unless AdminUser.find_by(email: current_user&.email)
+      unless AdminUser.find_by(email: current_user&.email)
+        render file: Rails.public_path.join('403.html'), status: :forbidden,
+               layout: false
+      end
     end
 
     # Override this value to specify the number of elements to display at a time

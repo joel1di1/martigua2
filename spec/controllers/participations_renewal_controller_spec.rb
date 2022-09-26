@@ -13,7 +13,7 @@ describe ParticipationsRenewalController, type: :controller do
     let(:request) { get :index, params: request_params }
 
     let(:player_from_previous_season) { create :user }
-    let(:player_from_previous_season_2) { create :user }
+    let(:player_from_previous_season2) { create :user }
     let(:coach_from_previous_season) { create :user }
     let(:player_and_coach_from_previous_season) { create :user }
     let(:player_from_current_season) { create :user }
@@ -22,7 +22,7 @@ describe ParticipationsRenewalController, type: :controller do
     let(:expected_members) do
       [
         player_from_previous_season,
-        player_from_previous_season_2,
+        player_from_previous_season2,
         coach_from_previous_season,
         player_and_coach_from_previous_season
       ]
@@ -31,7 +31,7 @@ describe ParticipationsRenewalController, type: :controller do
     before do
       previous_season = Season.current.previous
       section.add_player!(player_from_previous_season, season: previous_season)
-      section.add_player!(player_from_previous_season_2, season: previous_season)
+      section.add_player!(player_from_previous_season2, season: previous_season)
       section.add_coach!(coach_from_previous_season, season: previous_season)
       section.add_player!(player_and_coach_from_previous_season, season: previous_season)
       section.add_coach!(player_and_coach_from_previous_season, season: previous_season)

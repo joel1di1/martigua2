@@ -9,15 +9,15 @@ describe CalendarsController, type: :controller do
   before { sign_in user }
 
   describe 'GET index' do
-    let!(:calendar_1) { create :calendar }
-    let!(:calendar_2) { create :calendar }
+    let!(:calendar1) { create :calendar }
+    let!(:calendar2) { create :calendar }
 
     let(:do_request) { get :index, params: { section_id: section.to_param } }
 
     before { do_request }
 
     it { expect(response).to have_http_status(:success) }
-    it { expect(assigns(:calendars)).to match_array([calendar_1, calendar_2]) }
+    it { expect(assigns(:calendars)).to match_array([calendar1, calendar2]) }
   end
 
   describe 'GET edit' do

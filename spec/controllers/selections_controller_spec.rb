@@ -6,9 +6,6 @@ describe SelectionsController, type: :controller do
   let(:section) { create :section }
   let(:coach) { create :user, with_section_as_coach: section }
   let(:day) { create :day }
-  let(:match_1) { create :match, day: }
-  let(:match_2) { create :match, day: }
-  let(:match_3) { create :match, day: }
   let(:team_with_matches) { double }
 
   before { sign_in coach }
@@ -19,8 +16,8 @@ describe SelectionsController, type: :controller do
 
     describe 'assigns' do
       before do
-        expect(Team).to receive(:team_with_match_on).with(day, section).and_return(team_with_matches)
-        expect(team_with_matches).to receive(:map).and_return([])
+        allow(Team).to receive(:team_with_match_on).with(day, section).and_return(team_with_matches)
+        allow(team_with_matches).to receive(:map).and_return([])
         request
       end
 

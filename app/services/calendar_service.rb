@@ -37,7 +37,8 @@ class CalendarService
     if Rails.env.development? || Rails.env.test?
       Google::Auth::ClientId.from_file(CLIENT_SECRETS_PATH)
     else
-      Google::Auth::ClientId.new(Rails.application.secrets.google_client_id, Rails.application.secrets.google_client_secret)
+      Google::Auth::ClientId.new(Rails.application.secrets.google_client_id,
+                                 Rails.application.secrets.google_client_secret)
     end
   end
 

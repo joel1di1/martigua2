@@ -22,7 +22,10 @@ class SelectionsController < ApplicationController
 
     availabilities = MatchAvailability.includes(:user).where(match: matches)
     availabilities.each do |availability|
-      @availabilities_by_user_and_match[availability.user_id][availability.match_id] = availability.available if @availabilities_by_user_and_match[availability.user_id]
+      if @availabilities_by_user_and_match[availability.user_id]
+        @availabilities_by_user_and_match[availability.user_id][availability.match_id] =
+          availability.available
+      end
       (availability.available ? @available_players : @non_available_players) << availability.user
     end
 
@@ -57,7 +60,10 @@ class SelectionsController < ApplicationController
         @players_target = 'no-response-players'
         availabilities = MatchAvailability.includes(:user).where(match: matches, user: @user)
         availabilities.each do |availability|
-          @availabilities_by_user_and_match[availability.user_id][availability.match_id] = availability.available if @availabilities_by_user_and_match[availability.user_id]
+          if @availabilities_by_user_and_match[availability.user_id]
+            @availabilities_by_user_and_match[availability.user_id][availability.match_id] =
+              availability.available
+          end
           if availability.available
             @players_target = 'available-players'
           elsif @players_target == 'no-response-players' && availability.available == false
@@ -65,7 +71,8 @@ class SelectionsController < ApplicationController
           end
         end
 
-        @last_trainings ||= Training.of_section(current_section).with_start_between(2.months.ago, 6.hours.from_now).last(10)
+        @last_trainings ||= Training.of_section(current_section).with_start_between(2.months.ago,
+                                                                                    6.hours.from_now).last(10)
         render 'matches/selection'
       end
       format.html { redirect_with(fallback: root_path) }

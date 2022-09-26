@@ -3,6 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe MatchAvailability, type: :model do
-  it { should belong_to :match }
-  it { should belong_to :user }
+  it { is_expected.to belong_to :match }
+  it { is_expected.to belong_to :user }
 end

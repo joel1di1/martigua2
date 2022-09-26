@@ -15,7 +15,7 @@ module Trashable
 
   def trash
     run_callbacks :destroy do
-      update_column :deleted_at, Time.zone.now
+      update_column :deleted_at, Time.zone.now # rubocop:disable Rails/SkipsModelValidations
     end
   end
 
@@ -25,6 +25,6 @@ module Trashable
 
   def recover
     # update_column not appropriate here as it uses the default scope
-    update_attribute :deleted_at, nil
+    update_attribute :deleted_at, nil # rubocop:disable Rails/SkipsModelValidations
   end
 end

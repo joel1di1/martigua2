@@ -12,7 +12,7 @@ RSpec.describe SendSmsJob, type: :job do
 
       messages = double('Messages')
 
-      expect_any_instance_of(Twilio::REST::Client).to receive(:messages).and_return(messages)
+      expect_any_instance_of(Twilio::REST::Client).to receive(:messages).and_return(messages) # rubocop:disable RSpec/StubbedMock
 
       expect(messages).to receive(:create).with(
         from: '+33644605525',
@@ -20,7 +20,7 @@ RSpec.describe SendSmsJob, type: :job do
         body: expected_text
       )
 
-      SendSmsJob.perform_later(sms_notification, user)
+      described_class.perform_later(sms_notification, user)
     end
   end
 end

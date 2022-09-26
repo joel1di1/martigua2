@@ -4,23 +4,23 @@ describe User do
   let(:user) { create :user }
   let(:section) { create :section }
 
-  it { should validate_presence_of :email }
-  it { should have_db_column :first_name }
-  it { should have_db_column :last_name }
-  it { should have_db_column :nickname }
-  it { should have_db_column :phone_number }
-  it { should have_many :club_admin_roles }
-  it { should have_many :participations }
-  it { should have_many :sections }
-  it { should have_many :training_presences }
-  it { should have_many :duty_tasks }
-  it { should have_and_belong_to_many :groups }
+  it { is_expected.to validate_presence_of :email }
+  it { is_expected.to have_db_column :first_name }
+  it { is_expected.to have_db_column :last_name }
+  it { is_expected.to have_db_column :nickname }
+  it { is_expected.to have_db_column :phone_number }
+  it { is_expected.to have_many :club_admin_roles }
+  it { is_expected.to have_many :participations }
+  it { is_expected.to have_many :sections }
+  it { is_expected.to have_many :training_presences }
+  it { is_expected.to have_many :duty_tasks }
+  it { is_expected.to have_and_belong_to_many :groups }
 
   describe 'authentication token should be generated' do
     subject { create :user, authentication_token: nil }
 
-    its(:authentication_token) { should_not be_nil }
-    its(:id) { should_not be_nil }
+    its(:authentication_token) { is_expected.not_to be_nil }
+    its(:id) { is_expected.not_to be_nil }
   end
 
   describe '#short_name' do
@@ -37,28 +37,28 @@ describe User do
     subject { user.has_only_one_section? }
 
     context 'user with no section' do
-      it { should be false }
+      it { is_expected.to be false }
     end
 
     context 'user with two sections' do
-      let!(:participation_1) { create :participation, user: }
-      let!(:participation_2) { create :participation, user: }
+      let!(:participation1) { create :participation, user: }
+      let!(:participation2) { create :participation, user: }
 
-      it { should be false }
+      it { is_expected.to be false }
     end
 
     context 'user with one section' do
-      let!(:participation_1) { create :participation, user: }
+      let!(:participation1) { create :participation, user: }
 
-      it { should be true }
+      it { is_expected.to be true }
     end
 
     context 'user with two participations on one section' do
       let(:section) { create :section }
-      let!(:participation_1) { create :participation, user:, section:, role: Participation::PLAYER }
-      let!(:participation_2) { create :participation, user:, section:, role: Participation::COACH }
+      let!(:participation1) { create :participation, user:, section:, role: Participation::PLAYER }
+      let!(:participation2) { create :participation, user:, section:, role: Participation::COACH }
 
-      it { should be true }
+      it { is_expected.to be true }
     end
   end
 
@@ -66,19 +66,19 @@ describe User do
     subject { user.coach_of?(section) }
 
     context 'with a user not in the section' do
-      it { should be false }
+      it { is_expected.to be false }
     end
 
     context 'with a player of the section' do
       before { section.add_player!(user) }
 
-      it { should be false }
+      it { is_expected.to be false }
     end
 
     context 'with a coach of the section' do
       before { section.add_coach!(user) }
 
-      it { should be true }
+      it { is_expected.to be true }
     end
 
     context 'with a last year coach of the section' do
@@ -86,7 +86,7 @@ describe User do
 
       before { section.add_coach!(user, season: previous_season) }
 
-      it { should be_falsy }
+      it { is_expected.to be_falsy }
     end
   end
 
@@ -96,19 +96,19 @@ describe User do
     let(:section) { create :section }
 
     context 'with a player not in the section' do
-      it { should be false }
+      it { is_expected.to be false }
     end
 
     context 'with a player of the section' do
       before { section.add_player!(user) }
 
-      it { should be true }
+      it { is_expected.to be true }
     end
 
     context 'with a coach of the section' do
       before { section.add_coach!(user) }
 
-      it { should be false }
+      it { is_expected.to be false }
     end
 
     context 'with a last year player of the section' do
@@ -116,7 +116,7 @@ describe User do
 
       before { section.add_player!(user, season: previous_season) }
 
-      it { should be_falsy }
+      it { is_expected.to be_falsy }
     end
   end
 
@@ -153,17 +153,17 @@ describe User do
     end
 
     context 'with two trainings' do
-      let(:training_1) { create :training }
-      let(:training_2) { create :training }
+      let(:training1) { create :training }
+      let(:training2) { create :training }
 
       context 'passed as array' do
-        let(:set_presence) { user.present_for!([training_1, training_2]) }
+        let(:set_presence) { user.present_for!([training1, training2]) }
 
         it { expect { set_presence }.to change(TrainingPresence, :count).by(2) }
       end
 
       context 'passed as params' do
-        let(:set_presence) { user.present_for!(training_1, training_2) }
+        let(:set_presence) { user.present_for!(training1, training2) }
 
         it { expect { set_presence }.to change(TrainingPresence, :count).by(2) }
       end
@@ -220,7 +220,9 @@ describe User do
     let(:user_group_ids) { [group.id] }
     let(:group) { create :group, section: }
     let(:user) { create :user, with_section: section, group_ids: user_group_ids }
-    let(:training) { create :training, with_section: section, start_datetime: training_date, group_ids: training_group_ids }
+    let(:training) do
+      create :training, with_section: section, start_datetime: training_date, group_ids: training_group_ids
+    end
 
     before { training }
 
@@ -309,7 +311,7 @@ describe User do
   end
 
   describe '.active_this_season' do
-    subject(:active_users) { User.active_this_season }
+    subject(:active_users) { described_class.active_this_season }
 
     context 'with an active user' do
       before { section.add_player! user }

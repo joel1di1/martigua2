@@ -14,3 +14,9 @@ AllCops:
 
 Style/Documentation:
   Enabled: false
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+Rails/HasAndBelongsToMany:
+  Enabled: false

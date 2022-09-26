@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe Club, type: :model do
   let(:club) { create :club }
 
-  it { should validate_presence_of :name }
-  it { should have_many :sections }
+  it { is_expected.to validate_presence_of :name }
+  it { is_expected.to have_many :sections }
 
   describe '#add_admin!' do
     let(:user) { create :user }

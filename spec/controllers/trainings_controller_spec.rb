@@ -17,8 +17,8 @@ describe TrainingsController, type: :controller do
         render_views
         let(:user) { create :user, with_section: section }
 
-        let!(:training_1) { create :training, with_section: section }
-        let!(:training_2) { create :training, with_section: section, location: nil }
+        let!(:training1) { create :training, with_section: section }
+        let!(:training2) { create :training, with_section: section, location: nil }
         let!(:training_not_in_section) { create :training }
 
         before do
@@ -26,7 +26,7 @@ describe TrainingsController, type: :controller do
           request
         end
 
-        it { expect(assigns[:trainings]).to match_array([training_1, training_2]) }
+        it { expect(assigns[:trainings]).to match_array([training1, training2]) }
       end
     end
   end
@@ -96,7 +96,10 @@ describe TrainingsController, type: :controller do
   end
 
   describe 'POST cancellation' do
-    subject { post :cancellation, params: { section_id: section.to_param, id: training.to_param, cancellation: { reason: 'TEST' } } }
+    subject do
+      post :cancellation,
+           params: { section_id: section.to_param, id: training.to_param, cancellation: { reason: 'TEST' } }
+    end
 
     let(:section) { create :section }
     let(:coach) { create :user, with_section_as_coach: section }

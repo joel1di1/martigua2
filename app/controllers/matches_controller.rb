@@ -65,9 +65,13 @@ class MatchesController < ApplicationController
 
         availabilities = MatchAvailability.includes(:user).where(match: matches, user: @user)
         availabilities.each do |availability|
-          @availabilities_by_user_and_match[availability.user_id][availability.match_id] = availability.available if @availabilities_by_user_and_match[availability.user_id]
+          if @availabilities_by_user_and_match[availability.user_id]
+            @availabilities_by_user_and_match[availability.user_id][availability.match_id] =
+              availability.available
+          end
         end
-        @last_trainings ||= Training.of_section(current_section).with_start_between(2.months.ago, 6.hours.from_now).last(10)
+        @last_trainings ||= Training.of_section(current_section).with_start_between(2.months.ago,
+                                                                                    6.hours.from_now).last(10)
       end
       format.html { redirect_with(fallback: section_match_path(current_section, @match)) }
       format.json { render json: {}, status: :created }

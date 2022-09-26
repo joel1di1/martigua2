@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user_from_token!, except: :catch_404
-  before_action :authenticate_user!, except: :catch_404
+  before_action :authenticate_user_from_token!, except: :catch404
+  before_action :authenticate_user!, except: :catch404
   before_action :set_sentry_context
 
   helper_method :current_section, :origin_path_or
@@ -11,14 +11,14 @@ class ApplicationController < ActionController::Base
 
   include LogAllRequests
 
-  def catch_404
+  def catch404
     Rails.logger.debug { "404 : #{request.url}" }
     respond_to do |format|
-      format.html { render file: "#{Rails.root}/public/404", layout: false, status: :not_found }
+      format.html { render file: Rails.public_path.join('404'), layout: false, status: :not_found }
       format.xml  { head :not_found }
     end
   rescue ActionController::UnknownFormat
-    render file: "#{Rails.root}/public/404", layout: false, status: :not_found
+    render file: Rails.public_path.join('404'), layout: false, status: :not_found
   end
 
   protected
@@ -57,7 +57,8 @@ class ApplicationController < ActionController::Base
   end
 
   def prepare_training_presences(section, users)
-    last_trainings ||= Training.not_cancelled.of_section(section).with_start_between(2.months.ago, 6.hours.from_now).last(10)
+    last_trainings ||= Training.not_cancelled.of_section(section).with_start_between(2.months.ago,
+                                                                                     6.hours.from_now).last(10)
     presences = TrainingPresence.where(user: users).where(training: last_trainings)
     presences_by_user_and_training = presences.index_by { |pres| [pres.user_id, pres.training_id] }
     [last_trainings, presences_by_user_and_training]

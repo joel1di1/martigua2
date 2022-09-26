@@ -7,13 +7,15 @@ class Match < ApplicationRecord
   belongs_to :local_team, class_name: 'Team'
   belongs_to :visitor_team, class_name: 'Team'
 
-  has_many :selections, inverse_of: :match
-  has_many :match_availabilities, inverse_of: :match
+  has_many :selections, inverse_of: :match, dependent: :destroy
+  has_many :match_availabilities, inverse_of: :match, dependent: :destroy
 
   scope :join_day, -> { joins('LEFT OUTER JOIN days ON days.id = matches.day_id') }
   scope :date_ordered, -> { order(Arel.sql('LEAST(days.period_end_date, start_datetime) ASC')) }
 
-  scope :with_start_between, ->(start_period, end_period) { where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period) }
+  scope :with_start_between, lambda { |start_period, end_period|
+                               where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period)
+                             }
 
   after_save :update_shared_calendar
 
@@ -103,7 +105,7 @@ class Match < ApplicationRecord
       "#{location.try(:name)}, #{location.try(:address)}"
     )
 
-    update_columns shared_calendar_id: event.id, shared_calendar_url: event.html_link
+    update! shared_calendar_id: event.id, shared_calendar_url: event.html_link
   end
   handle_asynchronously :async_update_shared_calendar
 end

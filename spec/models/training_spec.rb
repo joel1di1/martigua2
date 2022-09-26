@@ -12,10 +12,10 @@ RSpec.describe Training, type: :model do
   let(:section)  { create :section }
   let!(:nb_users) { [1, 2, 3, 4].sample }
 
-  it { should have_and_belong_to_many :sections }
-  it { should have_and_belong_to_many :groups }
-  it { should have_many :training_presences }
-  it { should validate_presence_of :start_datetime }
+  it { is_expected.to have_and_belong_to_many :sections }
+  it { is_expected.to have_and_belong_to_many :groups }
+  it { is_expected.to have_many :training_presences }
+  it { is_expected.to validate_presence_of :start_datetime }
 
   describe '#nb_presents' do
     context 'with n users present' do
@@ -45,19 +45,27 @@ RSpec.describe Training, type: :model do
     before do
       User.delete_all
       allow(User).to receive(:active_this_season).and_return(users)
-      users.each { |user| expect(user).to receive(:next_week_trainings).and_return(trainings) }
+      users.each { |user| allow(user).to receive(:next_week_trainings).and_return(trainings) }
     end
 
     context 'with trainings for users' do
       let(:trainings) { [training] }
 
-      it { expect { Training.send_presence_mail_for_next_week }.to change { ActionMailer::Base.deliveries.count }.by(nb_users) }
+      it {
+        expect do
+          described_class.send_presence_mail_for_next_week
+        end.to change(ActionMailer::Base.deliveries, :count).by(nb_users)
+      }
     end
 
     context 'with no trainings for users' do
       let(:trainings) { [] }
 
-      it { expect { Training.send_presence_mail_for_next_week }.not_to change { ActionMailer::Base.deliveries.count } }
+      it {
+        expect do
+          described_class.send_presence_mail_for_next_week
+        end.not_to change(ActionMailer::Base.deliveries, :count)
+      }
     end
   end
 
@@ -76,7 +84,7 @@ RSpec.describe Training, type: :model do
 
     let!(:trainings) { dates.map { |date| create :training, with_section: section, start_datetime: date } }
 
-    it { expect(Training.of_next_week(section:, date: now)).to eq trainings[2..4] }
+    it { expect(described_class.of_next_week(section:, date: now)).to eq trainings[2..4] }
   end
 
   describe 'users' do
@@ -96,9 +104,9 @@ RSpec.describe Training, type: :model do
   end
 
   describe '#group_names' do
-    let(:group_1)    { create :group, section:, name: 'TEST' }
-    let(:group_2)    { create :group, section:, name: 'AA TEST' }
-    let(:group_ids) { [group_1.id, group_2.id] }
+    let(:group1)    { create :group, section:, name: 'TEST' }
+    let(:group2)    { create :group, section:, name: 'AA TEST' }
+    let(:group_ids) { [group1.id, group2.id] }
     let(:training) { create :training, with_section: section, group_ids: }
 
     it { expect(training.group_names).to eq 'AA TEST, TEST' }
@@ -119,7 +127,7 @@ RSpec.describe Training, type: :model do
     let(:nb_weeks) { rand(2..6) }
     let(:end_date) { nb_weeks.weeks.from_now }
 
-    it { expect { training.repeat_until!(end_date) }.to change(Training, :count).by(nb_weeks - 1) }
+    it { expect { training.repeat_until!(end_date) }.to change(described_class, :count).by(nb_weeks - 1) }
   end
 
   describe 'cancel uncancel' do

@@ -6,7 +6,7 @@ class Team < ApplicationRecord
   has_many :team_sections, dependent: :destroy, inverse_of: :team
   has_many :sections, through: :team_sections, inverse_of: :teams
 
-  has_many :enrolled_team_championships
+  has_many :enrolled_team_championships, dependent: :destroy
   has_many :championships, through: :enrolled_team_championships
 
   validates :name, presence: true

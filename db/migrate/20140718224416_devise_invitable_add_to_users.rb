@@ -2,7 +2,7 @@
 
 class DeviseInvitableAddToUsers < ActiveRecord::Migration[4.2]
   def up
-    change_table :users do |t|
+    change_table :users, bulk: true do |t|
       t.string     :invitation_token
       t.datetime   :invitation_created_at
       t.datetime   :invitation_sent_at
@@ -20,9 +20,10 @@ class DeviseInvitableAddToUsers < ActiveRecord::Migration[4.2]
   end
 
   def down
-    change_table :users do |t|
+    change_table :users, bulk: true do |t|
       t.remove_references :invited_by, polymorphic: true
-      t.remove :invitations_count, :invitation_limit, :invitation_sent_at, :invitation_accepted_at, :invitation_token, :invitation_created_at
+      t.remove :invitations_count, :invitation_limit, :invitation_sent_at, :invitation_accepted_at, :invitation_token,
+               :invitation_created_at
     end
     change_column_null :users, :encrypted_password, false
   end

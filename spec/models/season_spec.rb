@@ -5,37 +5,37 @@ require 'rails_helper'
 RSpec.describe Season, type: :model do
   let(:season) { create :season }
 
-  it { should have_many :participations }
-  it { should have_many :calendars }
-  it { should have_many :championships }
+  it { is_expected.to have_many :participations }
+  it { is_expected.to have_many :calendars }
+  it { is_expected.to have_many :championships }
 
-  it { should validate_presence_of :name }
-  it { should validate_presence_of :start_date }
-  it { should validate_presence_of :end_date }
+  it { is_expected.to validate_presence_of :name }
+  it { is_expected.to validate_presence_of :start_date }
+  it { is_expected.to validate_presence_of :end_date }
 
   describe '.current' do
-    before { Season.destroy_all }
+    before { described_class.destroy_all }
 
     context 'with only one season' do
-      subject { Season.current }
+      subject { described_class.current }
 
-      let!(:only_season) { create :season, start_date: Date.today - 1.month }
+      let!(:only_season) { create :season, start_date: Time.zone.today - 1.month }
 
-      it { should eq only_season }
+      it { is_expected.to eq only_season }
     end
 
     context 'with one old season' do
-      let(:today) { Date.today }
+      let(:today) { Time.zone.today }
       let!(:first_season) { create :season, start_date: Date.new(2001, 9, 1) }
 
-      it { expect(Season.current.start_date).to be < today }
-      it { expect(Season.current.end_date).to be >= today }
+      it { expect(described_class.current.start_date).to be < today }
+      it { expect(described_class.current.end_date).to be >= today }
     end
 
     context 'with no season' do
-      subject { Season.current }
+      subject { described_class.current }
 
-      it { should_not be_nil }
+      it { is_expected.not_to be_nil }
     end
   end
 
@@ -44,8 +44,8 @@ RSpec.describe Season, type: :model do
   end
 
   describe '#previous' do
-    subject { Season.current.previous }
+    subject { described_class.current.previous }
 
-    it { expect(subject.start_date).to eq(Season.current.start_date - 1.year) }
+    it { expect(subject.start_date).to eq(described_class.current.start_date - 1.year) }
   end
 end

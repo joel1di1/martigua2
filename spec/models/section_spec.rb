@@ -5,13 +5,13 @@ require 'rails_helper'
 RSpec.describe Section, type: :model do
   let(:section) { create :section }
 
-  it { should belong_to :club }
-  it { should validate_presence_of :name }
-  it { should have_many :teams }
-  it { should have_many :participations }
-  it { should have_many :users }
-  it { should have_and_belong_to_many :trainings }
-  it { should have_many :groups }
+  it { is_expected.to belong_to :club }
+  it { is_expected.to validate_presence_of :name }
+  it { is_expected.to have_many :teams }
+  it { is_expected.to have_many :participations }
+  it { is_expected.to have_many :users }
+  it { is_expected.to have_and_belong_to_many :trainings }
+  it { is_expected.to have_many :groups }
 
   describe '#add_player!' do
     subject { section.add_player!(user) }
@@ -203,20 +203,19 @@ RSpec.describe Section, type: :model do
   end
 
   describe '#championships' do
-    let(:team_1) { create :team, with_section: section }
-    let(:team_2) { create :team, with_section: section }
+    let(:team1) { create :team, with_section: section }
+    let(:team2) { create :team, with_section: section }
 
-    let(:championship_1) { create :championship }
-    let(:championship_2) { create :championship }
-    let(:championship_3) { create :championship }
+    let(:championship1) { create :championship }
+    let(:championship2) { create :championship }
 
     before do
-      championship_1.enroll_team!(team_1)
-      championship_2.enroll_team!(team_1)
-      championship_2.enroll_team!(team_2)
+      championship1.enroll_team!(team1)
+      championship2.enroll_team!(team1)
+      championship2.enroll_team!(team2)
     end
 
-    it { expect(section.championships).to match_array([championship_1, championship_2]) }
+    it { expect(section.championships).to match_array([championship1, championship2]) }
   end
 
   describe '#members' do
@@ -265,7 +264,7 @@ RSpec.describe Section, type: :model do
         user4.realised_task!(task, 4.days.ago)
         user4.realised_task!(task, 5.days.ago)
 
-        old_user.participations.update_all(season_id: create(:season, start_date: 3.years.ago).id)
+        old_user.participations.update_all(season_id: create(:season, start_date: 3.years.ago).id) # rubocop:disable Rails/SkipsModelValidations
 
         expect(next_duties).to match_array([user4, user3, user2])
       }

@@ -2,7 +2,7 @@
 
 namespace :mails do
   task send_daily_mails: :environment do
-    today = Date.today
+    today = Time.zone.today
     case today.cwday
     when 1
       Match.delay.send_availability_mail_for_next_weekend

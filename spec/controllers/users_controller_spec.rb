@@ -52,7 +52,8 @@ describe UsersController, type: :controller do
 
       before do
         sign_in user
-        patch :update, params: { id: user.to_param, section_id: section.to_param, user: new_attributes, player: 'player' }
+        patch :update,
+              params: { id: user.to_param, section_id: section.to_param, user: new_attributes, player: 'player' }
         user.reload
       end
 
@@ -85,22 +86,21 @@ describe UsersController, type: :controller do
   end
 
   describe 'POST training_presences' do
-    let(:training_1) { create :training }
-    let(:training_2) { create :training }
-    let(:training_3) { create :training }
+    let(:training1) { create :training }
+    let(:training2) { create :training }
 
     let(:post_training_presences) do
       post :training_presences, params: {
         id: user.to_param, user_email: user.email, user_token: user.authentication_token,
-        present_ids: [training_1.id, training_2.id], checked_ids: [training_1.id]
+        present_ids: [training1.id, training2.id], checked_ids: [training1.id]
       }
     end
 
     before { post_training_presences }
 
     it 'updates training presences' do
-      expect(user.reload).to be_present_for(training_1)
-      expect(user.reload).not_to be_present_for(training_2)
+      expect(user.reload).to be_present_for(training1)
+      expect(user.reload).not_to be_present_for(training2)
     end
 
     it { expect(response).to redirect_to(root_path) }
@@ -123,15 +123,17 @@ describe UsersController, type: :controller do
 
     context 'from section group' do
       let(:group) { create :group, section: }
-      let(:do_request) { delete :destroy, params: { section_id: section.to_param, group_id: group.to_param, id: user.to_param } }
+      let(:do_request) do
+        delete :destroy, params: { section_id: section.to_param, group_id: group.to_param, id: user.to_param }
+      end
 
       before do
         group.add_user! user
         sign_in user
       end
 
-      it { expect { do_request }.not_to change { section.users.count } }
-      it { expect { do_request }.to change { group.users.count }.by(-1) }
+      it { expect { do_request }.not_to(change { section.users.count }) }
+      it { expect { do_request }.to(change { group.users.count }.by(-1)) }
 
       describe 'response' do
         before { do_request }

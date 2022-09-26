@@ -12,16 +12,11 @@
  *
  *= require jquery-ui/datepicker
  *= require 3rd/jquery-ui-timepicker-addon-1.6.3
- *= require calendars
- *= require club_admin_roles
- *= require clubs
  *= require framework_and_overrides
  *= require groups
  *= require layout
- *= require sections
  *= require selection
  *= require scrapped_rankings
- *= require teams
  *= require matches
  *= require trainings
  *= require users

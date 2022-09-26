@@ -39,4 +39,4 @@
 
   -# - if current_user.coach_of?(current_section)
   -#   %td
-      -# = button_to 'Relancer les indécits', invitations_section_training_path(training, section_id: current_section), id: "training_invitations_#{match.id}", class: 'btn btn-warning btn-sm'
+      -# = button_to 'Relancer les indécits', invitations_section_training_path(training, section_id: current_section), id: "training_invitations_#{match.id}", class: 'btn btn-warning btn-sm', method: :post

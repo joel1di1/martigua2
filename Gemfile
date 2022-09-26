@@ -66,8 +66,8 @@ group :development do
   gem 'rubocop'
   gem 'rubocop-rspec'
   gem 'spring'
-  gem 'spring-commands-rspec'
   gem 'spring-commands-parallel-tests'
+  gem 'spring-commands-rspec'
   gem 'web-console'
 end
 
@@ -75,11 +75,11 @@ group :development, :test do
   gem 'byebug'
   gem 'flamegraph'
   gem 'foreman'
+  gem 'parallel_tests'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'stackprof'
-  gem 'parallel_tests'
 end
 group :production do
   gem 'postmark-rails'

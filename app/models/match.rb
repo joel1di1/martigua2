@@ -21,11 +21,11 @@ class Match < ApplicationRecord
 
   def date
     if start_datetime
-      start_datetime.to_s(:short)
+      start_datetime.to_fs(:short)
     elsif day
       day.name
     elsif prevision_period_start && prevision_period_end
-      "(#{prevision_period_start.to_s(:short)} - #{prevision_period_end.to_s(:short)})"
+      "(#{prevision_period_start.to_fs(:short)} - #{prevision_period_end.to_fs(:short)})"
     else
       ''
     end

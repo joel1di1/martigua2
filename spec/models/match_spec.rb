@@ -16,7 +16,7 @@ RSpec.describe Match, type: :model do
     context 'with specified start_datetime' do
       let(:start_datetime) { 1.week.from_now }
 
-      it { expect(match.date).to eq start_datetime.to_s(:short) }
+      it { expect(match.date).to eq start_datetime.to_fs(:short) }
     end
 
     context 'with no start_datetime specified' do

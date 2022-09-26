@@ -8,12 +8,4 @@ class VisitorsController < ApplicationController
 
     redirect_to section_path(current_user.sections.first) if current_user.sections.size.positive?
   end
-
-  protected
-
-  def revision
-    Rails.root.join('REVISION').read.strip
-  rescue StandardError
-    'file-not-found'
-  end
 end

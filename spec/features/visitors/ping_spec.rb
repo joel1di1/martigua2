@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rails_helper'
+
 describe 'ping' do
   it 'visit the home page' do
     visit 'ping'

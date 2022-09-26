@@ -6,7 +6,9 @@ class MatchesController < ApplicationController
     @match = Match.new match_params
     @championship = @match.championship || Championship.new
 
-    @championship.enroll_team! Team.find_by(id: params[:adversary_team_id]) if params[:adversary_team_id].present? && @championship.persisted?
+    if params[:adversary_team_id].present? && @championship.persisted?
+      @championship.enroll_team! Team.find_by(id: params[:adversary_team_id])
+    end
   end
 
   def create

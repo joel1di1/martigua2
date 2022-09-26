@@ -1,10 +1,9 @@
+inherit_from: .rubocop_todo.yml
+
 require:
   - rubocop-rspec
   - rubocop-performance
   - rubocop-rails
-
-inherit_from:
-  - .rubocop_todo.yml
 
 AllCops:
   NewCops: enable
@@ -13,10 +12,4 @@ AllCops:
     - 'bin/*'
 
 Style/Documentation:
-  Enabled: false
-
-Rails/I18nLocaleTexts:
-  Enabled: false
-
-Rails/HasAndBelongsToMany:
   Enabled: false

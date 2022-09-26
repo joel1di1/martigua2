@@ -1,15 +1,17 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
 ruby '3.1.2'
 
-gem 'coffee-rails'
 gem 'rails', '~> 7.0.4'
-gem 'sass-rails'
 
 gem 'activerecord-session_store'
 gem 'administrate'
+gem 'bcrypt'
 gem 'best_in_place', git: 'https://github.com/mmotherwell/best_in_place'
+gem 'bootsnap', require: false
 gem 'bootstrap-sass'
 gem 'colorist'
 gem 'delayed_job_active_record'
@@ -18,85 +20,71 @@ gem 'devise_invitable'
 gem 'font_assets'
 gem 'google-api-client'
 gem 'haml-rails'
+gem 'importmap-rails'
 gem 'inherited_resources'
 gem 'jbuilder'
 gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
-gem 'kaminari'
-gem 'mechanize'
 gem 'net-imap'
 gem 'net-pop'
 gem 'net-smtp'
 gem 'newrelic_rpm'
-gem 'nokogiri'
-gem 'pg', group: %i[production development]
-gem 'phony'
-gem 'polyamorous'
+gem 'pg'
 gem 'puma'
 gem 'rack-attack'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rails_ping'
-gem 'ransack'
 gem 'redis'
-gem 'rest-client'
-gem 'sdoc', group: :doc
 gem 'sentry-delayed_job'
 gem 'sentry-rails'
 gem 'sentry-ruby'
+gem 'sidekiq', '~> 6.5'
 gem 'simple_form'
+gem 'sprockets-rails'
+gem 'stimulus-rails'
 gem 'switch_user'
+gem 'tailwindcss-rails'
 gem 'turbolinks'
+gem 'turbo-rails'
 gem 'twilio-ruby'
-gem 'uglifier', '>= 1.3.0'
 
-group :development do
-  gem 'active_record_query_trace'
-  gem 'bullet'
-  gem 'guard-bundler'
-  gem 'guard-rails'
-  gem 'guard-rspec'
-  gem 'html2haml'
-  gem 'overcommit'
-  gem 'query_diet'
-  gem 'rails_layout'
-  gem 'rb-fchange', require: false
-  gem 'rb-fsevent', require: false
-  gem 'rb-inotify', require: false
-  gem 'rubocop'
-  gem 'rubocop-rspec'
-  gem 'spring'
-  gem 'spring-commands-parallel-tests'
-  gem 'spring-commands-rspec'
-  gem 'web-console'
-end
-
-group :development, :test do
-  gem 'byebug'
-  gem 'flamegraph'
-  gem 'foreman'
-  gem 'parallel_tests'
-  gem 'pry-byebug'
-  gem 'pry-rails'
-  gem 'pry-rescue'
-  gem 'stackprof'
-end
 group :production do
   gem 'postmark-rails'
 end
-group :test do
-  gem 'capybara'
-  gem 'capybara-select2'
-  gem 'factory_bot_rails'
-  gem 'rspec-its'
-  gem 'rspec-rails', '5.0.2'
 
-  gem 'database_cleaner'
+# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+# gem "image_processing", "~> 1.2"
+
+# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
+# gem "kredis"
+
+group :development, :test do
+  gem 'debug'
+  gem 'factory_bot_rails'
+  gem 'foreman', require: false
+  gem 'html2haml', require: false
+  gem 'rspec-rails'
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+end
+
+group :development do
+  gem 'rack-mini-profiler'
+  gem 'web-console'
+end
+
+group :test do
+  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  gem 'capybara'
   gem 'faker'
-  gem 'launchy'
   gem 'rails-controller-testing'
+  gem 'rspec-its'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', require: false
   gem 'timecop'
   gem 'webdrivers'
 end
+
+gem 'sidekiq', '~> 6.5'

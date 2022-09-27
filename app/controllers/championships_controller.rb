@@ -53,6 +53,6 @@ class ChampionshipsController < ApplicationController
   def find_championship_by_id
     @championship = Championship.find params[:id]
   rescue ActiveRecord::RecordNotFound
-    handle_404
+    catch404
   end
 end

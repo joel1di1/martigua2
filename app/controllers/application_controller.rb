@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   def catch404
     Rails.logger.debug { "404 : #{request.url}" }
     respond_to do |format|
-      format.html { render file: Rails.public_path.join('404'), layout: false, status: :not_found }
+      format.html { render file: Rails.public_path.join('404.html'), layout: false, status: :not_found }
       format.xml  { head :not_found }
     end
   rescue ActionController::UnknownFormat

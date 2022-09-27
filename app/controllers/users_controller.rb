@@ -96,7 +96,7 @@ class UsersController < ApplicationController
     user_key = params[:user_id] ? :user_id : :id
     @user = User.find params[user_key]
   rescue ActiveRecord::RecordNotFound
-    handle_404
+    catch404
   end
 
   private

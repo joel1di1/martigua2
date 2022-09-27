@@ -13,7 +13,7 @@
             %li.list-group-item
               = not_enrolled_team.club.name + ' - '
               %strong= not_enrolled_team.name
-              = link_to section_championship_enrolled_team_championships_path(team_id: not_enrolled_team.id), method: :post do
+              = button_to section_championship_enrolled_team_championships_path(team_id: not_enrolled_team.id), method: :post do
                 %span.glyphicon.glyphicon-plus
   .col-md-6.col-sm-6.col-xs-6
     .panel.panel-primary
@@ -27,5 +27,5 @@
             %li.list-group-item
               = enrolled_team_championship.team.club.name + ' - '
               %strong= enrolled_team_championship.team.name
-              = link_to section_championship_enrolled_team_championship_path(current_section, @championship, enrolled_team_championship), method: :delete do
+              = button_to section_championship_enrolled_team_championship_path(current_section, @championship, enrolled_team_championship), method: :delete do
                 %span.glyphicon.glyphicon-minus

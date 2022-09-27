@@ -48,7 +48,7 @@
                   - section_teams.each do |team|
                     = form_tag selection_section_match_path(current_section, @match, user_id: user.id, team_id: team.id), class: 'inline', role: 'form' do
                       %button.btn.btn-link.btn-xs{type: :submit}= "#{team.name} !"
-                  = link_to 'Non dispo ?', section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: []), method: :post, class: 'change_presence not_present text-nowrap'
+                  = button_to 'Non dispo ?', section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: []), method: :post, class: 'change_presence not_present text-nowrap'
 
   - section_teams.each do |team|
     .col-md-3
@@ -75,7 +75,7 @@
             %li.list-group-item
               = user.full_name
               .pull-right
-                = link_to section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: [@match.id]), method: :post, class: 'change_presence present text-nowrap' do
+                = button_to section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: [@match.id]), method: :post, class: 'change_presence present text-nowrap' do
                   %strong Dispo ?
 
   .col-md-4.col-md-offset-1
@@ -88,5 +88,5 @@
           %li.list-group-item
             = user.full_name
             .pull-right
-              = link_to section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: [@match.id]), method: :post, class: 'change_presence present text-nowrap' do
+              = button_to section_user_match_availabilities_path(current_section, user, present_ids: [@match.id], checked_ids: [@match.id]), method: :post, class: 'change_presence present text-nowrap' do
                 %strong Dispo ?

@@ -26,5 +26,5 @@
                   = link_to edit_section_duty_task_path(current_section, duty_task), title: 'Éditer', class: 'btn btn-xs btn-default' do
                     %span.glyphicon.glyphicon-edit
 
-                  = link_to [current_section, duty_task], method: :delete, data: { confirm: 'Sûr ?' }, class: 'btn btn-xs btn-default' do
+                  = button_to [current_section, duty_task], method: :delete, data: { confirm: 'Sûr ?' }, class: 'btn btn-xs btn-default' do
                     %span.glyphicon.glyphicon-trash

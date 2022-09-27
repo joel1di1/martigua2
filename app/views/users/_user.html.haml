@@ -28,10 +28,10 @@
         %span.glyphicon.glyphicon-edit
       - if defined?(group) && group
         - unless group.system?
-          = link_to section_group_user_path(current_section, group, user), :method => :delete, :data => { :confirm => 'Supprimer du groupe ?' } do
+          = button_to section_group_user_path(current_section, group, user), :method => :delete, :data => { :confirm => 'Supprimer du groupe ?' } do
             %span.glyphicon.glyphicon-trash
       - else
-        = link_to section_user_path(current_section, user), :method => :delete, :data => { :confirm => 'Supprimer de la section ?' } do
+        = button_to section_user_path(current_section, user), :method => :delete, :data => { :confirm => 'Supprimer de la section ?' }, class: 'link' do
           %span.glyphicon.glyphicon-trash
 
 

@@ -23,14 +23,14 @@
     %td
       - if match.users.include?(current_user)
         - if current_user.is_available_for?(match).nil?
-          = link_to 'Dispo ?', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: [match.id]), method: :post, class: 'btn btn-sm btn-success text-nowrap'
-          = link_to 'Non dispo ?', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: []), method: :post, class: 'btn btn-sm btn-danger text-nowrap'
+          = button_to 'Dispo ?', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: [match.id]), method: :post, class: 'btn btn-sm btn-success text-nowrap'
+          = button_to 'Non dispo ?', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: []), method: :post, class: 'btn btn-sm btn-danger text-nowrap'
         - elsif current_user.is_available_for?(match) == true
           %div.training_presence{class: 'bg-success text-nowrap'} Dispo !
-          = link_to 'Non dispo', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: []), method: :post, class: 'change_presence not_present text-nowrap'
+          = button_to 'Non dispo', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: []), method: :post, class: 'change_presence not_present text-nowrap'
         - else
           %div.training_presence{class: 'bg-danger text-nowrap'} Non dispo !
-          = link_to 'Dispo', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: [match.id]), method: :post, class: 'change_presence present text-nowrap'
+          = button_to 'Dispo', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: [match.id]), method: :post, class: 'change_presence present text-nowrap'
 
   - if current_user.coach_of?(current_section)
     %td.link_column

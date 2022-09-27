@@ -43,6 +43,6 @@
           - else
             %li= link_to 'Editer son profil', edit_user_path(current_user)
           %li= link_to 'Changer de mot de passe', edit_user_registration_path
-          %li= link_to 'Déconnexion', destroy_user_session_path, :method=>'delete'
+          %li= button_to 'Déconnexion', destroy_user_session_path, method: :delete
 
 

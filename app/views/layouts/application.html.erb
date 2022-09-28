@@ -25,7 +25,9 @@
   <body class="h-full">
     <%= render 'layouts/navigation' %>
     <div class="min-h-full">
-      <%= yield %>
+      <div class="pt-5 px-10">
+        <%= yield %>
+      </div>
     </div>
     <%= render 'layouts/alerts' %>
   </body>

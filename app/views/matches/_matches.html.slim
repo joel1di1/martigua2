@@ -1,0 +1,9 @@
+- locals = {}
+- locals[:championship] = championship if defined?(championship)
+
+<div class="overflow-hidden bg-white shadow sm:rounded-md">
+  <ul role="list" class="divide-y divide-gray-200">
+    = render partial: 'matches/match', collection: matches, locals: locals
+  </ul>
+</div>
+

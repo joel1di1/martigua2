@@ -23,7 +23,10 @@
   </head>
 
   <body class="h-full">
-    <%= yield %>
+    <%= render 'layouts/navigation' %>
+    <div class="min-h-full">
+      <%= yield %>
+    </div>
     <%= render 'layouts/alerts' %>
   </body>
 </html>

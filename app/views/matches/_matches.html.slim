@@ -1,9 +1,10 @@
 - locals = {}
 - locals[:championship] = championship if defined?(championship)
 
-<div class="overflow-hidden bg-white shadow sm:rounded-md">
-  <ul role="list" class="divide-y divide-gray-200">
-    = render partial: 'matches/match', collection: matches, locals: locals
-  </ul>
-</div>
-
+.overflow-hidden.bg-white.shadow.sm:rounded-md
+  ul.divide-y.divide-gray-200 role="list"
+    - if matches.empty?
+      .p-4
+        'Aucun entrainement prévu dans les prochaines semaines
+    - else
+      = render partial: 'matches/match', collection: matches, locals: locals

@@ -1,0 +1,7 @@
+.overflow-hidden.bg-white.shadow.sm:rounded-md
+  ul.divide-y.divide-gray-200 role="list"
+    - if trainings.empty?
+      .p-4
+        'Aucun entrainement prévu dans les prochaines semaines
+    - else
+      = render trainings

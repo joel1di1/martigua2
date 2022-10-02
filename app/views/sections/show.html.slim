@@ -1,4 +1,4 @@
-<div class="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
+<div class="border-b border-gray-200 pb-5 sm:flex sm:items-center">
   <h3 class="text-lg font-medium leading-6 text-gray-900">
     'Prochains matchs
   </h3>
@@ -18,13 +18,13 @@
 .mb-10
   = render partial: 'matches/matches', object: @next_matches
 
-<div class="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
+<div class="border-b border-gray-200 pb-5 sm:flex sm:items-center">
   <h3 class="text-lg font-medium leading-6 text-gray-900">
     'Prochains entrainements
   </h3>
   - if current_user.coach_of?(current_section)
     <div class="mt-3 sm:mt-0 sm:ml-4">
-      = link_to new_section_team_path(current_section), id: 'add-training', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2', title: 'Ajouter un entrainement' do
+      = link_to new_section_training_path(current_section), id: 'add-training', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2', title: 'Ajouter un entrainement' do
         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
         </svg>

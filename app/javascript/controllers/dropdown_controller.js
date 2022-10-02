@@ -5,7 +5,8 @@ export default class extends Controller {
   static targets = ["menu"]
   static values = { open: Boolean }
 
-  toggle() {
+  toggle(event) {
+    event.preventDefault()
     this.openValue = !this.openValue
   }
 

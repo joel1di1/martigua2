@@ -5,6 +5,6 @@
   ul.divide-y.divide-gray-200 role="list"
     - if matches.empty?
       .p-4
-        'Aucun entrainement prévu dans les prochaines semaines
+        'Aucun match prévu dans les prochaines semaines
     - else
       = render partial: 'matches/match', collection: matches, locals: locals

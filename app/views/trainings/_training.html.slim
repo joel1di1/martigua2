@@ -1,0 +1,85 @@
+
+li.block.hover:bg-gray-50
+  .px-2.py-2.sm:px-2.flex.items-center.justify-between
+    .flex.w-1/4
+      - if current_user.coach_of?(current_section)
+        .flex.items-center.mr-2
+          = link_to edit_section_training_path(training, section_id: current_section.to_param), class: '' do
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+            </svg>
+
+      .flex.flex-col
+        .mt-2.flex.items-center.text-sm.text-gray-600.sm:mt-0
+          <svg class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75z" clip-rule="evenodd" />
+          </svg>
+          p= l(training.start_datetime, format: "%a %d %b %R")
+
+        .sm:flex.mt-2
+          <p class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+            <!-- Heroicon name: mini/map-pin -->
+            <svg class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.273 1.765 11.842 11.842 0 00.976.544l.062.029.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" clip-rule="evenodd" />
+            </svg>
+            = render partial: 'locations/gmaps_link', locals: { location: training.location }
+          </p>
+    .flex.flex-col.w-2/4.shrink.text-center
+      - training.groups.each do |group|
+        span(title= group.description) = group.name
+    .flex.flex-row-reverse.w-1/4
+      - if current_user.coach_of?(current_section)
+        .flex.items-center.ml-2
+          = button_to invitations_section_training_path(training, section_id: current_section), title: 'Relancer les indécits',id: "training_invitations_#{training.id}", form: { data: {turbo_confirm: 'Renvoyer les mails pour les indécits ?'} }, method: :post do
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+            </svg>
+
+      .flex.flex-col
+        .flex.flex-row-reverse
+          = render partial: 'matches/presences', locals: {link_url: section_training_path(training, section_id: current_section.to_param), nb_presents: training.nb_presents, nb_not_presents: training.nb_not_presents, nb_no_response: training.nb_presence_not_set}
+
+        - if current_user.player_of?(current_section)
+          .flex.flex-row-reverse.mt-2
+            .flex.flex-nowrap
+              - if training.users.include?(current_user)
+                - if current_user.present_for?(training).nil?
+                  = button_to 'Présent ?', section_user_training_training_presences_path(current_section, current_user, training), method: :post, class: 'inline-flex items-center rounded border border-transparent bg-indigo-600 px-1.5 py-1 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+                  = button_to 'Non présent ?', section_user_training_training_presences_path(current_section, current_user, training), method: :delete, class: 'inline-flex items-center rounded border border-transparent bg-indigo-100 px-1.5 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-1'
+                - elsif current_user.present_for?(training) == true
+                  .inline-flex.items-center.rounded-full.bg-green-100.px-2.5.py-0.5.text-xs.font-medium.text-green-800 Présent !
+                  = button_to 'Non présent', section_user_training_training_presences_path(current_section, current_user, training), method: :delete, class: 'inline-flex items-center rounded border border-transparent bg-indigo-100 px-1 py-0.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-1'
+                - else
+                  .inline-flex.items-center.rounded-full.bg-red-100.px-2.5.py-0.5.text-xs.font-medium.text-red-800 Non présent !
+                  = button_to 'Présent', section_user_training_training_presences_path(current_section, current_user, training), method: :post, class: 'inline-flex items-center rounded border border-transparent bg-indigo-100 px-1.5 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-1'
+
+
+
+
+/ %tr{class: training.cancelled? ? 'training-cancelled' : ''}
+/   %td.link_column
+/     = link_to section_training_path(training, section_id: current_section.to_param), class: :eye_link do
+/       %span.glyphicon.glyphicon-eye-open
+/     - if current_user.coach_of?(current_section)
+/       = link_to edit_section_training_path(training, section_id: current_section.to_param), class: :eye_link do
+/         %span.glyphicon.glyphicon-pencil
+
+/   - if training.cancelled?
+/     %td.training-cancelled(colspan='2')
+/       ENTRAINEMENT ANNULÉ :
+/       = training.cancel_reason
+/     - if current_user.coach_of?(current_section)
+/       %td
+/         = button_to 'Ne plus annuler', uncancel_section_training_path(training, section_id: current_section), method: :delete, id: "training_invitations_#{training.id}", class: 'btn btn-danger btn-sm', form_class: 'd-inline-block'
+/   - else
+/     %td.hidden-xs
+/     - if current_user.coach_of?(current_section)
+/       %td
+/         = button_to 'Relancer les indécits', invitations_section_training_path(training, section_id: current_section), id: "training_invitations_#{training.id}", class: 'btn btn-warning btn-sm', form_class: 'd-inline-block', method: :post
+/         %a{href: "#cancel-training-#{training.id}", 'data-toggle'=>"collapse"}
+/           Annulation
+
+/         .collapse{id: "cancel-training-#{training.id}"}
+/           = form_tag(cancellation_section_training_path(training, section_id: current_section), method: :post) do
+/             = text_field(:cancellation, :reason, placeholder: 'Raison de l\'annulation')
+/             = submit_tag('Annuler l\'entrainement', class: 'btn btn-danger btn-sm')

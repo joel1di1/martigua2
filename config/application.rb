@@ -13,6 +13,9 @@ module Martigua2
     config.time_zone = 'Paris'
     config.active_record.default_timezone = :local
 
+    config.i18n.default_locale = :fr
+
+
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins 'd1zljy12d9ls0t.cloudfront.net'

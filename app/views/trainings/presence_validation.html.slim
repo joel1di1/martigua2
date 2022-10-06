@@ -1,0 +1,16 @@
+h2.text-4xl
+  'Entrainement du
+  = @training.start_datetime.strftime("%-d/%-m/%Y %-HH%-M")
+
+- players_and_color = [[@training.presents.sort_by(&:full_name), :green], [@training.not_presents.sort_by(&:full_name), :red], [@training.presence_not_set.sort_by(&:full_name), :yellow]]
+
+table.table-auto
+  - players_and_color.each do |players, color|
+    - players.each do |player|
+      tr
+        td class="bg-#{color}-200 py-5 px-4"
+          label for="input-checkbox-player-#{player.id} items-center"
+            = player.full_name
+        td class="checkbox-player-#{player.id} bg-#{color}-200 py-5 px-4"
+          = simple_form_for player, url: section_user_training_confirm_presence_path(current_section, player, @training), method: :post, remote: true do |f|
+            input type='checkbox' class='auto-submit' name='present' value='present' checked=player.was_present?(@training) id="input-checkbox-player-#{player.id}" style="width: 30px; height: 30px;"

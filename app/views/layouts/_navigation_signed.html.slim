@@ -8,7 +8,7 @@
   current_user.coach_of?(current_section) ? ["Notification SMS", new_section_sms_notification_path(current_section) ] : nil].compact
 
 <nav class="bg-gray-800">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" data-controller="navbar" data-action="popstate@window->navbar#changeState">
     <div class="flex h-16 items-center justify-between">
       <div class="flex items-center">
         <div class="flex-shrink-0">
@@ -18,7 +18,7 @@
           <div class="ml-10 flex items-baseline space-x-4">
             - classes = 'hover:text-white px-3 py-2 rounded-md text-sm font-medium '
             - links.each do |title, path|
-              = link_to title, path, { class: classes + (url_for == path ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white')}
+              = link_to title, path, { class: classes + (url_for == path ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'), 'data-turbo-frame': 'content'}
           </div>
         </div>
       </div>

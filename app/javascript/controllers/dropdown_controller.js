@@ -6,7 +6,6 @@ export default class extends Controller {
   static values = { open: Boolean }
 
   toggle(event) {
-    event.preventDefault()
     this.openValue = !this.openValue
   }
 

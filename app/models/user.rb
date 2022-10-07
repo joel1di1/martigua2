@@ -75,6 +75,10 @@ class User < ApplicationRecord
     training_presences.where(training:).first.try(:is_present)
   end
 
+  def set_present_for?(training)
+    training_presences.where(training:).first.is_present != nil
+  end
+
   def is_available_for?(match)
     match_availabilities.find { |ma| ma.match_id == match.id }.try(:available)
   end

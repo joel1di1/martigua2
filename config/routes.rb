@@ -37,6 +37,9 @@ Rails.application.routes.draw do
     resources :duty_tasks
     resources :section_user_invitations, path: 'user_invitations', only: %i[new show create index]
     resources :trainings do
+      resources :users, only: [] do
+        get 'training_presence' => 'training_presences#show'
+      end
       member do
         get 'presence_validation'
         post 'invitations'
@@ -46,7 +49,7 @@ Rails.application.routes.draw do
     end
     resources :users, path: 'members' do
       resources :trainings, only: [] do
-        resources :training_presences, only: [:create]
+        resources :training_presences, only: [:create, :show]
         delete 'training_presences' => 'training_presences#destroy'
         post 'confirm_presence' => 'training_presences#confirm_presence'
       end

@@ -272,7 +272,7 @@ GEM
     nokogiri (1.13.8)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    nokogiri (1.13.8-x86_64-darwin)
+    nokogiri (1.13.8-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.13.8-x86_64-linux)
       racc (~> 1.4)
@@ -450,7 +450,7 @@ GEM
     switch_user (1.5.4)
     tailwindcss-rails (2.0.14)
       railties (>= 6.0.0)
-    tailwindcss-rails (2.0.14-x86_64-darwin)
+    tailwindcss-rails (2.0.14-arm64-darwin)
       railties (>= 6.0.0)
     tailwindcss-rails (2.0.14-x86_64-linux)
       railties (>= 6.0.0)
@@ -496,8 +496,9 @@ GEM
     zeitwerk (2.6.0)
 
 PLATFORMS
+  -darwin-21
+  arm64-darwin
   ruby
-  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES

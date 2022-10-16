@@ -9,11 +9,11 @@ export default class extends Controller {
     this.openValue = !this.openValue
   }
 
-  // hide(event) {
-  //   if (this.element.contains(event.target) === false && this.openValue) {
-  //     this.openValue = false
-  //   }
-  // }
+  hide(event) {
+    if (this.element.contains(event.target) === false && this.openValue) {
+      this.openValue = false
+    }
+  }
 
   openValueChanged() {
     this.openValue ? enter(this.menuTarget) : leave(this.menuTarget)

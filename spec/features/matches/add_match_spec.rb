@@ -26,26 +26,28 @@ describe 'Add Match', :devise do
 
     select calendar.name, from: 'Calendar'
 
-    expect { click_on 'Create Championship' }.to change(Championship, :count)
+    expect { click_on 'Créer un(e) compétition' }.to change(Championship, :count)
 
     assert_text 'Quel jour ?'
     click_on 'Ajouter une journée'
-    fill_in 'day[period_start_date]', with: '17/11/2018'
+    select(17, from: 'day_period_start_date_3i')
+    select('octobre', from: 'day_period_start_date_2i')
+    select(2018, from: 'day_period_start_date_1i')
     fill_in 'day[name]', with: day_name
-    expect { click_on 'Create Day' }.to change(Day, :count)
+    expect { click_on 'Créer un(e) journée' }.to change(Day, :count)
 
     assert_text 'Quel lieu ?'
     click_on 'Ajouter un lieu'
     fill_in 'location[name]', with: location_name
     fill_in 'location[address]', with: location_address
-    expect { click_on 'Create Location' }.to change(Location, :count)
+    expect { click_on 'Créer un(e) lieu' }.to change(Location, :count)
 
     assert_text 'Equipe adverse ?'
     click_on 'Ajouter une équipe'
     fill_in 'team[name]', with: adversary_team_name
-    expect { click_on 'Create Team' }.to change(Team, :count)
+    expect { click_on 'Créer un(e) équipe' }.to change(Team, :count)
 
-    expect { click_on 'Create Match' }.to change(Match, :count)
+    expect { click_on 'Créer un(e) match' }.to change(Match, :count)
     match = Match.last
     expect(match.local_team).to eq(team)
     expect(match.visitor_team.name).to eq(adversary_team_name)

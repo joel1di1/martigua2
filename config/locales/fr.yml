@@ -9,6 +9,13 @@ fr:
             dépendant(e) existe
           has_many: Vous ne pouvez pas supprimer l'enregistrement parce que les %{record}
             dépendants existent
+    models:
+      championship: compétition
+      day: journée
+      location: lieu
+      team: équipe
+      match: match
+
   date:
     abbr_day_names:
     - dim

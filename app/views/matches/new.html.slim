@@ -1,11 +1,18 @@
-%h1
-  Nouveau match
-  - if params[:section_team_id].present?
-    \-
-    = Team.find(params[:section_team_id]).name
-  - if params[:championship_id].present?
-    \-
-    = Championship.find(params[:championship_id]).name
+<div class="mt-2 md:flex md:items-center md:justify-between">
+  <div class="min-w-0 flex-1">
+    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+      'Nouveau match
+      - if params[:section_team_id].present?
+        '-
+        = Team.find(params[:section_team_id]).name
+      - if params[:championship_id].present?
+        '-
+        = Championship.find(params[:championship_id]).name
+    </h2>
+  </div>
+</div>
+
+
 
 - if params[:section_team_id].present? && params[:adversary_team_id].present? && (params[:match].present? && params[:match][:championship_id].present? && params[:match][:day_id].present? && params[:match][:location_id].present? )
   - @match.local_team_id = params[:section_team_id]
@@ -14,32 +21,33 @@
 
 - elsif params[:section_team_id].blank?
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
-    = label_tag :section_team_id, 'Quelle équipe ?'
-    = select_tag :section_team_id, options_for_select(current_section.teams.pluck(:name, :id))
+    = label_tag :section_team_id, 'Quelle équipe ?', class: 'block my-5 text-lg'
+    = select_tag :section_team_id, options_for_select(current_section.teams.pluck(:name, :id)), class: 'block my-5 text-lg'
     = f.submit 'Next', class: 'btn btn-primary'
 
 - elsif params[:match].blank? || params[:match][:championship_id].blank?
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
     = hidden_field_tag :section_team_id, params[:section_team_id]
-    = label_tag 'match[championship_id]', 'Quelle compétition ?'
-    = select_tag 'match[championship_id]', options_for_select(@section_team.championships.of_current_season.pluck(:name, :id))
+    = label_tag 'match[championship_id]', 'Quelle compétition ?', class: 'block my-5 text-lg'
+    = select_tag 'match[championship_id]', options_for_select(@section_team.championships.of_current_season.pluck(:name, :id)), class: 'block my-5 text-lg'
     = f.submit 'Next', class: 'btn btn-primary'
 
-  %a(href="#new-championship-collapse" data-toggle="collapse")
-    Ajouter une compétition
-  #new-championship-collapse.collapse
-    = render 'championships/form'
+  div data-controller="dropdown"
+    a href="#new-championship-collapse" data-action="dropdown#toggle:stop" aria-expanded="false" class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
+      'Ajouter une compétition
+    #new-championship-collapse data-dropdown-target="menu"
+      = render 'championships/form'
 
 - elsif params[:match].blank? || params[:match][:day_id].blank?
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
     = hidden_field_tag :section_team_id, params[:section_team_id]
     = hidden_field_tag 'match[championship_id]', params[:match][:championship_id]
-    = label_tag 'match[day_id]', 'Quel jour ?'
-    = select_tag 'match[day_id]', options_for_select(@championship.calendar.days.pluck(:name, :id))
+    = label_tag 'match[day_id]', 'Quel jour ?', class: 'block my-5 text-lg'
+    = select_tag 'match[day_id]', options_for_select(@championship.calendar.days.pluck(:name, :id)), class: 'block my-5 text-lg'
     = f.submit 'Next', class: 'btn btn-primary'
 
-  %a(href="#new-day-collapse" data-toggle="collapse")
-    Ajouter une journée
+  a(href="#new-day-collapse" data-toggle="collapse")
+    'Ajouter une journée
 
   #new-day-collapse.row.collapse
     .col-md-6.col-xs-12
@@ -59,12 +67,12 @@
     = hidden_field_tag :section_team_id, params[:section_team_id]
     = hidden_field_tag 'match[championship_id]', params[:match][:championship_id]
     = hidden_field_tag 'match[day_id]', params[:match][:day_id]
-    = label_tag 'match[location_id]', 'Quel lieu ?'
-    = select_tag 'match[location_id]', options_for_select(Location.all.pluck(:name, :id)), class: :select2
+    = label_tag 'match[location_id]', 'Quel lieu ?', class: 'block my-5 text-lg'
+    = select_tag 'match[location_id]', options_for_select(Location.all.pluck(:name, :id)), class: 'block my-5 text-lg'
     = f.submit 'Next', class: 'btn btn-primary'
 
-  %a(href="#new-location-collapse" data-toggle="collapse")
-    Ajouter un lieu
+  a(href="#new-location-collapse" data-toggle="collapse")
+    'Ajouter un lieu
 
   #new-location-collapse.row.collapse
     .col-md-6.col-xs-12
@@ -84,12 +92,12 @@
     = hidden_field_tag 'match[championship_id]', params[:match][:championship_id]
     = hidden_field_tag 'match[day_id]', params[:match][:day_id]
     = hidden_field_tag 'match[location_id]', params[:match][:location_id]
-    = label_tag :adversary_team_id, 'Equipe adverse ?'
-    = select_tag :adversary_team_id, options_for_select(Team.all.order('name').pluck(:name, :id)), class: :select2
+    = label_tag :adversary_team_id, 'Equipe adverse ?', class: 'block my-5 text-lg'
+    = select_tag :adversary_team_id, options_for_select(Team.all.order('name').pluck(:name, :id)), class: 'block my-5 text-lg'
     = f.submit 'Next', class: 'btn btn-primary'
 
-  %a(href="#new-location-collapse" data-toggle="collapse")
-    Ajouter une équipe
+  a(href="#new-location-collapse" data-toggle="collapse")
+    'Ajouter une équipe
 
   #new-location-collapse.row.collapse
     .col-md-6.col-xs-12

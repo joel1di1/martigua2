@@ -3,7 +3,7 @@
 # Use this setup block to configure all options available in SimpleForm.
 SimpleForm.setup do |config|
   # Default class for buttons
-  config.button_class = 'my-2 bg-blue-500 hover:bg-blue-700 text-white font-bold text-sm py-2 px-4 rounded'
+  config.button_class = 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;'
 
   # Define the default class of the input wrapper of the boolean input.
   config.boolean_label_class = ''
@@ -38,7 +38,7 @@ SimpleForm.setup do |config|
   # vertical forms
   #
   # vertical default_wrapper
-  config.wrappers :vertical_form, tag: 'div', class: 'mb-4' do |b|
+  config.wrappers :vertical_form, tag: 'div', class: 'my-5' do |b|
     b.use :html5
     b.use :placeholder
     b.optional :maxlength
@@ -47,7 +47,7 @@ SimpleForm.setup do |config|
     b.optional :min_max
     b.optional :readonly
     b.use :label, class: 'block', error_class: 'text-red-500'
-    b.use :input, class: 'shadow appearance-none border border-gray-300 rounded rounded-md w-full py-2 px-3 bg-white focus:outline-none focus:ring-0 focus:border-blue-500 text-gray-400 leading-6 transition-colors duration-200 ease-in-out', error_class: 'border-red-500', valid_class: 'border-green-400'
+    b.use :input, class: 'shadow appearance-none border border-gray-300 rounded rounded-md w-full py-2 px-3 bg-white focus:outline-none focus:ring-0 focus:border-blue-500 text-gray-900 leading-6 transition-colors duration-200 ease-in-out', error_class: 'border-red-500', valid_class: 'border-green-400'
     b.use :full_error, wrap_with: { tag: 'p', class: 'mt-2 text-red-500 text-xs italic' }
     b.use :hint, wrap_with: { tag: 'p', class: 'mt-2 text-grey-700 text-xs italic' }
   end
@@ -68,7 +68,7 @@ SimpleForm.setup do |config|
   end
 
   # vertical input for radio buttons and check boxes
-  config.wrappers :vertical_collection, item_wrapper_class: 'flex items-center', item_label_class: 'my-1 ml-3 block text-sm font-medium text-gray-400', tag: 'div', class: 'my-4' do |b|
+  config.wrappers :vertical_collection, item_wrapper_class: 'flex items-center', item_label_class: 'my-1 ml-3 block text-sm font-medium text-gray-900', tag: 'div', class: 'my-4' do |b|
     b.use :html5
     b.optional :readonly
     b.wrapper :legend_tag, tag: 'legend', class: 'text-sm font-medium text-gray-600', error_class: 'text-red-500' do |ba|
@@ -101,7 +101,7 @@ SimpleForm.setup do |config|
     end
     b.wrapper tag: 'div', class: 'inline-flex space-x-1' do |ba|
       # ba.use :input, class: 'flex w-auto w-auto text-gray-500 text-sm border-gray-300 rounded p-2', error_class: 'text-red-500', valid_class: 'text-green-400'
-      ba.use :input, class: 'flex w-auto w-auto shadow appearance-none border border-gray-300 rounded w-full p-2 bg-white focus:outline-none focus:border-blue-500 text-gray-400 leading-4 transition-colors duration-200 ease-in-out'
+      ba.use :input, class: 'flex w-auto w-auto shadow appearance-none border border-gray-300 rounded w-full bg-white focus:outline-none focus:border-blue-500 text-gray-900 leading-4 transition-colors duration-200 ease-in-out'
     end
     b.use :full_error, wrap_with: { tag: 'p', class: 'mt-2 text-red-500 text-xs italic' }
     b.use :hint, wrap_with: { tag: 'p', class: 'mt-2 text-grey-700 text-xs italic' }

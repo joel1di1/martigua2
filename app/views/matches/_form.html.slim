@@ -1,0 +1,22 @@
+= simple_form_for [current_section, @championship, @match] do |f|
+  = f.error_notification
+
+  .form-inputs
+    = hidden_field_tag 'match[championship_id]', params[:match][:championship_id] if params[:match]
+    div data-controller="switch-teams"
+      = f.association :local_team, collection: @championship.teams.order(:name), input_html: {'data-switch-teams-target': 'team1'}
+      a href='#' title='échanger les équipes' data-action="switch-teams#switch:stop"
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
+        </svg>
+
+      = f.association :visitor_team, collection: @championship.teams.order(:name), input_html: {'data-switch-teams-target': 'team2'}
+    = f.association :location, input_html: { class: 'select2' }
+    = f.association :day, collection: @championship.calendar.days.order('period_start_date ASC'), hint: "Jour de match"
+    = f.input :start_datetime
+    = f.input :meeting_datetime, hint: "Si vide, une heure avant."
+    = f.input :meeting_location
+
+  .form-actions
+    = f.button :submit
+

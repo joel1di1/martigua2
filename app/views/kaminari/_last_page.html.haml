@@ -1,2 +1,1 @@
-%li
-  = link_to_unless current_page.last?, raw(t 'views.pagination.last'), url, {:remote => remote}
+= link_to_unless current_page.last?, raw(t 'views.pagination.last'), url, {:remote => remote, class: "relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"}

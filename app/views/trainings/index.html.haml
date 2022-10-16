@@ -1,6 +1,0 @@
-- if current_user.coach_of?(current_section)
-  .text-center= link_to 'Ajouter un entrainement', new_section_training_path(section_id: current_section), class: 'btn btn-primary'
-
-= render partial: 'trainings/trainings', object: @trainings
-
-= paginate @trainings

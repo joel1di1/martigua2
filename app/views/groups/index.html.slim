@@ -1,32 +1,33 @@
-- if current_section && current_user.coach_of?(current_section)
-  .text-center
-    = link_to 'Ajouter un groupe', new_section_group_path(current_section), class: 'btn btn-primary'
+.flex.items-center
+  div class="sm:flex-auto"
+    h1 class="text-xl font-semibold text-gray-900"= "#{@groups.count} groupes"
 
-- if @groups.empty?
-  'Aucun groupe défini
-- else
-  div class="mt-8 flex flex-col"
-    div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8"
-      div class="inline-block w-full py-2 align-middle md:px-6 lg:px-8"
-        div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg"
-          table class="w-full divide-y divide-gray-300"
-            thead class="bg-gray-50"
+  - if current_section && current_user.coach_of?(current_section)
+    div class="mt-4 mt-0 ml-16 flex-none"
+      = link_to 'Ajouter un groupe', new_section_group_path(current_section), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+
+div class="mt-8 flex flex-col"
+  div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8"
+    div class="inline-block w-full py-2 align-middle md:px-6 lg:px-8"
+      div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg"
+        table class="w-full divide-y divide-gray-300"
+          thead class="bg-gray-50"
+            tr
+              th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6" Couleur
+              th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6" Nom
+              th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6" Description
+              - if current_section && current_user.coach_of?(current_section)
+                th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6"
+                  span class="sr-only" Supprimer
+          tbody class="divide-y divide-gray-200 bg-white"
+            - @groups.each do |group|
               tr
-                th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6" Couleur
-                th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6" Nom
-                th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6" Description
+                td scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 sm:pl-6" style="background-color: #{group.color}"
+                td scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 sm:pl-6 text-indigo-600"= link_to group.name, section_group_path(current_section, group), class: 'hover:underline'
+                td scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 sm:pl-6"= group.description
                 - if current_section && current_user.coach_of?(current_section)
-                  th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                    span class="sr-only" Supprimer
-            tbody class="divide-y divide-gray-200 bg-white"
-              - @groups.each do |group|
-                tr
-                  td scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 sm:pl-6" style="background-color: #{group.color}"
-                  td scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 sm:pl-6 text-indigo-600"= link_to group.name, section_group_path(current_section, group), class: 'hover:underline'
-                  td scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 sm:pl-6"= group.description
-                  - if current_section && current_user.coach_of?(current_section)
-                    td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
-                      = button_to section_group_path(current_section, group), method: :delete, form: {data: {turbo_confirm: "Supprimer le groupe #{group.name} ?"}} do
-                        span.sr-only= "Supprimer le group #{group.name}"
-                        svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"
-                          path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /
+                  td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
+                    = button_to section_group_path(current_section, group), method: :delete, form: {data: {turbo_confirm: "Supprimer le groupe #{group.name} ?"}} do
+                      span.sr-only= "Supprimer le group #{group.name}"
+                      svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"
+                        path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /

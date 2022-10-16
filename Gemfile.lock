@@ -527,6 +527,7 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   jquery-ui-rails
+  kaminari
   net-imap
   net-pop
   net-smtp

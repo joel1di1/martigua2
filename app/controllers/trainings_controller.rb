@@ -4,9 +4,20 @@ class TrainingsController < ApplicationController
   before_action :set_current_training
 
   def index
-    section_trainings = Training.of_section(current_section)
-    @trainings = section_trainings.page(params[:page]).padding(section_trainings.where('start_datetime < ?',
-                                                                                       1.day.ago).count)
+    Season.current.start_date
+    section_trainings = current_section.trainings
+
+    if params[:page].blank?
+      training_before_beginning_of_week =
+        section_trainings.where(start_datetime: (Season.current.start_date..Time.zone.now.beginning_of_week))
+      page = (training_before_beginning_of_week.count / 10) + 1
+      redirect_to section_trainings_path(current_section, page:)
+      return
+    end
+
+    @trainings = section_trainings
+      .page(params[:page])
+      .padding(section_trainings.where('start_datetime < ?', Season.current.start_date).count)
   end
 
   def create

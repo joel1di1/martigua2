@@ -3,14 +3,14 @@
   <head>
     <title>Martigua3</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload"
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-    <% if Rails.env.production? %>
-      :javascript
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = javascript_importmap_tags
+    - if Rails.env.production?
+      javascript:
         (function(h,o,t,j,a,r){
             h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
             h._hjSettings={hjid:121490,hjsv:5};
@@ -19,17 +19,16 @@
             r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
             a.appendChild(r);
         })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
-    <% end %>
   </head>
 
   <body class="h-full">
-    <%= render 'layouts/navigation' %>
+    = render 'layouts/navigation'
     <div class="min-h-full">
       <div class="pt-5 px-10">
-        <%= yield %>
+        = yield
       </div>
     </div>
-    <%= render 'layouts/alerts' %>
+    = render 'layouts/alerts'
 
     <div class='bg-lime-50 text-lime-800 text-lime-400 text-lime-500' />
     <div class='bg-red-50 text-red-800 text-red-400 text-red-500' />

@@ -23,9 +23,9 @@ describe 'User edit', :devise do
     login_as(user, scope: :user)
     visit edit_user_registration_path(user)
     fill_in 'Email', with: new_email
-    fill_in 'Current password', with: user.password
+    fill_in 'Mot de passe actuel', with: user.password
     click_button 'Update'
-    expect(page).to have_content 'You updated your account successfully.'
+    expect(page).to have_content 'Votre compte a bien été modifié.'
   end
 
   # Scenario: Change member role
@@ -40,7 +40,7 @@ describe 'User edit', :devise do
     visit edit_section_user_url(section, user)
     check 'Coach'
     uncheck 'Player'
-    click_button 'Update User'
+    click_button 'Modifier ce(tte) Utilisateur'
 
     expect(page).to have_content 'Prochains matchs'
     user.reload

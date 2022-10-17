@@ -1,31 +1,19 @@
-<div aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6">
-  <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
-    - if flash[:alert].present?
-      <div class="hidden pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5" data-alert-target="panel" data-controller="alert" aria-hidden="true" data-transition-enter="transition ease-out duration-200" data-transition-enter-start="transform opacity-0 scale-95" data-transition-enter-end="transform opacity-100 scale-100" data-transition-leave="transition ease-in duration-75" data-transition-leave-start="transform opacity-100 scale-100" data-transition-leave-end="transform opacity-0 scale-95">
-        <div class="p-4 bg-red-50">
-          <div class="flex items-start">
-            <div class="flex-shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-red-400">
-                <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
-              </svg>
-
-            </div>
-            <div class="ml-3 w-0 flex-1 pt-0.5">
-              <p class="text-sm font-medium text-red-800">
-                = flash[:alert]
-              </p>
-            </div>
-            <div class="ml-4 flex flex-shrink-0">
-              <button type="button" class="inline-flex rounded-md text-red-400 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 bg-red-50" data-action="alert#dismiss">
-                <span class="sr-only">Close</span>
-                <!-- Heroicon name: mini/x-mark -->
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-  </div>
-</div>
+- [[:alert, 'red'], [:notice, 'lime']].each do |alert_type, color|
+  div aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+    div class="flex w-full flex-col items-center space-y-4 sm:items-end"
+      - if flash[alert_type].present?
+        div class="hidden pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5" data-alert-target="panel" data-controller="alert" aria-hidden="true" data-transition-enter="transition ease-out duration-200" data-transition-enter-start="transform opacity-0 scale-95" data-transition-enter-end="transform opacity-100 scale-100" data-transition-leave="transition ease-in duration-75" data-transition-leave-start="transform opacity-100 scale-100" data-transition-leave-end="transform opacity-0 scale-95"
+          div class="p-4 bg-#{color}-50"
+            div class="flex items-start"
+              div class="flex-shrink-0"
+                svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-#{color}-400"
+                  path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd"
+              div class="ml-3 w-0 flex-1 pt-0.5"
+                p class="text-sm font-medium text-#{color}-800"
+                  = flash[alert_type]
+              div class="ml-4 flex flex-shrink-0"
+                button type="button" class="inline-flex rounded-md text-#{color}-400 hover:text-#{color}-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 bg-#{color}-50" data-action="alert#dismiss"
+                  span class="sr-only" Close
+                  <!-- Heroicon name: mini/x-mark -->
+                  svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
+                    path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"

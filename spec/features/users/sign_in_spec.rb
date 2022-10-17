@@ -11,7 +11,7 @@ describe 'Sign in', :devise do
   #   Then I see an invalid credentials message
   it 'user cannot sign in if not registered' do
     signin(Faker::Internet.email, 'please123')
-    expect(page).to have_content 'Invalid email or password.'
+    expect(page).to have_content 'Email ou mot de passe incorrect.'
   end
 
   # Scenario: User can sign in with valid credentials
@@ -24,8 +24,8 @@ describe 'Sign in', :devise do
     section = create :section
     section.add_player! user
     signin(user.email, user.password)
-    expect(page).to have_content 'Signed in successfully.'
-    expect(page).to have_link user.email
+    expect(page).to have_content 'Connecté(e).'
+    expect(page).to have_button user.email
     expect(page).to have_link 'Membres'
     expect(page).to have_link 'Entrainements'
   end
@@ -38,7 +38,7 @@ describe 'Sign in', :devise do
   it 'user cannot sign in with wrong email' do
     user = create(:user)
     signin('invalid@email.com', user.password)
-    expect(page).to have_content 'Invalid email or password.'
+    expect(page).to have_content 'Email ou mot de passe incorrect.'
   end
 
   # Scenario: User cannot sign in with wrong password
@@ -49,6 +49,6 @@ describe 'Sign in', :devise do
   it 'user cannot sign in with wrong password' do
     user = create(:user)
     signin(user.email, 'invalidpass')
-    expect(page).to have_content 'Invalid email or password.'
+    expect(page).to have_content 'Email ou mot de passe incorrect.'
   end
 end

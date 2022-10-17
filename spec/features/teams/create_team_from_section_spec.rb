@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe 'from section page', :devise do
-  it 'create a new team' do
+  skip 'create a new team' do
     team_name = Faker::Company.name
     section = create :section
     club = section.club

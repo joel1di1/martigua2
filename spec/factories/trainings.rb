@@ -4,7 +4,7 @@
 
 FactoryBot.define do
   factory :training do
-    start_datetime { 1.day.from_now }
+    start_datetime { Season.current.start_date + rand(200) }
     end_datetime { start_datetime + 2.hours }
     location
 

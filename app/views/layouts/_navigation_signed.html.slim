@@ -1,11 +1,14 @@
-- links = \
-  [ current_section ? [current_section.to_s, current_section] : ['Accueil', root_path], \
-  ["Membres", section_users_path(current_section)], \
-  ["Entrainements", section_trainings_path(current_section)], \
-  ["Groupes", section_groups_path(current_section)], \
-  ["Compétitions", section_championships_path(current_section)], \
-  ["Tigs", section_duty_tasks_path(current_section)], \
-  current_user.coach_of?(current_section) ? ["Notification SMS", new_section_sms_notification_path(current_section) ] : nil].compact
+
+- links = current_section ? \
+    [ [current_section.to_s, current_section], \
+      ["Membres", section_users_path(current_section)], \
+      ["Entrainements", section_trainings_path(current_section)], \
+      ["Groupes", section_groups_path(current_section)], \
+      ["Compétitions", section_championships_path(current_section)], \
+      ["Tigs", section_duty_tasks_path(current_section)], \
+    current_user.coach_of?(current_section) ? ["Notification SMS", new_section_sms_notification_path(current_section) ] : nil].compact \
+    : [['Accueil', root_path]]
+
 
 <nav class="bg-gray-800">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" data-controller="navbar" data-action="popstate@window->navbar#changeState">
@@ -56,7 +59,7 @@
                 = link_to 'Editer son profil', edit_section_user_path(current_user, section_id: current_section.to_param), class: "block px-4 py-2 text-sm text-gray-700 whitespace-nowrap border-t-2 border-grey-50", role: "menuitem", tabindex: "-1"
               - else
                 = link_to 'Editer son profil', edit_user_path(current_user), class: "block px-4 py-2 text-sm text-gray-700 whitespace-nowrap border-t-2 border-grey-50", role: "menuitem", tabindex: "-1"
-              = link_to 'Changer de mot de passe', edit_user_registration_path, class: "block px-4 py-2 text-sm text-gray-700 whitespace-nowrap", role: "menuitem", tabindex: "-1"
+              = link_to 'Changer de mot de passe', edit_user_registration_path(section_id: current_section), class: "block px-4 py-2 text-sm text-gray-700 whitespace-nowrap", role: "menuitem", tabindex: "-1"
               = button_to 'Déconnexion', destroy_user_session_path, method: :delete, class: "block px-4 py-2 text-sm text-gray-700 whitespace-nowrap", role: "menuitem", tabindex: "-1"
 
             </div>

@@ -11,7 +11,7 @@ describe TrainingsController, type: :controller do
     let(:request) { get :index, params: request_params }
 
     context 'within section' do
-      let(:request_params) { { section_id: section.to_param } }
+      let(:request_params) { { section_id: section.to_param, page: 1 } }
 
       context 'signed as user' do
         render_views

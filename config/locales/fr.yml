@@ -10,11 +10,26 @@ fr:
           has_many: Vous ne pouvez pas supprimer l'enregistrement parce que les %{record}
             dépendants existent
     models:
-      championship: compétition
-      day: journée
-      location: lieu
-      team: équipe
-      match: match
+      championship:
+        one: Compétition
+        other: Compétitions
+      day:
+        one: Journée
+        other: Journées
+      location:
+        one: Lieu
+        other: Lieux
+      team:
+        one: Équipe
+        other: Équipes
+      match:
+        one: Match
+        other: Matchs
+      user:
+        one: Utilisateur
+        other: Utilisateurs
+
+
 
   date:
     abbr_day_names:

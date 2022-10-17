@@ -18,7 +18,6 @@ class User < ApplicationRecord
   validates :authentication_token, presence: true
 
   before_validation :ensure_authentication_token
-  before_save :format_phone_number
 
   scope :active_this_season, -> { includes(:participations).where(participations: { season: Season.current }) }
 
@@ -157,9 +156,5 @@ class User < ApplicationRecord
     season ||= Season.current
     @membership_cache ||= {}
     @membership_cache[{ section:, role:, season: }] ||= participations.where(section:, role:, season:).count.positive?
-  end
-
-  def format_phone_number
-    self.phone_number = phone_number.delete(' ').gsub(/(\d\d)/, '\1 ').chop if phone_number&.match('^[\s\d]*$')
   end
 end

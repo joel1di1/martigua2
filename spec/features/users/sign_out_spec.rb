@@ -13,8 +13,8 @@ describe 'Sign out', :devise do
     section = create :section
     user = create :user, with_section: section
     signin(user.email, user.password)
-    expect(page).to have_content 'Signed in successfully.'
-    click_link 'Déconnexion'
-    expect(page).to have_content 'Signed out successfully.'
+    expect(page).to have_content 'Connecté(e).'
+    click_on 'Déconnexion'
+    expect(page).to have_content 'Déconnecté(e).'
   end
 end

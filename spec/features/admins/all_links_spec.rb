@@ -24,15 +24,16 @@ describe 'Active Admin', :devise do
     create :training_presence
     create :user
 
-    admins_pages = ['Admin Users', 'Calendar', 'Championships', 'Clubs', 'Days', 'Locations', 'Seasons', 'Sections',
-                    'Trainings', 'Training Presences', 'Users']
+    admins_pages = ['Admin Users', 'Calendar', 'Compétitions', 'Clubs', 'Journées', 'Lieux', 'Seasons', 'Sections',
+                    'Trainings', 'Training Presences', 'Utilisateurs']
 
     admins_pages.each do |admin_page|
       click_link admin_page
       expect(page.all('#page-title', text: admin_page).size).to eq 1
 
-      click_link "New #{admin_page.chop.downcase}"
-      expect(page.all('h1.main-content__page-title', text: "New #{admin_page.chop}").size).to eq(1), admin_page
+      click_link "Création #{admin_page.chop.downcase}"
+      debugger if admin_page == 'compétition'
+      expect(page.all('h1.main-content__page-title', text: "Création #{admin_page.chop}").size).to eq(1), admin_page
     end
   end
 end

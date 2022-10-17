@@ -17,6 +17,7 @@ gem 'colorist'
 gem 'delayed_job_active_record'
 gem 'devise'
 gem 'devise_invitable'
+gem 'devise-i18n'
 gem 'font_assets'
 gem 'google-api-client'
 gem 'haml-rails'
@@ -89,3 +90,5 @@ group :test do
   gem 'timecop'
   gem 'webdrivers'
 end
+
+

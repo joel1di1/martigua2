@@ -38,7 +38,7 @@ class SelectionsController < ApplicationController
     @no_response_players = (@players - @available_players - @non_available_players - @users_already_selected).to_a
     @no_response_players.sort! { |a, b| a.short_name <=> b.short_name }
 
-    @last_trainings, @presences_by_user_and_training = prepare_training_presences(current_section, @users)
+    @last_trainings, @presences_by_user_and_training = prepare_training_presences(current_section, @players)
   end
 
   def destroy

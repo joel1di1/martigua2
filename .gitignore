@@ -37,3 +37,4 @@
 latest*.dump
 
 spec/failures.txt
+.idea/

@@ -6,7 +6,7 @@ div class="sm:flex sm:items-center mb-5"
 
 - grid_col_number = @teams_with_matches.count + 1
 
-.grid class="grid-cols-#{grid_col_number} gap-4"
+.grid class="grid-cols-#{grid_col_number} gap-4" data-controller="drag-item" data-action="dragstart->drag-item#dragstart dragover->drag-item#dragover dragenter->drag-item#dragenter drop->drag-item#drop dragend->drag-item#dragend"
   div
     .grid.grid-cols-1.gap-4
       .overflow-hidden.shadow.shadow-green-200.ring-1.ring-black.ring-opacity-5.rounded-sm data-controller="dropdown" data-dropdown-open-value="true"

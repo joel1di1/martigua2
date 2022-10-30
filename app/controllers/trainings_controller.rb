@@ -2,10 +2,11 @@
 
 class TrainingsController < ApplicationController
   before_action :set_current_training
+  include PrefetchTrainingData
 
   def index
     Season.current.start_date
-    section_trainings = current_section.trainings.where("start_datetime > ?", Season.current.start_date)
+    section_trainings = current_section.trainings.eager_load(:location, :groups).where("start_datetime > ?", Season.current.start_date)
 
     if params[:page].blank?
       training_before_beginning_of_week =
@@ -16,6 +17,7 @@ class TrainingsController < ApplicationController
     end
 
     @trainings = section_trainings.page(params[:page])
+    add_training_prefetch_data(@trainings)
   end
 
   def create

@@ -1,5 +1,5 @@
 - if location
-  = link_to "http://maps.google.com/?q=#{location.address.squish}", {rel: "nofollow", target: '_blank', class: 'hover:underline'} do
+  = link_to "http://maps.google.com/?q=#{location.address.squish}", {rel: "nofollow", target: '_blank', class: 'underline'} do
     %span{title: location.address}= location.name
 - else
   %em Lieu non défini

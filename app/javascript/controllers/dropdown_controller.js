@@ -7,7 +7,6 @@ export default class extends Controller {
 
   toggle(event) {
     this.openValue = !this.openValue
-    console.log('coucou toggle')
   }
 
   hide(event) {

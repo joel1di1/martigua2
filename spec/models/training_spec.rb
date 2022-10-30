@@ -17,6 +17,13 @@ RSpec.describe Training, type: :model do
   it { is_expected.to have_many :training_presences }
   it { is_expected.to validate_presence_of :start_datetime }
 
+  describe '#name' do
+    context 'with location nil' do
+      let(:training) { create :training, location: nil }
+      it { expect(training.name).to be }
+    end
+  end
+
   describe '#nb_presents' do
     context 'with n users present' do
       before { nb_users.times { (create :user).present_for!(training) } }

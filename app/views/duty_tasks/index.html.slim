@@ -1,0 +1,59 @@
+.flex.items-center
+  div class="sm:flex-auto"
+    h1 class="text-xl font-semibold text-gray-900" Tâches collectives
+
+  div.mt-4.mt-0.ml-16.flex-none
+    = link_to 'Ajouter une tâche', new_section_duty_task_path(current_section), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+
+.flow-root.p-5.max-w-2xl
+  ul.-mb-8 role="list"
+   - @duty_tasks.each do |duty_task|
+      li
+        .relative.pb-8
+          span.absolute.top-4.left-4.-ml-px.h-full.bg-gray-200 aria-hidden="true" class="w-0.5"
+          .relative.flex.space-x-3
+            div
+              - if duty_task.name.include?('wwchasuble')
+                span.h-8.w-8.rounded-full.flex.items-center.justify-center.ring-8.ring-white
+                  svg.h-5.w-5 aria-hidden="true" viewbox=("0 0 20 20")  xmlns="http://www.w3.org/2000/svg"
+                    path d="M29.3,32v3.9h5.6v-5.3c0.1-5.2-3-9.3-8.1-9.3H24c-0.2,2.8-2.5,5.1-5.4,5.1s-5.2-2.3-5.4-5.1h-2.8c-5,0-8.1,4.1-8.1,9.2v5.4 h5.6V32c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.3,0.9,0.9v19.6h17.9V32c0-0.5,0.4-0.9,0.9-0.9C29,31.1,29.3,31.6,29.3,32z"
+              - elsif duty_task.name.include?('zzztable')
+                span.h-8.w-8.rounded-full.flex.items-center.justify-center.ring-8.ring-white
+                  svg.h-5.w-5 fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+                    <path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>                  </svg>
+              - else
+              /! Heroicon name: mini/check
+              span.h-8.w-8.rounded-full.bg-green-500.flex.items-center.justify-center.ring-8.ring-white
+                svg.h-5.w-5.text-white aria-hidden="true" fill="currentColor" viewbox=("0 0 20 20") xmlns="http://www.w3.org/2000/svg"
+                  path clip-rule="evenodd" d=("M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z") fill-rule="evenodd" /
+            .flex.flex-nowrap.min-w-0.flex-1.justify-between.space-x-4 class="pt-1.5"
+              div
+                p.text-sm.text-gray-500
+                  = duty_task.name
+                  a.font-medium.text-gray-900< href="#"= duty_task.user.short_name
+              .flex.flex-nowrap.whitespace-nowrap.text-right.text-sm.text-gray-500
+                time.mr-2 datetime=duty_task.realised_at.to_date.to_s(:long)
+                  = duty_task.realised_at.to_date.to_s(:long)
+                = link_to edit_section_duty_task_path(current_section, duty_task), title: 'Éditer', class: 'inline' do
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+                = button_to [current_section, duty_task], method: :delete, data: { confirm: 'Sûr ?' }, class: 'inline' do
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+
+= paginate @duty_tasks
+
+
+
+/           %tbody
+/             - @duty_tasks.each do |duty_task|
+/               %tr
+/                 %td= duty_task.realised_at.to_date.to_s(:long)
+/                 %td= duty_task.name
+/                 %td= duty_task.user.short_name
+/                 %td
+/                   = link_to edit_section_duty_task_path(current_section, duty_task), title: 'Éditer', class: 'btn btn-xs btn-default' do
+/                     %span.glyphicon.glyphicon-edit
+/
+/                   = button_to [current_section, duty_task], method: :delete, data: { confirm: 'Sûr ?' }, class: 'btn btn-xs btn-default' do
+/                     %span.glyphicon.glyphicon-trash

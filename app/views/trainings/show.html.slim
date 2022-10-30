@@ -1,17 +1,17 @@
-%h2
+h2
   Entrainement du
   = @training.start_datetime.strftime("%-d/%-m/%Y %-HH%-M")
 
   - if current_user.coach_of?(current_section)
     .action
       = link_to edit_section_training_path(current_section, @training) do
-        %span.glyphicon.glyphicon-pencil
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
       = link_to section_training_path(@training, section_id: current_section), :method => :delete, :data => { :confirm => 'Are you sure?' } do
         %span.glyphicon.glyphicon-trash
 
-%p
+p
   = render partial: 'locations/gmaps_link', locals: {location: @training.location}
-  %br
+  br
   Groupes :
   = @training.groups.map(&:name).join(", ")
 
@@ -22,9 +22,9 @@
         - training_presents = @training.presents
         = training_presents.size
         Joueurs présents
-      %ul.list-group
+      ul.list-group
         - training_presents.sort_by(&:full_name).each do |user|
-          %li.list-group-item= user.full_name
+          li.list-group-item= user.full_name
   .col-md-4
     .panel.panel-danger
       .panel-heading
@@ -33,7 +33,7 @@
         Joueurs non présents
       .list-group
         - training_not_presents.sort_by(&:full_name).each do |user|
-          %li.list-group-item= user.full_name
+          li.list-group-item= user.full_name
   .col-md-4
     .panel.panel-warning
       .panel-heading
@@ -42,4 +42,4 @@
         Pas de réponse
       .list-group
         - training_presence_not_set.sort_by(&:full_name).each do |user|
-          %li.list-group-item= user.full_name
+          li.list-group-item= user.full_name

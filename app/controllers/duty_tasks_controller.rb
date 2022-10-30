@@ -10,6 +10,10 @@ class DutyTasksController < InheritedResources::Base
     end
   end
 
+  def index
+    @duty_tasks = DutyTask.order(realised_at: :desc).page(params[:page])
+  end
+
   private
 
   def duty_task_params

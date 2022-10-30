@@ -16,6 +16,8 @@ class DutyTask < ApplicationRecord
 
   protected
 
+  paginates_per 10
+
   def set_name_weight_from_key
     return if key.blank?
 

@@ -7,38 +7,40 @@ div class="sm:flex sm:items-center mb-5"
 - grid_col_number = @teams_with_matches.count + 1
 
 .grid class="grid-cols-#{grid_col_number} gap-4"
-  .grid.grid-cols-1.gap-4
-    .overflow-hidden.shadow.shadow-green-200.ring-1.ring-black.ring-opacity-5.rounded-sm data-controller="dropdown" data-dropdown-open-value="true"
-      .bg-green-200.p-1 aria-expanded="true"
-        button.w-full data-action="dropdown#toggle"
-          = "#{@available_players.count} dispos"
-      ul.divide-y.divide-green-200 data-dropdown-target="menu"
-        - @available_players.each do |player|
-          = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
-    .overflow-hidden.shadow.shadow-yellow-200.ring-1.ring-black.ring-opacity-5.rounded-sm data-controller="dropdown" data-dropdown-open-value="false"
-      .bg-yellow-200.p-1 aria-expanded="true"
-        button.w-full data-action="dropdown#toggle"
-          = "#{@no_response_players.count} sans réponses"
-      ul.hidden.divide-y.divide-yellow-200 data-dropdown-target="menu"
-        - @no_response_players.each do |player|
-          = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
-    .overflow-hidden.shadow.shadow-red-200.ring-1.ring-black.ring-opacity-5.rounded-sm data-controller="dropdown" data-dropdown-open-value="false"
-      .bg-red-200.p-1 aria-expanded="true"
-        button.w-full data-action="dropdown#toggle"
-          = "#{@non_available_players.count} non dispos"
-      ul.hidden.divide-y.divide-red-200 data-dropdown-target="menu"
-        - @non_available_players.each do |player|
-          = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
+  div
+    .grid.grid-cols-1.gap-4
+      .overflow-hidden.shadow.shadow-green-200.ring-1.ring-black.ring-opacity-5.rounded-sm data-controller="dropdown" data-dropdown-open-value="true"
+        .bg-green-200.p-1 aria-expanded="true"
+          button.w-full data-action="dropdown#toggle"
+            = "#{@available_players.count} dispos"
+        ul.divide-y.divide-green-200 data-dropdown-target="menu"
+          - @available_players.each do |player|
+            = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
+      .overflow-hidden.shadow.shadow-yellow-200.ring-1.ring-black.ring-opacity-5.rounded-sm data-controller="dropdown" data-dropdown-open-value="false"
+        .bg-yellow-200.p-1 aria-expanded="true"
+          button.w-full data-action="dropdown#toggle"
+            = "#{@no_response_players.count} sans réponses"
+        ul.hidden.divide-y.divide-yellow-200 data-dropdown-target="menu"
+          - @no_response_players.each do |player|
+            = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
+      .overflow-hidden.shadow.shadow-red-200.ring-1.ring-black.ring-opacity-5.rounded-sm data-controller="dropdown" data-dropdown-open-value="false"
+        .bg-red-200.p-1 aria-expanded="true"
+          button.w-full data-action="dropdown#toggle"
+            = "#{@non_available_players.count} non dispos"
+        ul.hidden.divide-y.divide-red-200 data-dropdown-target="menu"
+          - @non_available_players.each do |player|
+            = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
 
   - @teams_with_matches.each do |team, match|
     - selections = match.selections(team).includes(:match).includes(:team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
-    .overflow-hidden.shadow.shadow-sky-600.ring-1.ring-black.ring-opacity-5.rounded-sm.text-center data-match_id=match.id data-team_id=team.id
-      .bg-sky-600.p-1.text-white
-        strong= team.name
-        = " (#{selections.count})"
-        .text-center
-          = link_to section_match_path(current_section, match) do
-            em= "#{match.local_team.name} - #{match.visitor_team.name}"
-      ul.list-group id="selection-match-#{match.id}"
-        - selections.each do |selection|
-          = render partial: 'player', object: selection.user, locals: { teams_with_matches: @teams_with_matches, selection: selection, display_teams: false}
+    div
+      .overflow-hidden.shadow.shadow-sky-600.ring-1.ring-black.ring-opacity-5.rounded-sm.text-center data-match_id=match.id data-team_id=team.id
+        .bg-sky-600.p-1.text-white
+          strong= team.name
+          = " (#{selections.count})"
+          .text-center
+            = link_to section_match_path(current_section, match) do
+              em= "#{match.local_team.name} - #{match.visitor_team.name}"
+        ul.list-group id="selection-match-#{match.id}"
+          - selections.each do |selection|
+            = render partial: 'player', object: selection.user, locals: { teams_with_matches: @teams_with_matches, selection: selection, display_teams: false}

@@ -5,7 +5,7 @@ li.p-1 draggable="true" data-player-id=player.id data-controller=(current_user.c
     button.w-full.flex.justify-between id="assign-#{player.id}" type="button" aria-haspopup="true" aria-expanded="false" data-action=(current_user.coach_of?(current_section) && "dropdown#toggle click@window->dropdown#hide")
       div
         = player.short_name
-      div
+      .hidden.lg:block
         - @last_trainings.each do |training|
           - color = player.was_present?(training, @presences_by_user_and_training) ? 'green' : 'red'
           svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-#{color}-600 inline-block" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"

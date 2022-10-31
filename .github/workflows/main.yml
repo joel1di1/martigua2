@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - without_tailwind
   pull_request:
 
 jobs:
@@ -31,6 +32,8 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: Assets Precompile
+        run: bundle exec rake assets:precompile
       - name: Run the tests
         run: bin/rspec
         env:

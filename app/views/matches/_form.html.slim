@@ -11,7 +11,7 @@
         </svg>
 
       = f.association :visitor_team, collection: @championship.teams.order(:name), input_html: {'data-switch-teams-target': 'team2'}
-    - if @match.start_datetime < Time.zone.now
+    - if @match.start_datetime.present? && @match.start_datetime < Time.zone.now
       = f.input :local_score
       = f.input :visitor_score
     = f.association :location, input_html: { class: 'select2' }

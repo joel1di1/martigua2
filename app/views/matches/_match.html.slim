@@ -2,7 +2,7 @@
 - match_title = "#{match.local_team&.name} - #{match.visitor_team&.name}"
 
 li.block.hover:bg-gray-50
-  .px-2.py-2.sm:px-2.flex.items-center.justify-between
+  .p-2.flex.items-center.justify-between
     .flex.flex-row.w-1/4.shrink
       - if current_user.coach_of?(current_section)
         .flex.items-center

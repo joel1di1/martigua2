@@ -3,46 +3,47 @@
 div class="sm:flex sm:items-center mb-5"
   .sm:flex-auto
     h1.text-xl.font-semibold.text-gray-900= @day.name
-  .div data-controller="dropdown"
-    button type="button" class="max-w-xs text-sm" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle"
-      'Pour envoyer les mails, c'est ici...
+  - if current_user.coach_of?(current_section)
+    .div data-controller="dropdown"
+      button type="button" class="max-w-xs text-sm" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle"
+        'Pour envoyer les mails, c'est ici...
 
-    - all_mails = current_section.members.map(&:email).join(',')
-    .hidden data-dropdown-target="menu"
+      - all_mails = current_section.members.map(&:email).join(',')
+      .hidden data-dropdown-target="menu"
 
-      div
-        '1) Copie le texte qui s'affiche en dessous
-        hr
-        .select-all
-          - @teams_with_matches.each do |team, match|
-            - selections = match.selections(team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
-            p.py-4
-              h3.text-xl= team.name
-              'Match :
-              strong= "#{match.local_team.name} - #{match.visitor_team.name}"
-              br
-              'Début du Match :
-              strong= match.date
-              - if match.meeting_datetime
+        div
+          '1) Copie le texte qui s'affiche en dessous
+          hr
+          .select-all
+            - @teams_with_matches.each do |team, match|
+              - selections = match.selections(team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
+              p.py-4
+                h3.text-xl= team.name
+                'Match :
+                strong= "#{match.local_team.name} - #{match.visitor_team.name}"
                 br
-                'Rendez-vous :
-                strong= match.meeting_datetime.to_fs(:short)
-              br
-              'Lieu :
-              strong
-                = render partial: 'locations/gmaps_link', locals: { location: match.location }
+                'Début du Match :
+                strong= match.date
+                - if match.meeting_datetime
+                  br
+                  'Rendez-vous :
+                  strong= match.meeting_datetime.to_fs(:short)
+                br
+                'Lieu :
+                strong
+                  = render partial: 'locations/gmaps_link', locals: { location: match.location }
 
-            p.py-4
-              = "Composition (#{selections.size}) : "
-              strong
-                = selections.map(&:user).map(&:short_name).join(', ')
+              p.py-4
+                = "Composition (#{selections.size}) : "
+                strong
+                  = selections.map(&:user).map(&:short_name).join(', ')
 
-        hr
-      p
-        '2) Click sur le boutton "Lancer un mail" (y'a tous les emails de tout le monde et le sujet déjà renseigné)
-        br
-        a class='inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2' target='_blank' href="mailto:#{all_mails}?subject=Compositions de la journée du #{@day.name}"
-          'Lancer un mail
+          hr
+        p
+          '2) Click sur le boutton "Lancer un mail" (y'a tous les emails de tout le monde et le sujet déjà renseigné)
+          br
+          a class='inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2' target='_blank' href="mailto:#{all_mails}?subject=Compositions de la journée du #{@day.name}"
+            'Lancer un mail
 
 - grid_col_number = @teams_with_matches.count + 1
 

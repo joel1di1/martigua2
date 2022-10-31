@@ -24,6 +24,6 @@ describe 'duty_tasks', :devise do
     signin user.email, user.password
 
     click_on 'Tigs'
-    click_on 'créer une nouvelle tache'
+    click_on 'Ajouter une tâche'
   end
 end

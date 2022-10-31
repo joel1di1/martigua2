@@ -25,8 +25,13 @@ li.block.hover:bg-gray-50
             </svg>
             = render partial: 'locations/gmaps_link', locals: { location: match.location }
           </p>
-    .w-2/4.text-sm.font-semibold.font-medium.text-indigo-600.text-center
-      = link_to match_title, match_link_url, class: 'hover:underline'
+    .w-2/4
+      .flex.flex-col
+        .text-sm.font-semibold.font-medium.text-indigo-600.text-center
+          = link_to match_title, match_link_url, class: 'hover:underline'
+        - if match.local_score.present?
+          .text-sm.text-center.text-indigo-500
+            = "#{match.local_score} - #{match.visitor_score}"
 
     .w-1/4.shrink.flex.flex-row-reverse
       - if current_user.coach_of?(current_section)

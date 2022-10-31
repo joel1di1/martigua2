@@ -1,9 +1,9 @@
 .flex.items-center
-  div class="sm:flex-auto"
-    h1 class="text-xl font-semibold text-gray-900"= "#{@groups.count} groupes"
+  .sm:flex-auto
+    h1.text-xl.font-semibold.text-gray-900= "#{@groups.count} groupes"
 
   - if current_section && current_user.coach_of?(current_section)
-    div class="mt-4 mt-0 ml-16 flex-none"
+    .mt-4.mt-0.ml-16.flex-none
       = link_to 'Ajouter un groupe', new_section_group_path(current_section), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 
 div class="mt-8 flex flex-col"

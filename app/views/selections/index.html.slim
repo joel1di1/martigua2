@@ -1,8 +1,8 @@
 / grid-cols-1 grid-cols-2 grid-cols-3 grid-cols-4
 
 div class="sm:flex sm:items-center mb-5"
-  div class="sm:flex-auto"
-    h1 class="text-xl font-semibold text-gray-900"= @day.name
+  .sm:flex-auto
+    h1.text-xl.font-semibold.text-gray-900= @day.name
   .div data-controller="dropdown"
     button type="button" class="max-w-xs text-sm" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle"
       'Pour envoyer les mails, c'est ici...

@@ -1,9 +1,9 @@
 .flex.items-center
-  div class="sm:flex-auto"
-    h1 class="text-xl font-semibold text-gray-900"= "#{@championships.count} compétitions"
+  .sm:flex-auto
+    h1.text-xl.font-semibold.text-gray-900= "#{@championships.count} compétitions"
 
   - if current_section && current_user.coach_of?(current_section)
-    div class="mt-4 mt-0 ml-16 flex-none"
+    .mt-4.mt-0.ml-16.flex-none
       - link_url = current_section ? new_section_championship_path(current_section) : new_championship_path
       = link_to 'Ajouter une compétition', link_url, class: 'btn btn-primary'
 

@@ -19,8 +19,9 @@
   .flex.flex-col
     .flex.justify-between
       h1.text-xl.font-semibold.text-gray-900= "#{@championship.matches.count} matchs"
-      .mt-4.mt-0.ml-16
-        = link_to 'Ajouter un match', new_section_training_path(section_id: current_section), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+      - if current_user.coach_of?(current_section)
+        .mt-4.mt-0.ml-16
+          = link_to 'Ajouter un match', new_section_match_path(section_id: current_section), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 
     = render partial: 'matches/matches', object: @championship.matches.join_day.date_ordered, locals: { championship: @championship }
 

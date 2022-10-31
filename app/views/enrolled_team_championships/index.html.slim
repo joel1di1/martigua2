@@ -1,0 +1,38 @@
+.flex.items-center
+  .flex
+    h1.text-xl.font-semibold.text-gray-900.mr-2.mb-5
+      = @championship.name
+
+.grid.grid-cols-2.gap-5
+  div
+    .shadow-md
+      .border-t.border-l.border-r.border-gray-200.rounded-t.bg-gray-100.p-2
+        'Toutes les équipe
+      - if @not_enrolled_teams.count == 0
+        'Aucune équipe à enregistrer
+      - else
+        ul.divide-y.divide-gray-200
+          - @not_enrolled_teams.each do |not_enrolled_team|
+            li.p-2
+              = not_enrolled_team.club.name + ' - '
+              strong= not_enrolled_team.name
+              = button_to section_championship_enrolled_team_championships_path(team_id: not_enrolled_team.id), method: :post, class: 'ml-4' do
+                svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6"
+                  path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"
+
+
+  div
+    .shadow-md.shadow-blue-200
+      .border-t.border-l.border-r.border-blue-200.rounded-t.bg-blue-200.p-2
+        'Equipes enregistrés dans la compétition
+      - if @enrolled_team_championships.count == 0
+        'Aucune équipe enregistré dans cette compétition
+      - else
+        ul.divide-y.divide-blue-200
+          - @enrolled_team_championships.each do |enrolled_team_championship|
+            li.p-2
+              = enrolled_team_championship.team.club.name + ' - '
+              strong= enrolled_team_championship.team.name
+              = button_to section_championship_enrolled_team_championship_path(current_section, @championship, enrolled_team_championship), method: :delete, class: 'ml-4' do
+                svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"
+                  path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15"

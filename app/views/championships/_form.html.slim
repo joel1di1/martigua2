@@ -1,0 +1,11 @@
+= simple_form_for [current_section, @championship] do |f|
+  = f.error_notification
+  = hidden_field_tag :_redirect_url, request.original_url
+  = hidden_field_tag :default_team_id, params[:section_team_id]
+  = f.input :name
+  = f.association :calendar, collection: @championship.season.calendars
+  = link_to "Calendriers (si le calendrier voulu n'apparaît pas dans la liste)", section_calendars_path(section: current_section), class: 'text-indigo-400 hover:text-indigo-700 underline'
+  = f.association :teams, label_method: :full_name, input_html: { size: 10 }, collection: Team.includes(:club).sort_by(&:full_name)
+  '(Sélectionnez obligatoirement au moins une équipe du club)
+  .mt-5
+    = f.button :submit, class: 'btn btn-primary'

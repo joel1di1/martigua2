@@ -1,7 +1,6 @@
 .flex.items-center
-  div class="sm:flex-auto"
-    h1 class="text-xl font-semibold text-gray-900"
-      'Prévoir un entrainement
+  .sm:flex-auto
+    h1 class="text-xl font-semibold text-gray-900" Prévoir un entrainement
 
 = simple_form_for [current_section, @training] do |f|
   = f.input :start_datetime, :as => :datetime, :autofocus => true

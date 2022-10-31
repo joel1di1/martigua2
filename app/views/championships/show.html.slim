@@ -1,0 +1,37 @@
+.flex.items-center
+  .flex
+    h1.text-xl.font-semibold.text-gray-900.mr-2.mb-5
+      = @championship.name
+    - if current_section && current_user.coach_of?(current_section)
+      = link_to edit_section_championship_path(current_section, @championship) do
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+
+- if @championship.teams.empty?
+  .bg-red-200.text-center.p-4.mb-5
+    p
+      'Attention, cette compétition ne sera visible uniquement si une équipe du club est engagée dedans.
+    p
+      '1ère chose à faire : modifier les équipes et y inscrire une équipe du club.
+    p
+      = link_to 'Modifier les équipes de cette compétition', section_championship_enrolled_team_championships_path(current_section, @championship), class: 'btn btn-primary'
+
+.flex.flex-col
+  .flex.flex-col
+    .flex.justify-between
+      h1.text-xl.font-semibold.text-gray-900= "#{@championship.matches.count} matchs"
+      .mt-4.mt-0.ml-16
+        = link_to 'Ajouter un match', new_section_training_path(section_id: current_section), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+
+    = render partial: 'matches/matches', object: @championship.matches.join_day.date_ordered, locals: { championship: @championship }
+
+  .mt-5
+    .flex
+      h2.text-xl.font-semibold.text-gray-900.mr-2= "#{@championship.teams.size} équipes enregistrées"
+      - if current_section && current_user.coach_of?(current_section)
+        = link_to section_championship_enrolled_team_championships_path(current_section, @championship), class: 'btn', title: 'Modifier les équipes de cette compétition' do
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+
+    ul.overflow-hidden.bg-white.shadow.rounded-md
+      - @championship.teams.sort_by(&:name).each do |team|
+        li.hover:bg-gray-50= team.name
+

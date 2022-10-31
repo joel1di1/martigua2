@@ -28,7 +28,7 @@
           <img class="block h-8 w-auto lg:hidden" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
           <img class="hidden h-8 w-auto lg:block" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
         </div>
-        <div class="hidden lg:ml-6 lg:block">
+        <div id="links" class="hidden lg:ml-6 lg:block">
           <div class="flex space-x-4 items-center">
             - classes = 'block px-3 py-2 rounded-md text-sm font-medium align-middle '
             - links.each do |title, path|
@@ -58,8 +58,8 @@
               = link_to 'Editer son profil', edit_section_user_path(current_user, section_id: current_section.to_param), class: "block px-4 py-2 text-sm text-gray-700 whitespace-nowrap border-t-2 border-grey-50", role: "menuitem", tabindex: "-1"
             - else
               = link_to 'Editer son profil', edit_user_path(current_user), class: "block px-4 py-2 text-sm text-gray-700 whitespace-nowrap border-t-2 border-grey-50", role: "menuitem", tabindex: "-1"
-              = link_to 'Changer de mot de passe', edit_user_registration_path(section_id: current_section), class: "block px-4 py-2 text-sm text-gray-700 whitespace-nowrap", role: "menuitem", tabindex: "-1"
-              = button_to 'Déconnexion', destroy_user_session_path, method: :delete, class: "block px-4 py-2 text-sm text-gray-700 whitespace-nowrap", role: "menuitem", tabindex: "-1"
+            = link_to 'Changer de mot de passe', edit_user_registration_path(section_id: current_section), class: "block px-4 py-2 text-sm text-gray-700 whitespace-nowrap", role: "menuitem", tabindex: "-1"
+            = button_to 'Déconnexion', destroy_user_session_path, method: :delete, class: "block px-4 py-2 text-sm text-gray-700 whitespace-nowrap", role: "menuitem", tabindex: "-1"
         </div>
       </div>
     </div>

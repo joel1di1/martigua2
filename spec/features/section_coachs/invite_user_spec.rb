@@ -14,7 +14,9 @@ describe 'Invite User', :devise do
     section_coach = create :user, :section_coach
     signin section_coach.email, section_coach.password
     expect(page).to have_link 'Membres'
-    click_link 'Membres'
+    within '#links' do
+      click_link 'Membres'
+    end
     expect(page).to have_current_path section_users_path(section_coach.sections.first), ignore_query: true
     expect(page).to have_link 'Ajouter un joueur'
     click_link 'Ajouter un joueur'

@@ -7,7 +7,9 @@ describe 'See group detail' do
   before { signin_user user }
 
   it 'visit the group page with defaults groups' do
-    click_link 'Groupes'
+    within '#links' do
+      click_link 'Groupes'
+    end
     expect(page).to have_content section.group_everybody.name
   end
 
@@ -16,7 +18,9 @@ describe 'See group detail' do
     group2 = create :group, section: section
 
     group1.add_user!(user)
-    click_link 'Groupes'
+    within '#links' do
+      click_link 'Groupes'
+    end
 
     expect(page).to have_content group1.name
     expect(page).to have_content group2.name

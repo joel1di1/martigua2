@@ -23,7 +23,9 @@ describe 'Renew Participations', :devise do
 
     signin coach.email, coach.password
     expect(page).to have_link 'Membres'
-    click_link 'Membres'
+    within '#links' do
+      click_link 'Membres'
+    end
     expect(page).to have_current_path section_users_path(section), ignore_query: true
     expect(page).not_to have_content previous_player.email
     expect(page).to have_link renouveller

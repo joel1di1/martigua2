@@ -11,7 +11,9 @@ describe 'duty_tasks', :devise do
     user = create :user, with_section: section
     signin user.email, user.password
 
-    click_on 'Tigs'
+    within '#links' do
+      click_on 'Tigs'
+    end
   end
 
   # Scenario: member creates a duty task
@@ -23,7 +25,9 @@ describe 'duty_tasks', :devise do
     user = create :user, with_section: section
     signin user.email, user.password
 
-    click_on 'Tigs'
+    within '#links' do
+      click_on 'Tigs'
+    end
     click_on 'Ajouter une tâche'
   end
 end

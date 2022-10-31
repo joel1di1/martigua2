@@ -15,7 +15,9 @@ describe 'send training invitation', :devise do
     training = create :training, with_section: section
 
     signin coach.email, coach.password
-    click_link 'Entrainements'
+    within '#links' do
+      click_link 'Entrainements'
+    end
 
     submit_id = "training_invitations_#{training.id}"
     expect { click_button(submit_id) }.to change { training.invitations.count }.by(1)

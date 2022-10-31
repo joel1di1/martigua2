@@ -13,7 +13,9 @@ describe 'Add training', :devise do
     section_coach = create :user, :section_coach
     location = create :location
     signin section_coach.email, section_coach.password
-    click_link 'Entrainements'
+    within '#links' do
+      click_link 'Entrainements'
+    end
     click_link 'Ajouter un entrainement'
 
     select(location.name, from: 'training_location_id')

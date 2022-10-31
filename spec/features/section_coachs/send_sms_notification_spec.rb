@@ -15,7 +15,9 @@ describe 'send sms notification', :devise do
     signin section_coach.email, section_coach.password
     expect(page).to have_link 'Notification SMS'
 
-    click_link 'Notification SMS'
+    within '#links' do
+      click_link 'Notification SMS'
+    end
     expect(page).to have_current_path new_section_sms_notification_path(section_coach.sections.first),
                                       ignore_query: true
 

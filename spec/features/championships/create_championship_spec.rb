@@ -11,7 +11,9 @@ describe 'create championship', :devise do
 
     signin coach.email, coach.password
 
-    click_on 'Compétitions'
+    within '#links' do
+      click_on 'Compétitions'
+    end
     click_on 'Ajouter une compétition'
 
     fill_in('Name', with: championship_name)

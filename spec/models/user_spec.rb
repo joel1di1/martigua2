@@ -286,23 +286,22 @@ describe User do
     context 'with an active user' do
       before { section.add_player! user }
 
-      it { expect(active_users.count).to eq 1 }
+      context 'when user just has been added' do
+        it { expect(active_users.count).to eq 1 }
+      end
 
-      context 'after 14 months' do
+      context 'when 14 months has passed' do
         before { Timecop.travel 14.months.from_now }
+        after { Timecop.return }
 
-        it { expect(active_users.count).to eq 0 }
+        it 'expects users to reset activation' do
+          expect(active_users.count).to eq 0
 
-        context 'with a readded user' do
-          before { section.add_player! user }
+          section.add_player! user
+          expect(active_users.count).to eq 1
 
-          it { expect(active_users.count).to eq 1 }
-
-          context 'then deleted' do
-            before { section.remove_member! user }
-
-            it { expect(active_users.count).to eq 0 }
-          end
+          section.remove_member! user
+          expect(active_users.count).to eq 0
         end
       end
     end

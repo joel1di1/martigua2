@@ -14,3 +14,4 @@ pin 'react-dom', to: 'https://ga.jspm.io/npm:react-dom@18.2.0/index.js'
 pin 'scheduler', to: 'https://ga.jspm.io/npm:scheduler@0.23.0/index.js'
 pin '@heroicons/react/solid', to: 'https://ga.jspm.io/npm:@heroicons/react@2.0.11/solid/index.js'
 pin 'el-transition', to: 'https://ga.jspm.io/npm:el-transition@0.0.7/index.js'
+pin "tom-select", to: "https://ga.jspm.io/npm:tom-select@2.2.2/dist/js/tom-select.complete.js"

@@ -14,10 +14,11 @@
     - if @match.start_datetime.present? && @match.start_datetime < Time.zone.now
       = f.input :local_score
       = f.input :visitor_score
-    = f.association :location, input_html: { class: 'select2' }
-    = f.association :day, collection: @championship.calendar.days.order('period_start_date ASC'), hint: "Jour de match"
-    = f.input :start_datetime
-    = f.input :meeting_datetime, hint: "Si vide, une heure avant."
+    = f.association :location, input_html: { data: { controller: 'ts--select' }, class: 'px-0 py-0' }
+    = f.association :day, collection: @championship.calendar.days.order('period_start_date ASC'), hint: "Jour de match", input_html: { data: { controller: 'ts--select' }, class: 'px-0 py-0' }
+    div data-controller="linked-times"
+      = f.input :start_datetime
+      = f.input :meeting_datetime, hint: "Par défault, une heure avant."
     = f.input :meeting_location
 
   .form-actions

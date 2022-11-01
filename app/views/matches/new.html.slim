@@ -95,8 +95,8 @@
     = hidden_field_tag 'match[day_id]', params[:match][:day_id]
     = hidden_field_tag 'match[location_id]', params[:match][:location_id]
     = label_tag :adversary_team_id, 'Equipe adverse ?', class: 'block my-5 text-lg'
-    = select_tag :adversary_team_id, options_for_select(Team.all.order('name').pluck(:name, :id)), class: 'block my-5 text-lg'
-    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+    = select_tag :adversary_team_id, options_for_select([[nil,nil]].concat(Team.all.order('name').pluck(:name, :id))), class: 'block w-full rounded-sm cursor-pointer focus:outline-none', data: { controller: 'ts--select' }
+    = f.submit 'Next', class: 'mt-2 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
 
   div data-controller='dropdown'
     a href="#new-location-collapse" data-toggle="collapse" data-action='dropdown#toggle:stop' class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"

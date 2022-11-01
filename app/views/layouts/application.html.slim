@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 html lang="fr" class="h-full"
   head
-    title Martigua3
+    title Martigua
     meta name="viewport" content="width=device-width,initial-scale=1"
     = csrf_meta_tags
     = csp_meta_tag
@@ -9,6 +9,9 @@ html lang="fr" class="h-full"
 
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
     = javascript_importmap_tags
+
+    link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet"
+
     - if Rails.env.production?
       javascript:
         (function(h,o,t,j,a,r){

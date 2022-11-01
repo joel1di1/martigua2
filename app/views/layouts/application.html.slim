@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr" class="h-full">
-  <head>
-    <title>Martigua3</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+html lang="fr" class="h-full"
+  head
+    title Martigua3
+    meta name="viewport" content="width=device-width,initial-scale=1"
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload"
@@ -19,9 +19,8 @@
             r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
             a.appendChild(r);
         })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
-  </head>
 
-  <body class="h-full">
+  body class="h-full"
     = render 'layouts/navigation'
     <div class="min-h-full">
       <div class="pt-5 px-10">
@@ -32,6 +31,3 @@
 
     <div class='bg-lime-50 text-lime-800 text-lime-400 text-lime-500' />
     <div class='bg-red-50 text-red-800 text-red-400 text-red-500' />
-
-  </body>
-</html>

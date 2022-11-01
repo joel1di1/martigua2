@@ -15,13 +15,6 @@ module Martigua2
 
     config.i18n.default_locale = :fr
 
-
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins 'd1zljy12d9ls0t.cloudfront.net'
-        resource '*', headers: :any, methods: %i[get head options]
-      end
-    end
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 

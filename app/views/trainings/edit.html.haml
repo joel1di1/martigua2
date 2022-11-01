@@ -1,8 +1,3 @@
 %h2 Prévoir un entrainement
 
-= simple_form_for [current_section, @training] do |f|
-  = f.input :start_datetime, as: :string, input_html: { class: 'datetimepicker' }
-  = f.input :end_datetime, as: :string, input_html: { class: 'datetimepicker' }
-  = f.input :location_id, collection: Location.order('name ASC')
-  = f.association :groups, collection: current_section.groups.where(season: Season.current).order(:name)
-  = f.button :submit, value: 'Modifier l\'entrainement', class: 'btn btn-primary'
+= render 'form'

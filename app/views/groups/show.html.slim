@@ -23,9 +23,10 @@ p
     strong= "#{@users.count} membres"
   .panel-body
     - if !@group.system? && current_section && current_user.coach_of?(current_section)
-      = form_tag section_group_add_users_path(current_section, @group), class: 'form-inline' do
-        = select_tag 'user_id', options_from_collection_for_select(current_section.members - @users, :id, :full_name), include_blank: true, class: 'form-control'
-        button.btn{type: :submit} Ajouter
+      = form_tag section_group_add_users_path(current_section, @group), class: 'flex flex-row' do
+        = select_tag 'user_id', options_from_collection_for_select(current_section.members - @users, :id, :full_name), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72'
+
+        button.btn.btn-primary.ml-2 type='submit' Ajouter
     = render partial: 'users/users', object: @users, locals: { group: @group }
 
 

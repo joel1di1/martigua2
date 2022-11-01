@@ -19,31 +19,32 @@ li.block.p-1.md:p-2 class=(training.cancelled? ? 'bg-red-200 hover:bg-red-300' :
         <svg class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75z" clip-rule="evenodd" />
         </svg>
-        p.text-lg.text-gray-900= l(training.start_datetime, format: "%a %d %b %R")
+        p.text-sm.font-medium.text-gray-900= l(training.start_datetime, format: "%a %d %b %R")
       - if training.cancelled?
-        p.block.text-lg.font-bold.text-gray-500
+        p.block.text-sm.font-bold.text-gray-600
           'ENTRAINEMENT ANNULÉ
           = " : #{training.cancel_reason}" if training.cancel_reason.present?
 
     / présences
     div
       .flex.flex-col.items-center.md:items-end
-        .flex.flex-row-reverse
-          = render partial: 'matches/presences', locals: {link_url: section_training_path(training, section_id: current_section.to_param), nb_presents: training.nb_presents, nb_not_presents: training.nb_not_presents, nb_no_response: training.nb_presence_not_set}
+        - if !training.cancelled?
+          .flex.flex-row-reverse
+            = render partial: 'matches/presences', locals: {link_url: section_training_path(training, section_id: current_section.to_param), nb_presents: training.nb_presents, nb_not_presents: training.nb_not_presents, nb_no_response: training.nb_presence_not_set}
 
-        - if current_user.player_of?(current_section)
-          .flex.flex-row-reverse.mt-2
-            .flex.flex-nowrap
-              - if training.users.include?(current_user)
-                - if current_user.present_for?(training).nil?
-                  = button_to 'Présent ?', section_user_training_training_presences_path(current_section, current_user, training), method: :post, class: 'inline-flex items-center rounded border border-transparent bg-indigo-600 px-1.5 py-1 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-                  = button_to 'Non présent ?', section_user_training_training_presences_path(current_section, current_user, training), method: :delete, class: 'inline-flex items-center rounded border border-transparent bg-indigo-100 px-1.5 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-1'
-                - elsif current_user.present_for?(training) == true
-                  .inline-flex.items-center.rounded-full.bg-green-100.px-2.5.py-0.5.text-xs.font-medium.text-green-800 Présent !
-                  = button_to 'Non présent', section_user_training_training_presences_path(current_section, current_user, training), method: :delete, class: 'inline-flex items-center rounded border border-transparent bg-indigo-100 px-1 py-0.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-1'
-                - else
-                  .inline-flex.items-center.rounded-full.bg-red-100.px-2.5.py-0.5.text-xs.font-medium.text-red-800 Non présent !
-                  = button_to 'Présent', section_user_training_training_presences_path(current_section, current_user, training), method: :post, class: 'inline-flex items-center rounded border border-transparent bg-indigo-100 px-1.5 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-1'
+          - if current_user.player_of?(current_section)
+            .flex.flex-row-reverse.mt-2
+              .flex.flex-nowrap
+                - if training.users.include?(current_user)
+                  - if current_user.present_for?(training).nil?
+                    = button_to 'Présent', section_user_training_training_presences_path(current_section, current_user, training), method: :post, class: 'inline-flex items-center rounded border border-transparent bg-indigo-100 px-1.5 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 '
+                    = button_to 'Absent', section_user_training_training_presences_path(current_section, current_user, training), method: :delete, class: 'inline-flex items-center rounded border border-transparent bg-indigo-100 px-1.5 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-1'
+                  - elsif current_user.present_for?(training) == true
+                    .inline-flex.items-center.rounded-full.bg-green-100.px-2.5.py-0.5.text-xs.font-medium.text-green-800 Présent
+                    = button_to "m'indiquer absent", section_user_training_training_presences_path(current_section, current_user, training), method: :delete, class: 'inline-flex items-center px-1 py-0.5 text-xs text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 underline ml-1'
+                  - else
+                    .inline-flex.items-center.rounded-full.bg-red-100.px-2.5.py-0.5.text-xs.font-medium.text-red-800 Absent
+                    = button_to "m'indiquer présent", section_user_training_training_presences_path(current_section, current_user, training), method: :post, class: 'inline-flex items-center px-1 py-0.5 text-xs text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 underline ml-1'
 
     / actions
     - if current_user.coach_of?(current_section)

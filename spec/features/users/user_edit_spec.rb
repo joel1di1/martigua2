@@ -12,19 +12,20 @@ describe 'User edit', :devise do
     Warden.test_reset!
   end
 
-  # Scenario: User changes email address
+  # Scenario: User changes password
   #   Given I am signed in
-  #   When I change my email address
+  #   When I change my password
   #   Then I see an account updated message
-  it 'user changes email address' do
+  it 'user changes password' do
+    new_password = Faker::Alphanumeric.alphanumeric(number: 10)
     section = create(:section)
     user = create(:user, with_section: section)
-    new_email = Faker::Internet.email
     login_as(user, scope: :user)
     visit edit_user_registration_path(user)
-    fill_in 'Email', with: new_email
     fill_in 'Mot de passe actuel', with: user.password
-    click_button 'Update'
+    fill_in 'Nouveau mot de passe', with: new_password
+    fill_in 'Confimation du nouveau mot de passe', with: new_password
+    click_button 'Mettre à jour'
     expect(page).to have_content 'Votre compte a bien été modifié.'
   end
 
@@ -60,7 +61,6 @@ describe 'User edit', :devise do
     other = create(:user, email: other_email)
     login_as(me, scope: :user)
     visit edit_user_registration_path(other)
-    expect(page).to have_content 'Edit User'
-    expect(page).to have_field('Email', with: me.email)
+    expect(page).to have_content 'Modifier son mot de passe'
   end
 end

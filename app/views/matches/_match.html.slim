@@ -1,7 +1,7 @@
 - match_link_url = defined?(championship) ? section_championship_match_path(current_section, championship, match) : section_match_path(current_section, match)
 - match_title = "#{match.local_team&.name} - #{match.visitor_team&.name}"
 
-li.p-1.md:p-2.block.hover:bg-gray-50
+li.p-1.md:p-2.block.hover:bg-gray-100.odd:bg-gray-50
   .items-center.justify-between.grid.grid-cols-1.md:grid-cols-3
     .flex.flex-col.items-center.md:items-start
       .md:mt-2.flex.items-center.text-sm.text-gray-600.sm:mt-0

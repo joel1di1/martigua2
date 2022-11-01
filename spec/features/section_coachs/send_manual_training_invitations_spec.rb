@@ -10,9 +10,9 @@ describe 'send training invitation', :devise do
   #   When I go to trainings page
   #   Then I can create new training
   it 'coach send training invitation' do
-    section = create :section
-    coach = create :user, with_section_as_coach: section
-    training = create :training, with_section: section
+    section = create(:section)
+    coach = create(:user, with_section_as_coach: section)
+    training = create(:training, with_section: section)
 
     signin coach.email, coach.password
     within '#links' do

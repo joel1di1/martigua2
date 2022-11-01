@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe VisitorsController, type: :controller do
+describe VisitorsController do
   describe 'GET index' do
     context 'not signed in' do
       before { get :index }
@@ -12,7 +12,7 @@ describe VisitorsController, type: :controller do
     end
 
     context 'sign as user with only one section' do
-      let(:user) { create :one_section_player }
+      let(:user) { create(:one_section_player) }
 
       before do
         sign_in user

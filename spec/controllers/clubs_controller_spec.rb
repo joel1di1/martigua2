@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe ClubsController, type: :controller do
-  let(:club) { create :club }
-  let(:user) { create :user }
+describe ClubsController do
+  let(:club) { create(:club) }
+  let(:user) { create(:user) }
 
   describe 'GET show' do
     let(:do_request) do

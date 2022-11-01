@@ -101,7 +101,7 @@ class Training < ApplicationRecord
 
   def self.send_presence_mail_for_next_week(date: DateTime.now)
     User.active_this_season.each do |user|
-      next_week_trainings = user.next_week_trainings(date: date)
+      next_week_trainings = user.next_week_trainings(date:)
       UserMailer.delay.send_training_invitation(next_week_trainings.to_a, user) unless next_week_trainings.empty?
     end
   end

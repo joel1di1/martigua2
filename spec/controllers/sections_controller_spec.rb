@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe SectionsController, type: :controller do
-  let(:club) { create :club }
-  let(:user) { create :user }
-  let(:section) { create :section, club: }
+describe SectionsController do
+  let(:club) { create(:club) }
+  let(:user) { create(:user) }
+  let(:section) { create(:section, club:) }
 
   describe 'GET new' do
     let(:do_request) do

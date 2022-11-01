@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe UsersController, type: :controller do
-  let(:section) { create :section }
-  let(:user) { create :user, with_section: section }
+describe UsersController do
+  let(:section) { create(:section) }
+  let(:user) { create(:user, with_section: section) }
 
   describe 'GET index' do
     let(:request_params) { {} }
@@ -21,7 +21,7 @@ describe UsersController, type: :controller do
 
       context 'with one user with several roles' do
         let(:user) do
-          user = create :user, with_section_as_coach: section
+          user = create(:user, with_section_as_coach: section)
           section.add_player! user
           user
         end
@@ -86,8 +86,8 @@ describe UsersController, type: :controller do
   end
 
   describe 'POST training_presences' do
-    let(:training1) { create :training }
-    let(:training2) { create :training }
+    let(:training1) { create(:training) }
+    let(:training2) { create(:training) }
 
     let(:post_training_presences) do
       post :training_presences, params: {
@@ -122,7 +122,7 @@ describe UsersController, type: :controller do
     end
 
     context 'from section group' do
-      let(:group) { create :group, section: }
+      let(:group) { create(:group, section:) }
       let(:do_request) do
         delete :destroy, params: { section_id: section.to_param, group_id: group.to_param, id: user.to_param }
       end

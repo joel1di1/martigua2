@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe ParticipationsRenewalController, type: :controller do
-  let(:section) { create :section }
-  let(:coach) { create :user, with_section_as_coach: section }
+describe ParticipationsRenewalController do
+  let(:section) { create(:section) }
+  let(:coach) { create(:user, with_section_as_coach: section) }
 
   before { sign_in coach }
 
@@ -12,12 +12,12 @@ describe ParticipationsRenewalController, type: :controller do
     let(:request_params) { { section_id: section.to_param } }
     let(:request) { get :index, params: request_params }
 
-    let(:player_from_previous_season) { create :user }
-    let(:player_from_previous_season2) { create :user }
-    let(:coach_from_previous_season) { create :user }
-    let(:player_and_coach_from_previous_season) { create :user }
-    let(:player_from_current_season) { create :user }
-    let(:coach_from_current_season) { create :user }
+    let(:player_from_previous_season) { create(:user) }
+    let(:player_from_previous_season2) { create(:user) }
+    let(:coach_from_previous_season) { create(:user) }
+    let(:player_and_coach_from_previous_season) { create(:user) }
+    let(:player_from_current_season) { create(:user) }
+    let(:coach_from_current_season) { create(:user) }
 
     let(:expected_members) do
       [

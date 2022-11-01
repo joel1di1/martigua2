@@ -29,7 +29,7 @@ describe 'Sign Up', :devise do
   #   Then I see a missing password message
   it 'visitor cannot sign up without password' do
     sign_up_with(Faker::Internet.email, '', '')
-    expect(page).to have_content "Mot de passe doit être rempli(e)"
+    expect(page).to have_content 'Mot de passe doit être rempli(e)'
   end
 
   # Scenario: Visitor cannot sign up with a short password
@@ -38,7 +38,7 @@ describe 'Sign Up', :devise do
   #   Then I see a 'too short password' message
   it 'visitor cannot sign up with a short password' do
     sign_up_with(Faker::Internet.email, 'ple', 'ple')
-    expect(page).to have_content "Mot de passe est trop court (au moins 4 caractères)"
+    expect(page).to have_content 'Mot de passe est trop court (au moins 4 caractères)'
   end
 
   # Scenario: Visitor cannot sign up without password confirmation
@@ -47,7 +47,7 @@ describe 'Sign Up', :devise do
   #   Then I see a missing password confirmation message
   it 'visitor cannot sign up without password confirmation' do
     sign_up_with(Faker::Internet.email, 'please123', '')
-    expect(page).to have_content "Confirmation du mot de passe ne concorde pas avec Mot de passe"
+    expect(page).to have_content 'Confirmation du mot de passe ne concorde pas avec Mot de passe'
   end
 
   # Scenario: Visitor cannot sign up with mismatched password and confirmation
@@ -56,6 +56,6 @@ describe 'Sign Up', :devise do
   #   Then I should see a mismatched password message
   it 'visitor cannot sign up with mismatched password and confirmation' do
     sign_up_with(Faker::Internet.email, 'please123', 'mismatch')
-    expect(page).to have_content "Confirmation du mot de passe ne concorde pas avec Mot de passe"
+    expect(page).to have_content 'Confirmation du mot de passe ne concorde pas avec Mot de passe'
   end
 end

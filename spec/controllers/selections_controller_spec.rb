@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe SelectionsController, type: :controller do
-  let(:section) { create :section }
-  let(:coach) { create :user, with_section_as_coach: section }
-  let(:day) { create :day }
+describe SelectionsController do
+  let(:section) { create(:section) }
+  let(:coach) { create(:user, with_section_as_coach: section) }
+  let(:day) { create(:day) }
   let(:team_with_matches) { double }
 
   before { sign_in coach }
@@ -29,8 +29,8 @@ describe SelectionsController, type: :controller do
   describe 'DELETE destroy' do
     subject { delete :destroy, params: request_params }
 
-    let(:match) { create :match, day: }
-    let(:selection) { create :selection, match: }
+    let(:match) { create(:match, day:) }
+    let(:selection) { create(:selection, match:) }
     let(:request_params) { { section_id: section.to_param, match_id: match.id, id: selection.id } }
 
     it { expect(subject).to redirect_to(root_path) }

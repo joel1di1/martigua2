@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 describe 'See group detail' do
-  let(:section) { create :section }
-  let(:user) { create :user, with_section: section }
+  let(:section) { create(:section) }
+  let(:user) { create(:user, with_section: section) }
 
   before { signin_user user }
 
@@ -14,8 +14,8 @@ describe 'See group detail' do
   end
 
   it 'visit the group page with 2 groups' do
-    group1 = create :group, section: section
-    group2 = create :group, section: section
+    group1 = create(:group, section:)
+    group2 = create(:group, section:)
 
     group1.add_user!(user)
     within '#links' do

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Participation, type: :model do
+RSpec.describe Participation do
   it { is_expected.to belong_to :user }
   it { is_expected.to belong_to :season }
   it { is_expected.to belong_to :section }

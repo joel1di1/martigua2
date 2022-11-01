@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe UserMailer, type: :mailer do
+RSpec.describe UserMailer do
   describe '#send_training_invitation' do
-    let(:user) { create :user }
-    let(:training1) { create :training }
-    let(:training2) { create :training }
+    let(:user) { create(:user) }
+    let(:training1) { create(:training) }
+    let(:training2) { create(:training) }
 
     let(:mail) { described_class.send_training_invitation(trainings, user) }
 

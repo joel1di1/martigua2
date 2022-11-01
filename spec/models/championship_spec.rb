@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe Championship, type: :model do
-  let(:championship) { create :championship }
+RSpec.describe Championship do
+  let(:championship) { create(:championship) }
 
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to belong_to :season }
@@ -14,7 +14,7 @@ RSpec.describe Championship, type: :model do
   describe '.enroll_team!' do
     subject { championship.enroll_team!(team) }
 
-    let(:team) { create :team }
+    let(:team) { create(:team) }
 
     context 'with new team' do
       it { expect(subject.enrolled_teams).to match_array([team]) }
@@ -30,7 +30,7 @@ RSpec.describe Championship, type: :model do
   describe '#unenroll_team!' do
     subject { championship.unenroll_team!(team) }
 
-    let(:team) { create :team }
+    let(:team) { create(:team) }
 
     context 'with new team' do
       it { expect(subject.enrolled_teams).to match_array([]) }

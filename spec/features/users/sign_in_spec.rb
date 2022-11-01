@@ -21,7 +21,7 @@ describe 'Sign in', :devise do
   #   Then I see a success message
   it 'user can sign in with valid credentials' do
     user = create(:user)
-    section = create :section
+    section = create(:section)
     section.add_player! user
     signin(user.email, user.password)
     expect(page).to have_content 'Connecté(e).'

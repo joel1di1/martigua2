@@ -11,7 +11,7 @@ describe 'send sms notification', :devise do
   #   Then I a form
   #   And I can send sms to users
   it 'section_coach sign in and invite player' do
-    section_coach = create :user, :section_coach
+    section_coach = create(:user, :section_coach)
     signin section_coach.email, section_coach.password
     expect(page).to have_link 'Notification SMS'
 
@@ -21,7 +21,7 @@ describe 'send sms notification', :devise do
     expect(page).to have_current_path new_section_sms_notification_path(section_coach.sections.first),
                                       ignore_query: true
 
-    sms_notification = build :sms_notification
+    sms_notification = build(:sms_notification)
     fill_in 'sms_notification[title]', with: sms_notification.title
     fill_in 'sms_notification[description]', with: sms_notification.description
 
@@ -29,7 +29,7 @@ describe 'send sms notification', :devise do
   end
 
   it 'section simple member sign in and do not see sms notifications' do
-    section_member = create :one_section_player
+    section_member = create(:one_section_player)
     signin section_member.email, section_member.password
     expect(page).not_to have_link 'Notification SMS'
   end

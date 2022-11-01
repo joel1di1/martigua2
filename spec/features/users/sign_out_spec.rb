@@ -10,8 +10,8 @@ describe 'Sign out', :devise do
   #   When I sign out
   #   Then I see a signed out message
   it 'user signs out successfully' do
-    section = create :section
-    user = create :user, with_section: section
+    section = create(:section)
+    user = create(:user, with_section: section)
     signin(user.email, user.password)
     expect(page).to have_content 'Connecté(e).'
     click_on 'Déconnexion'

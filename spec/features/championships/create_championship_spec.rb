@@ -4,10 +4,10 @@ describe 'create championship', :devise do
   it 'creates a new championship' do
     championship_name = Faker::Company.name
 
-    section = create :section
-    coach = create :user, with_section_as_coach: section
-    team = create :team, with_section: section
-    calendar = create :calendar
+    section = create(:section)
+    coach = create(:user, with_section_as_coach: section)
+    team = create(:team, with_section: section)
+    calendar = create(:calendar)
 
     signin coach.email, coach.password
 

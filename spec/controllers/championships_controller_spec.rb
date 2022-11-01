@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 
-describe ChampionshipsController, type: :controller do
-  let(:championships) { create :championships }
-  let(:section) { create :section }
-  let(:user) { create :user, with_section_as_coach: section }
-  let(:calendar) { create :calendar }
+describe ChampionshipsController do
+  let(:championships) { create(:championships) }
+  let(:section) { create(:section) }
+  let(:user) { create(:user, with_section_as_coach: section) }
+  let(:calendar) { create(:calendar) }
 
   describe 'GET new' do
     let(:do_request) { get :new, params: { section_id: section } }
@@ -38,7 +38,7 @@ describe ChampionshipsController, type: :controller do
   end
 
   describe 'GET edit' do
-    let(:championship) { create :championship }
+    let(:championship) { create(:championship) }
     let(:do_request) { get :edit, params: { section_id: section, id: championship.id } }
 
     before { sign_in user }
@@ -52,7 +52,7 @@ describe ChampionshipsController, type: :controller do
   end
 
   describe 'POST update' do
-    let!(:championship) { create :championship }
+    let!(:championship) { create(:championship) }
     let(:new_championship_params) { { name: Faker::Company.name } }
     let(:params) { { section_id: section.to_param, id: championship.id, championship: new_championship_params } }
     let(:do_request) { post :update, params: }

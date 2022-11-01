@@ -10,8 +10,8 @@ describe 'Add training', :devise do
   #   When I go to trainings page
   #   Then I can create new training
   it 'section_coach sign in and add new player' do
-    section_coach = create :user, :section_coach
-    location = create :location
+    section_coach = create(:user, :section_coach)
+    location = create(:location)
     signin section_coach.email, section_coach.password
     within '#links' do
       click_link 'Entrainements'

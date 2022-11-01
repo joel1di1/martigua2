@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe GroupsController, type: :controller do
-  let(:section) { create :section }
-  let(:user) { create :user, with_section: section }
-  let(:group) { create :group, section: }
+describe GroupsController do
+  let(:section) { create(:section) }
+  let(:user) { create(:user, with_section: section) }
+  let(:group) { create(:group, section:) }
 
   before { sign_in user }
 

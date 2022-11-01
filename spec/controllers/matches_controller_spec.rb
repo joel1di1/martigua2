@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe MatchesController, type: :controller do
-  let(:section) { create :section }
-  let(:user) { create :user, with_section: section }
-  let(:championship) { create :championship }
+describe MatchesController do
+  let(:section) { create(:section) }
+  let(:user) { create(:user, with_section: section) }
+  let(:championship) { create(:championship) }
 
   before { sign_in user }
 
@@ -19,9 +19,9 @@ describe MatchesController, type: :controller do
   end
 
   describe 'POST selection' do
-    let(:local_team) { create :team }
-    let(:visitor_team) { create :team }
-    let(:match) { create :match, visitor_team:, local_team: }
+    let(:local_team) { create(:team) }
+    let(:visitor_team) { create(:team) }
+    let(:match) { create(:match, visitor_team:, local_team:) }
     let(:params) { { section_id: section, id: match, user_id: user.id, team_id: local_team.id, format: } }
 
     let(:do_request) { post :selection, params: }

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 describe User do
-  let(:user) { create :user }
-  let(:section) { create :section }
+  let(:user) { create(:user) }
+  let(:section) { create(:section) }
 
   it { is_expected.to validate_presence_of :email }
   it { is_expected.to have_db_column :first_name }
@@ -17,7 +17,7 @@ describe User do
   it { is_expected.to have_and_belong_to_many :groups }
 
   describe 'authentication token should be generated' do
-    subject { create :user, authentication_token: nil }
+    subject { create(:user, authentication_token: nil) }
 
     its(:authentication_token) { is_expected.not_to be_nil }
     its(:id) { is_expected.not_to be_nil }
@@ -25,7 +25,7 @@ describe User do
 
   describe '#short_name' do
     it 'returns nickname or full name' do
-      user = create :user, nickname: nil
+      user = create(:user, nickname: nil)
       expect(user.short_name).to eq "#{user.first_name} #{user.last_name}"
       nickname = Faker::Name.first_name
       user.update!(nickname:)
@@ -41,22 +41,22 @@ describe User do
     end
 
     context 'user with two sections' do
-      let!(:participation1) { create :participation, user: }
-      let!(:participation2) { create :participation, user: }
+      let!(:participation1) { create(:participation, user:) }
+      let!(:participation2) { create(:participation, user:) }
 
       it { is_expected.to be false }
     end
 
     context 'user with one section' do
-      let!(:participation1) { create :participation, user: }
+      let!(:participation1) { create(:participation, user:) }
 
       it { is_expected.to be true }
     end
 
     context 'user with two participations on one section' do
-      let(:section) { create :section }
-      let!(:participation1) { create :participation, user:, section:, role: Participation::PLAYER }
-      let!(:participation2) { create :participation, user:, section:, role: Participation::COACH }
+      let(:section) { create(:section) }
+      let!(:participation1) { create(:participation, user:, section:, role: Participation::PLAYER) }
+      let!(:participation2) { create(:participation, user:, section:, role: Participation::COACH) }
 
       it { is_expected.to be true }
     end
@@ -82,7 +82,7 @@ describe User do
     end
 
     context 'with a last year coach of the section' do
-      let(:previous_season) { create :season, start_date: 2.years.ago }
+      let(:previous_season) { create(:season, start_date: 2.years.ago) }
 
       before { section.add_coach!(user, season: previous_season) }
 
@@ -93,7 +93,7 @@ describe User do
   describe '#player_of?' do
     subject { user.player_of?(section) }
 
-    let(:section) { create :section }
+    let(:section) { create(:section) }
 
     context 'with a player not in the section' do
       it { is_expected.to be false }
@@ -112,7 +112,7 @@ describe User do
     end
 
     context 'with a last year player of the section' do
-      let(:previous_season) { create :season, start_date: 2.years.ago }
+      let(:previous_season) { create(:season, start_date: 2.years.ago) }
 
       before { section.add_player!(user, season: previous_season) }
 
@@ -124,7 +124,7 @@ describe User do
     let(:display) { user.display_participations }
 
     context 'with one participation' do
-      let!(:participation) { create :participation, user: }
+      let!(:participation) { create(:participation, user:) }
 
       it { expect(display).to include(participation.section.club.name) }
       it { expect(display).to include(participation.section.name) }
@@ -137,7 +137,7 @@ describe User do
     context 'with one training' do
       subject(:set_presence) { user.present_for!(training) }
 
-      let(:training) { create :training }
+      let(:training) { create(:training) }
 
       it { expect { set_presence }.to change(TrainingPresence, :count).by(1) }
 
@@ -153,8 +153,8 @@ describe User do
     end
 
     context 'with two trainings' do
-      let(:training1) { create :training }
-      let(:training2) { create :training }
+      let(:training1) { create(:training) }
+      let(:training2) { create(:training) }
 
       context 'passed as array' do
         let(:set_presence) { user.present_for!([training1, training2]) }
@@ -171,33 +171,33 @@ describe User do
   end
 
   describe '#present_for?' do
-    let(:training) { create :training }
+    let(:training) { create(:training) }
 
     context 'without any response' do
       it { expect(user.present_for?(training)).to be_nil }
     end
 
     context 'without a nil response' do
-      let!(:training_presence) { create :training_presence, training:, user:, is_present: nil }
+      let!(:training_presence) { create(:training_presence, training:, user:, is_present: nil) }
 
       it { expect(user.present_for?(training)).to be_nil }
     end
 
     context 'without a true response' do
-      let!(:training_presence) { create :training_presence, training:, user:, is_present: true }
+      let!(:training_presence) { create(:training_presence, training:, user:, is_present: true) }
 
       it { expect(user).to be_present_for(training) }
     end
 
     context 'without a false response' do
-      let!(:training_presence) { create :training_presence, training:, user:, is_present: false }
+      let!(:training_presence) { create(:training_presence, training:, user:, is_present: false) }
 
       it { expect(user).not_to be_present_for(training) }
     end
   end
 
   describe '#admin_of?' do
-    let(:club) { create :club }
+    let(:club) { create(:club) }
 
     context 'with other club' do
       it { expect(user).not_to be_admin_of(club) }
@@ -218,10 +218,10 @@ describe User do
     let(:training_group_ids) { [group.id] }
     let(:training_date) { 1.week.from_now }
     let(:user_group_ids) { [group.id] }
-    let(:group) { create :group, section: }
-    let(:user) { create :user, with_section: section, group_ids: user_group_ids }
+    let(:group) { create(:group, section:) }
+    let(:user) { create(:user, with_section: section, group_ids: user_group_ids) }
     let(:training) do
-      create :training, with_section: section, start_datetime: training_date, group_ids: training_group_ids
+      create(:training, with_section: section, start_datetime: training_date, group_ids: training_group_ids)
     end
 
     before { training }
@@ -249,7 +249,7 @@ describe User do
     end
 
     context 'when user is in 2 training groups' do
-      let(:group2) { create :group, section: }
+      let(:group2) { create(:group, section:) }
       let(:user_group_ids) { [group.id, group2.id] }
       let(:training_group_ids) { [group.id, group2.id] }
 
@@ -261,7 +261,7 @@ describe User do
   describe '#is_available_for?' do
     subject { user.is_available_for?(match) }
 
-    let(:match) { create :match }
+    let(:match) { create(:match) }
 
     context 'when player has not respond' do
       it { is_expected.to be_falsy }
@@ -278,36 +278,6 @@ describe User do
 
       it { is_expected.to be_truthy }
     end
-  end
-
-  describe '.create' do
-    # describe '#format_phone_number' do
-    #   subject { create(:user, phone_number:).phone_number }
-
-    #   context 'with phone number 0123456789' do
-    #     let(:phone_number) { '0123456789' }
-
-    #     it { is_expected.to eq '01 23 45 67 89' }
-    #   end
-
-    #   context 'with phone number \'01 23 45 67 89\'' do
-    #     let(:phone_number) { '01 23 45 67 89' }
-
-    #     it { is_expected.to eq '01 23 45 67 89' }
-    #   end
-
-    #   context 'with phone number \' 01  2345 67 89 \'' do # rubocop:disable RSpec/ExcessiveDocstringSpacing
-    #     let(:phone_number) { ' 01  2345 67 89 ' }
-
-    #     it { is_expected.to eq '01 23 45 67 89' }
-    #   end
-
-    #   context 'with phone number \'+33(0)1 23-45-67\t89\'' do
-    #     let(:phone_number) { '+33(0)1 23-45-67\t89' }
-
-    #     it { is_expected.to eq '+33(0)1 23-45-67\t89' }
-    #   end
-    # end
   end
 
   describe '.active_this_season' do
@@ -358,9 +328,9 @@ describe User do
   describe 'validates presence on trainings' do
     subject(:was_present) { user.was_present?(training) }
 
-    let(:section) { create :section }
-    let(:user) { create :user, with_section: section }
-    let(:training) { create :training, with_section: section }
+    let(:section) { create(:section) }
+    let(:user) { create(:user, with_section: section) }
+    let(:training) { create(:training, with_section: section) }
 
     context 'with availability not set' do
       it { expect(was_present).to be_falsy }
@@ -382,9 +352,9 @@ describe User do
   end
 
   describe '#confirm_presence!' do
-    let(:section) { create :section }
-    let(:user) { create :user, with_section: section }
-    let(:training) { create :training, with_section: section }
+    let(:section) { create(:section) }
+    let(:user) { create(:user, with_section: section) }
+    let(:training) { create(:training, with_section: section) }
 
     context 'with availability not set' do
       it 'create presence and presence matchs confirmation' do

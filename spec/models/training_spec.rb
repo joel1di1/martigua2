@@ -6,10 +6,10 @@ RSpec::Matchers.define :db_object_eq do |x|
   match { |actual| actual == x }
 end
 
-RSpec.describe Training, type: :model do
-  let(:training) { create :training, with_section: section, group_ids: [group.id] }
-  let(:group)    { create :group, section: }
-  let(:section)  { create :section }
+RSpec.describe Training do
+  let(:training) { create(:training, with_section: section, group_ids: [group.id]) }
+  let(:group)    { create(:group, section:) }
+  let(:section)  { create(:section) }
   let!(:nb_users) { [1, 2, 3, 4].sample }
 
   it { is_expected.to have_and_belong_to_many :sections }
@@ -19,14 +19,15 @@ RSpec.describe Training, type: :model do
 
   describe '#name' do
     context 'with location nil' do
-      let(:training) { create :training, location: nil }
+      let(:training) { create(:training, location: nil) }
+
       it { expect(training.name).to be }
     end
   end
 
   describe '#nb_presents' do
     context 'with n users present' do
-      before { nb_users.times { (create :user).present_for!(training) } }
+      before { nb_users.times { create(:user).present_for!(training) } }
 
       it { expect(training.nb_presents).to eq nb_users }
     end
@@ -34,20 +35,20 @@ RSpec.describe Training, type: :model do
 
   describe '#nb_not_presents' do
     context 'with n users not presents' do
-      before { nb_users.times { (create :user).not_present_for!(training) } }
+      before { nb_users.times { create(:user).not_present_for!(training) } }
 
       it { expect(training.nb_not_presents).to eq nb_users }
     end
   end
 
   describe '#nb_presence_not_set' do
-    before { nb_users.times { create :user, with_section: section, group_ids: [group.id] } }
+    before { nb_users.times { create(:user, with_section: section, group_ids: [group.id]) } }
 
     it { expect(training.nb_presence_not_set).to eq nb_users }
   end
 
   describe '.send_presence_mail_for_next_week' do
-    let(:users) { (1..nb_users).map { create :user, with_section: section, group_ids: [group.id] } }
+    let(:users) { (1..nb_users).map { create(:user, with_section: section, group_ids: [group.id]) } }
 
     before do
       User.delete_all
@@ -89,13 +90,13 @@ RSpec.describe Training, type: :model do
       ]
     end
 
-    let!(:trainings) { dates.map { |date| create :training, with_section: section, start_datetime: date } }
+    let!(:trainings) { dates.map { |date| create(:training, with_section: section, start_datetime: date) } }
 
     it { expect(described_class.of_next_week(section:, date: now)).to eq trainings[2..4] }
   end
 
   describe 'users' do
-    let(:user) { create :user, with_section: section, group_ids: }
+    let(:user) { create(:user, with_section: section, group_ids:) }
 
     context 'with user not in training group' do
       let(:group_ids) { [] }
@@ -111,10 +112,10 @@ RSpec.describe Training, type: :model do
   end
 
   describe '#group_names' do
-    let(:group1)    { create :group, section:, name: 'TEST' }
-    let(:group2)    { create :group, section:, name: 'AA TEST' }
+    let(:group1)    { create(:group, section:, name: 'TEST') }
+    let(:group2)    { create(:group, section:, name: 'AA TEST') }
     let(:group_ids) { [group1.id, group2.id] }
-    let(:training) { create :training, with_section: section, group_ids: }
+    let(:training) { create(:training, with_section: section, group_ids:) }
 
     it { expect(training.group_names).to eq 'AA TEST, TEST' }
   end
@@ -130,7 +131,7 @@ RSpec.describe Training, type: :model do
   end
 
   describe '#repeat_until!' do
-    let!(:training) { create :training, start_datetime: 2.days.from_now }
+    let!(:training) { create(:training, start_datetime: 2.days.from_now) }
     let(:nb_weeks) { rand(2..6) }
     let(:end_date) { nb_weeks.weeks.from_now }
 
@@ -168,15 +169,15 @@ RSpec.describe Training, type: :model do
   end
 
   describe '#next_duties' do
-    let(:present_player1) { create :user }
-    let(:present_player2) { create :user }
-    let(:present_player3) { create :user }
-    let(:present_player4) { create :user }
-    let(:not_present_player) { create :user }
-    let(:no_response_player) { create :user }
-    let(:section)  { create :section }
-    let(:group)    { create :group, section: }
-    let(:training) { create :training, with_section: section, group_ids: [group.id] }
+    let(:present_player1) { create(:user) }
+    let(:present_player2) { create(:user) }
+    let(:present_player3) { create(:user) }
+    let(:present_player4) { create(:user) }
+    let(:not_present_player) { create(:user) }
+    let(:no_response_player) { create(:user) }
+    let(:section)  { create(:section) }
+    let(:group)    { create(:group, section:) }
+    let(:training) { create(:training, with_section: section, group_ids: [group.id]) }
 
     before do
       group.add_user!(present_player1)
@@ -191,11 +192,11 @@ RSpec.describe Training, type: :model do
       present_player4.present_for!(training)
       not_present_player.not_present_for!(training)
 
-      create :duty_task, user: present_player1, weight: 2, realised_at: 1.day.ago
-      create :duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago
-      create :duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago
-      create :duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago
-      create :duty_task, user: present_player3, weight: 2, realised_at: 2.months.ago
+      create(:duty_task, user: present_player1, weight: 2, realised_at: 1.day.ago)
+      create(:duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago)
+      create(:duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago)
+      create(:duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago)
+      create(:duty_task, user: present_player3, weight: 2, realised_at: 2.months.ago)
     end
 
     it 'select present players order by weight then date of last duties' do

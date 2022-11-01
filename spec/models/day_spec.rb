@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Day, type: :model do
+RSpec.describe Day do
   it { is_expected.to belong_to :calendar }
   it { is_expected.to have_many :matches }
 
@@ -11,7 +11,7 @@ RSpec.describe Day, type: :model do
   describe 'create with period_start_date should set defaut period_end_date' do
     subject { day.period_end_date }
 
-    let(:day) { build :day, period_start_date: start_date, period_end_date: end_date }
+    let(:day) { build(:day, period_start_date: start_date, period_end_date: end_date) }
 
     before { day.save! }
 
@@ -53,7 +53,7 @@ RSpec.describe Day, type: :model do
 
     let(:new_end_date) { Date.parse('2010-09-12') }
     let(:old_end_date) { Date.parse('2003-03-06') }
-    let(:day) { create :day, period_end_date: old_end_date }
+    let(:day) { create(:day, period_end_date: old_end_date) }
 
     before { day.update(params) }
 

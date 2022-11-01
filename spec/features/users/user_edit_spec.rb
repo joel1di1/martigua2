@@ -17,8 +17,8 @@ describe 'User edit', :devise do
   #   When I change my email address
   #   Then I see an account updated message
   it 'user changes email address' do
-    section = create :section
-    user = create :user, with_section: section
+    section = create(:section)
+    user = create(:user, with_section: section)
     new_email = Faker::Internet.email
     login_as(user, scope: :user)
     visit edit_user_registration_path(user)
@@ -33,9 +33,9 @@ describe 'User edit', :devise do
   #   When I change user roles
   #   Then I see an user updated roles
   it 'user changes roles' do
-    section = create :section
-    user = create :user, with_section: section
-    coach = create :user, with_section_as_coach: section
+    section = create(:section)
+    user = create(:user, with_section: section)
+    coach = create(:user, with_section_as_coach: section)
     login_as(coach, scope: :user)
     visit edit_section_user_url(section, user)
     check 'Coach'
@@ -54,8 +54,8 @@ describe 'User edit', :devise do
   #   When I try to edit another user's profile
   #   Then I see my own 'edit profile' page
   it "user cannot cannot edit another user's profile", :me do
-    section = create :section
-    me = create :user, with_section: section
+    section = create(:section)
+    me = create(:user, with_section: section)
     other_email = Faker::Internet.email
     other = create(:user, email: other_email)
     login_as(me, scope: :user)

@@ -17,8 +17,8 @@ describe 'User index page', :devise do
   #   When I visit the user index page
   #   Then I see my own email address
   it 'user sees own email address' do
-    section = create :section
-    user = create :user, with_section: section
+    section = create(:section)
+    user = create(:user, with_section: section)
     login_as(user, scope: :user)
     visit section_users_path(section_id: section.to_param)
     expect(page).to have_content user.email

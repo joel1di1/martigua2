@@ -5,8 +5,8 @@
 FactoryBot.define do
   factory :match do
     championship
-    local_team { create :team }
-    visitor_team { create :team }
+    local_team { create(:team) }
+    visitor_team { create(:team) }
     start_datetime { 1.week.from_now }
     end_datetime { 1.week.from_now + 2.hours }
     local_score { 1 }

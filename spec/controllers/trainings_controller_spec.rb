@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe TrainingsController, type: :controller do
+describe TrainingsController do
   let(:request_params) { {} }
-  let(:section) { create :section }
-  let(:user) { create :user, with_section: section }
+  let(:section) { create(:section) }
+  let(:user) { create(:user, with_section: section) }
 
   describe 'GET index' do
     let(:request) { get :index, params: request_params }
@@ -15,11 +15,11 @@ describe TrainingsController, type: :controller do
 
       context 'signed as user' do
         render_views
-        let(:user) { create :user, with_section: section }
+        let(:user) { create(:user, with_section: section) }
 
-        let!(:training1) { create :training, with_section: section }
-        let!(:training2) { create :training, with_section: section, location: nil }
-        let!(:training_not_in_section) { create :training }
+        let!(:training1) { create(:training, with_section: section) }
+        let!(:training2) { create(:training, with_section: section, location: nil) }
+        let!(:training_not_in_section) { create(:training) }
 
         before do
           sign_in user
@@ -35,7 +35,7 @@ describe TrainingsController, type: :controller do
     let(:request) { get :edit, params: request_params }
 
     context 'with existing training' do
-      let(:training) { create :training, with_section: section }
+      let(:training) { create(:training, with_section: section) }
       let(:request_params) { { section_id: section.to_param, id: training.id } }
 
       before do
@@ -51,7 +51,7 @@ describe TrainingsController, type: :controller do
     context 'with existing training' do
       subject { patch :update, params: request_params }
 
-      let(:training) { create :training, with_section: section }
+      let(:training) { create(:training, with_section: section) }
       let(:request_params) { { section_id: section.to_param, id: training.to_param, training: training.attributes } }
 
       before { sign_in user }
@@ -61,7 +61,7 @@ describe TrainingsController, type: :controller do
   end
 
   describe 'POST create' do
-    let(:new_training) { build :training }
+    let(:new_training) { build(:training) }
 
     context 'signed as user' do
       let(:training_params) { { training: new_training.attributes.slice('start_datetime', 'end_datetime') } }
@@ -86,9 +86,9 @@ describe TrainingsController, type: :controller do
   describe 'POST invitations' do
     subject { post :invitations, params: { section_id: section.to_param, id: training.to_param } }
 
-    let(:section) { create :section }
-    let(:coach) { create :user, with_section_as_coach: section }
-    let(:training) { create :training, with_section: section }
+    let(:section) { create(:section) }
+    let(:coach) { create(:user, with_section_as_coach: section) }
+    let(:training) { create(:training, with_section: section) }
 
     before { sign_in coach }
 
@@ -101,9 +101,9 @@ describe TrainingsController, type: :controller do
            params: { section_id: section.to_param, id: training.to_param, cancellation: { reason: 'TEST' } }
     end
 
-    let(:section) { create :section }
-    let(:coach) { create :user, with_section_as_coach: section }
-    let(:training) { create :training, with_section: section }
+    let(:section) { create(:section) }
+    let(:coach) { create(:user, with_section_as_coach: section) }
+    let(:training) { create(:training, with_section: section) }
 
     before { sign_in coach }
 
@@ -114,9 +114,9 @@ describe TrainingsController, type: :controller do
   describe 'DELETE cancellation' do
     subject { delete :uncancel, params: { section_id: section.to_param, id: training.to_param } }
 
-    let(:section) { create :section }
-    let(:coach) { create :user, with_section_as_coach: section }
-    let(:training) { create :training, with_section: section }
+    let(:section) { create(:section) }
+    let(:coach) { create(:user, with_section_as_coach: section) }
+    let(:training) { create(:training, with_section: section) }
 
     before do
       training.cancel!(reason: 'for some reason')

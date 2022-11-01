@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe TrainingPresence, type: :model do
+RSpec.describe TrainingPresence do
   it { is_expected.to belong_to :training }
   it { is_expected.to belong_to :user }
 end

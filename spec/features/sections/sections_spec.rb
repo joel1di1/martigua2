@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 describe 'sections admin task', :devise do
-  let(:club) { create :club }
-  let(:previous_section) { create :section, club: }
+  let(:club) { create(:club) }
+  let(:previous_section) { create(:section, club:) }
 
   context 'with club admin' do
-    let(:admin) { create :user, with_club_as_admin: club, with_section: previous_section }
+    let(:admin) { create(:user, with_club_as_admin: club, with_section: previous_section) }
 
     before { signin admin.email, admin.password }
 

@@ -7,10 +7,10 @@ describe 'Add Match', :devise do
     location_address = Faker::Address.full_address
     day_name = Faker::Company.name
 
-    coach = create :coach
+    coach = create(:coach)
     team = coach.sections.first.teams.sample
 
-    calendar = create :calendar
+    calendar = create(:calendar)
 
     signin_user coach
 

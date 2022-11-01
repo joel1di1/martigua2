@@ -16,8 +16,8 @@ gem 'bootstrap-sass'
 gem 'colorist'
 gem 'delayed_job_active_record'
 gem 'devise'
-gem 'devise_invitable'
 gem 'devise-i18n'
+gem 'devise_invitable'
 gem 'font_assets'
 gem 'google-api-client'
 gem 'haml-rails'
@@ -72,6 +72,7 @@ group :development, :test do
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
 end
 
 group :development do
@@ -90,5 +91,3 @@ group :test do
   gem 'timecop'
   gem 'webdrivers'
 end
-
-

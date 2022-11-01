@@ -2,11 +2,11 @@
 
 describe 'fill in training presences' do
   it 'section_coach sign in and invite player' do
-    section = create :section
-    player = create :user, with_section: section
-    group = create :group, section: section
+    section = create(:section)
+    player = create(:user, with_section: section)
+    group = create(:group, section:)
     group.add_user! player
-    training = create :training, sections: [section], groups: [group], start_datetime: 1.day.from_now
+    training = create(:training, sections: [section], groups: [group], start_datetime: 1.day.from_now)
 
     expect(player.present_for?(training)).to be_nil
 

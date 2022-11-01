@@ -11,7 +11,7 @@ describe 'Invite User', :devise do
   #   Then I see members page
   #   And I can invite new users
   it 'section_coach sign in and invite player' do
-    section_coach = create :user, :section_coach
+    section_coach = create(:user, :section_coach)
     signin section_coach.email, section_coach.password
     expect(page).to have_link 'Membres'
     within '#links' do
@@ -23,7 +23,7 @@ describe 'Invite User', :devise do
     expect(page).to have_current_path new_section_section_user_invitation_path(section_coach.sections.first),
                                       ignore_query: true
 
-    invited_user = build :user
+    invited_user = build(:user)
     fill_in 'section_user_invitation[email]', with: invited_user.email
     fill_in 'section_user_invitation[first_name]', with: invited_user.first_name
     fill_in 'section_user_invitation[last_name]', with: invited_user.last_name

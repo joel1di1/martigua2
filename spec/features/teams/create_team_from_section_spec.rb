@@ -3,9 +3,9 @@
 describe 'from section page', :devise do
   skip 'create a new team' do
     team_name = Faker::Company.name
-    section = create :section
+    section = create(:section)
     club = section.club
-    coach = create :user, with_section_as_coach: section
+    coach = create(:user, with_section_as_coach: section)
 
     signin coach.email, coach.password
 

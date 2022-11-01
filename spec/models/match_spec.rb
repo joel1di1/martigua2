@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Match, type: :model do
+RSpec.describe Match do
   it { is_expected.to belong_to :local_team }
   it { is_expected.to belong_to :visitor_team }
   it { is_expected.to belong_to :day }
@@ -10,8 +10,8 @@ RSpec.describe Match, type: :model do
   it { is_expected.to have_many :selections }
 
   describe '#date' do
-    let(:day) { create :day }
-    let(:match) { create :match, start_datetime:, day: }
+    let(:day) { create(:day) }
+    let(:match) { create(:match, start_datetime:, day:) }
 
     context 'with specified start_datetime' do
       let(:start_datetime) { 1.week.from_now }
@@ -29,11 +29,11 @@ RSpec.describe Match, type: :model do
   describe '#users' do
     subject { match.users }
 
-    let(:previous_season) { create :season, start_date: 2.years.ago }
-    let(:player) { create :user }
-    let(:team) { create :team }
-    let(:section) { create :section, teams: [team] }
-    let(:match) { create :match, local_team: team }
+    let(:previous_season) { create(:season, start_date: 2.years.ago) }
+    let(:player) { create(:user) }
+    let(:team) { create(:team) }
+    let(:section) { create(:section, teams: [team]) }
+    let(:match) { create(:match, local_team: team) }
 
     context 'with user participating in the current season' do
       before do
@@ -65,7 +65,7 @@ RSpec.describe Match, type: :model do
     subject { described_class.date_ordered }
 
     before do
-      create :match
+      create(:match)
     end
 
     it { is_expected.not_to be_empty }

@@ -7,8 +7,8 @@ describe 'duty_tasks', :devise do
   #   When I go to duty tasks
   #   Then I can see every tasks
   it 'member sees duty tasks' do
-    section = create :section
-    user = create :user, with_section: section
+    section = create(:section)
+    user = create(:user, with_section: section)
     signin user.email, user.password
 
     within '#links' do
@@ -21,8 +21,8 @@ describe 'duty_tasks', :devise do
   #   When I go to duty tasks
   #   Then I can create a duty task
   it 'member creates duty tasks' do
-    section = create :section
-    user = create :user, with_section: section
+    section = create(:section)
+    user = create(:user, with_section: section)
     signin user.email, user.password
 
     within '#links' do

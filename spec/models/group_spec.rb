@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe Group, type: :model do
-  let(:user) { create :user }
-  let(:group) { create :group }
+RSpec.describe Group do
+  let(:user) { create(:user) }
+  let(:group) { create(:group) }
 
   it { is_expected.to belong_to :season }
   it { is_expected.to belong_to :section }

@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe Section, type: :model do
-  let(:section) { create :section }
+RSpec.describe Section do
+  let(:section) { create(:section) }
 
   it { is_expected.to belong_to :club }
   it { is_expected.to validate_presence_of :name }
@@ -16,7 +16,7 @@ RSpec.describe Section, type: :model do
   describe '#add_player!' do
     subject { section.add_player!(user) }
 
-    let(:user) { create :user }
+    let(:user) { create(:user) }
 
     context 'with a new player' do
       it { expect(subject.players).to match_array([user]) }
@@ -45,7 +45,7 @@ RSpec.describe Section, type: :model do
   describe '#add_coach!' do
     subject { section.add_coach!(user) }
 
-    let(:user) { create :user }
+    let(:user) { create(:user) }
 
     context 'with a new user' do
       it { expect(subject.coachs).to match_array([user]) }
@@ -83,7 +83,7 @@ RSpec.describe Section, type: :model do
 
     context 'with coach' do
       let!(:coach) do
-        user = create :user
+        user = create(:user)
         section.add_coach! user
         user
       end
@@ -113,7 +113,7 @@ RSpec.describe Section, type: :model do
 
     context 'with fake coach' do
       let!(:coach) do
-        user = create :user
+        user = create(:user)
         section.add_player! user
         user
       end
@@ -123,15 +123,15 @@ RSpec.describe Section, type: :model do
   end
 
   describe '#next_trainings' do
-    let!(:previous_training) { create :training, with_section: section, start_datetime: 1.week.ago }
-    let!(:training_3_week_from_now) { create :training, with_section: section, start_datetime: 3.weeks.from_now }
-    let!(:training_1_week_from_now) { create :training, with_section: section, start_datetime: 1.week.from_now }
+    let!(:previous_training) { create(:training, with_section: section, start_datetime: 1.week.ago) }
+    let!(:training_3_week_from_now) { create(:training, with_section: section, start_datetime: 3.weeks.from_now) }
+    let!(:training_1_week_from_now) { create(:training, with_section: section, start_datetime: 1.week.from_now) }
 
     it { expect(section.next_trainings).to eq [training_1_week_from_now] }
   end
 
   describe '.create' do
-    let(:section) { create :section }
+    let(:section) { create(:section) }
 
     describe '#group_everybody' do
       let(:group_everybody) { section.group_everybody }
@@ -156,21 +156,21 @@ RSpec.describe Section, type: :model do
     let(:has_member) { section.has_member?(user) }
 
     context 'with user in section' do
-      let(:user) { create :user, with_section: section }
+      let(:user) { create(:user, with_section: section) }
 
       it { expect(has_member).to be_truthy }
     end
 
     context 'with user not in section' do
-      let(:user) { create :user }
+      let(:user) { create(:user) }
 
       it { expect(has_member).to be_falsy }
     end
   end
 
   describe '.remove_member!' do
-    let(:user) { create :user }
-    let(:group) { create :group, section: }
+    let(:user) { create(:user) }
+    let(:group) { create(:group, section:) }
     let(:remove_user!) { section.remove_member!(user) }
 
     context 'with user in section' do
@@ -187,7 +187,7 @@ RSpec.describe Section, type: :model do
     end
 
     context 'with user in section for a specific season' do
-      let(:other_season) { create :season, start_date: 2.years.ago }
+      let(:other_season) { create(:season, start_date: 2.years.ago) }
 
       before do
         section.add_player! user, season: other_season
@@ -203,11 +203,11 @@ RSpec.describe Section, type: :model do
   end
 
   describe '#championships' do
-    let(:team1) { create :team, with_section: section }
-    let(:team2) { create :team, with_section: section }
+    let(:team1) { create(:team, with_section: section) }
+    let(:team2) { create(:team, with_section: section) }
 
-    let(:championship1) { create :championship }
-    let(:championship2) { create :championship }
+    let(:championship1) { create(:championship) }
+    let(:championship2) { create(:championship) }
 
     before do
       championship1.enroll_team!(team1)
@@ -224,14 +224,14 @@ RSpec.describe Section, type: :model do
 
     let(:current_season_members) do
       Array.new(5) do
-        u = create :user
+        u = create(:user)
         section.add_player!(u, season: current_season)
         u
       end
     end
     let(:previous_season_members) do
       Array.new(6) do
-        u = create :user
+        u = create(:user)
         section.add_player!(u, season: previous_season)
         u
       end
@@ -257,7 +257,7 @@ RSpec.describe Section, type: :model do
 
     context 'with duties taks accomplished' do
       it {
-        user1, user2, user3, user4, old_user = create_list :user, 5, with_section: section
+        user1, user2, user3, user4, old_user = create_list(:user, 5, with_section: section)
         user1.realised_task!(task, 1.day.ago)
         user2.realised_task!(task, 2.days.ago)
         user3.realised_task!(task, 3.days.ago)
@@ -272,7 +272,7 @@ RSpec.describe Section, type: :model do
 
     context 'with one users who never did any' do
       it {
-        user1, user2, user3, user4 = create_list :user, 4, with_section: section
+        user1, user2, user3, user4 = create_list(:user, 4, with_section: section)
         user1.realised_task!(task, 1.day.ago)
         user2.realised_task!(task, 2.days.ago)
         user3.realised_task!(task, 3.days.ago)
@@ -296,8 +296,8 @@ RSpec.describe Section, type: :model do
   def assert_new_roles(old_roles:, new_roles:)
     old_roles = [*old_roles]
     new_roles = [*new_roles]
-    section = create :section
-    user = create :user
+    section = create(:section)
+    user = create(:user)
     old_roles.each { |old_role| section.add_user!(user, old_role) }
 
     section.update_roles!(user, new_roles)

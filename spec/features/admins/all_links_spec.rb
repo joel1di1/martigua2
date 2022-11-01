@@ -2,27 +2,27 @@
 
 describe 'Active Admin', :devise do
   it 'admin can list any page in admin section' do
-    admin = create :user
-    create :admin_user, email: admin.email
+    admin = create(:user)
+    create(:admin_user, email: admin.email)
 
     signin admin.email, admin.password
     visit '/admin'
 
     expect(page).to have_content 'Users'
 
-    create :admin_user
-    create :championship
-    create :calendar
-    create :day
-    create :club
-    create :location
-    create :season
-    create :section
-    create :team_section
-    create :team
-    create :training
-    create :training_presence
-    create :user
+    create(:admin_user)
+    create(:championship)
+    create(:calendar)
+    create(:day)
+    create(:club)
+    create(:location)
+    create(:season)
+    create(:section)
+    create(:team_section)
+    create(:team)
+    create(:training)
+    create(:training_presence)
+    create(:user)
 
     admins_pages = ['Admin Users', 'Calendar', 'Compétitions', 'Clubs', 'Journées', 'Lieux', 'Seasons', 'Sections',
                     'Trainings', 'Training Presences', 'Utilisateurs']

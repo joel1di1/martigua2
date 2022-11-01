@@ -49,7 +49,7 @@ Rails.application.routes.draw do
     end
     resources :users, path: 'members' do
       resources :trainings, only: [] do
-        resources :training_presences, only: [:create, :show]
+        resources :training_presences, only: %i[create show]
         delete 'training_presences' => 'training_presences#destroy'
         post 'confirm_presence' => 'training_presences#confirm_presence'
       end

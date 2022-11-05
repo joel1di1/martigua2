@@ -150,7 +150,8 @@ CREATE TABLE public.championships (
     name character varying(255) NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    calendar_id bigint
+    calendar_id bigint,
+    ffhb_key character varying
 );
 
 
@@ -2051,6 +2052,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191109141804'),
 ('20200111153438'),
 ('20200111155856'),
-('20221102220838');
+('20221102220838'),
+('20221105151924');
 
 

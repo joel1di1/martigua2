@@ -5,6 +5,8 @@
   - if current_section && current_user.coach_of?(current_section)
     .mt-4.mt-0.ml-16.flex-none
       - link_url = current_section ? new_section_championship_path(current_section) : new_championship_path
-      = link_to 'Ajouter une compétition', link_url, class: 'btn btn-primary'
+      - link_ffhb_url = current_section ? new_section_championship_path(current_section, ffhb: true) : new_championship_path(ffhb: true)
+      = link_to 'Ajouter une compétition depuis la FFHB', link_ffhb_url, class: 'btn btn-primary'
+      = link_to 'Ajouter une compétition manuellement', link_url, class: 'text-indigo-600 hover:underline ml-2'
 
 = render partial: 'championships/championships', object: @championships

@@ -1,26 +1,6 @@
 # frozen_string_literal: true
 
 class MatchesController < ApplicationController
-  def new
-    @section_team = Team.find_by(id: params[:section_team_id])
-    @match = Match.new match_params
-    @championship = @match.championship || Championship.new
-
-    if params[:adversary_team_id].present? && @championship.persisted?
-      @championship.enroll_team! Team.find_by(id: params[:adversary_team_id])
-    end
-  end
-
-  def create
-    @championship = Championship.find(params[:match][:championship_id])
-    @match = Match.new match_params
-    if @match.save
-      redirect_to section_championship_path(current_section, @championship)
-    else
-      render :new
-    end
-  end
-
   def show
     @match = Match.find params[:id]
     day = @match.day
@@ -32,9 +12,29 @@ class MatchesController < ApplicationController
     @day_selections.each { |selection| @team_by_user[selection.user] = selection.team }
   end
 
+  def new
+    @section_team = Team.find_by(id: params[:section_team_id])
+    @match = Match.new match_params
+    @championship = @match.championship || Championship.new
+
+    if params[:adversary_team_id].present? && @championship.persisted?
+      @championship.enroll_team! Team.find_by(id: params[:adversary_team_id])
+    end
+  end
+
   def edit
     @championship = Championship.find(params[:championship_id])
     @match = Match.find params[:id]
+  end
+
+  def create
+    @championship = Championship.find(params[:match][:championship_id])
+    @match = Match.new match_params
+    if @match.save
+      redirect_to section_championship_path(current_section, @championship)
+    else
+      render :new
+    end
   end
 
   def update

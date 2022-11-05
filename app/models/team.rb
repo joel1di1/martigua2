@@ -25,6 +25,6 @@ class Team < ApplicationRecord
   end
 
   def full_name
-    "#{name} - \[#{club.name}\]"
+    "#{name} - [#{club.name}]"
   end
 end

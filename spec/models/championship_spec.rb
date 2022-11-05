@@ -45,7 +45,7 @@ RSpec.describe Championship do
 
   describe '.create_from_ffhb!' do
     subject(:create_championship) do
-      Championship.create_from_ffhb!(code_pool:, code_division:, code_comite:, type_competition:)
+      Championship.create_from_ffhb!(code_pool:, code_division:, code_comite:, type_competition:, team_links:)
     end
 
     before { mock_ffhb }
@@ -54,10 +54,14 @@ RSpec.describe Championship do
     let(:code_comite) { 123 }
     let(:code_division) { 20_570 }
     let(:code_pool) { 110_562 }
+    let(:team_links) { {} }
+
+    let(:expected_name) { "#{Season.current.name}-#{type_competition}-#{code_comite}-#{code_division}-#{code_pool}" }
 
     it { expect { create_championship }.to change(Championship, :count).by(1) }
     it { expect { create_championship }.to change(Calendar, :count).by(1) }
     it { expect(create_championship.name).to eq '2EME DTM 44' }
+    it { expect(create_championship.ffhb_key).to eq expected_name }
     it { expect { create_championship }.to change(Day, :count).by(22) }
 
     it { expect { create_championship }.to change(Team, :count).by(12) }

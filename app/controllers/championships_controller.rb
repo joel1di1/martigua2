@@ -41,12 +41,14 @@ class ChampionshipsController < ApplicationController
   def edit; end
 
   def create
-    all_params = %w[type_competition code_comite code_division code_pool ffhb]
+    all_params = %w[type_competition code_comite code_division code_pool ffhb team_links]
     if params['ffhb'].present?
       if all_params.any? { |param| params[param].blank? }
         redirect_to new_section_championship_path(current_section, params: params.permit(all_params))
       else
-        @championship = Championship.create_from_ffhb!(**params.permit(all_params).to_h.except(:ffhb).symbolize_keys)
+        permitted_params = params.permit(all_params).to_h.except(:ffhb).symbolize_keys
+        permitted_params[:team_links] = params[:team_links]
+        @championship = Championship.create_from_ffhb!(**permitted_params)
         redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
                       fallback: section_championship_path(current_section, @championship),
                       use_referrer: false,

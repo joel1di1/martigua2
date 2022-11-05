@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class DutyTasksController < InheritedResources::Base
+  def index
+    @duty_tasks = DutyTask.order(realised_at: :desc).page(params[:page])
+  end
+
   def create
     @duty_task = DutyTask.new(duty_task_params)
     if @duty_task.save
@@ -8,10 +12,6 @@ class DutyTasksController < InheritedResources::Base
     else
       render :new
     end
-  end
-
-  def index
-    @duty_tasks = DutyTask.order(realised_at: :desc).page(params[:page])
   end
 
   private

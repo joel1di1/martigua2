@@ -36,6 +36,7 @@
       = hidden_field_tag :code_pool, params['code_pool']
       = hidden_field_tag :code_division, params['code_division']
       = hidden_field_tag :code_comite, params['code_comite']
+
       table.w-full.mt-10
         thead
           tr.text-lg.font-bold
@@ -45,7 +46,7 @@
           - @competition['teams'].each do |team|
             tr.even:bg-gray-100
               td= team['name']
-              td= select_tag "team_link_#{team['name']}", options_for_select( current_section.teams.map{|t| [t.name, t.id]}), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72'
+              td= select_tag "team_links[#{team['name']}]", options_for_select( current_section.teams.map{|t| [t.name, t.id]}), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72'
 
       .flex.justify-center.mt-5
         = f.submit 'Créer la compétition et lier les équipes', class: 'btn btn-primary mb-10'

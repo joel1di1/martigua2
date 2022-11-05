@@ -4,6 +4,8 @@ class Match < ApplicationRecord
   belongs_to :championship
   belongs_to :location, optional: true
   belongs_to :day
+
+  # TODO: match should link to enrolled teams instead of teams
   belongs_to :local_team, class_name: 'Team'
   belongs_to :visitor_team, class_name: 'Team'
 

@@ -3,6 +3,10 @@
 class GroupsController < ApplicationController
   before_action :find_group
 
+  def index
+    @groups = current_section.groups.where(season: Season.current).order('system ASC, name ASC')
+  end
+
   def show
     @users = @group.users.includes(:participations, :groups)
     @last_trainings, @presences_by_user_and_training = prepare_training_presences(current_section, @users)
@@ -23,13 +27,12 @@ class GroupsController < ApplicationController
     end
   end
 
-  def index
-    @groups = current_section.groups.where(season: Season.current).order('system ASC, name ASC')
-  end
-
-  def destroy
-    @group.destroy
-    redirect_to section_groups_path(current_section), notice: "Groupe '#{@group.name}' supprimé"
+  def update
+    if @group.update group_params
+      redirect_to section_group_path(current_section, @group), notice: 'Groupe modifié'
+    else
+      render :edit
+    end
   end
 
   def add_users
@@ -38,12 +41,9 @@ class GroupsController < ApplicationController
     redirect_to section_group_path(current_section, @group), notice: 'Joueur ajouté au groupe'
   end
 
-  def update
-    if @group.update group_params
-      redirect_to section_group_path(current_section, @group), notice: 'Groupe modifié'
-    else
-      render :edit
-    end
+  def destroy
+    @group.destroy
+    redirect_to section_groups_path(current_section), notice: "Groupe '#{@group.name}' supprimé"
   end
 
   private

@@ -8,14 +8,14 @@ class CalendarsController < ApplicationController
     @calendar = Calendar.new(season: Season.current)
   end
 
+  def edit
+    @new_day = Day.new calendar: @calendar, name: "J#{@calendar.days.count + 1}"
+  end
+
   def create
     @calendar = Calendar.new calendar_params
     @calendar.save!
     redirect_to section_calendars_path(current_section), notice: 'Calendrier créé'
-  end
-
-  def edit
-    @new_day = Day.new calendar: @calendar, name: "J#{@calendar.days.count + 1}"
   end
 
   def update

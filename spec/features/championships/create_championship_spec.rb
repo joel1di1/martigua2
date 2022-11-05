@@ -14,7 +14,7 @@ describe 'create championship', :devise do
     within '#links' do
       click_on 'Compétitions'
     end
-    click_on 'Ajouter une compétition'
+    click_on 'Ajouter une compétition manuellement'
 
     fill_in('Name', with: championship_name)
     select(calendar.name, from: 'Calendar')

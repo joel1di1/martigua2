@@ -20,12 +20,11 @@ class TrainingsController < ApplicationController
     add_training_prefetch_data(@trainings)
   end
 
-  def create
-    @training = Training.new training_params
-    @training.sections << current_section
-    @training.groups = current_section.groups.where(id: params[:training][:group_ids])
-    @training.save!
-    redirect_to section_trainings_path(section_id: current_section.to_param), notice: 'Entrainement créé'
+  def show
+    if current_user.coach_of?(current_section)
+      redirect_to presence_validation_section_training_path(current_section,
+                                                            @training)
+    end
   end
 
   def new
@@ -37,14 +36,15 @@ class TrainingsController < ApplicationController
     redirect_to section_trainings_path(section_id: current_section.to_param), notice: 'Notifications envoyées'
   end
 
-  def show
-    if current_user.coach_of?(current_section)
-      redirect_to presence_validation_section_training_path(current_section,
-                                                            @training)
-    end
-  end
-
   def edit; end
+
+  def create
+    @training = Training.new training_params
+    @training.sections << current_section
+    @training.groups = current_section.groups.where(id: params[:training][:group_ids])
+    @training.save!
+    redirect_to section_trainings_path(section_id: current_section.to_param), notice: 'Entrainement créé'
+  end
 
   def update
     @training.assign_attributes(training_params)

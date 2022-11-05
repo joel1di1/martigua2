@@ -36,25 +36,34 @@ class FfhbService
       Day.new(
         name: "Journée #{index}",
         period_start_date: Date.parse(date['start']),
-        period_end_date: Date.parse(date['finish']))
+        period_end_date: Date.parse(date['finish'])
+      )
     end
     calendar
   end
 
-  def build_teams(pool_as_json)
+  def build_teams(pool_as_json, team_links={})
+    team_links = {} if team_links.blank?
+
     pool_as_json['teams'].map do |team|
-      Team.new name: team['name'], club: Club.new(name: team['name'])
+      team_name = team['name']
+      if team_links[team_name].present?
+        Team.find(team_links[team_name])
+      else
+        Team.new name: team_name, club: Club.new(name: team_name)
+      end
     end
   end
 
-  def build_championship(code_pool:, code_division:, code_comite:)
+  def build_championship(code_pool:, code_division:, code_comite:, type_competition:, team_links:)
     pool_as_json = get_pool_as_json(code_pool)
     division_as_json = get_division_as_json(code_division)
 
     name = division_as_json['competitionName']
+    ffhb_key = "#{Season.current.name}-#{type_competition}-#{code_comite}-#{code_division}-#{code_pool}"
     calendar = build_specific_calendar(pool_as_json, name)
-    teams = build_teams(pool_as_json)
+    teams = build_teams(pool_as_json, team_links)
 
-    Championship.new name:, calendar:, teams:
+    Championship.new name:, calendar:, ffhb_key:, teams:
   end
 end

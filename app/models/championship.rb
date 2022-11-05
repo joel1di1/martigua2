@@ -13,6 +13,16 @@ class Championship < ApplicationRecord
 
   after_initialize :init
 
+  def self.create_from_ffhb!(code_pool:, code_division:, code_comite:, type_competition:)
+    championship = FfhbService.instance.build_championship(code_pool:, code_division:, code_comite:)
+
+    Championship.transaction do
+      championship.save!
+      championship.calendar.save!
+      championship
+    end
+  end
+
   def init
     self.season = Season.current
   end

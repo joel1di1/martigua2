@@ -2,4 +2,50 @@
   .sm:flex-auto
     h1.text-xl.font-semibold.text-gray-900 Nouvelle compétition
 
-= render 'form'
+- if params['ffhb'].blank?
+  = render 'form'
+- else
+  = simple_form_for [current_section, @championship] do |f|
+    = hidden_field_tag :ffhb, 'true'
+    .my-5
+      = label_tag 'type_competition', 'Choisissez le type de compétition'
+      = select_tag 'type_competition', options_for_select(ChampionshipsController::TYPE_COMPETITION, selected: params[:type_competition]), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72', required: :required
+    - if params['type_competition'].present?
+      .my-5
+        = label_tag 'code_comite', 'Choisissez le comité'
+        = select_tag 'code_comite', options_for_select(@comites['events'].map{|comite| ["#{comite['champCode']} - #{comite['eventName']}", comite['champCode']]} , selected: params[:code_comite]), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72', required: :required
+
+    - if @divisions.present?
+      .my-5
+        = label_tag 'code_division', 'Choisissez la division', class: 'mt-5'
+        = select_tag 'code_division', options_for_select(@divisions['events'].map{|division| [division['eventName'], division['eventId']]} , selected: params[:code_division]), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72', required: :required
+
+    - if @pools.present?
+      .my-5
+        = label_tag 'code_pool', 'Choisissez la poule', class: 'mt-5'
+        = select_tag 'code_pool', options_for_select(@pools['pools'].map{|pool| [pool['poolName'], pool['poolId']]} , selected: params[:code_pool]), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72', required: :required
+
+    .my-5
+      = f.submit 'Valider', class: 'btn btn-primary'
+      = link_to 'Recommencer', new_section_championship_path(current_section, params: {ffhb: true}), class: 'ml-2 underline'
+
+  - if @competition.present?
+    = simple_form_for [current_section, @championship] do |f|
+      = hidden_field_tag :ffhb, 'true'
+      = hidden_field_tag :type_competition, params['type_competition']
+      = hidden_field_tag :code_pool, params['code_pool']
+      = hidden_field_tag :code_division, params['code_division']
+      = hidden_field_tag :code_comite, params['code_comite']
+      table.w-full.mt-10
+        thead
+          tr.text-lg.font-bold
+            td Equipes inscrites dans la compétition
+            td Lier une Equipe du club
+        tbody
+          - @competition['teams'].each do |team|
+            tr.even:bg-gray-100
+              td= team['name']
+              td= select_tag "team_link_#{team['name']}", options_for_select( current_section.teams.map{|t| [t.name, t.id]}), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72'
+
+      .flex.justify-center.mt-5
+        = f.submit 'Créer la compétition et lier les équipes', class: 'btn btn-primary mb-10'

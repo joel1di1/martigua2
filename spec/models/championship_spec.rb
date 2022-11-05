@@ -42,4 +42,34 @@ RSpec.describe Championship do
       it { expect(subject.enrolled_teams).to match_array([]) }
     end
   end
+
+  describe '.create_from_ffhb!' do
+    subject(:create_championship) do
+      Championship.create_from_ffhb!(code_pool:, code_division:, code_comite:, type_competition:)
+    end
+
+    before { mock_ffhb }
+
+    let(:type_competition) { 3 }
+    let(:code_comite) { 123 }
+    let(:code_division) { 20_570 }
+    let(:code_pool) { 110_562 }
+
+    it { expect { create_championship }.to change(Championship, :count).by(1) }
+    it { expect { create_championship }.to change(Calendar, :count).by(1) }
+    it { expect(create_championship.name).to eq '2EME DTM 44' }
+    it { expect { create_championship }.to change(Day, :count).by(22) }
+
+    it { expect { create_championship }.to change(Team, :count).by(12) }
+
+    it "\n\t\t!!!! faire en sorte que martigua 1 soit rattaché a Martigua SLC\n"
+
+    context 'with incorrect pool code' do
+      let(:code_pool) { 123 }
+
+      it do
+        expect { create_championship }.to raise_error(RuntimeError, 'Could not find pool with id 123')
+      end
+    end
+  end
 end

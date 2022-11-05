@@ -13,3 +13,6 @@ AllCops:
 
 Style/Documentation:
   Enabled: false
+
+Rspec/DescribedClass:
+  Enabled: false

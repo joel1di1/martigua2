@@ -3,33 +3,70 @@
 class ChampionshipsController < ApplicationController
   before_action :find_championship_by_id, except: %i[index new create]
 
+  TYPE_COMPETITION = [
+    %w[National national].freeze,
+    %w[Régions regions].freeze,
+    %w[Départements D].freeze
+  ].freeze
+
   def index
     scope = current_section ? current_section.championships : Championship
     @championships = scope.where(season: Season.current).order(created_at: :desc)
   end
 
-  def new
-    @championship = Championship.new championship_params
-  end
-
-  def create
-    @championship = Championship.new championship_params
-    @championship.season = Season.current
-    if @championship.save
-      @championship.enroll_team! Team.find_by(id: params[:default_team_id]) if params[:default_team_id].present?
-
-      redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
-                    fallback: section_championship_path(current_section, @championship),
-                    use_referrer: false,
-                    notice: 'Compétition créée'
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
-
   def show; end
 
+  def new
+    @championship = Championship.new championship_params
+
+    return if params['ffhb'].blank?
+
+    return if params['type_competition'].blank?
+
+    @comites = FfhbService.instance.fetch_ffhb_url_as_json "championship/#{params['type_competition']}"
+
+    return if params['code_comite'].blank?
+
+    @divisions = FfhbService.instance.fetch_ffhb_url_as_json "competition/#{params['code_comite']}"
+
+    return if params['code_division'].blank?
+
+    @pools = FfhbService.instance.fetch_ffhb_url_as_json "competitionPool/#{params['code_division']}"
+
+    return if params['code_pool'].blank?
+
+    @competition = FfhbService.instance.fetch_ffhb_url_as_json "pool/#{params['code_pool']}"
+  end
+
   def edit; end
+
+  def create
+    all_params = %w[type_competition code_comite code_division code_pool ffhb]
+    if params['ffhb'].present?
+      if all_params.any? { |param| params[param].blank? }
+        redirect_to new_section_championship_path(current_section, params: params.permit(all_params))
+      else
+        @championship = Championship.create_from_ffhb!(**params.permit(all_params).to_h.except(:ffhb).symbolize_keys)
+        redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
+                      fallback: section_championship_path(current_section, @championship),
+                      use_referrer: false,
+                      notice: 'Compétition créée'
+      end
+    else
+      @championship = Championship.new championship_params
+      @championship.season = Season.current
+      if @championship.save
+        @championship.enroll_team! Team.find_by(id: params[:default_team_id]) if params[:default_team_id].present?
+
+        redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
+                      fallback: section_championship_path(current_section, @championship),
+                      use_referrer: false,
+                      notice: 'Compétition créée'
+      else
+        render :new, status: :unprocessable_entity
+      end
+    end
+  end
 
   def update
     if @championship.update(championship_params)

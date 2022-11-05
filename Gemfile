@@ -32,6 +32,7 @@ gem 'net-imap'
 gem 'net-pop'
 gem 'net-smtp'
 gem 'newrelic_rpm'
+gem 'oj'
 gem 'pg'
 gem 'puma'
 gem 'rack-attack'
@@ -67,7 +68,6 @@ group :development, :test do
   gem 'debug'
   gem 'factory_bot_rails'
   gem 'foreman', require: false
-  gem 'html2haml', require: false
   gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false

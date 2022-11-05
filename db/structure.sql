@@ -9,6 +9,13 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: -
+--
+
+-- *not* creating schema, since initdb creates it
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -347,7 +354,8 @@ CREATE TABLE public.enrolled_team_championships (
     team_id integer,
     championship_id integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    enrolled_name character varying
 );
 
 
@@ -2042,6 +2050,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191028203722'),
 ('20191109141804'),
 ('20200111153438'),
-('20200111155856');
+('20200111155856'),
+('20221102220838');
 
 

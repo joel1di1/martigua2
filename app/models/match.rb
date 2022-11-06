@@ -110,4 +110,19 @@ class Match < ApplicationRecord
     update! shared_calendar_id: event.id, shared_calendar_url: event.html_link
   end
   handle_asynchronously :async_update_shared_calendar
+
+  def update_with_ffhb_event!(event)
+    if event['date']['date'].present?
+      match_date = Date.parse(event['date']['date'])
+      self.start_datetime = Time.zone.local(
+        match_date.year, match_date.month, match_date.day, event['date']['hour'], event['date']['minute']
+      )
+    end
+
+    event_team_scores = event['teams'].pluck('score')
+    self.local_score ||= event_team_scores.first
+    self.visitor_score ||= event_team_scores.second
+
+    save!
+  end
 end

@@ -21,6 +21,28 @@ class Championship < ApplicationRecord
     championship
   end
 
+  def ffhb_sync!
+    return if ffhb_key.blank?
+
+    enrolled_team_names = enrolled_team_championships.pluck(:enrolled_name)
+
+    pool_as_json = FfhbService.instance.get_pool_as_json(ffhb_key[/[^-]+$/])
+    pool_as_json['dates'].each do |_index, date|
+      date['events'].each do |event|
+        event_team_names = event['teams'].pluck('name')
+        next if event_team_names.intersection(enrolled_team_names).blank?
+
+        match = find_match_by_team_names(event_team_names)
+
+        next if match.blank?
+
+        match.update_with_ffhb_event!(event)
+      end
+    end
+
+    self
+  end
+
   def init
     self.season = Season.current
   end
@@ -37,5 +59,16 @@ class Championship < ApplicationRecord
 
   def enrolled_teams
     teams
+  end
+
+  private
+
+  def find_match_by_team_names(event_team_names)
+    match_teams =
+      event_team_names.map do |team_name|
+        enrolled_team_championships.find { |enrolled_team| enrolled_team.enrolled_name == team_name }
+      end.map(&:team)
+
+    matches.find { |match| match.local_team == match_teams.first && match.visitor_team == match_teams.second }
   end
 end

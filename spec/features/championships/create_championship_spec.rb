@@ -32,7 +32,7 @@ describe 'create championship', :devise do
   describe 'with ffhb' do
     before { mock_ffhb }
 
-    it 'creates a new championship with a section team ' do
+    it 'creates a new championship with a section team' do
       section = create(:section)
       coach = create(:user, with_section_as_coach: section)
       team = create(:team, with_section: section)
@@ -58,7 +58,11 @@ describe 'create championship', :devise do
       click_on 'Valider'
 
       select(team.name, from: 'team_links[VERTOU HANDBALL 1]')
-      click_on 'Créer la compétition et lier les équipes'
+
+      expect { click_on 'Créer la compétition et lier les équipes' }.to change(Championship, :count)
+
+      championship = Championship.find_by(ffhb_key: "#{Season.current}-D-C44-20570-110562")
+      expect(championship.teams.size).to eq 12
     end
   end
 end

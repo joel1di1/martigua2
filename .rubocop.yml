@@ -14,5 +14,5 @@ AllCops:
 Style/Documentation:
   Enabled: false
 
-Rspec/DescribedClass:
+RSpec/DescribedClass:
   Enabled: false

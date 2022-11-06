@@ -19,6 +19,13 @@ class FfhbService
     division
   end
 
+  def get_comite_as_json(code_comite)
+    comite = fetch_ffhb_url_as_json("competition/#{code_comite}")
+    raise "Could not find comite with id #{code_comite}" if comite['parentName'].blank?
+
+    comite
+  end
+
   def fetch_ffhb_url_as_json(path)
     Rails.cache.fetch path, expires_in: 1.day do
       response = fetch_ffhb_url(path)
@@ -31,21 +38,23 @@ class FfhbService
   end
 
   def build_specific_calendar(json_pool, name, team_links, teams)
-    team_links_invert = team_links.invert.select{|id_str, team| id_str.present?}.transform_keys(&:to_i)
+    team_links_invert = team_links.invert.select { |id_str, _team| id_str.present? }.transform_keys(&:to_i)
     team_link_ids = team_links_invert.keys
-    team_by_names = teams.to_h { |team| [team_link_ids.include?(team.id) ? team_links_invert[team.id] : team.name, team] }
+    team_by_names = teams.index_by { |team| team_link_ids.include?(team.id) ? team_links_invert[team.id] : team.name }
 
     section_team_by_names = team_links.select { |_key, value| value.present? }.transform_values { |v| Team.find(v) }
 
     calendar = Calendar.new season: Season.current, name: name
     days = []
     matches = []
+
+    I18n.locale = :fr
+
     json_pool['dates'].each do |index, date|
-      day = Day.new(
-        name: "Journée #{index}",
-        period_start_date: Date.parse(date['start']),
-        period_end_date: Date.parse(date['finish'])
-      )
+      period_start_date = Date.parse(date['start'])
+      period_end_date = Date.parse(date['finish'])
+      day_name = "Journée ##{index} (#{I18n.l(period_start_date, format: :short)} - #{I18n.l(period_end_date, format: :short)})"
+      day = Day.new(name: day_name, period_start_date:, period_end_date:)
       days << day
 
       date['events'].each do |event|
@@ -62,28 +71,31 @@ class FfhbService
     [calendar, matches]
   end
 
-  def build_teams(pool_as_json, team_links={})
+  def build_teams(pool_as_json, team_links = {})
     team_links = {} if team_links.blank?
 
     pool_as_json['teams'].map do |team|
-      team_name = team['name']
-      if team_links[team_name].present?
-        Team.find(team_links[team_name])
-      else
-        Team.new name: team_name, club: Club.new(name: team_name)
-      end
+      name = team['name']
+      team =
+        if team_links[name].present?
+          Team.find(team_links[name])
+        else
+          Team.new name:, club: Club.new(name:)
+        end
+      EnrolledTeamChampionship.new(team:, enrolled_name: name)
     end
   end
 
   def build_championship(code_pool:, code_division:, code_comite:, type_competition:, team_links:)
-    pool_as_json = get_pool_as_json(code_pool)
+    comite_as_json = get_comite_as_json(code_comite)
     division_as_json = get_division_as_json(code_division)
+    pool_as_json = get_pool_as_json(code_pool)
 
-    name = division_as_json['competitionName']
+    name = "#{comite_as_json['parentName']} - #{division_as_json['competitionName']}"
     ffhb_key = "#{Season.current.name}-#{type_competition}-#{code_comite}-#{code_division}-#{code_pool}"
-    teams = build_teams(pool_as_json, team_links)
-    calendar, matches = build_specific_calendar(pool_as_json, name, team_links, teams)
+    enrolled_team_championships = build_teams(pool_as_json, team_links)
+    calendar, matches = build_specific_calendar(pool_as_json, name, team_links, enrolled_team_championships.map(&:team))
 
-    Championship.new(name:, calendar:, ffhb_key:, teams:, matches:)
+    Championship.new(name:, calendar:, ffhb_key:, enrolled_team_championships:, matches:)
   end
 end

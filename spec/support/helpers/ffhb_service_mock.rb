@@ -3,9 +3,11 @@
 module Ffhb
   module Mock
     def mock_ffhb
-      ['championship/D', 'competition/C44', 'pool/110562', 'pool/123', 'competitionPool/20570'].each do |path|
-        allow(FfhbService.instance).to receive(:fetch_ffhb_url).with(path) do
-          File.read("spec/fixtures/ffhb/#{path.tr('/', '.')}.json")
+      mocks_path = Rails.root.join('spec/fixtures/ffhb')
+      Dir.each_child(mocks_path) do |filename|
+        url_path = filename.gsub('.json', '').tr('.', '/')
+        allow(FfhbService.instance).to receive(:fetch_ffhb_url).with(url_path) do
+          File.read(mocks_path.join(filename))
         end
       end
     end

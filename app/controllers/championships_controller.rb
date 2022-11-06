@@ -47,7 +47,7 @@ class ChampionshipsController < ApplicationController
         redirect_to new_section_championship_path(current_section, params: params.permit(all_params))
       else
         permitted_params = params.permit(all_params).to_h.except(:ffhb).symbolize_keys
-        permitted_params[:team_links] = params[:team_links]
+        permitted_params[:team_links] = params[:team_links].permit!.to_h
         @championship = Championship.create_from_ffhb!(**permitted_params)
         redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
                       fallback: section_championship_path(current_section, @championship),

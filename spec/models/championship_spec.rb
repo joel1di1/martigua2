@@ -63,10 +63,15 @@ RSpec.describe Championship do
     it { expect(create_championship.name).to eq '2EME DTM 44' }
     it { expect(create_championship.ffhb_key).to eq expected_name }
     it { expect { create_championship }.to change(Day, :count).by(22) }
-
     it { expect { create_championship }.to change(Team, :count).by(12) }
 
-    it "\n\t\t!!!! faire en sorte que martigua 1 soit rattaché a Martigua SLC\n"
+    context 'with team links' do
+      let!(:my_team) { create(:team) }
+      let(:team_links) { { 'VERTOU HANDBALL 1' => my_team.id } }
+
+      it { expect { create_championship }.to change(Match, :count).by 22 }
+      it { expect { create_championship }.to change(Team, :count).by 11 }
+    end
 
     context 'with incorrect pool code' do
       let(:code_pool) { 123 }

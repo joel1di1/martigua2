@@ -17,11 +17,8 @@ class Championship < ApplicationRecord
     championship =
       FfhbService.instance.build_championship(code_pool:, code_division:, code_comite:, type_competition:, team_links:)
 
-    Championship.transaction do
-      championship.save!
-      championship.calendar.save!
-      championship
-    end
+    championship.save!
+    championship
   end
 
   def init

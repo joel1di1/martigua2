@@ -102,6 +102,7 @@ RSpec.describe Championship do
         expect(landreau_vertou.start_datetime).to eq(Time.zone.local(2022, 9, 24, 21, 30, 0))
         expect(landreau_vertou.local_score).to eq(33)
         expect(landreau_vertou.visitor_score).to eq(30)
+        expect(landreau_vertou.location.address).to eq("SALLE DES NOUELLES\n19  RUE DE LA LOIRE\nLE LANDREAU")
       end
     end
   end

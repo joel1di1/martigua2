@@ -120,8 +120,10 @@ class Match < ApplicationRecord
     end
 
     event_team_scores = event['teams'].pluck('score')
-    self.local_score ||= event_team_scores.first
-    self.visitor_score ||= event_team_scores.second
+    self.local_score = event_team_scores.first || local_score
+    self.visitor_score = event_team_scores.second || visitor_score
+
+    self.location ||= Location.find_or_create_with_ffhb_location(event['location'])
 
     save!
   end

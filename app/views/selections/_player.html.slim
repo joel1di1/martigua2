@@ -1,21 +1,37 @@
 / text-green-600 text-red-600
 
-li.p-1 draggable="true" data-player-id=player.id data-controller=(current_user.coach_of?(current_section) && "dropdown")
-  .w-full.flex.justify-between
-    button.w-full.flex.justify-between id="assign-#{player.id}" type="button" aria-haspopup="true" aria-expanded="false" data-action=(current_user.coach_of?(current_section) && "dropdown#toggle click@window->dropdown#hide")
+li.p-1.text-sm draggable="true" data-player-id=player.id data-controller=(current_user.coach_of?(current_section) && "dropdown")
+  .flex.justify-between.content-center
+    button.justify-between id="assign-#{player.id}" type="button" aria-haspopup="true" aria-expanded="false" data-action=(current_user.coach_of?(current_section) && "dropdown#toggle click@window->dropdown#hide")
       div
         = player.short_name
-      .hidden.lg:block
-        - @last_trainings.each do |training|
-          - color = player.was_present?(training, @presences_by_user_and_training) ? 'green' : 'red'
-          svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-#{color}-600 inline-block" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-            path fill-rule="evenodd" d="M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z" clip-rule="evenodd"
-    - if selection.present? && current_user.coach_of?(current_section)
-      .ml-4
-        = form_tag section_selection_path(current_section, selection.match, selection), class: 'inline with-waiter', role: 'form', method: :delete, remote: false do
-          button.btn.btn-link.btn-xs type='submit'
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    .flex.flex-row
+      .flex.flex-col.justify-center
+        .flex.hidden.lg:block.whitespace-nowrap
+          - @last_trainings.each do |training|
+            - color = player.was_present?(training, @presences_by_user_and_training) ? 'green' : 'red'
+            svg.align-middle xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-#{color}-600 inline-block" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+              path fill-rule="evenodd" d="M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z" clip-rule="evenodd"
+      - if current_user.coach_of?(current_section)
+        .flex.flex-col.justify-center
+          .flex.text-xs
+            - teams_with_matches.each do |team, match|
+              = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter ml-2', role: 'form', remote: true do
+                button.text-indigo-600.hover:underline type='submit'
+                  - case @availabilities_by_user_and_match[player.id].try(:[], match.id)
+                  - when true
+                    = team.name
+                  - when false
+                    s.hidden-link.not-available= team.name
+                  - else
+                    s.hidden-link.not-respond= team.name
+
+      - if selection.present? && current_user.coach_of?(current_section)
+        .mx-2
+          = form_tag section_selection_path(current_section, selection.match, selection), class: 'inline with-waiter', role: 'form', method: :delete, remote: false do
+            button.btn.btn-link.btn-xs type='submit'
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
 
   - if current_user.coach_of?(current_section)
     ul.hidden.absolute.mt-2.w-56.origin-top-right.rounded-md.bg-white.shadow-lg.ring-1.ring-black.ring-opacity-5.focus:outline-none aria-labelledby="assign-#{player.id}" data-dropdown-target="menu"
@@ -25,7 +41,7 @@ li.p-1 draggable="true" data-player-id=player.id data-controller=(current_user.c
             button.text-indigo-600.hover:underline type='submit'
               - case @availabilities_by_user_and_match[player.id].try(:[], match.id)
               - when true
-                = "#{team.name} !"
+                = team.name
               - when false
                 s.hidden-link.not-available= team.name
               - else

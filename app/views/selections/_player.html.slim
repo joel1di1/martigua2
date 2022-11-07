@@ -17,14 +17,13 @@ li.p-1.text-sm draggable="true" data-player-id=player.id data-controller=(curren
           .flex.text-xs
             - teams_with_matches.each do |team, match|
               = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter ml-2', role: 'form', remote: true do
-                button.text-indigo-600.hover:underline type='submit'
-                  - case @availabilities_by_user_and_match[player.id].try(:[], match.id)
-                  - when true
-                    = team.name
-                  - when false
-                    s.hidden-link.not-available= team.name
-                  - else
-                    s.hidden-link.not-respond= team.name
+                - class_color = { \
+                  true => 'text-green-700', \
+                  false => 'text-red-700 line-through', \
+                  nil => 'text-yellow-500' \
+                  }[ @availabilities_by_user_and_match[player.id].try(:[], match.id) ]
+                button.text-indigo-600.hover:bg-indigo-200 class=class_color type='submit'
+                  = team.name
 
       - if selection.present? && current_user.coach_of?(current_section)
         .mx-2
@@ -38,11 +37,10 @@ li.p-1.text-sm draggable="true" data-player-id=player.id data-controller=(curren
       - teams_with_matches.each do |team, match|
         li.p-1
           = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter', role: 'form', id: "mtp-#{match.id}-#{team.id}-#{player.id}", remote: true do
-            button.text-indigo-600.hover:underline type='submit'
-              - case @availabilities_by_user_and_match[player.id].try(:[], match.id)
-              - when true
-                = team.name
-              - when false
-                s.hidden-link.not-available= team.name
-              - else
-                s.hidden-link.not-respond= team.name
+            - class_color = { \
+                true => 'text-green-700', \
+                false => 'text-red-700', \
+                nil => 'text-yellow-400' \
+              }[ @availabilities_by_user_and_match[player.id].try(:[], match.id) ]
+            button.text-indigo-600.hover:bg-indigo-200 class=class_color type='submit'
+              = team.name

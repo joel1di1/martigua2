@@ -5,11 +5,11 @@ div class="sm:flex sm:items-center mb-5"
     h1.text-xl.font-semibold.text-gray-900= @day.name
   - if current_user.coach_of?(current_section)
     .div data-controller="dropdown"
-      button type="button" class="max-w-xs text-sm" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle"
+      button type="button" class="max-w-xs text-sm text-indigo-600 hover:underline" aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle"
         'Pour envoyer les mails, c'est ici...
 
       - all_mails = current_section.members.map(&:email).join(',')
-      .hidden data-dropdown-target="menu"
+      .hidden.absolute.right-0.z-10.mt-2.p-3.origin-top-right.rounded-md.bg-white.shadow-2xl.ring-1.ring-black.ring-opacity-5.focus:outline-none data-dropdown-target="menu"
 
         div
           '1) Copie le texte qui s'affiche en dessous

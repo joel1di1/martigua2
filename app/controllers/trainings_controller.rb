@@ -20,12 +20,7 @@ class TrainingsController < ApplicationController
     add_training_prefetch_data(@trainings)
   end
 
-  def show
-    if current_user.coach_of?(current_section)
-      redirect_to presence_validation_section_training_path(current_section,
-                                                            @training)
-    end
-  end
+  def show; end
 
   def new
     @training = Training.new

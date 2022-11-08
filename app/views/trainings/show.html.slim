@@ -1,46 +1,46 @@
-h2
-  Entrainement du
-  = @training.start_datetime.strftime("%-d/%-m/%Y %-HH%-M")
+h1.text-xl.font-semibold.text-gray-900
+  'Entrainement du
+  = l @training.start_datetime, format: :short
+
 
   - if current_user.coach_of?(current_section)
     .action
       = link_to edit_section_training_path(current_section, @training) do
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+        'edit
       = link_to section_training_path(@training, section_id: current_section), :method => :delete, :data => { :confirm => 'Are you sure?' } do
         svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"
           path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
 
-p
-  = render partial: 'locations/gmaps_link', locals: {location: @training.location}
-  br
-  Groupes :
+p.flex
+  svg class="hidden md:block mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
+    path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.273 1.765 11.842 11.842 0 00.976.544l.062.029.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" clip-rule="evenodd"
+  = render partial: 'locations/gmaps_link', locals: { location: @training.location }
+
+p.flex
+  'Groupes :
   = @training.groups.map(&:name).join(", ")
 
-.row
-  .col-md-4
-    .panel.panel-success
-      .panel-heading
-        - training_presents = @training.presents
-        = training_presents.size
-        Joueurs présents
-      ul.list-group
+.flex.flex-row.my-5.space-x-5.justify-between
+  div
+    .flex.flex-col.border.border-green-200
+      - training_presents = @training.presents
+      .text-md.text-gray-900.shadow.shadow-green-200.ring-1.ring-black.ring-opacity-5.rounded-sm.bg-green-200.p-1= "#{training_presents.size} présents"
+      ul.flex.flex-col.text-sm.divide-y.divide-green-200
         - training_presents.sort_by(&:full_name).each do |user|
-          li.list-group-item= user.full_name
-  .col-md-4
-    .panel.panel-danger
-      .panel-heading
-        - training_not_presents = @training.not_presents
-        = training_not_presents.size
-        Joueurs non présents
-      .list-group
-        - training_not_presents.sort_by(&:full_name).each do |user|
-          li.list-group-item= user.full_name
-  .col-md-4
-    .panel.panel-warning
-      .panel-heading
-        - training_presence_not_set = @training.presence_not_set
-        = training_presence_not_set.size
-        Pas de réponse
-      .list-group
+          li.p-1= user.full_name
+
+  div
+    .flex.flex-col.border.border-yellow-200
+      - training_presence_not_set = @training.presence_not_set
+      .text-md.text-gray-900.shadow.shadow-yellow-200.ring-1.ring-black.ring-opacity-5.rounded-sm.bg-yellow-200.p-1= "#{training_presence_not_set.size} sans réponse"
+      ul.flex.flex-col.text-sm.divide-y.divide-yellow-200
         - training_presence_not_set.sort_by(&:full_name).each do |user|
-          li.list-group-item= user.full_name
+          li.p-1= user.full_name
+
+  div
+    .flex.flex-col.border.border-red-200
+      - training_not_presents = @training.not_presents
+      .text-md.text-gray-900.shadow.shadow-red-200.ring-1.ring-black.ring-opacity-5.rounded-sm.bg-red-200.p-1= "#{training_not_presents.size} sans réponse"
+      ul.flex.flex-col.text-sm.divide-y.divide-red-200
+        - training_not_presents.sort_by(&:full_name).each do |user|
+          li.p-1= user.full_name

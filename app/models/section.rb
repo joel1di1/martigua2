@@ -86,8 +86,7 @@ class Section < ApplicationRecord # rubocop:disable Metrics/ClassLength
     users.include?(user)
   end
 
-  def remove_member!(user, season: nil)
-    season ||= Season.current
+  def remove_member!(user, season: Season.current)
     participations.where(user:, season:).delete_all
     groups.where(season:).map { |group| group.remove_user! user, force: true }
   end

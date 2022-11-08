@@ -27,7 +27,7 @@ class FfhbService
   end
 
   def fetch_ffhb_url_as_json(path)
-    Rails.cache.fetch path, expires_in: 1.day do
+    Rails.cache.fetch path, expires_in: 30.minutes do
       response = fetch_ffhb_url(path)
       Oj.load(response)
     end

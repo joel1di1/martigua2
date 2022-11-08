@@ -37,6 +37,8 @@
       = hidden_field_tag :code_division, params['code_division']
       = hidden_field_tag :code_comite, params['code_comite']
 
+      = f.input :calendar, required: false, collection: @calendars, class: 'w-72 px-0 py-0', input_html: { data: { controller: 'ts--select' }, class: 'w-72 px-0 py-0' }
+
       table.w-full.mt-10
         thead
           tr.text-lg.font-bold

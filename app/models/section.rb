@@ -139,6 +139,10 @@ class Section < ApplicationRecord # rubocop:disable Metrics/ClassLength
     self
   end
 
+  def season_calendars
+    Season.current.calendars
+  end
+
   protected
 
   def _default_group(players_role, group_name, color, season: nil)

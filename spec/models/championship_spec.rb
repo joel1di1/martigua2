@@ -91,7 +91,7 @@ RSpec.describe Championship do
       end
 
       it 'updates matches with start_datetime, location and score' do
-        landreau_vertou = championship.matches.find_by(visitor_team: my_team, day: Day.find_by(name: 'Journée #1 (24 sept. - 25 sept.)'))
+        landreau_vertou = championship.matches.find_by(visitor_team: my_team, day: Day.find_by(name: 'WE du 24 sept. au 25 sept.'))
         expect(landreau_vertou.start_datetime).to be_nil
         expect(landreau_vertou.local_score).to be_nil
         expect(landreau_vertou.visitor_score).to be_nil

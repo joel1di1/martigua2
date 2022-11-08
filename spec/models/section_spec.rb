@@ -282,6 +282,19 @@ RSpec.describe Section do
     end
   end
 
+  describe '.season_calendars' do
+    subject(:calendars) { section.season_calendars }
+
+    let(:section) { create(:section) }
+
+    context 'with existing calendars' do
+      let!(:calendar1) { create(:calendar) }
+      let!(:calendar2) { create(:calendar) }
+
+      it { expect(calendars).to eq [calendar1, calendar2] }
+    end
+  end
+
   describe '#update_roles!' do
     it { assert_new_roles(old_roles: [], new_roles: 'player') }
     it { assert_new_roles(old_roles: 'player', new_roles: 'player') }

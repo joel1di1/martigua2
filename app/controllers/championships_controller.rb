@@ -4,8 +4,7 @@ class ChampionshipsController < ApplicationController
   before_action :find_championship_by_id, except: %i[index new create]
 
   TYPE_COMPETITION = [
-    %w[National national].freeze,
-    %w[Régions regions].freeze,
+    %w[Régions R].freeze,
     %w[Départements D].freeze
   ].freeze
 
@@ -36,6 +35,8 @@ class ChampionshipsController < ApplicationController
     return if params['code_pool'].blank?
 
     @competition = FfhbService.instance.fetch_ffhb_url_as_json "pool/#{params['code_pool']}"
+
+    @calendars = current_section.season_calendars
   end
 
   def edit; end
@@ -48,7 +49,8 @@ class ChampionshipsController < ApplicationController
       else
         permitted_params = params.permit(all_params).to_h.except(:ffhb).symbolize_keys
         permitted_params[:team_links] = params[:team_links].permit!.to_h
-        @championship = Championship.create_from_ffhb!(**permitted_params)
+        linked_calendar = Calendar.find(params[:championship][:calendar]) if params[:championship] && params[:championship][:calendar].present?
+        @championship = Championship.create_from_ffhb!(**permitted_params, linked_calendar:)
         redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
                       fallback: section_championship_path(current_section, @championship),
                       use_referrer: false,

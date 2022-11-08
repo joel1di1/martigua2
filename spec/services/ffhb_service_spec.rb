@@ -16,16 +16,30 @@ RSpec.describe FfhbService do
 
   describe '#build_specific_calendar' do
     subject(:calendar) do
-      ffhb_instance.build_specific_calendar(ffhb_instance.get_pool_as_json(110_562), 'test name', {}, []).first
+      ffhb_instance.build_specific_calendar(
+        ffhb_instance.get_pool_as_json(110_562), 'test name', {}, [], linked_calendar
+      ).first
     end
 
+    let(:linked_calendar) { nil }
+
     it { expect(calendar).to be_a(Calendar) }
+    it { expect { calendar }.not_to change(Day, :count) }
     it { expect(calendar.days.size).to be(22) }
     it { expect(calendar.days[1]).to be_a(Day) }
-    it { expect(calendar.days[1].name).to eq('Journée #2 (1 oct. - 2 oct.)') }
-    it { expect(calendar.days[19].name).to eq('Journée #20 (13 mai - 14 mai)') }
+    it { expect(calendar.days[1].name).to eq('WE du 1 oct. au 2 oct.') }
+    it { expect(calendar.days[19].name).to eq('WE du 13 mai au 14 mai') }
     it { expect(calendar.days[1].period_start_date).to eq(Date.new(2022, 10, 1)) }
     it { expect(calendar.days[1].period_end_date).to eq(Date.new(2022, 10, 2)) }
+
+    context 'with a linked calendar' do
+      let!(:linked_calendar) { create(:calendar, name: "Championnat #{Season.current}") }
+      let!(:existing_day) { create(:day, calendar: linked_calendar, name: 'WE du 24 sept. au 25 sept') }
+
+      it { expect(calendar).to eq linked_calendar }
+      it { expect(calendar.name).to eq "Championnat #{Season.current}" }
+      it { expect(calendar.days).to include existing_day }
+    end
   end
 
   describe '#build_championship' do

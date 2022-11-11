@@ -1,11 +1,20 @@
 # frozen_string_literal: true
 
 RSpec.configure do |config|
-  config.before(:each, type: %i[system feature devise]) do
-    if ENV['SHOW_BROWSER'] == 'true'
-      driven_by :selenium_chrome
-    else
-      driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400]
-    end
+  # Note: Capybara registers this by default
+  Capybara.register_driver :selenium_chrome do |app|
+    Capybara::Selenium::Driver.new(app, browser: :chrome)
   end
+
+  Capybara.register_driver :selenium_chrome_headless do |app|
+    options = Selenium::WebDriver::Chrome::Options.new
+
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--window-size=1280,800')
+
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+  end
+
+  Capybara.current_driver = ENV['SHOW_BROWSER'].present? ? :selenium_chrome : :selenium_chrome_headless
 end

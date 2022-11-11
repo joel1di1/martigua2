@@ -76,10 +76,10 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
+  gem 'capybara-selenium'
   gem 'faker'
   gem 'rails-controller-testing'
   gem 'rspec-its'
-  gem 'selenium-webdriver'
   gem 'shoulda-matchers', require: false
   gem 'timecop'
   gem 'webdrivers'

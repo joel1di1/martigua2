@@ -1,7 +1,0 @@
-%tr
-  %td= link_to section, section
-  - if current_user.admin_of?(@club)
-    %td
-      = button_to [@club, section], method: :delete, data: { confirm: 'Sûr ?' },
-        class: 'btn btn-xs btn-default', id: "delete-section-#{section.id}" do
-        %span.glyphicon.glyphicon-trash

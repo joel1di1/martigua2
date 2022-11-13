@@ -7,12 +7,14 @@ describe 'sections admin task', :devise do
   context 'with club admin' do
     let(:admin) { create(:user, with_club_as_admin: club, with_section: previous_section) }
 
-    before { signin admin.email, admin.password }
+    before { signin admin.email, admin.password, close_notice: true }
 
     it 'create a new section' do
       section_name = Faker::Company.name
       click_on admin.email
       click_link club.name
+
+      assert_text '1 sections'
       click_link 'Ajouter une section'
       fill_in('Name', with: section_name)
 

@@ -19,8 +19,8 @@ module Features
       click_button 'close-flash-notice' if close_notice
     end
 
-    def signin_user(user)
-      signin(user.email, user.password)
+    def signin_user(user, close_notice: false)
+      signin(user.email, user.password, close_notice:)
     end
   end
 end

@@ -113,8 +113,8 @@ class User < ApplicationRecord
     end
   end
 
-  def realised_task!(task_key, realised_at)
-    duty_tasks << DutyTask.create!(key: task_key, realised_at:, user: self)
+  def realised_task!(task_key, realised_at, club)
+    duty_tasks << DutyTask.create!(key: task_key, realised_at:, user: self, club:)
   end
 
   def last_time_duty(task_key)

@@ -312,6 +312,40 @@ ALTER SEQUENCE public.delayed_jobs_id_seq OWNED BY public.delayed_jobs.id;
 
 
 --
+-- Name: discussions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.discussions (
+    id bigint NOT NULL,
+    section_id bigint NOT NULL,
+    name character varying,
+    private boolean,
+    system boolean,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: discussions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.discussions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: discussions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.discussions_id_seq OWNED BY public.discussions.id;
+
+
+--
 -- Name: duty_tasks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -323,7 +357,8 @@ CREATE TABLE public.duty_tasks (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     weight integer DEFAULT 0 NOT NULL,
-    key character varying
+    key character varying,
+    club_id bigint NOT NULL
 );
 
 
@@ -1175,6 +1210,13 @@ ALTER TABLE ONLY public.delayed_jobs ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: discussions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.discussions ALTER COLUMN id SET DEFAULT nextval('public.discussions_id_seq'::regclass);
+
+
+--
 -- Name: duty_tasks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1398,6 +1440,14 @@ ALTER TABLE ONLY public.days
 
 ALTER TABLE ONLY public.delayed_jobs
     ADD CONSTRAINT delayed_jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: discussions discussions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.discussions
+    ADD CONSTRAINT discussions_pkey PRIMARY KEY (id);
 
 
 --
@@ -1658,6 +1708,20 @@ CREATE INDEX index_club_admin_roles_on_user_id ON public.club_admin_roles USING 
 --
 
 CREATE INDEX index_days_on_calendar_id ON public.days USING btree (calendar_id);
+
+
+--
+-- Name: index_discussions_on_section_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_discussions_on_section_id ON public.discussions USING btree (section_id);
+
+
+--
+-- Name: index_duty_tasks_on_club_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_duty_tasks_on_club_id ON public.duty_tasks USING btree (club_id);
 
 
 --
@@ -1965,6 +2029,14 @@ ALTER TABLE ONLY public.duty_tasks
 
 
 --
+-- Name: duty_tasks fk_rails_8982d9731c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.duty_tasks
+    ADD CONSTRAINT fk_rails_8982d9731c FOREIGN KEY (club_id) REFERENCES public.clubs(id);
+
+
+--
 -- Name: sms_notifications fk_rails_8bf31290ff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1986,6 +2058,14 @@ ALTER TABLE ONLY public.days
 
 ALTER TABLE ONLY public.calendars
     ADD CONSTRAINT fk_rails_d5af2ea0d7 FOREIGN KEY (season_id) REFERENCES public.seasons(id);
+
+
+--
+-- Name: discussions fk_rails_f6471a0a6e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.discussions
+    ADD CONSTRAINT fk_rails_f6471a0a6e FOREIGN KEY (section_id) REFERENCES public.sections(id);
 
 
 --
@@ -2053,6 +2133,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200111153438'),
 ('20200111155856'),
 ('20221102220838'),
-('20221105151924');
+('20221105151924'),
+('20221112112719'),
+('20221113132742'),
+('20221113133011');
 
 

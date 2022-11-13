@@ -179,9 +179,6 @@ GEM
       activesupport (>= 5.1)
       haml (>= 4.0.6)
       railties (>= 5.1)
-    has_scope (0.8.0)
-      actionpack (>= 5.2)
-      activesupport (>= 5.2)
     httpclient (2.8.3)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
@@ -191,11 +188,6 @@ GEM
     importmap-rails (1.1.5)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
-    inherited_resources (1.13.1)
-      actionpack (>= 5.2, < 7.1)
-      has_scope (~> 0.6)
-      railties (>= 5.2, < 7.1)
-      responders (>= 2, < 4)
     io-console (0.5.11)
     irb (1.4.2)
       reline (>= 0.3.0)
@@ -266,6 +258,8 @@ GEM
     public_suffix (5.0.0)
     puma (6.0.0)
       nio4r (~> 2.0)
+    pundit (2.2.0)
+      activesupport (>= 3.0.0)
     racc (1.6.0)
     rack (2.2.4)
     rack-attack (6.6.1)
@@ -493,7 +487,6 @@ DEPENDENCIES
   haml-rails
   icalendar
   importmap-rails
-  inherited_resources
   jbuilder
   kaminari
   net-imap
@@ -504,6 +497,7 @@ DEPENDENCIES
   pg
   postmark-rails
   puma
+  pundit
   rack-attack
   rack-cors
   rack-mini-profiler

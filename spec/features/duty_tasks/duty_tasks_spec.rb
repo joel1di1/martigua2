@@ -9,11 +9,14 @@ describe 'duty_tasks', :devise do
   it 'member sees duty tasks' do
     section = create(:section)
     user = create(:user, with_section: section)
+    task1 = create(:duty_task, user:, realised_at: 2.days.ago, club: section.club)
     signin user.email, user.password
 
     within '#links' do
       click_on 'Tigs'
     end
+
+
   end
 
   # Scenario: member creates a duty task

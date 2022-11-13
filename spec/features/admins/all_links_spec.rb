@@ -11,15 +11,15 @@ describe 'Active Admin', :devise do
     expect(page).to have_content 'Users'
 
     create(:admin_user)
-    create(:championship)
     create(:calendar)
-    create(:day)
+    create(:championship)
     create(:club)
+    create(:day)
     create(:location)
     create(:season)
     create(:section)
-    create(:team_section)
     create(:team)
+    create(:team_section)
     create(:training)
     create(:training_presence)
     create(:user)

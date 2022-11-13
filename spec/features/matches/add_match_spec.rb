@@ -26,7 +26,10 @@ describe 'Add Match', :devise do
 
     select calendar.name, from: 'Calendar'
 
-    expect { click_on 'Créer un(e) Compétition' }.to change(Championship, :count)
+    expect do
+      click_on 'Créer un(e) Compétition'
+      assert_text 'Compétition créée'
+    end.to change(Championship, :count)
 
     assert_text 'Quel jour ?'
     click_on 'Ajouter une journée'
@@ -34,20 +37,32 @@ describe 'Add Match', :devise do
     select('octobre', from: 'day_period_start_date_2i')
     select(2018, from: 'day_period_start_date_1i')
     fill_in 'day[name]', with: day_name
-    expect { click_on 'Créer un(e) Journée' }.to change(Day, :count)
+    expect do
+     click_on 'Créer un(e) Journée'
+     assert_text 'Journée créée'
+   end.to change(Day, :count)
 
     assert_text 'Quel lieu ?'
     click_on 'Ajouter un lieu'
     fill_in 'location[name]', with: location_name
     fill_in 'location[address]', with: location_address
-    expect { click_on 'Créer un(e) Lieu' }.to change(Location, :count)
+    expect do
+     click_on 'Créer un(e) Lieu'
+     assert_text 'Lieu créé'
+   end.to change(Location, :count)
 
     assert_text 'Equipe adverse ?'
     click_on 'Ajouter une équipe'
     fill_in 'team[name]', with: adversary_team_name
-    expect { click_on 'Créer un(e) Équipe' }.to change(Team, :count)
+    expect do
+     click_on 'Créer un(e) Équipe'
+     assert_text 'Équipe créée'
+   end.to change(Team, :count)
 
-    expect { click_on 'Créer un(e) Match' }.to change(Match, :count)
+    expect do
+     click_on 'Créer un(e) Match'
+     assert_text 'Match créé'
+   end.to change(Match, :count)
     match = Match.last
     expect(match.local_team).to eq(team)
     expect(match.visitor_team.name).to eq(adversary_team_name)

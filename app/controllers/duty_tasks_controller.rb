@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
-class DutyTasksController < InheritedResources::Base
+class DutyTasksController < ApplicationController
   def index
     @duty_tasks = DutyTask.order(realised_at: :desc).page(params[:page])
+  end
+
+  def new
+    @duty_task = DutyTask.new
   end
 
   def create

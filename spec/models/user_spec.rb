@@ -320,7 +320,7 @@ describe User do
     let(:task) { DutyTask::TASKS.keys.sample }
 
     it 'create a duty_task' do
-      expect { user.realised_task!(task, 1.day.ago) }.to(change { user.duty_tasks.reload.count })
+      expect { user.realised_task!(task, 1.day.ago, section.club) }.to(change { user.duty_tasks.reload.count })
     end
   end
 

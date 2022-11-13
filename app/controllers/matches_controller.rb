@@ -31,7 +31,7 @@ class MatchesController < ApplicationController
     @championship = Championship.find(params[:match][:championship_id])
     @match = Match.new match_params
     if @match.save
-      redirect_to section_championship_path(current_section, @championship)
+      redirect_to section_championship_path(current_section, @championship), notice: 'Match créé'
     else
       render :new
     end

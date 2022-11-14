@@ -16,10 +16,14 @@ describe 'Add training', :devise do
     within '#links' do
       click_link 'Entrainements'
     end
+
     click_link 'Ajouter un entrainement'
 
     select(location.name, from: 'training_location_id')
 
-    expect { click_button('Ajouter l\'entrainement') }.to change(Training, :count).by(1)
+    expect do
+      click_button('Ajouter l\'entrainement');
+      assert_text 'Entrainement créé'
+    end.to change(Training, :count).by(1)
   end
 end

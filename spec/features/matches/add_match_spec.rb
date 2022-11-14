@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe 'Add Match', :devise, js: true do
+describe 'Add Match', :devise do
   let(:coach) { create(:coach) }
   let(:team) { team = coach.sections.first.teams.sample }
   let!(:calendar) { create(:calendar) }
@@ -102,15 +102,12 @@ describe 'Add Match', :devise, js: true do
       click_on 'Next'
 
       assert_text 'Equipe adverse ?'
-      assert_text 'Equipe adverse ?'
-      debugger
-      find('#adversary_team_id-ts-control').click
-
-      within '#adversary_team_id-ts-dropdown' do
-        find('div', text: adversary_team.name).click
-      end
+      select adversary_team.name, from: 'Equipe adverse'
       click_on 'Next'
 
+      assert_text 'Nouveau match'
+      assert_text 'Local team'
+      assert_text 'Par défault, une heure avant'
       expect do
         click_on 'Créer un(e) Match'
         assert_text 'Match créé'

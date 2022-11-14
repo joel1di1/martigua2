@@ -84,5 +84,4 @@ group :test do
   gem 'shoulda-matchers', require: false
   gem 'timecop'
   gem 'webdrivers'
-  gem 'capybara-webkit'
 end

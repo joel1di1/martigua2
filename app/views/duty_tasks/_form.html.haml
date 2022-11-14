@@ -1,9 +1,11 @@
+/ text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-400
+
 = simple_form_for [current_section, @duty_task] do |f|
   = f.error_notification
 
-  = f.input :key, collection: DutyTask::TASK_NAMES_COLLECTION, input_html: { class: 'text-lg' }
-  = f.association :user, collection: current_section.players.sort_by(&:full_name), input_html: { data: { controller: 'ts--select' }, class: 'px-0 py-0 text-lg' }, selected: current_user.id
-  = f.input :realised_at
+  = f.association :user, label: 'Qui ?', collection: current_section.players.sort_by(&:full_name), input_html: { data: { controller: 'ts--select' }, class: 'px-0 py-0 text-lg' }, selected: current_user.id
+  = f.input :key, label: 'Quoi ?', collection: DutyTask::TASK_NAMES_COLLECTION, input_html: { class: 'text-lg' }
+  = f.input :realised_at, label: 'Quand ?'
 
   .mt-5
     = f.button :submit, class: 'btn-primary'

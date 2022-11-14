@@ -20,7 +20,6 @@ gem 'google-api-client'
 gem 'haml-rails'
 gem 'icalendar'
 gem 'importmap-rails'
-# gem 'inherited_resources'
 gem 'jbuilder'
 gem 'kaminari'
 gem 'net-imap'
@@ -85,4 +84,5 @@ group :test do
   gem 'shoulda-matchers', require: false
   gem 'timecop'
   gem 'webdrivers'
+  gem 'capybara-webkit'
 end

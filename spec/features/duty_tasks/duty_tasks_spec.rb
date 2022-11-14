@@ -31,6 +31,13 @@ describe 'duty_tasks', :devise do
     within '#links' do
       click_on 'Tigs'
     end
-    click_on 'Ajouter une tâche'
+
+    expect do
+      select user.full_name, from: 'duty_task[user_id]'
+      select 'Faire la table', from: 'duty_task[key]'
+
+      click_on 'Ajouter une tâche'
+      assert_text 'TIG créée'
+    end.to change(DutyTask, :count)
   end
 end

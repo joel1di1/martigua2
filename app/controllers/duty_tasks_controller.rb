@@ -10,7 +10,7 @@ class DutyTasksController < ApplicationController
   end
 
   def create
-    @duty_task = DutyTask.new(duty_task_params)
+    @duty_task = DutyTask.new(duty_task_params.merge(club: current_section.club))
     if @duty_task.save
       redirect_to section_duty_tasks_path(current_section), notice: 'TIG créée'
     else

@@ -99,15 +99,15 @@ class Match < ApplicationRecord
   end
 
   def async_update_shared_calendar
-    event = CalendarService.instance.create_or_update_event(
-      shared_calendar_id,
-      "#{local_team.try(:name)} - #{visitor_team.try(:name)}",
-      nil,
-      start_datetime, start_datetime + 2.hours,
-      "#{location.try(:name)}, #{location.try(:address)}"
-    )
+    # event = CalendarService.instance.create_or_update_event(
+    #   shared_calendar_id,
+    #   "#{local_team.try(:name)} - #{visitor_team.try(:name)}",
+    #   nil,
+    #   start_datetime, start_datetime + 2.hours,
+    #   "#{location.try(:name)}, #{location.try(:address)}"
+    # )
 
-    update! shared_calendar_id: event.id, shared_calendar_url: event.html_link
+    # update! shared_calendar_id: event.id, shared_calendar_url: event.html_link
   end
   handle_asynchronously :async_update_shared_calendar
 

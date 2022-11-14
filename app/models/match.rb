@@ -19,7 +19,7 @@ class Match < ApplicationRecord
                                where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period)
                              }
 
-  after_save :update_shared_calendar
+  # after_save :update_shared_calendar
 
   def date
     if start_datetime

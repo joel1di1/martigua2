@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :discussions
   namespace :admin do
     resources :admin_users
     resources :calendars
@@ -82,6 +81,7 @@ Rails.application.routes.draw do
     resources :days, only: [:create]
     resources :locations, only: [:create]
     resources :teams, only: %i[create show delete new]
+    resources :discussions
   end
 
   resources :club_admin_roles, only: %i[index show]

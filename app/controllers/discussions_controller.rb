@@ -1,9 +1,11 @@
 class DiscussionsController < ApplicationController
+  layout 'full_width'
+
   before_action :set_discussion, only: %i[ show edit update destroy ]
 
   # GET /discussions or /discussions.json
   def index
-    @discussions = Discussion.all
+    @discussions = current_section.discussions.all
   end
 
   # GET /discussions/1 or /discussions/1.json
@@ -12,7 +14,7 @@ class DiscussionsController < ApplicationController
 
   # GET /discussions/new
   def new
-    @discussion = Discussion.new
+    @discussion = current_section.discussions.new
   end
 
   # GET /discussions/1/edit
@@ -21,7 +23,7 @@ class DiscussionsController < ApplicationController
 
   # POST /discussions or /discussions.json
   def create
-    @discussion = Discussion.new(discussion_params)
+    @discussion = current_section.discussions.new(discussion_params)
 
     respond_to do |format|
       if @discussion.save
@@ -60,11 +62,11 @@ class DiscussionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_discussion
-      @discussion = Discussion.find(params[:id])
+      @discussion = current_section.discussions.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def discussion_params
-      params.require(:discussion).permit(:section_id, :name, :private, :system)
+      params.require(:discussion).permit(:name, :private)
     end
 end

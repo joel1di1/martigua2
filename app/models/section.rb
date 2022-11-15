@@ -14,7 +14,12 @@ class Section < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_and_belongs_to_many :trainings, inverse_of: :sections
 
   has_many :groups, inverse_of: :section, dependent: :destroy
+
+  has_many :discussions, inverse_of: :section, dependent: :destroy
+
   validates :name, presence: true
+
+  after_create :create_default_discussions
 
   def invite_user!(params, inviter)
     raise "Inviter (#{inviter.email}) is not coach of #{self}" unless inviter.coach_of?(self) || inviter.admin_of?(club)
@@ -155,5 +160,9 @@ class Section < ApplicationRecord # rubocop:disable Metrics/ClassLength
       groups << group
     end
     group
+  end
+
+  def create_default_discussions
+    general = discussions.find_or_create_by(system: true, name: 'Général')
   end
 end

@@ -312,6 +312,40 @@ ALTER SEQUENCE public.delayed_jobs_id_seq OWNED BY public.delayed_jobs.id;
 
 
 --
+-- Name: discussions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.discussions (
+    id bigint NOT NULL,
+    section_id bigint NOT NULL,
+    name character varying,
+    private boolean,
+    system boolean,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: discussions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.discussions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: discussions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.discussions_id_seq OWNED BY public.discussions.id;
+
+
+--
 -- Name: duty_tasks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -323,7 +357,8 @@ CREATE TABLE public.duty_tasks (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     weight integer DEFAULT 0 NOT NULL,
-    key character varying
+    key character varying,
+    club_id bigint NOT NULL
 );
 
 
@@ -502,6 +537,38 @@ ALTER SEQUENCE public.match_availabilities_id_seq OWNED BY public.match_availabi
 
 
 --
+-- Name: match_invitations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.match_invitations (
+    id bigint NOT NULL,
+    match_id bigint NOT NULL,
+    user_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: match_invitations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.match_invitations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: match_invitations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.match_invitations_id_seq OWNED BY public.match_invitations.id;
+
+
+--
 -- Name: match_selections; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -611,6 +678,45 @@ CREATE SEQUENCE public.participations_id_seq
 --
 
 ALTER SEQUENCE public.participations_id_seq OWNED BY public.participations.id;
+
+
+--
+-- Name: passeport_availability_checks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.passeport_availability_checks (
+    id bigint NOT NULL,
+    ended_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    key character varying,
+    "idQdt" integer,
+    "idSit" integer,
+    "dateDeb" character varying,
+    "dateFin" character varying,
+    params jsonb,
+    response_code character varying,
+    response_body character varying
+);
+
+
+--
+-- Name: passeport_availability_checks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.passeport_availability_checks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: passeport_availability_checks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.passeport_availability_checks_id_seq OWNED BY public.passeport_availability_checks.id;
 
 
 --
@@ -1175,6 +1281,13 @@ ALTER TABLE ONLY public.delayed_jobs ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: discussions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.discussions ALTER COLUMN id SET DEFAULT nextval('public.discussions_id_seq'::regclass);
+
+
+--
 -- Name: duty_tasks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1210,6 +1323,13 @@ ALTER TABLE ONLY public.match_availabilities ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: match_invitations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.match_invitations ALTER COLUMN id SET DEFAULT nextval('public.match_invitations_id_seq'::regclass);
+
+
+--
 -- Name: match_selections id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1228,6 +1348,13 @@ ALTER TABLE ONLY public.matches ALTER COLUMN id SET DEFAULT nextval('public.matc
 --
 
 ALTER TABLE ONLY public.participations ALTER COLUMN id SET DEFAULT nextval('public.participations_id_seq'::regclass);
+
+
+--
+-- Name: passeport_availability_checks id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.passeport_availability_checks ALTER COLUMN id SET DEFAULT nextval('public.passeport_availability_checks_id_seq'::regclass);
 
 
 --
@@ -1401,6 +1528,14 @@ ALTER TABLE ONLY public.delayed_jobs
 
 
 --
+-- Name: discussions discussions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.discussions
+    ADD CONSTRAINT discussions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: duty_tasks duty_tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1441,6 +1576,14 @@ ALTER TABLE ONLY public.match_availabilities
 
 
 --
+-- Name: match_invitations match_invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.match_invitations
+    ADD CONSTRAINT match_invitations_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: match_selections match_selections_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1462,6 +1605,14 @@ ALTER TABLE ONLY public.matches
 
 ALTER TABLE ONLY public.participations
     ADD CONSTRAINT participations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: passeport_availability_checks passeport_availability_checks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.passeport_availability_checks
+    ADD CONSTRAINT passeport_availability_checks_pkey PRIMARY KEY (id);
 
 
 --
@@ -1661,6 +1812,20 @@ CREATE INDEX index_days_on_calendar_id ON public.days USING btree (calendar_id);
 
 
 --
+-- Name: index_discussions_on_section_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_discussions_on_section_id ON public.discussions USING btree (section_id);
+
+
+--
+-- Name: index_duty_tasks_on_club_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_duty_tasks_on_club_id ON public.duty_tasks USING btree (club_id);
+
+
+--
 -- Name: index_duty_tasks_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1735,6 +1900,20 @@ CREATE INDEX index_match_availabilities_on_match_id ON public.match_availabiliti
 --
 
 CREATE INDEX index_match_availabilities_on_user_id ON public.match_availabilities USING btree (user_id);
+
+
+--
+-- Name: index_match_invitations_on_match_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_match_invitations_on_match_id ON public.match_invitations USING btree (match_id);
+
+
+--
+-- Name: index_match_invitations_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_match_invitations_on_user_id ON public.match_invitations USING btree (user_id);
 
 
 --
@@ -1965,6 +2144,14 @@ ALTER TABLE ONLY public.duty_tasks
 
 
 --
+-- Name: duty_tasks fk_rails_8982d9731c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.duty_tasks
+    ADD CONSTRAINT fk_rails_8982d9731c FOREIGN KEY (club_id) REFERENCES public.clubs(id);
+
+
+--
 -- Name: sms_notifications fk_rails_8bf31290ff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1981,11 +2168,27 @@ ALTER TABLE ONLY public.days
 
 
 --
+-- Name: match_invitations fk_rails_b43dc6188f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.match_invitations
+    ADD CONSTRAINT fk_rails_b43dc6188f FOREIGN KEY (match_id) REFERENCES public.matches(id);
+
+
+--
 -- Name: calendars fk_rails_d5af2ea0d7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.calendars
     ADD CONSTRAINT fk_rails_d5af2ea0d7 FOREIGN KEY (season_id) REFERENCES public.seasons(id);
+
+
+--
+-- Name: discussions fk_rails_f6471a0a6e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.discussions
+    ADD CONSTRAINT fk_rails_f6471a0a6e FOREIGN KEY (section_id) REFERENCES public.sections(id);
 
 
 --
@@ -2052,7 +2255,14 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191109141804'),
 ('20200111153438'),
 ('20200111155856'),
+('20221022101600'),
+('20221022102857'),
+('20221022103955'),
 ('20221102220838'),
-('20221105151924');
+('20221105151924'),
+('20221112112719'),
+('20221113132742'),
+('20221113133011'),
+('20221116170801');
 
 

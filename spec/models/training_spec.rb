@@ -176,6 +176,7 @@ RSpec.describe Training do
     let(:not_present_player) { create(:user) }
     let(:no_response_player) { create(:user) }
     let(:section)  { create(:section) }
+    let(:club)  { section.club }
     let(:group)    { create(:group, section:) }
     let(:training) { create(:training, with_section: section, group_ids: [group.id]) }
 
@@ -192,11 +193,11 @@ RSpec.describe Training do
       present_player4.present_for!(training)
       not_present_player.not_present_for!(training)
 
-      create(:duty_task, user: present_player1, weight: 2, realised_at: 1.day.ago)
-      create(:duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago)
-      create(:duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago)
-      create(:duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago)
-      create(:duty_task, user: present_player3, weight: 2, realised_at: 2.months.ago)
+      create(:duty_task, user: present_player1, weight: 2, realised_at: 1.day.ago, club:)
+      create(:duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago, club:)
+      create(:duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago, club:)
+      create(:duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago, club:)
+      create(:duty_task, user: present_player3, weight: 2, realised_at: 2.months.ago, club:)
     end
 
     it 'select present players order by weight then date of last duties' do

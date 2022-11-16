@@ -54,7 +54,6 @@ describe User do
     end
 
     context 'user with two participations on one section' do
-      let(:section) { create(:section) }
       let!(:participation1) { create(:participation, user:, section:, role: Participation::PLAYER) }
       let!(:participation2) { create(:participation, user:, section:, role: Participation::COACH) }
 
@@ -92,8 +91,6 @@ describe User do
 
   describe '#player_of?' do
     subject { user.player_of?(section) }
-
-    let(:section) { create(:section) }
 
     context 'with a player not in the section' do
       it { is_expected.to be false }
@@ -320,14 +317,13 @@ describe User do
     let(:task) { DutyTask::TASKS.keys.sample }
 
     it 'create a duty_task' do
-      expect { user.realised_task!(task, 1.day.ago) }.to(change { user.duty_tasks.reload.count })
+      expect { user.realised_task!(task, 1.day.ago, section.club) }.to(change { user.duty_tasks.reload.count })
     end
   end
 
   describe 'validates presence on trainings' do
     subject(:was_present) { user.was_present?(training) }
 
-    let(:section) { create(:section) }
     let(:user) { create(:user, with_section: section) }
     let(:training) { create(:training, with_section: section) }
 
@@ -351,7 +347,6 @@ describe User do
   end
 
   describe '#confirm_presence!' do
-    let(:section) { create(:section) }
     let(:user) { create(:user, with_section: section) }
     let(:training) { create(:training, with_section: section) }
 

@@ -86,6 +86,14 @@ class MatchesController < ApplicationController
     redirect_with(fallback: root_path)
   end
 
+  def invitations
+    @match = Match.find params[:id]
+
+    MatchInvitation.create!(match: @match, user: current_user)
+    debugger
+    redirect_to section_path(current_section), notice: 'Relance envoyée !'
+  end
+
   protected
 
   def match_params

@@ -11,6 +11,7 @@ class Match < ApplicationRecord
 
   has_many :selections, inverse_of: :match, dependent: :destroy
   has_many :match_availabilities, inverse_of: :match, dependent: :destroy
+  has_many :match_invitations, inverse_of: :match, dependent: :destroy
 
   scope :join_day, -> { joins('LEFT OUTER JOIN days ON days.id = matches.day_id') }
   scope :date_ordered, -> { order(Arel.sql('LEAST(days.period_end_date, start_datetime) ASC')) }

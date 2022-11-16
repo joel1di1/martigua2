@@ -67,6 +67,7 @@ Rails.application.routes.draw do
       member do
         post :selection
         resources :selections, only: [:destroy]
+        post 'invitations'
       end
     end
     resources :championships do

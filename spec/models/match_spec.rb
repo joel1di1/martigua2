@@ -70,4 +70,29 @@ RSpec.describe Match do
 
     it { is_expected.not_to be_empty }
   end
+
+  describe '#meeting_datetime' do
+    subject(:datetime) { Match.new(meeting_datetime:, start_datetime:).meeting_datetime }
+
+    context 'with meeting_datetime specified' do
+      let(:meeting_datetime) { 1.day.from_now }
+      let(:start_datetime) { 2.day.from_now }
+
+      it { expect(datetime).to eq(meeting_datetime) }
+    end
+
+    context 'with meeting_datetime not specified and start_datetime specified' do
+      let(:meeting_datetime) { nil }
+      let(:start_datetime) { 2.day.from_now }
+
+      it { expect(datetime).to eq(start_datetime - 1.hour) }
+    end
+
+    context 'with meeting_datetime not specified and start_datetime not specified' do
+      let(:meeting_datetime) { nil }
+      let(:start_datetime) { nil }
+
+      it { expect(datetime).to be_nil }
+    end
+  end
 end

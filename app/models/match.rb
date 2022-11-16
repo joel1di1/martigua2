@@ -128,4 +128,8 @@ class Match < ApplicationRecord
 
     save!
   end
+
+  def meeting_datetime
+    super || start_datetime&.send(:-, 1.hour)
+  end
 end

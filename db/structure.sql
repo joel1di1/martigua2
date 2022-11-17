@@ -109,6 +109,38 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: burns; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.burns (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    championship_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: burns_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.burns_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: burns_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.burns_id_seq OWNED BY public.burns.id;
+
+
+--
 -- Name: calendars; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1204,6 +1236,13 @@ ALTER TABLE ONLY public.admin_users ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
+-- Name: burns id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.burns ALTER COLUMN id SET DEFAULT nextval('public.burns_id_seq'::regclass);
+
+
+--
 -- Name: calendars id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1435,6 +1474,14 @@ ALTER TABLE ONLY public.admin_users
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: burns burns_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.burns
+    ADD CONSTRAINT burns_pkey PRIMARY KEY (id);
 
 
 --
@@ -1717,6 +1764,20 @@ CREATE UNIQUE INDEX index_admin_users_on_email ON public.admin_users USING btree
 --
 
 CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON public.admin_users USING btree (reset_password_token);
+
+
+--
+-- Name: index_burns_on_championship_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_burns_on_championship_id ON public.burns USING btree (championship_id);
+
+
+--
+-- Name: index_burns_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_burns_on_user_id ON public.burns USING btree (user_id);
 
 
 --
@@ -2064,6 +2125,14 @@ ALTER TABLE ONLY public.groups
 
 
 --
+-- Name: burns fk_rails_0ff98c47ee; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.burns
+    ADD CONSTRAINT fk_rails_0ff98c47ee FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: championships fk_rails_28cd7f9140; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2093,6 +2162,14 @@ ALTER TABLE ONLY public.sms_notifications
 
 ALTER TABLE ONLY public.days
     ADD CONSTRAINT fk_rails_a3ef261ae8 FOREIGN KEY (calendar_id) REFERENCES public.calendars(id);
+
+
+--
+-- Name: burns fk_rails_b06610d01f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.burns
+    ADD CONSTRAINT fk_rails_b06610d01f FOREIGN KEY (championship_id) REFERENCES public.championships(id);
 
 
 --
@@ -2180,6 +2257,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221022103955'),
 ('20221102220838'),
 ('20221105151924'),
-('20221116170801');
+('20221116170801'),
+('20221116214058');
 
 

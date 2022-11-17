@@ -18,12 +18,16 @@
         %td{style: 'border: 1px grey solid;'}= "#{match.local_team.name} - #{match.visitor_team.name}"
         %td{style: 'border: 1px grey solid;'}= match.location ? match.location.name : ''
         %td{style: 'border: 1px grey solid;text-align: center;'}
-          %input{ type: :hidden, name: 'present_ids[]', value: match.id }
-          %input{ type: :checkbox, name: 'checked_ids[]', value: match.id, checked: @user.is_available_for?(match) }
+          - if match.burned?(@user)
+            %em Brûlé
+          - else
+            %input{ type: :hidden, name: 'present_ids[]', value: match.id }
+            %input{ type: :checkbox, name: 'checked_ids[]', value: match.id, checked: @user.is_available_for?(match) }
     %tr
       %td{colspan: 3}
-        %a{style: "float: left; text-decoration: none; background:#5cb85c;display:inline-block;padding:10px;font-size:14px;margin:10px 10px 0 0;color:white;", href: match_availabilities_user_url(@user.to_param, present_ids: @matches.map(&:id), checked_ids: @matches.map(&:id), user_email: @user.email, user_token: @user.authentication_token), method: :post} Dispo pour tous !!
-        %a{style: "float: left; text-decoration: none; background:#d9534f;display:inline-block;padding:10px;font-size:14px;margin:10px 10px 0 10px;color:white;", href: match_availabilities_user_url(@user.to_param, present_ids: @matches.map(&:id), checked_ids: []), user_email: @user.email, user_token: @user.authentication_token, method: :post} Dispo pour aucun :(
+        - non_burned_matches = @matches.select{ |match| !match.burned?(user) }
+        %a{style: "float: left; text-decoration: none; background:#5cb85c;display:inline-block;padding:10px;font-size:14px;margin:10px 10px 0 0;color:white;", href: match_availabilities_user_url(@user.to_param, present_ids: non_burned_matches.map(&:id), checked_ids: non_burned_matches.map(&:id), user_email: @user.email, user_token: @user.authentication_token), method: :post} Dispo pour tous !!
+        %a{style: "float: left; text-decoration: none; background:#d9534f;display:inline-block;padding:10px;font-size:14px;margin:10px 10px 0 10px;color:white;", href: match_availabilities_user_url(@user.to_param, present_ids: non_burned_matches.map(&:id), checked_ids: []), user_email: @user.email, user_token: @user.authentication_token, method: :post} Dispo pour aucun :(
         %button{type: :submit, style: "float: right; background:#428bca;display:inline-block;padding:10px;font-size:14px;margin:10px 0 0 10px;color:white; border: none;"} Valider mes dispos
 
 %p

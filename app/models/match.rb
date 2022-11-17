@@ -132,4 +132,8 @@ class Match < ApplicationRecord
   def meeting_datetime
     super || start_datetime&.send(:-, 1.hour)
   end
+
+  def burned?(user)
+    championship.burned_players.to_a.include?(user)
+  end
 end

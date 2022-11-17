@@ -95,4 +95,21 @@ RSpec.describe Match do
       it { expect(datetime).to be_nil }
     end
   end
+
+  describe '.burned?' do
+    let(:user) { create(:user) }
+    let(:section) { create(:section) }
+    let!(:championship) { create :championship, season: Season.current }
+    let!(:team) { create :team, with_section: section, enrolled_in: championship }
+    let!(:match) { create :match, championship: }
+
+    it 'returns boolean' do
+      expect(match.reload.burned?(user)).to be_falsy
+      championship.burn!(user)
+      expect(match.reload.burned?(user)).to be_truthy
+      championship.unburn!(user)
+      expect(match.reload.burned?(user)).to be_falsy
+    end
+  end
+
 end

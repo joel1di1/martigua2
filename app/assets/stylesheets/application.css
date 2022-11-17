@@ -13,3 +13,7 @@
  *= require_tree .
  *= require_self
  */
+
+.w-full.w-72 {
+  width: 18rem;
+}

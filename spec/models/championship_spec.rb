@@ -10,6 +10,7 @@ RSpec.describe Championship do
   it { is_expected.to belong_to :calendar }
   it { is_expected.to have_many :teams }
   it { is_expected.to have_many :matches }
+  it { is_expected.to have_many :burns }
 
   describe '.enroll_team!' do
     subject { championship.enroll_team!(team) }
@@ -105,5 +106,22 @@ RSpec.describe Championship do
         expect(landreau_vertou.location.address).to eq("SALLE DES NOUELLES\n19  RUE DE LA LOIRE\nLE LANDREAU")
       end
     end
+  end
+
+  describe '.burned_players' do
+    let(:section) { create :section }
+    let!(:team) { create :team, with_section: section, enrolled_in: championship }
+    let!(:player1) { create :user, with_section: section }
+    let!(:player2) { create :user, with_section: section }
+    let!(:player3) { create :user, with_section: section }
+
+    before do
+      championship.burn!(player1)
+      championship.burn!(player2)
+      championship.burn!(player3)
+      championship.unburn!(player2)
+    end
+
+    it { expect(championship.burned_players.to_a).to eq([player1, player3]) }
   end
 end

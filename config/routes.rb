@@ -73,6 +73,7 @@ Rails.application.routes.draw do
     resources :championships do
       resources :matches
       resources :enrolled_team_championships, only: %i[index create destroy]
+      resources :burns, only: %i[index create destroy]
     end
     resources :sms_notifications, only: %i[new create]
     resources :day, only: [] do

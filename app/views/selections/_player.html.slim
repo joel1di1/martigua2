@@ -4,7 +4,11 @@ li.p-1.text-sm draggable="true" data-player-id=player.id data-controller=(curren
   .flex.justify-between.content-center
     button.justify-between id="assign-#{player.id}" type="button" aria-haspopup="true" aria-expanded="false" data-action=(current_user.coach_of?(current_section) && "dropdown#toggle click@window->dropdown#hide")
       div
-        = player.short_name
+        - if selection.present? && selection.match.burned?(player)
+          .text-red-700.whitespace-nowrap
+            = "BRÛLÉ: #{player.short_name}"
+        - else
+          = player.short_name
     .flex.flex-row
       .flex.flex-col.justify-center
         .flex.hidden.lg:block.whitespace-nowrap
@@ -16,14 +20,18 @@ li.p-1.text-sm draggable="true" data-player-id=player.id data-controller=(curren
         .flex.flex-col.justify-center
           .flex.text-xs
             - teams_with_matches.each do |team, match|
-              = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter ml-2', role: 'form', remote: true do
-                - class_color = { \
-                  true => 'text-green-700', \
-                  false => 'text-red-700 line-through', \
-                  nil => 'text-yellow-500' \
-                  }[ @availabilities_by_user_and_match[player.id].try(:[], match.id) ]
-                button.text-indigo-600.hover:bg-indigo-200 class=class_color type='submit'
-                  = team.name
+              - if match.burned?(player)
+                .ml-2.text-red-700.line-through= team.name
+
+              - else
+                = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter ml-2', role: 'form', remote: true do
+                  - class_color = { \
+                    true => 'text-green-700', \
+                    false => 'text-red-700 line-through', \
+                    nil => 'text-yellow-500' \
+                    }[ @availabilities_by_user_and_match[player.id].try(:[], match.id) ]
+                  button.text-indigo-600.hover:bg-indigo-200 class=class_color type='submit'
+                    = team.name
 
       - if selection.present? && current_user.coach_of?(current_section)
         .mx-2

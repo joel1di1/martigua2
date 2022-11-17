@@ -3,6 +3,8 @@
 class Championship < ApplicationRecord
   belongs_to :season
   belongs_to :calendar
+  has_many :burns, dependent: :destroy
+  has_many :burned_players, through: :burns, source: :user
   has_many :enrolled_team_championships, inverse_of: :championship, dependent: :destroy
   has_many :teams, through: :enrolled_team_championships
   has_many :matches, inverse_of: :championship, dependent: :destroy
@@ -59,6 +61,14 @@ class Championship < ApplicationRecord
 
   def enrolled_teams
     teams
+  end
+
+  def burn!(user)
+    burns.find_or_create_by(user:)
+  end
+
+  def unburn!(user)
+    burns.where(user:).delete_all
   end
 
   private

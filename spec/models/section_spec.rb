@@ -273,6 +273,7 @@ RSpec.describe Section do
     context 'with one users who never did any' do
       it {
         user1, user2, user3, user4 = create_list(:user, 4, with_section: section)
+        debugger
         user1.realised_task!(task, 1.day.ago, section.club)
         user2.realised_task!(task, 2.days.ago, section.club)
         user3.realised_task!(task, 3.days.ago, section.club)

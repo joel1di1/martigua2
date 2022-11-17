@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TeamsController < InheritedResources::Base
+class TeamsController < ApplicationController
   def new
     @team = Team.new(club: current_section&.club)
   end
@@ -15,7 +15,7 @@ class TeamsController < InheritedResources::Base
       championship.enroll_team! @team
     end
 
-    redirect_with additionnal_params: { adversary_team_id: @team.id }, notice: 'Equipe créée'
+    redirect_with additionnal_params: { adversary_team_id: @team.id }, notice: 'Équipe créée'
   end
 
   private

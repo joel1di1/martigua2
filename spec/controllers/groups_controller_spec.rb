@@ -52,7 +52,7 @@ describe GroupsController do
       describe 'redirection' do
         before { do_request }
 
-        it { expect(response).to have_http_status(:success) }
+        it { expect(response).to have_http_status(:unprocessable_entity) }
       end
     end
   end

@@ -1,16 +1,20 @@
 # frozen_string_literal: true
 
-class DutyTasksController < InheritedResources::Base
+class DutyTasksController < ApplicationController
   def index
     @duty_tasks = DutyTask.order(realised_at: :desc).page(params[:page])
   end
 
+  def new
+    @duty_task = DutyTask.new
+  end
+
   def create
-    @duty_task = DutyTask.new(duty_task_params)
+    @duty_task = DutyTask.new(duty_task_params.merge(club: current_section.club))
     if @duty_task.save
       redirect_to section_duty_tasks_path(current_section), notice: 'TIG créée'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 

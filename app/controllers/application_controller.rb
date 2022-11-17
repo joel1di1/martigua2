@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+  include LogAllRequests
+
   before_action :authenticate_user_from_token!, except: :catch404
   before_action :authenticate_user!, except: :catch404
   before_action :set_sentry_context
@@ -8,8 +11,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_section, :origin_path_or
 
   LOCAL_REFERRER_RE = %r{^(https://www.martigua.org)|(https?://localhost)}
-
-  include LogAllRequests
 
   def catch404
     Rails.logger.debug { "404 : #{request.url}" }

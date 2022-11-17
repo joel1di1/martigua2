@@ -17,4 +17,7 @@ RSpec.configure do |config|
   end
 
   Capybara.current_driver = ENV['SHOW_BROWSER'].present? ? :selenium_chrome : :selenium_chrome_headless
+
+  # Capybara.javascript_driver = :webkit
+
 end

@@ -7,6 +7,7 @@ RSpec.describe Club do
 
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to have_many :sections }
+  it { is_expected.to have_many :duty_tasks }
 
   describe '#add_admin!' do
     let(:user) { create(:user) }

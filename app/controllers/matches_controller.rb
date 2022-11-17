@@ -31,9 +31,9 @@ class MatchesController < ApplicationController
     @championship = Championship.find(params[:match][:championship_id])
     @match = Match.new match_params
     if @match.save
-      redirect_to section_championship_path(current_section, @championship)
+      redirect_to section_championship_path(current_section, @championship), notice: 'Match créé'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -43,7 +43,7 @@ class MatchesController < ApplicationController
     if @match.update match_params
       redirect_to section_championship_path(current_section, @championship)
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

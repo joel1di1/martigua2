@@ -11,6 +11,8 @@ class DutyTask < ApplicationRecord
 
   belongs_to :club
   belongs_to :user, inverse_of: :duty_tasks
+  belongs_to :club, inverse_of: :duty_tasks
+
   validates :key, :name, :weight, presence: true
 
   before_validation :set_name_weight_from_key

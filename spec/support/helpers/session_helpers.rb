@@ -10,15 +10,17 @@ module Features
       click_button 'Sign up'
     end
 
-    def signin(email, password)
+    def signin(email, password, close_notice: false)
       visit root_path
       fill_in 'Email', with: email
       fill_in 'Mot de passe', with: password
       click_button 'Se connecter'
+
+      click_button 'close-flash-notice' if close_notice
     end
 
-    def signin_user(user)
-      signin(user.email, user.password)
+    def signin_user(user, close_notice: false)
+      signin(user.email, user.password, close_notice:)
     end
   end
 end

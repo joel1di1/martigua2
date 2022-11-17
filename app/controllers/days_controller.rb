@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-class DaysController < InheritedResources::Base
+class DaysController < ApplicationController
   respond_to :html, :json
+
+  def new
+    @day = Day.new
+  end
 
   def create
     @day = Day.new day_params

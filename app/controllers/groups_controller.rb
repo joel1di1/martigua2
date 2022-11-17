@@ -23,7 +23,7 @@ class GroupsController < ApplicationController
     if @group.save
       redirect_to section_group_path(current_section, @group), notice: 'Groupe créé'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -31,7 +31,7 @@ class GroupsController < ApplicationController
     if @group.update group_params
       redirect_to section_group_path(current_section, @group), notice: 'Groupe modifié'
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

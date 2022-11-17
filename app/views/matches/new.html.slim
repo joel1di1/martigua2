@@ -47,21 +47,20 @@
     = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
 
   div data-controller='dropdown'
-    a href="#new-day-collapse" data-toggle="collapse" data-action='dropdown#toggle:stop' class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
+    a href="#new-day-collapse" data-toggle="collapse" data-action='dropdown#toggle' class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
       'Ajouter une journée
 
-    #new-day-collapse.row.collapse data-dropdown-target="menu"
-      .col-md-6.col-xs-12
-        - @new_day = Day.new(calendar: @championship.calendar)
-        = simple_form_for [current_section, @new_day] do |f|
-          = f.error_notification
-          .form-inputs
-            = hidden_field_tag :_redirect_url, request.original_url
-            = f.input :period_start_date
-            = f.input :name, input_html: { 'data-default-name' => @new_day.name }
-            = f.hidden_field :calendar_id
-          .form-actions
-            = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+    .hidden data-dropdown-target="menu"
+      - @new_day = Day.new(calendar: @championship.calendar)
+      = simple_form_for [current_section, @new_day] do |f|
+        = f.error_notification
+        .form-inputs
+          = hidden_field_tag :_redirect_url, request.original_url
+          = f.input :period_start_date
+          = f.input :name, input_html: { 'data-default-name' => @new_day.name }
+          = f.hidden_field :calendar_id
+        .form-actions
+          = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
 
 - elsif params[:match].blank? || params[:match][:location_id].blank?
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
@@ -76,17 +75,16 @@
     a href="#new-location-collapse" data-toggle="collapse" data-action='dropdown#toggle:stop' class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
       'Ajouter un lieu
 
-    #new-location-collapse.row.collapse data-dropdown-target="menu"
-      .col-md-6.col-xs-12
-        - @new_location = Location.new
-        = simple_form_for [current_section, @new_location] do |f|
-          = f.error_notification
-          .form-inputs
-            = hidden_field_tag :_redirect_url, request.original_url
-            = f.input :name
-            = f.input :address
-          .form-actions
-            = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+    .hidden data-dropdown-target="menu"
+      - @new_location = Location.new
+      = simple_form_for [current_section, @new_location] do |f|
+        = f.error_notification
+        .form-inputs
+          = hidden_field_tag :_redirect_url, request.original_url
+          = f.input :name
+          = f.input :address
+        .form-actions
+          = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
 
 - elsif params[:adversary_team_id].blank?
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
@@ -102,15 +100,14 @@
     a href="#new-location-collapse" data-toggle="collapse" data-action='dropdown#toggle:stop' class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
       'Ajouter une équipe
 
-    #new-location-collapse.row.collapse data-dropdown-target="menu"
-      .col-md-6.col-xs-12
-        - @team = Team.new
-        = simple_form_for [current_section, @team] do |f|
-          = hidden_field_tag :championship_id, params[:championship_id]
-          = f.error_notification
-          .form-inputs
-            = hidden_field_tag :_redirect_url, request.original_url
-            = f.input :name
-          .form-actions
-            = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+    .hidden data-dropdown-target="menu"
+      - @team = Team.new
+      = simple_form_for [current_section, @team] do |f|
+        = hidden_field_tag :championship_id, params[:championship_id]
+        = f.error_notification
+        .form-inputs
+          = hidden_field_tag :_redirect_url, request.original_url
+          = f.input :name
+        .form-actions
+          = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
 

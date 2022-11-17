@@ -83,6 +83,7 @@ Rails.application.routes.draw do
     resources :days, only: [:create]
     resources :locations, only: [:create]
     resources :teams, only: %i[create show delete new]
+    resources :discussions
   end
 
   resources :club_admin_roles, only: %i[index show]

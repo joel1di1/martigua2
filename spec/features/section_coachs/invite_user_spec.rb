@@ -30,6 +30,9 @@ describe 'Invite User', :devise do
     fill_in 'section_user_invitation[nickname]', with: invited_user.nickname
     fill_in 'section_user_invitation[phone_number]', with: invited_user.phone_number
 
-    expect { click_button('Inviter le joueur') }.to change(SectionUserInvitation, :count).by(1)
+    expect do
+     click_button('Inviter le joueur')
+     assert_text "#{invited_user.email} invité !"
+   end.to change(SectionUserInvitation, :count).by(1)
   end
 end

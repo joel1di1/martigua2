@@ -12,7 +12,6 @@ class User < ApplicationRecord
   has_many :training_presences, inverse_of: :user, dependent: :destroy
   has_many :duty_tasks, inverse_of: :user, dependent: :destroy
   has_many :match_availabilities, inverse_of: :user, dependent: :destroy
-  has_many :burns, dependent: :destroy
 
   has_and_belongs_to_many :groups, inverse_of: :users
 
@@ -115,7 +114,7 @@ class User < ApplicationRecord
   end
 
   def realised_task!(task_key, realised_at, club)
-    duty_tasks << DutyTask.create!(key: task_key, realised_at:, user: self, club: club)
+    duty_tasks << DutyTask.create!(key: task_key, realised_at:, user: self, club:)
   end
 
   def last_time_duty(task_key)

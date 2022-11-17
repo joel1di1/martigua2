@@ -48,7 +48,7 @@ class TrainingsController < ApplicationController
       redirect_to section_training_path(section_id: current_section.to_param, id: @training.to_param),
                   notice: 'Entrainement modifié'
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

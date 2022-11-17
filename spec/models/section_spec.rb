@@ -12,6 +12,7 @@ RSpec.describe Section do
   it { is_expected.to have_many :users }
   it { is_expected.to have_and_belong_to_many :trainings }
   it { is_expected.to have_many :groups }
+  it { is_expected.to have_many :discussions }
 
   describe '#add_player!' do
     subject { section.add_player!(user) }
@@ -150,6 +151,12 @@ RSpec.describe Section do
       it { expect(group_every_players.system).to be_truthy }
       it { expect(group_every_players.role).to eq 'every_players' }
     end
+
+    describe 'default discussions' do
+      it { expect(section.discussions.count).to eq(1) }
+      it { expect(section.discussions.first.name).to eq('Général') }
+      it { expect(section.discussions.first.system).to be true }
+    end
   end
 
   describe '#has_member?' do
@@ -273,7 +280,6 @@ RSpec.describe Section do
     context 'with one users who never did any' do
       it {
         user1, user2, user3, user4 = create_list(:user, 4, with_section: section)
-        debugger
         user1.realised_task!(task, 1.day.ago, section.club)
         user2.realised_task!(task, 2.days.ago, section.club)
         user3.realised_task!(task, 3.days.ago, section.club)

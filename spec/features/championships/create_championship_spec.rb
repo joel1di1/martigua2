@@ -21,7 +21,10 @@ describe 'create championship', :devise do
       select(calendar.name, from: 'Calendar')
       select(team.name, from: 'Teams')
 
-      expect { click_on 'Créer un(e) Compétition' }.to change(Championship, :count).by(1)
+      expect do
+        click_on 'Créer un(e) Compétition'
+        assert_text 'Compétition créée'
+      end.to change(Championship, :count).by(1)
 
       championship = Championship.find_by(name: championship_name)
       expect(championship.teams.count).to eq(1)

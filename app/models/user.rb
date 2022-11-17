@@ -6,6 +6,7 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :burns, dependent: :destroy
   has_many :club_admin_roles, dependent: :destroy
   has_many :participations, dependent: :destroy
   has_many :sections, -> { distinct }, through: :participations, inverse_of: :users

@@ -11,7 +11,9 @@ describe 'burns', :devise do
 
     signin_user coach
 
-    click_on 'Compétitions'
+    within '#links' do
+      click_on 'Compétitions'
+    end
     assert_text championship.name
 
     click_on championship.name

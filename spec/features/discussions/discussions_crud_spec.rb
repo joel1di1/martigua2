@@ -2,7 +2,7 @@
 
 # Feature: duty tasks
 describe 'discussions' do
-  it 'member sees general discussion' do
+  skip 'member sees general discussion' do
     section = create(:section)
     user = create(:user, with_section: section)
 

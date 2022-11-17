@@ -3,9 +3,11 @@
 describe 'See group detail' do
   let(:section) { create(:section) }
 
-  before { signin_user user, close_notice: true }
-  before { section.group_everybody }
-  before { section.group_every_players }
+  before do
+    signin_user user, close_notice: true
+    section.group_everybody
+    section.group_every_players
+  end
 
   describe 'player' do
     let(:user) { create(:user, with_section: section) }

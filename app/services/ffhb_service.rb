@@ -49,7 +49,7 @@ class FfhbService
 
     I18n.locale = :fr
 
-    json_pool['dates'].each do |index, date|
+    json_pool['dates'].each do |_index, date|
       period_start_date = Date.parse(date['start'])
       period_end_date = Date.parse(date['finish'])
       day_name = "WE du #{I18n.l(period_start_date, format: :short)} au #{I18n.l(period_end_date, format: :short)}"

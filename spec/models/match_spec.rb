@@ -76,14 +76,14 @@ RSpec.describe Match do
 
     context 'with meeting_datetime specified' do
       let(:meeting_datetime) { 1.day.from_now }
-      let(:start_datetime) { 2.day.from_now }
+      let(:start_datetime) { 2.days.from_now }
 
       it { expect(datetime).to eq(meeting_datetime) }
     end
 
     context 'with meeting_datetime not specified and start_datetime specified' do
       let(:meeting_datetime) { nil }
-      let(:start_datetime) { 2.day.from_now }
+      let(:start_datetime) { 2.days.from_now }
 
       it { expect(datetime).to eq(start_datetime - 1.hour) }
     end
@@ -99,17 +99,17 @@ RSpec.describe Match do
   describe '.burned?' do
     let(:user) { create(:user) }
     let(:section) { create(:section) }
-    let!(:championship) { create :championship, season: Season.current }
-    let!(:team) { create :team, with_section: section, enrolled_in: championship }
-    let!(:match) { create :match, championship: }
+    let(:championship) { create(:championship, season: Season.current) }
+    let(:match) { create(:match, championship:) }
+
+    before { create(:team, with_section: section, enrolled_in: championship) }
 
     it 'returns boolean' do
-      expect(match.reload.burned?(user)).to be_falsy
+      expect(match.reload).not_to be_burned(user)
       championship.burn!(user)
-      expect(match.reload.burned?(user)).to be_truthy
+      expect(match.reload).to be_burned(user)
       championship.unburn!(user)
-      expect(match.reload.burned?(user)).to be_falsy
+      expect(match.reload).not_to be_burned(user)
     end
   end
-
 end

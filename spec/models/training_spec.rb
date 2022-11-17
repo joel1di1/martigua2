@@ -175,8 +175,8 @@ RSpec.describe Training do
     let(:present_player4) { create(:user) }
     let(:not_present_player) { create(:user) }
     let(:no_response_player) { create(:user) }
-    let(:section)  { create(:section) }
-    let(:club)  { section.club }
+    let(:section) { create(:section) }
+    let(:club) { section.club }
     let(:group)    { create(:group, section:) }
     let(:training) { create(:training, with_section: section, group_ids: [group.id]) }
 

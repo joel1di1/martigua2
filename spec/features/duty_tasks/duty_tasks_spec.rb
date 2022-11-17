@@ -15,6 +15,8 @@ describe 'duty_tasks', :devise do
     within '#links' do
       click_on 'Tigs'
     end
+
+    assert_text task1.name
   end
 
   # Scenario: member creates a duty task

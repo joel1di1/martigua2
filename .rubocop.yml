@@ -16,3 +16,6 @@ Style/Documentation:
 
 RSpec/DescribedClass:
   Enabled: false
+
+Rails/I18nLocaleTexts:
+  Enabled: false

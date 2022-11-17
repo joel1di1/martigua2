@@ -2,7 +2,7 @@
 
 describe 'Add Match', :devise do
   let(:coach) { create(:coach) }
-  let(:team) { team = coach.sections.first.teams.sample }
+  let(:team) { coach.sections.first.teams.sample }
   let!(:calendar) { create(:calendar) }
   let(:adversary_team_name) { Faker::Team.name }
   let(:location_name) { Faker::Address.street_name }
@@ -12,6 +12,7 @@ describe 'Add Match', :devise do
 
   before { signin_user coach }
 
+  # rubocop:disable RSpec/ExampleLength
   describe 'with non existing items' do
     it 'coach sign in and add new match' do
       click_on 'add-match'
@@ -71,6 +72,7 @@ describe 'Add Match', :devise do
     end
   end
 
+  # rubocop:disable RSpec/MultipleMemoizedHelpers
   describe 'with existing items' do
     let(:championship) { create(:championship, name: championship_name) }
     let(:adversary_team) { create(:team, name: adversary_team_name) }
@@ -120,4 +122,6 @@ describe 'Add Match', :devise do
       expect(match.location.name).to eq(location_name)
     end
   end
+  # rubocop:enable RSpec/MultipleMemoizedHelpers
+  # rubocop:enable RSpec/ExampleLength
 end

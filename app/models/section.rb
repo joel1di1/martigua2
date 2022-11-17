@@ -163,6 +163,6 @@ class Section < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def create_default_discussions
-    general = discussions.find_or_create_by(system: true, name: 'Général')
+    discussions.find_or_create_by(system: true, name: 'Général')
   end
 end

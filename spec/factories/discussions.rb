@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :discussion do
     section { nil }
-    name { "MyString" }
+    name { 'MyString' }
     private { false }
     system { false }
   end

@@ -124,8 +124,7 @@ class User < ApplicationRecord
 
   def was_present?(training, presences_by_user_and_training = nil)
     training_presence = if presences_by_user_and_training.present?
-                          presences_by_user_and_training[[id,
-                                                          training.id]]
+                          presences_by_user_and_training[[id, training.id]]
                         else
                           training_presences.where(training:).first
                         end

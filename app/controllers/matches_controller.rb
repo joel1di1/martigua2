@@ -90,7 +90,6 @@ class MatchesController < ApplicationController
     @match = Match.find params[:id]
 
     MatchInvitation.create!(match: @match, user: current_user)
-    debugger
     redirect_to section_path(current_section), notice: 'Relance envoyée !'
   end
 

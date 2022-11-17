@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MatchInvitation < ApplicationRecord
   belongs_to :match
   belongs_to :user, optional: true

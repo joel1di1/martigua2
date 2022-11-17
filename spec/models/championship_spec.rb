@@ -109,11 +109,10 @@ RSpec.describe Championship do
   end
 
   describe '.burned_players' do
-    let(:section) { create :section }
-    let!(:team) { create :team, with_section: section, enrolled_in: championship }
-    let!(:player1) { create :user, with_section: section }
-    let!(:player2) { create :user, with_section: section }
-    let!(:player3) { create :user, with_section: section }
+    let(:section) { create(:section) }
+    let!(:player1) { create(:user, with_section: section) }
+    let!(:player2) { create(:user, with_section: section) }
+    let!(:player3) { create(:user, with_section: section) }
 
     before do
       championship.burn!(player1)

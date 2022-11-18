@@ -13,15 +13,19 @@ describe 'fill in training presences' do
     signin player.email, player.password
 
     click_on 'Présent'
+    assert_text "m'indiquer absent"
     expect(player.reload).to be_present_for(training)
 
     click_on "m'indiquer absent"
-    expect(player.reload.present_for?(training)).to be false
+    assert_text "m'indiquer présent"
+    expect(player.reload).not_to be_present_for(training)
 
     click_on "m'indiquer présent"
+    assert_text "m'indiquer absent"
     expect(player.reload).to be_present_for(training)
 
     click_on "m'indiquer absent"
-    expect(player.reload.present_for?(training)).to be false
+    assert_text "m'indiquer présent"
+    expect(player.reload).not_to be_present_for(training)
   end
 end

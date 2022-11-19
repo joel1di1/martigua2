@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :training_presences, inverse_of: :user, dependent: :destroy
   has_many :duty_tasks, inverse_of: :user, dependent: :destroy
   has_many :match_availabilities, inverse_of: :user, dependent: :destroy
+  has_many :user_championship_stats, inverse_of: :user, dependent: :destroy
 
   has_and_belongs_to_many :groups, inverse_of: :users
 
@@ -90,7 +91,7 @@ class User < ApplicationRecord
   end
 
   def full_name
-    nickname.blank? ? "#{first_name} #{last_name}" : "#{first_name} #{last_name} - #{nickname}"
+    nickname.blank? ? "#{first_name.capitalize} #{last_name.capitalize}" : "#{first_name.capitalize} #{last_name.capitalize} - #{nickname}"
   end
 
   def to_s
@@ -98,7 +99,7 @@ class User < ApplicationRecord
   end
 
   def short_name
-    nickname.presence || "#{first_name} #{last_name}"
+    nickname.presence || "#{first_name.capitalize} #{last_name.capitalize}"
   end
 
   def next_week_trainings(date: DateTime.now)

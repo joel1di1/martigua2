@@ -33,7 +33,7 @@ Rails.application.routes.draw do
 
   resources :championships
 
-  resources :sections, only: [:show] do
+  resources :sections, only: %i[show edit update] do
     resources :duty_tasks
     resources :section_user_invitations, path: 'user_invitations', only: %i[new show create index]
     resources :trainings do
@@ -84,6 +84,8 @@ Rails.application.routes.draw do
     resources :locations, only: [:create]
     resources :teams, only: %i[create show delete new]
     resources :discussions
+
+    patch 'player_ffhb_association'
   end
 
   resources :club_admin_roles, only: %i[index show]

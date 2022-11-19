@@ -416,6 +416,7 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (1.1.1)
       railties (>= 6.0.0)
+    string-similarity (2.1.0)
     switch_user (1.5.4)
     tailwindcss-rails (2.0.17)
       railties (>= 6.0.0)
@@ -521,6 +522,7 @@ DEPENDENCIES
   slim
   sprockets-rails
   stimulus-rails
+  string-similarity
   switch_user
   tailwindcss-rails
   timecop

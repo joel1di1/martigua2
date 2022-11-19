@@ -8,6 +8,7 @@ class Championship < ApplicationRecord
   has_many :enrolled_team_championships, inverse_of: :championship, dependent: :destroy
   has_many :teams, through: :enrolled_team_championships
   has_many :matches, inverse_of: :championship, dependent: :destroy
+  has_many :user_championship_stats, inverse_of: :championship, dependent: :destroy
 
   validates :name, presence: true
 
@@ -40,6 +41,21 @@ class Championship < ApplicationRecord
 
         match.update_with_ffhb_event!(event)
       end
+    end
+
+    pool_as_json['players'].each do |ffhb_player|
+      user_stats = UserChampionshipStat.find_or_create_by(championship: self, player_id: ffhb_player['playerId'])
+
+      statistics = ffhb_player['statistics'].to_h
+      user_stats.match_played = statistics['Mp']
+      user_stats.goals = statistics['Goal']
+      user_stats.saves = statistics['Saves']
+      user_stats.goal_average = statistics['Avg']
+      user_stats.save_average = statistics['Avg Stops']
+      user_stats.player_id = ffhb_player['playerId']
+      user_stats.first_name = ffhb_player['firstName']
+      user_stats.last_name = ffhb_player['lastName']
+      user_stats.save!
     end
 
     self

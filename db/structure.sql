@@ -1204,6 +1204,46 @@ ALTER SEQUENCE public.trainings_id_seq OWNED BY public.trainings.id;
 
 
 --
+-- Name: user_championship_stats; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_championship_stats (
+    id bigint NOT NULL,
+    user_id bigint,
+    championship_id bigint NOT NULL,
+    match_played integer,
+    goals integer,
+    saves integer,
+    goal_average integer,
+    save_average integer,
+    player_id character varying,
+    first_name character varying,
+    last_name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: user_championship_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_championship_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_championship_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_championship_stats_id_seq OWNED BY public.user_championship_stats.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1488,6 +1528,13 @@ ALTER TABLE ONLY public.trainings ALTER COLUMN id SET DEFAULT nextval('public.tr
 
 
 --
+-- Name: user_championship_stats id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_championship_stats ALTER COLUMN id SET DEFAULT nextval('public.user_championship_stats_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1764,6 +1811,14 @@ ALTER TABLE ONLY public.training_invitations
 
 ALTER TABLE ONLY public.trainings
     ADD CONSTRAINT trainings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_championship_stats user_championship_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_championship_stats
+    ADD CONSTRAINT user_championship_stats_pkey PRIMARY KEY (id);
 
 
 --
@@ -2132,6 +2187,20 @@ CREATE INDEX index_trainings_on_location_id ON public.trainings USING btree (loc
 
 
 --
+-- Name: index_user_championship_stats_on_championship_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_championship_stats_on_championship_id ON public.user_championship_stats USING btree (championship_id);
+
+
+--
+-- Name: index_user_championship_stats_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_championship_stats_on_user_id ON public.user_championship_stats USING btree (user_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2205,6 +2274,14 @@ ALTER TABLE ONLY public.championships
 
 
 --
+-- Name: user_championship_stats fk_rails_3c673c75ba; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_championship_stats
+    ADD CONSTRAINT fk_rails_3c673c75ba FOREIGN KEY (championship_id) REFERENCES public.championships(id);
+
+
+--
 -- Name: duty_tasks fk_rails_63d1d5e703; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2250,6 +2327,14 @@ ALTER TABLE ONLY public.burns
 
 ALTER TABLE ONLY public.match_invitations
     ADD CONSTRAINT fk_rails_b43dc6188f FOREIGN KEY (match_id) REFERENCES public.matches(id);
+
+
+--
+-- Name: user_championship_stats fk_rails_cd04ba13f5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_championship_stats
+    ADD CONSTRAINT fk_rails_cd04ba13f5 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -2341,6 +2426,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221113132742'),
 ('20221113133011'),
 ('20221116170801'),
-('20221116214058');
+('20221116214058'),
+('20221117125158');
 
 

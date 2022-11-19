@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SectionsController < ApplicationController
-  before_action :set_section, only: %i[show destroy]
+  before_action :set_section, only: %i[show destroy edit update]
   include PrefetchTrainingData
 
   def show
@@ -17,6 +17,34 @@ class SectionsController < ApplicationController
 
     club = Club.find(params[:club_id])
     @section.club = club
+  end
+
+  def edit
+    @players = @section.players.order(:first_name, :last_name)
+    @user_stats = UserChampionshipStat.where(championship: @section.championships)
+
+    @user_stats = @user_stats.index_by(&:player_id).values
+
+    @associations = UserChampionshipStat.joins(:championship).where(championship: @section.championships).where(championship: { season: Season.current }).index_by(&:user)
+
+    @suggested_associations = (@players - @associations.keys).index_with do |player|
+      suggested_user_stat(player, @user_stats)
+    end
+
+    @user
+  end
+
+  def player_ffhb_association
+    players_params = params[:section].permit!
+    players_params.each do |key, ffhb_key|
+      next unless key.start_with?('player_')
+
+      user_id = key.split('_')[1]
+      user = current_section.users.find(user_id)
+      UserChampionshipStat.where(player_id: ffhb_key).update_all(user_id: user.id)
+    end
+
+    redirect_to edit_section_path(current_section), notice: 'Les associations ont été mises à jour'
   end
 
   def create
@@ -40,6 +68,15 @@ class SectionsController < ApplicationController
     end
   end
 
+  def update
+    if @section.update section_params
+      redirect_with(fallback: section_path(@section),
+                    notice: "Section #{@section.name} modifée")
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     raise 'forbidden' unless current_user.admin_of?(@section.club)
 
@@ -57,4 +94,26 @@ class SectionsController < ApplicationController
   def set_section
     @section = Section.find(params[:id])
   end
+
+  def suggested_user_stat(player, user_stats)
+    suggested_user = nil
+    suggested_user_score = nil
+    user_stats.each do |user_stat|
+      player_name = "#{player.first_name} #{player.last_name}".downcase
+      user_stat_name = "#{user_stat.first_name} #{user_stat.last_name}".downcase
+      score = String::Similarity.levenshtein(player_name, user_stat_name)
+      if score == 1
+        suggested_user = user_stat
+        suggested_user_score = score
+        break
+      end
+
+      if score > 0.5 && (suggested_user_score.blank? || score > suggested_user_score)
+        suggested_user = user_stat
+        suggested_user_score = score
+      end
+    end
+    suggested_user
+  end
+
 end

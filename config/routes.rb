@@ -33,7 +33,7 @@ Rails.application.routes.draw do
 
   resources :championships
 
-  resources :sections, only: %i[show edit update] do
+  resources :sections, only: %i[show] do
     resources :duty_tasks
     resources :section_user_invitations, path: 'user_invitations', only: %i[new show create index]
     resources :trainings do
@@ -93,7 +93,7 @@ Rails.application.routes.draw do
   resources :teams, only: %i[index show]
 
   resources :clubs, only: %i[index show] do
-    resources :sections, only: %i[index new create destroy]
+    resources :sections, only: %i[index new create destroy edit update]
   end
 
   devise_for :users

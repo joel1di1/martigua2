@@ -16,7 +16,7 @@
       <tbody class="divide-y divide-gray-200 bg-white">
 
         - @players.each do |player|
-          <tr>
+          tr id="player-#{player.id}"
             <td class="whitespace-nowrap p-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
               = player.full_name
             </td>
@@ -28,7 +28,6 @@
                   options_for_select( @user_stats.map { |user_stat| \
                     ["#{user_stat.first_name} #{user_stat.last_name}", user_stat.player_id]}, @suggested_associations[player]&.player_id), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72'
             </td>
-          </tr>
         </tbody>
       </table>
 

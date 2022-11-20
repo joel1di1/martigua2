@@ -4,32 +4,33 @@
 
 = render 'form'
 
-.flex.flex-col.items-center
+.flex.flex-col.items-center data-controller="ffhb-player-dissociation"
   = form_for(@section, url: section_player_ffhb_association_path(@section)) do |f|
-    <table class="min-w-full divide-y divide-gray-300">
-      <thead class="bg-gray-50">
-        <tr>
-          <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8">Nom du joueur</th>
-          <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Joueur FFHB</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-200 bg-white">
-
+    table class="min-w-full divide-y divide-gray-300"
+      thead class="bg-gray-50"
+        tr
+          th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8" Nom du joueur
+          th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" Joueur FFHB
+      tbody class="divide-y divide-gray-200 bg-white"
         - @players.each do |player|
           tr id="player-#{player.id}"
-            <td class="whitespace-nowrap p-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
+            td class="whitespace-nowrap p-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8"
               = player.full_name
-            </td>
-            <td class="whitespace-nowrap p-3 text-sm text-gray-500">
+            td class="whitespace-nowrap p-3 text-sm text-gray-500"
               - if @associations[player].present?
                 = @associations[player].full_name
               - else
                 = select_tag "section[player_#{player.id}]", \
                   options_for_select( @user_stats.map { |user_stat| \
                     ["#{user_stat.first_name} #{user_stat.last_name}", user_stat.player_id]}, @suggested_associations[player]&.player_id), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72'
-            </td>
-        </tbody>
-      </table>
 
+            td
+              - if @associations[player].present?
+                = button_tag 'Dissocier', type: 'button', class: 'btn btn-danger', data: { action: 'ffhb-player-dissociation#dissociate', 'ffhb-player-dissociation-user-id-param' => player.id, 'ffhb-player-dissociation-ffhb-player-id-param' => @associations[player].id }
     .flex.flex-col.items-center
       = f.submit 'Valider les associations', class: 'btn btn-primary'
+
+  = form_for @section, url: section_dissociate_player_path(@section), method: :delete, data: { 'ffhb-player-dissociation-target' => 'form' } do |f|
+    = hidden_field_tag :player_id, nil, data: { 'ffhb-player-dissociation-target' => 'ffhbPlayerId' }
+    = hidden_field_tag :user_id, nil, data: { 'ffhb-player-dissociation-target' => 'userId' }
+    = button_to 'Dissocier'

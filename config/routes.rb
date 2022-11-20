@@ -86,6 +86,7 @@ Rails.application.routes.draw do
     resources :discussions
 
     patch 'player_ffhb_association'
+    delete 'dissociate_player'
   end
 
   resources :club_admin_roles, only: %i[index show]

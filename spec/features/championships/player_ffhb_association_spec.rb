@@ -34,6 +34,17 @@ describe 'create championship' do
         assert_text clement.full_name
         expect(page).to have_select("section[player_#{clement.id}]", selected: 'CLEMENT TAMISIER') 
       end
+
+      alexis_stats = UserChampionshipStat.where(player_id: '6244093100969')
+      assert_equal 1, alexis_stats.count
+      assert_nil alexis_stats.first.user_id
+
+      click_on 'Valider les associations'
+      assert_text 'Les associations ont été mises à jour'
+      
+      assert_equal alexis.id, alexis_stats.reload.first.user_id
+
+      
     end
   end
 end

@@ -44,7 +44,7 @@ class SectionsController < ApplicationController
       UserChampionshipStat.where(player_id: ffhb_key).update_all(user_id: user.id)
     end
 
-    redirect_to edit_section_path(current_section), notice: 'Les associations ont été mises à jour'
+    redirect_to edit_club_section_path(current_section.club, current_section), notice: 'Les associations ont été mises à jour'
   end
 
   def create
@@ -83,6 +83,12 @@ class SectionsController < ApplicationController
     @section.destroy!
     redirect_with(fallback: club_path(@section.club),
                   notice: "Section #{@section.name} supprimée")
+  end
+
+  def dissociate_player
+    user = current_section.users.find(params[:user_id])
+    UserChampionshipStat.joins(:championship).where(championship: { season: Season.current }, user: user).update_all(user_id: nil)
+    redirect_to edit_club_section_path(current_section.club, current_section), notice: 'Joueur dissocié'
   end
 
   private

@@ -24,7 +24,7 @@ li.p-1.text-sm draggable="true" data-player-id=player.id data-controller=(curren
           .flex.text-xs
             - teams_with_matches.each do |team, match|
               - if match.burned?(player)
-                .ml-2.text-red-700.line-through= "#{team.name} 🔥"
+                .ml-2.text-red-700.line-through= "🔥#{team.name} "
 
               - else
                 = form_tag selection_section_match_path(current_section, match, user_id: player.id, team_id: team.id), class: 'inline with-waiter ml-2', role: 'form', remote: true do

@@ -20,6 +20,8 @@ class Match < ApplicationRecord
                                where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period)
                              }
 
+  delegate :burned?, to: :championship
+
   # after_save :update_shared_calendar
 
   def date
@@ -131,9 +133,5 @@ class Match < ApplicationRecord
 
   def meeting_datetime
     super || start_datetime&.send(:-, 1.hour)
-  end
-
-  def burned?(user)
-    championship.burned?(user)
   end
 end

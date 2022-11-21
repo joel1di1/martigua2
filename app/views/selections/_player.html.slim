@@ -40,8 +40,8 @@ li.p-1.text-sm draggable="true" data-player-id=player.id data-controller=(curren
         .mx-2
           = form_tag section_selection_path(current_section, selection.match, selection), class: 'inline with-waiter', role: 'form', method: :delete, remote: false do
             button.btn.btn-link.btn-xs type='submit'
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"
+                path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"
 
   - if current_user.coach_of?(current_section)
     ul.hidden.absolute.mt-2.w-56.origin-top-right.rounded-md.bg-white.shadow-lg.ring-1.ring-black.ring-opacity-5.focus:outline-none aria-labelledby="assign-#{player.id}" data-dropdown-target="menu"

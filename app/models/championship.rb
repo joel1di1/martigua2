@@ -87,6 +87,10 @@ class Championship < ApplicationRecord
     burns.where(user:).delete_all
   end
 
+  def burned?(user)
+    burned_players.include?(user)
+  end
+
   private
 
   def find_match_by_team_names(event_team_names)

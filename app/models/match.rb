@@ -134,6 +134,6 @@ class Match < ApplicationRecord
   end
 
   def burned?(user)
-    championship.burned_players.to_a.include?(user)
+    championship.burned?(user)
   end
 end

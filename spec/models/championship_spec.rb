@@ -4,6 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Championship do
   let(:championship) { create(:championship) }
+  let(:section) { create(:section) }
+  let(:team) { create(:team, with_section: section) }
 
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to belong_to :season }
@@ -14,8 +16,6 @@ RSpec.describe Championship do
 
   describe '.enroll_team!' do
     subject { championship.enroll_team!(team) }
-
-    let(:team) { create(:team) }
 
     context 'with new team' do
       it { expect(subject.enrolled_teams).to match_array([team]) }
@@ -30,8 +30,6 @@ RSpec.describe Championship do
 
   describe '#unenroll_team!' do
     subject { championship.unenroll_team!(team) }
-
-    let(:team) { create(:team) }
 
     context 'with new team' do
       it { expect(subject.enrolled_teams).to match_array([]) }
@@ -104,6 +102,20 @@ RSpec.describe Championship do
         expect(landreau_vertou.local_score).to eq(33)
         expect(landreau_vertou.visitor_score).to eq(30)
         expect(landreau_vertou.location.address).to eq("SALLE DES NOUELLES\n19  RUE DE LA LOIRE\nLE LANDREAU")
+      end
+
+      describe 'updates user championship stats' do
+        let(:alexis) { create(:user, with_section: section) }
+        let(:clement) { create(:user, with_section: section) }
+
+        before do
+          UserChampionshipStat.create!(user: alexis, championship:, player_id: '6244093100969')
+          UserChampionshipStat.create!(user: clement, championship:, player_id: '6244093100892')
+        end
+
+        it 'updates burned players' do 
+          expect { championship.ffhb_sync! }.to change { championship.reload.burned?(alexis) }.from(false).to(true)
+        end
       end
     end
   end

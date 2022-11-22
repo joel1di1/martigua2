@@ -22,7 +22,7 @@ class Match < ApplicationRecord
 
   delegate :burned?, to: :championship
 
-  # after_save :update_shared_calendar
+  after_save :update_shared_calendar
 
   def date
     if start_datetime
@@ -98,10 +98,7 @@ class Match < ApplicationRecord
   end
 
   def update_shared_calendar
-    async_update_shared_calendar if !Rails.env.test? && start_datetime
-  end
-
-  def async_update_shared_calendar
+    return if Rails.env.test? || start_datetime.blank?
     # event = CalendarService.instance.create_or_update_event(
     #   shared_calendar_id,
     #   "#{local_team.try(:name)} - #{visitor_team.try(:name)}",
@@ -112,7 +109,6 @@ class Match < ApplicationRecord
 
     # update! shared_calendar_id: event.id, shared_calendar_url: event.html_link
   end
-  handle_asynchronously :async_update_shared_calendar
 
   def update_with_ffhb_event!(event)
     if event['date']['date'].present?

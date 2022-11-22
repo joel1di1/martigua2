@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   namespace :admin do
     resources :admin_users
@@ -104,6 +106,10 @@ Rails.application.routes.draw do
       match 'training_presences', via: %i[get post]
       match 'match_availabilities', via: %i[get post]
     end
+  end
+
+  authenticate :user, lambda { |u| u.super_admin? } do
+    mount Sidekiq::Web => 'sidekiq'
   end
 
   root to: 'visitors#index'

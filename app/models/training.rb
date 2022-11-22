@@ -102,7 +102,7 @@ class Training < ApplicationRecord
   def self.send_presence_mail_for_next_week(date = Time.zone.now)
     User.active_this_season.each do |user|
       next_week_trainings = user.next_week_trainings(date:)
-      UserMailer.delay.send_training_invitation(next_week_trainings.to_a, user) unless next_week_trainings.empty?
+      UserMailer.send_training_invitation(next_week_trainings.to_a, user).deliver_later unless next_week_trainings.empty?
     end
   end
 
@@ -116,7 +116,7 @@ class Training < ApplicationRecord
 
     trainings.each_with_index do |training, _index|
       next_duties = training.next_duties(DUTY_PER_TRAINING)
-      UserMailer.delay.send_tig_mail_for_training(training, next_duties) if next_duties.present?
+      UserMailer.send_tig_mail_for_training(training, next_duties).deliver_later if next_duties.present?
     end
   end
 

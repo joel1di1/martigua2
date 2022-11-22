@@ -147,6 +147,10 @@ class User < ApplicationRecord
     training_presence.update!(presence_validated: presence)
   end
 
+  def super_admin?
+    id == 1
+  end
+
   protected
 
   def ensure_authentication_token

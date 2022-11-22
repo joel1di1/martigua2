@@ -60,9 +60,11 @@ RSpec.describe Training do
       let(:trainings) { [training] }
 
       it {
-        expect do
-          described_class.send_presence_mail_for_next_week
-        end.to change(ActionMailer::Base.deliveries, :count).by(nb_users)
+        Sidekiq::Testing.inline! do
+          expect do
+            described_class.send_presence_mail_for_next_week
+          end.to change(ActionMailer::Base.deliveries, :count).by(nb_users)
+        end
       }
     end
 

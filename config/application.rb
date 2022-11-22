@@ -31,5 +31,7 @@ module Martigua2
 
     # TODO: remove when get rid of scss
     config.assets.css_compressor = nil
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end

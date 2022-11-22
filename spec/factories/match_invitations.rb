@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :match_invitation do
-    match { nil }
-    user { nil }
+    match
+    user
   end
 end

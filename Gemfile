@@ -35,7 +35,7 @@ gem 'rails_ping'
 gem 'redis'
 gem 'sentry-rails'
 gem 'sentry-ruby'
-gem "sentry-sidekiq"
+gem 'sentry-sidekiq'
 gem 'sidekiq'
 gem 'sidekiq-delay_extensions'
 gem 'simple_form'

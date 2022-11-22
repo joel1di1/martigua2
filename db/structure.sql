@@ -305,45 +305,6 @@ ALTER SEQUENCE public.days_id_seq OWNED BY public.days.id;
 
 
 --
--- Name: delayed_jobs; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.delayed_jobs (
-    id integer NOT NULL,
-    priority integer DEFAULT 0 NOT NULL,
-    attempts integer DEFAULT 0 NOT NULL,
-    handler text NOT NULL,
-    last_error text,
-    run_at timestamp without time zone,
-    locked_at timestamp without time zone,
-    failed_at timestamp without time zone,
-    locked_by character varying(255),
-    queue character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: delayed_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.delayed_jobs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: delayed_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.delayed_jobs_id_seq OWNED BY public.delayed_jobs.id;
-
-
---
 -- Name: discussions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1353,13 +1314,6 @@ ALTER TABLE ONLY public.days ALTER COLUMN id SET DEFAULT nextval('public.days_id
 
 
 --
--- Name: delayed_jobs id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.delayed_jobs ALTER COLUMN id SET DEFAULT nextval('public.delayed_jobs_id_seq'::regclass);
-
-
---
 -- Name: discussions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1614,14 +1568,6 @@ ALTER TABLE ONLY public.days
 
 
 --
--- Name: delayed_jobs delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.delayed_jobs
-    ADD CONSTRAINT delayed_jobs_pkey PRIMARY KEY (id);
-
-
---
 -- Name: discussions discussions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1827,13 +1773,6 @@ ALTER TABLE ONLY public.user_championship_stats
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: delayed_jobs_priority; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX delayed_jobs_priority ON public.delayed_jobs USING btree (priority, run_at);
 
 
 --
@@ -2427,6 +2366,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221113133011'),
 ('20221116170801'),
 ('20221116214058'),
-('20221117125158');
+('20221117125158'),
+('20221122023407');
 
 

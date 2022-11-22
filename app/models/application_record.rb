@@ -22,7 +22,7 @@ class ApplicationRecord < ActiveRecord::Base
     if method.to_s.start_with?('async_')
       raise 'async jobs with block are not supported' if block.present?
 
-      ActiveRecordAsyncJob.perform_async(self.name, nil, method.to_s.sub('async_', ''), *args)
+      ActiveRecordAsyncJob.perform_async(name, nil, method.to_s.sub('async_', ''), *args)
     else
       super
     end

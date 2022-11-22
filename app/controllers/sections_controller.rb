@@ -87,7 +87,7 @@ class SectionsController < ApplicationController
 
   def dissociate_player
     user = current_section.users.find(params[:user_id])
-    UserChampionshipStat.joins(:championship).where(championship: { season: Season.current }, user: user).update_all(user_id: nil)
+    UserChampionshipStat.joins(:championship).where(championship: { season: Season.current }, user:).update_all(user_id: nil)
     redirect_to edit_club_section_path(current_section.club, current_section), notice: 'Joueur dissocié'
   end
 
@@ -121,5 +121,4 @@ class SectionsController < ApplicationController
     end
     suggested_user
   end
-
 end

@@ -113,7 +113,7 @@ RSpec.describe Championship do
           UserChampionshipStat.create!(user: clement, championship:, player_id: '6244093100892')
         end
 
-        it 'updates burned players' do 
+        it 'updates burned players' do
           expect { championship.ffhb_sync! }.to change { championship.reload.burned?(alexis) }.from(false).to(true)
         end
       end

@@ -108,7 +108,7 @@ Rails.application.routes.draw do
     end
   end
 
-  authenticate :user, lambda { |u| u.super_admin? } do
+  authenticate :user, ->(u) { u.super_admin? } do
     mount Sidekiq::Web => 'sidekiq'
   end
 

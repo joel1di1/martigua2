@@ -25,14 +25,14 @@ describe 'create championship' do
       assert_text 'Nom du joueur'
       assert_text 'Joueur FFHB'
 
-      within("#player-#{alexis.id}") do 
+      within("#player-#{alexis.id}") do
         assert_text alexis.full_name
-        expect(page).to have_select("section[player_#{alexis.id}]", selected: 'ALEXIS THIROUIN') 
+        expect(page).to have_select("section[player_#{alexis.id}]", selected: 'ALEXIS THIROUIN')
       end
 
-      within("#player-#{clement.id}") do 
+      within("#player-#{clement.id}") do
         assert_text clement.full_name
-        expect(page).to have_select("section[player_#{clement.id}]", selected: 'CLEMENT TAMISIER') 
+        expect(page).to have_select("section[player_#{clement.id}]", selected: 'CLEMENT TAMISIER')
       end
 
       alexis_stats = UserChampionshipStat.where(player_id: '6244093100969')
@@ -41,10 +41,8 @@ describe 'create championship' do
 
       click_on 'Valider les associations'
       assert_text 'Les associations ont été mises à jour'
-      
-      assert_equal alexis.id, alexis_stats.reload.first.user_id
 
-      
+      assert_equal alexis.id, alexis_stats.reload.first.user_id
     end
   end
 end

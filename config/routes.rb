@@ -2,6 +2,7 @@
 
 require 'sidekiq/web'
 
+# rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
   namespace :admin do
     resources :admin_users
@@ -117,3 +118,4 @@ Rails.application.routes.draw do
   get 'switch_user', to: 'switch_user#set_current_user'
   get 'switch_user/remember_user', to: 'switch_user#remember_user'
 end
+# rubocop:enable Metrics/BlockLength

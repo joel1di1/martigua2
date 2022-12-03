@@ -9,6 +9,8 @@ class Championship < ApplicationRecord
   has_many :teams, through: :enrolled_team_championships
   has_many :matches, inverse_of: :championship, dependent: :destroy
   has_many :user_championship_stats, inverse_of: :championship, dependent: :destroy
+  has_many :championship_group_championships, dependent: :destroy
+  has_many :championship_groups, through: :championship_group_championships
 
   validates :name, presence: true
 
@@ -89,6 +91,10 @@ class Championship < ApplicationRecord
 
   def burned?(user)
     burned_players.include?(user)
+  end
+
+  def freeze!(user)
+    championship_groups.map { |championship_group| championship_group.freeze!(user, championship: self) }
   end
 
   private

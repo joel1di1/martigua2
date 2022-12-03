@@ -41,7 +41,7 @@ class SectionsController < ApplicationController
 
       user_id = key.split('_')[1]
       user = current_section.users.find(user_id)
-      UserChampionshipStat.where(player_id: ffhb_key).update_all(user_id: user.id)
+      UserChampionshipStat.where(player_id: ffhb_key).update_all(user_id: user.id) # rubocop:disable Rails/SkipsModelValidations
     end
 
     redirect_to edit_club_section_path(current_section.club, current_section), notice: 'Les associations ont été mises à jour'
@@ -87,7 +87,7 @@ class SectionsController < ApplicationController
 
   def dissociate_player
     user = current_section.users.find(params[:user_id])
-    UserChampionshipStat.joins(:championship).where(championship: { season: Season.current }, user:).update_all(user_id: nil)
+    UserChampionshipStat.joins(:championship).where(championship: { season: Season.current }, user:).update_all(user_id: nil) # rubocop:disable Rails/SkipsModelValidations
     redirect_to edit_club_section_path(current_section.club, current_section), notice: 'Joueur dissocié'
   end
 

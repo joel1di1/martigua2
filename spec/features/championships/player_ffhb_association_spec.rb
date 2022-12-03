@@ -6,7 +6,7 @@ describe 'create championship' do
       section = create(:section)
       coach = create(:user, with_section_as_coach: section)
       championship = create(:championship, ffhb_key: '110562', season: Season.current)
-      team = create(:team, with_section: section, enrolled_in: championship)
+      create(:team, with_section: section, enrolled_in: championship)
       championship.ffhb_sync!
 
       alexis = create(:user, with_section: section, last_name: 'thirouin', first_name: 'alexi')

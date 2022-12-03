@@ -173,6 +173,70 @@ ALTER SEQUENCE public.calendars_id_seq OWNED BY public.calendars.id;
 
 
 --
+-- Name: championship_group_championships; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.championship_group_championships (
+    id bigint NOT NULL,
+    championship_id bigint NOT NULL,
+    championship_group_id bigint NOT NULL,
+    index integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: championship_group_championships_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.championship_group_championships_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: championship_group_championships_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.championship_group_championships_id_seq OWNED BY public.championship_group_championships.id;
+
+
+--
+-- Name: championship_groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.championship_groups (
+    id bigint NOT NULL,
+    name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: championship_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.championship_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: championship_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.championship_groups_id_seq OWNED BY public.championship_groups.id;
+
+
+--
 -- Name: championships; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1286,6 +1350,20 @@ ALTER TABLE ONLY public.calendars ALTER COLUMN id SET DEFAULT nextval('public.ca
 
 
 --
+-- Name: championship_group_championships id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.championship_group_championships ALTER COLUMN id SET DEFAULT nextval('public.championship_group_championships_id_seq'::regclass);
+
+
+--
+-- Name: championship_groups id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.championship_groups ALTER COLUMN id SET DEFAULT nextval('public.championship_groups_id_seq'::regclass);
+
+
+--
 -- Name: championships id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1533,6 +1611,22 @@ ALTER TABLE ONLY public.burns
 
 ALTER TABLE ONLY public.calendars
     ADD CONSTRAINT calendars_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: championship_group_championships championship_group_championships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.championship_group_championships
+    ADD CONSTRAINT championship_group_championships_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: championship_groups championship_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.championship_groups
+    ADD CONSTRAINT championship_groups_pkey PRIMARY KEY (id);
 
 
 --
@@ -1829,6 +1923,20 @@ CREATE INDEX index_burns_on_user_id ON public.burns USING btree (user_id);
 --
 
 CREATE INDEX index_calendars_on_season_id ON public.calendars USING btree (season_id);
+
+
+--
+-- Name: index_championship_group_championships_on_championship_group_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_championship_group_championships_on_championship_group_id ON public.championship_group_championships USING btree (championship_group_id);
+
+
+--
+-- Name: index_championship_group_championships_on_championship_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_championship_group_championships_on_championship_id ON public.championship_group_championships USING btree (championship_id);
 
 
 --
@@ -2221,6 +2329,14 @@ ALTER TABLE ONLY public.user_championship_stats
 
 
 --
+-- Name: championship_group_championships fk_rails_630a2514ca; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.championship_group_championships
+    ADD CONSTRAINT fk_rails_630a2514ca FOREIGN KEY (championship_group_id) REFERENCES public.championship_groups(id);
+
+
+--
 -- Name: duty_tasks fk_rails_63d1d5e703; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2266,6 +2382,14 @@ ALTER TABLE ONLY public.burns
 
 ALTER TABLE ONLY public.match_invitations
     ADD CONSTRAINT fk_rails_b43dc6188f FOREIGN KEY (match_id) REFERENCES public.matches(id);
+
+
+--
+-- Name: championship_group_championships fk_rails_c03e8d5650; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.championship_group_championships
+    ADD CONSTRAINT fk_rails_c03e8d5650 FOREIGN KEY (championship_id) REFERENCES public.championships(id);
 
 
 --
@@ -2367,6 +2491,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221116170801'),
 ('20221116214058'),
 ('20221117125158'),
-('20221122023407');
+('20221122023407'),
+('20221203130714'),
+('20221203131102');
 
 

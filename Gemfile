@@ -49,6 +49,9 @@ gem 'tailwindcss-rails'
 gem 'turbo-rails'
 gem 'twilio-ruby'
 
+gem 'watir'
+gem 'headless'
+
 group :production do
   gem 'postmark-rails'
 end

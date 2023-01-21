@@ -174,6 +174,7 @@ GEM
       activesupport (>= 5.1)
       haml (>= 4.0.6)
       railties (>= 5.1)
+    headless (2.3.1)
     httpclient (2.8.3)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
@@ -441,6 +442,9 @@ GEM
     unicode-display_width (2.3.0)
     warden (1.2.9)
       rack (>= 2.0.9)
+    watir (7.2.2)
+      regexp_parser (>= 1.2, < 3)
+      selenium-webdriver (~> 4.2)
     web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -482,6 +486,7 @@ DEPENDENCIES
   foreman
   google-api-client
   haml-rails
+  headless
   icalendar
   importmap-rails
   jbuilder
@@ -525,6 +530,7 @@ DEPENDENCIES
   timecop
   turbo-rails
   twilio-ruby
+  watir
   web-console
   webdrivers
 

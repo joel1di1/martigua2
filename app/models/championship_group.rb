@@ -11,7 +11,7 @@ class ChampionshipGroup < ApplicationRecord
   def freeze!(user, championship:)
     championship_index = championship_group_championships.find_by(championship:).index
 
-    championships_to_burn = championship_group_championships.where('index >= ?', championship_index).map(&:championship)
+    championships_to_burn = championship_group_championships.where('index > ?', championship_index).map(&:championship)
 
     championships_to_burn.each do |championship_to_burn|
       championship_to_burn.burn!(user)

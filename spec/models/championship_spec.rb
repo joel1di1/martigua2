@@ -107,14 +107,24 @@ RSpec.describe Championship do
       describe 'updates user championship stats' do
         let(:alexis) { create(:user, with_section: section) }
         let(:clement) { create(:user, with_section: section) }
+        let(:lower_championship) { create(:championship, season: Season.current, name: 'COMITE DE LOIRE ATLANTIQUE - 3EME DTM 44') }
+
 
         before do
           UserChampionshipStat.create!(user: alexis, championship:, player_id: '6244093100969')
+          UserChampionshipStat.create!(user: alexis, championship: lower_championship, player_id: '6244093100969')
           UserChampionshipStat.create!(user: clement, championship:, player_id: '6244093100892')
+          group = ChampionshipGroup.create!
+          group.add_championship(championship, index: 1)
+          group.add_championship(lower_championship, index: 2)
         end
 
-        it 'updates burned players' do
-          expect { championship.ffhb_sync! }.to change { championship.reload.burned?(alexis) }.from(false).to(true)
+        it 'updates burned players in lower championship' do
+          expect { championship.ffhb_sync! }.to change { lower_championship.reload.burned?(alexis) }.from(false).to(true)
+        end
+        
+        it 'keep player untouched for championship where he played' do
+          expect { championship.ffhb_sync! }.not_to change { championship.reload.burned?(alexis) }
         end
       end
     end

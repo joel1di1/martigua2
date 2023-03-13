@@ -15,6 +15,6 @@ class UserChampionshipStat < ApplicationRecord
     return if user.blank?
     return if match_played.blank?
 
-    championship.freeze!(user) if match_played >= (championship.matches.size / 2) + 1
+    championship.freeze!(user) if match_played >= (championship.matches.size / 2)
   end
 end

@@ -16,6 +16,7 @@ class Section < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_many :groups, inverse_of: :section, dependent: :destroy
 
   has_many :discussions, inverse_of: :section, dependent: :destroy
+  has_many :channels, inverse_of: :section, dependent: :destroy
 
   validates :name, presence: true
 

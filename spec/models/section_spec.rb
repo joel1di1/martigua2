@@ -157,6 +157,12 @@ RSpec.describe Section do
       it { expect(section.discussions.first.name).to eq('Général') }
       it { expect(section.discussions.first.system).to be true }
     end
+
+    describe 'default discussions' do
+      it { expect(section.channels.count).to eq(1) }
+      it { expect(section.channels.first.name).to eq('Général') }
+      it { expect(section.channels.first.system).to be true }
+    end
   end
 
   describe '#has_member?' do

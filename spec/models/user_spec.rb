@@ -27,7 +27,7 @@ describe User do
   describe '#short_name' do
     it 'returns nickname or full name' do
       user = create(:user, nickname: nil)
-      expect(user.short_name).to eq "#{user.first_name} #{user.last_name}"
+      expect(user.short_name).to eq "#{user.first_name.capitalize} #{user.last_name.capitalize}"
       nickname = Faker::Name.first_name
       user.update!(nickname:)
       expect(user.short_name).to eq nickname

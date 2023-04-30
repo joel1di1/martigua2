@@ -3,7 +3,8 @@ class CreateChannels < ActiveRecord::Migration[7.0]
     create_table :channels do |t|
       t.string :name
       t.references :section, foreign_key: true
-      t.boolean :private
+      t.boolean :private, default: false 
+      t.boolean :system, default: false
       t.bigint :owner_id, foreign_key: true
 
       t.timestamps

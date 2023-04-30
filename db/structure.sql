@@ -278,7 +278,8 @@ CREATE TABLE public.channels (
     id bigint NOT NULL,
     name character varying,
     section_id bigint,
-    private boolean,
+    private boolean DEFAULT false,
+    system boolean DEFAULT false,
     owner_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL

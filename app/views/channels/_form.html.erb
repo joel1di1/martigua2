@@ -1,10 +1,10 @@
-<%= form_with(model: [current_section, discussion], class: "contents") do |form| %>
-  <% if discussion.errors.any? %>
+<%= form_with(model: [current_section, channel], class: "contents") do |form| %>
+  <% if channel.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(discussion.errors.count, "error") %> prohibited this discussion from being saved:</h2>
+      <h2><%= pluralize(channel.errors.count, "error") %> prohibited this channel from being saved:</h2>
 
       <ul>
-        <% discussion.errors.each do |error| %>
+        <% channel.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>

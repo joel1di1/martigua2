@@ -1,11 +1,4 @@
 <!-- source https://codepen.io/robstinson/pen/RwRGMJm -->
-
-<div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
-    <%= render @discussion %>
-  </div>
-</div>
-
 <div class="flex w-screen h-screen text-gray-700">
   <!-- left part, menu -->
   <div class="flex flex-col flex-shrink-0 w-64 border-r border-gray-300 bg-gray-100">
@@ -149,11 +142,11 @@
     </div>
   </div>
 
-  <!-- Central part, main discussion -->
+  <!-- Central part, main channel -->
   <div class="flex flex-col flex-grow">
     <div class="flex items-center flex-shrink-0 h-16 bg-white border-b border-gray-300 px-4">
       <div>
-        <h1 class="text-sm font-bold leading-none">#council-of-elrond</h1>
+        <h1 class="text-sm font-bold leading-none">#<%= @channel.name %></h1>
         <span class="text-xs leading-none">Let's sort this ring thing out hey!?!</span>
       </div>
     </div>

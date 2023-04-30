@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :channel do
-    name { "MyString" }
     section { nil }
+    name { 'MyString' }
     private { false }
-    owner { nil }
+    system { false }
   end
 end

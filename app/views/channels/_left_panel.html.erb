@@ -43,7 +43,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
           </svg>
         </button>
- -->        <%= link_to new_section_discussion_path(current_section), class: "flex items-center justify-center h-6 w-6 ml-1 rounded hover:bg-gray-300" do %>
+ -->        <%= link_to new_section_channel_path(current_section), class: "flex items-center justify-center h-6 w-6 ml-1 rounded hover:bg-gray-300" do %>
           <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
@@ -51,13 +51,13 @@
       </div>
       <div id="channels_list">
 
-        <% @discussions.each do |discussion| %>
-          <%= link_to section_discussion_path(current_section, discussion) do %>
+        <% @channels.each do |channel| %>
+          <%= link_to section_channel_path(current_section, channel) do %>
             <a class="flex items-center h-8 bg-gray-300 text-sm pl-8 pr-3" href="#">
               <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd" />
               </svg>
-              <span class="ml-2 leading-none font-bold"><%= discussion.name %></span>
+              <span class="ml-2 leading-none font-bold"><%= channel.name %></span>
             </a>
           <% end %>
         <% end %>

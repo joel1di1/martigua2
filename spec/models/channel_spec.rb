@@ -2,6 +2,6 @@
 
 require 'rails_helper'
 
-RSpec.describe Discussion do
+RSpec.describe Channel do
   it { is_expected.to belong_to :section }
 end

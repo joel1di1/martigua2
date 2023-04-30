@@ -4,7 +4,7 @@
       ["Entrainements", section_trainings_path(current_section)], \
       ["Groupes", section_groups_path(current_section)], \
       ["Compétitions", section_championships_path(current_section)], \
-      ["Discussions", section_discussions_path(current_section)], \
+      ["Channels", section_channels_path(current_section)], \
       ["Tigs", section_duty_tasks_path(current_section)], \
     current_user.coach_of?(current_section) ? ["Notification SMS", new_section_sms_notification_path(current_section) ] : nil].compact \
     : [['Accueil', root_path]]

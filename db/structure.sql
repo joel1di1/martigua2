@@ -271,6 +271,40 @@ ALTER SEQUENCE public.championships_id_seq OWNED BY public.championships.id;
 
 
 --
+-- Name: channels; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.channels (
+    id bigint NOT NULL,
+    section_id bigint NOT NULL,
+    name character varying,
+    private boolean,
+    system boolean,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: channels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.channels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: channels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.channels_id_seq OWNED BY public.channels.id;
+
+
+--
 -- Name: club_admin_roles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -366,40 +400,6 @@ CREATE SEQUENCE public.days_id_seq
 --
 
 ALTER SEQUENCE public.days_id_seq OWNED BY public.days.id;
-
-
---
--- Name: discussions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.discussions (
-    id bigint NOT NULL,
-    section_id bigint NOT NULL,
-    name character varying,
-    private boolean,
-    system boolean,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: discussions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.discussions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: discussions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.discussions_id_seq OWNED BY public.discussions.id;
 
 
 --
@@ -1371,6 +1371,13 @@ ALTER TABLE ONLY public.championships ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: channels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.channels ALTER COLUMN id SET DEFAULT nextval('public.channels_id_seq'::regclass);
+
+
+--
 -- Name: club_admin_roles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1389,13 +1396,6 @@ ALTER TABLE ONLY public.clubs ALTER COLUMN id SET DEFAULT nextval('public.clubs_
 --
 
 ALTER TABLE ONLY public.days ALTER COLUMN id SET DEFAULT nextval('public.days_id_seq'::regclass);
-
-
---
--- Name: discussions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.discussions ALTER COLUMN id SET DEFAULT nextval('public.discussions_id_seq'::regclass);
 
 
 --
@@ -1638,6 +1638,14 @@ ALTER TABLE ONLY public.championships
 
 
 --
+-- Name: channels channels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.channels
+    ADD CONSTRAINT channels_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: club_admin_roles club_admin_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1659,14 +1667,6 @@ ALTER TABLE ONLY public.clubs
 
 ALTER TABLE ONLY public.days
     ADD CONSTRAINT days_pkey PRIMARY KEY (id);
-
-
---
--- Name: discussions discussions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.discussions
-    ADD CONSTRAINT discussions_pkey PRIMARY KEY (id);
 
 
 --
@@ -1954,6 +1954,13 @@ CREATE INDEX index_championships_on_season_id ON public.championships USING btre
 
 
 --
+-- Name: index_channels_on_section_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_channels_on_section_id ON public.channels USING btree (section_id);
+
+
+--
 -- Name: index_club_admin_roles_on_club_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1972,13 +1979,6 @@ CREATE INDEX index_club_admin_roles_on_user_id ON public.club_admin_roles USING 
 --
 
 CREATE INDEX index_days_on_calendar_id ON public.days USING btree (calendar_id);
-
-
---
--- Name: index_discussions_on_section_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_discussions_on_section_id ON public.discussions USING btree (section_id);
 
 
 --
@@ -2409,10 +2409,10 @@ ALTER TABLE ONLY public.calendars
 
 
 --
--- Name: discussions fk_rails_f6471a0a6e; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: channels fk_rails_f6471a0a6e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.discussions
+ALTER TABLE ONLY public.channels
     ADD CONSTRAINT fk_rails_f6471a0a6e FOREIGN KEY (section_id) REFERENCES public.sections(id);
 
 
@@ -2493,6 +2493,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221117125158'),
 ('20221122023407'),
 ('20221203130714'),
-('20221203131102');
+('20221203131102'),
+('20230430230119');
 
 

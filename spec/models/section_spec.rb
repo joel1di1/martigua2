@@ -12,7 +12,7 @@ RSpec.describe Section do
   it { is_expected.to have_many :users }
   it { is_expected.to have_and_belong_to_many :trainings }
   it { is_expected.to have_many :groups }
-  it { is_expected.to have_many :discussions }
+  it { is_expected.to have_many :channels }
 
   describe '#add_player!' do
     subject { section.add_player!(user) }
@@ -152,10 +152,10 @@ RSpec.describe Section do
       it { expect(group_every_players.role).to eq 'every_players' }
     end
 
-    describe 'default discussions' do
-      it { expect(section.discussions.count).to eq(1) }
-      it { expect(section.discussions.first.name).to eq('Général') }
-      it { expect(section.discussions.first.system).to be true }
+    describe 'default channels' do
+      it { expect(section.channels.count).to eq(1) }
+      it { expect(section.channels.first.name).to eq('Général') }
+      it { expect(section.channels.first.system).to be true }
     end
   end
 
@@ -299,6 +299,22 @@ RSpec.describe Section do
       let!(:calendar2) { create(:calendar) }
 
       it { expect(calendars).to eq [calendar1, calendar2] }
+    end
+  end
+
+  describe '#general_channel' do
+    subject(:general_channel) { section.general_channel }
+    
+    let(:section) { create(:section) }
+
+    context 'with existing general channel' do
+      it { is_expected.to eq general_channel }
+    end
+
+    context 'without existing general channel' do
+      before { section.general_channel.destroy! }
+
+      it { is_expected.not_to be_nil }
     end
   end
 

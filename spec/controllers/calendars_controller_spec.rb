@@ -17,7 +17,7 @@ describe CalendarsController do
     before { do_request }
 
     it { expect(response).to have_http_status(:success) }
-    it { expect(assigns(:calendars)).to match_array([calendar1, calendar2]) }
+    it { expect(assigns(:calendars)).to contain_exactly(calendar1, calendar2) }
   end
 
   describe 'GET edit' do

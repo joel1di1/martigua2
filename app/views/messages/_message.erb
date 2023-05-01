@@ -3,16 +3,14 @@
     <!-- image of a gravatar based on email hash -->
     <img src="https://www.gravatar.com/avatar/<%= Digest::MD5.hexdigest(message.user.email) %>?d=identicon" class="h-10 w-10 rounded">
   </div>
-  <div class="ml-2">
+  <div class="ml-2 messages">
     <div class="-mt-1">
       <span class="text-sm font-semibold"><%= message.user.short_name %></span>
       <span class="ml-1 text-xs text-gray-500">
         <%= message.created_at.strftime("%H:%M") %>
       </span>
     </div>
-    <p>
-      <pre class="text-sm font-sans"><%= message.content %></pre>
-    </p>
+    <%= auto_link(simple_format(message.content), html: { :target => '_blank' }) %> 
     <%# <div class="flex space-x-2 mt-1">
       <button class="flex items-center pl-1 pr-2 h-5 bg-gray-300 hover:bg-gray-400 rounded-full text-xs">
         <span>🤷</span>

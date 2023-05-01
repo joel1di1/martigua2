@@ -148,7 +148,7 @@ class Section < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def general_channel
-  channels.find_or_create_by!(system: true, name: 'Général')
+    channels.find_or_create_by!(system: true, name: 'Général')
   end
 
   protected

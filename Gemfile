@@ -31,6 +31,7 @@ gem 'puma'
 gem 'pundit'
 gem 'rack-attack'
 gem 'rack-cors', require: 'rack/cors'
+gem 'rails_autolink'
 gem 'rails_ping'
 gem 'redis'
 gem 'sentry-rails'
@@ -49,8 +50,8 @@ gem 'tailwindcss-rails'
 gem 'turbo-rails'
 gem 'twilio-ruby'
 
-gem 'watir'
 gem 'headless'
+gem 'watir'
 
 group :production do
   gem 'postmark-rails'

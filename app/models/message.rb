@@ -10,6 +10,4 @@ class Message < ApplicationRecord
 
   # Validations
   validates :content, presence: true
-  validates :user, presence: true
-  validates :channel, presence: true
 end

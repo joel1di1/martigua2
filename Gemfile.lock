@@ -293,6 +293,10 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.5.0)
       loofah (~> 2.19, >= 2.19.1)
+    rails_autolink (1.1.8)
+      actionview (> 3.1)
+      activesupport (> 3.1)
+      railties (> 3.1)
     rails_ping (0.1.5)
       rails (>= 5.0)
     railties (7.0.4.3)
@@ -513,6 +517,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (~> 7.0.4)
   rails-controller-testing
+  rails_autolink
   rails_ping
   redis
   rspec-its

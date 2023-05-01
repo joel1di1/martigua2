@@ -25,3 +25,10 @@
 .max-w-xs {
   max-width: 20rem;
 }
+
+.messages a {
+  color: #3182ce;
+}
+.messages a:hover {
+  text-decoration: underline;
+}

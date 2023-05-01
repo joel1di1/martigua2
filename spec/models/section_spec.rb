@@ -20,26 +20,26 @@ RSpec.describe Section do
     let(:user) { create(:user) }
 
     context 'with a new player' do
-      it { expect(subject.players).to match_array([user]) }
-      it { expect(subject.group_everybody.users).to match_array([user]) }
-      it { expect(subject.group_every_players.users).to match_array([user]) }
+      it { expect(subject.players).to contain_exactly(user) }
+      it { expect(subject.group_everybody.users).to contain_exactly(user) }
+      it { expect(subject.group_every_players.users).to contain_exactly(user) }
     end
 
     context 'with an already player' do
       before { section.add_player!(user) }
 
-      it { expect(subject.players).to match_array([user]) }
-      it { expect(subject.group_everybody.users).to match_array([user]) }
-      it { expect(subject.group_every_players.users).to match_array([user]) }
+      it { expect(subject.players).to contain_exactly(user) }
+      it { expect(subject.group_everybody.users).to contain_exactly(user) }
+      it { expect(subject.group_every_players.users).to contain_exactly(user) }
     end
 
     context 'with an already coach' do
       before { section.add_coach!(user) }
 
-      it { expect(subject.players).to match_array([user]) }
-      it { expect(subject.coachs).to match_array([user]) }
-      it { expect(subject.group_everybody.users).to match_array([user]) }
-      it { expect(subject.group_every_players.users).to match_array([user]) }
+      it { expect(subject.players).to contain_exactly(user) }
+      it { expect(subject.coachs).to contain_exactly(user) }
+      it { expect(subject.group_everybody.users).to contain_exactly(user) }
+      it { expect(subject.group_every_players.users).to contain_exactly(user) }
     end
   end
 
@@ -49,29 +49,29 @@ RSpec.describe Section do
     let(:user) { create(:user) }
 
     context 'with a new user' do
-      it { expect(subject.coachs).to match_array([user]) }
+      it { expect(subject.coachs).to contain_exactly(user) }
 
-      it { expect(subject.group_everybody.users).to match_array([user]) }
-      it { expect(subject.group_every_players.users).to match_array([]) }
+      it { expect(subject.group_everybody.users).to contain_exactly(user) }
+      it { expect(subject.group_every_players.users).to be_empty }
     end
 
     context 'with an already coach' do
       before { section.add_coach!(user) }
 
-      it { expect(subject.coachs).to match_array([user]) }
+      it { expect(subject.coachs).to contain_exactly(user) }
 
-      it { expect(subject.group_everybody.users).to match_array([user]) }
-      it { expect(subject.group_every_players.users).to match_array([]) }
+      it { expect(subject.group_everybody.users).to contain_exactly(user) }
+      it { expect(subject.group_every_players.users).to be_empty }
     end
 
     context 'with an already player' do
       before { section.add_player!(user) }
 
-      it { expect(subject.players).to match_array([user]) }
-      it { expect(subject.coachs).to match_array([user]) }
+      it { expect(subject.players).to contain_exactly(user) }
+      it { expect(subject.coachs).to contain_exactly(user) }
 
-      it { expect(subject.group_everybody.users).to match_array([user]) }
-      it { expect(subject.group_every_players.users).to match_array([user]) }
+      it { expect(subject.group_everybody.users).to contain_exactly(user) }
+      it { expect(subject.group_every_players.users).to contain_exactly(user) }
     end
   end
 
@@ -222,7 +222,7 @@ RSpec.describe Section do
       championship2.enroll_team!(team2)
     end
 
-    it { expect(section.championships).to match_array([championship1, championship2]) }
+    it { expect(section.championships).to contain_exactly(championship1, championship2) }
   end
 
   describe '#members' do
@@ -273,7 +273,7 @@ RSpec.describe Section do
 
         old_user.participations.update_all(season_id: create(:season, start_date: 3.years.ago).id) # rubocop:disable Rails/SkipsModelValidations
 
-        expect(next_duties).to match_array([user4, user3, user2])
+        expect(next_duties).to contain_exactly(user4, user3, user2)
       }
     end
 
@@ -284,7 +284,7 @@ RSpec.describe Section do
         user2.realised_task!(task, 2.days.ago, section.club)
         user3.realised_task!(task, 3.days.ago, section.club)
 
-        expect(next_duties).to match_array([user4, user3, user2])
+        expect(next_duties).to contain_exactly(user4, user3, user2)
       }
     end
   end
@@ -304,7 +304,7 @@ RSpec.describe Section do
 
   describe '#general_channel' do
     subject(:general_channel) { section.general_channel }
-    
+
     let(:section) { create(:section) }
 
     context 'with existing general channel' do

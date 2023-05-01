@@ -8,6 +8,7 @@
       <span class="text-sm font-semibold"><%= message.user.short_name %></span>
       <span class="ml-1 text-xs text-gray-500">
         <%= message.created_at.strftime("%H:%M") %>
+        <%= Time.now.strftime("%H:%M:%S") %>
       </span>
     </div>
     <%= auto_link(simple_format(message.content), html: { :target => '_blank' }) %> 

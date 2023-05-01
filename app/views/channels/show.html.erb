@@ -1,12 +1,7 @@
-<script>
-  document.addEventListener("turbo:load", function() {
-    const centralDiv = document.getElementById("central-messages");
-    centralDiv.scrollTop = centralDiv.scrollHeight;
-  });
-</script>
+
 
 <!-- source https://codepen.io/robstinson/pen/RwRGMJm -->
-<div class="flex w-screen h-screen text-gray-700">
+<div class="flex w-screen text-gray-700">
   <%# left part, menu %>
   <div class="flex flex-col flex-shrink-0 w-64 border-r border-gray-300 bg-gray-100">
     <div class="h-0 overflow-auto flex-grow">
@@ -155,56 +150,57 @@
   </div> 
 
   <%# Central part, main channel %>
-  <div class="flex flex-col flex-grow">
-    <div class="flex items-center flex-shrink-0 h-16 bg-white border-b border-gray-300 px-4">
+  <div class="flex flex-col flex-grow ">
+    <div id="channel" class="flex items-center flex-shrink-0 h-16 bg-white border-b border-gray-300 px-4">
       <div>
         <h1 class="text-sm font-bold leading-none">#<%= @channel.name %></h1>
         <span class="text-xs leading-none">This is a random description</span>
       </div>
     </div>
-    <div id="central-messages" class="flex flex-col flex-grow overflow-auto">
+    <div id="central-messages" class="flex flex-col flex-grow" style="overflow-y: scroll;">
       <%# Messages  %>
-      <%= render @channel.messages %>
+      <turbo-frame id="messages">
+        <%= render @channel.messages %>
+      </turbo-frame>
     </div>
-    <div class="h-12 bg-white px-4 pb-4">
-    </div>
-
     <%# Message form %>
-    <div class="h-12 bg-white px-4 pb-4 sticky bottom-0">
-      <%= form_with(model: [current_section, @channel, @message], data: { controller: "submit-on-cmd-enter" }, local: true) do |form| %>
-        <div class="flex items-center border-2 border-gray-300 rounded-sm p-1">
-          <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
-            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </button>
-          <%= form.text_area :content, required: true, data: { submit_on_cmd_enter_target: "textarea" }, class: "flex-grow text-sm px-3 border-l border-gray-300 ml-1", style: "resize: none;", placeholder: "Message in #{@channel.name}", cols: "", rows: "1" %>
-          <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
-            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
-            </svg>
-          </button>
-          <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
-            <span class="leading-none w-4 h-4 -mt-px">@</span>
-          </button>
-          <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
-            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clip-rule="evenodd" />
-            </svg>
-          </button>
-          <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
-            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
-            </svg>
-          </button>
-          <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
-            <svg class="h-4 w-4 transform rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-            </svg>
-          </button>
-        </div>
-      <% end %>
-    </div>
+    <turbo-frame id="message-form">
+      <div class="h-12 bg-white px-4 pb-4 flex-shrink-0">
+        <%= form_with(model: [current_section, @channel, @message], data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |form| %>
+          <div class="flex items-center border-2 border-gray-300 rounded-sm p-1">
+            <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
+              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </button>
+            <%= form.text_area :content, required: true, data: { submit_on_cmd_enter_target: "textarea" }, class: "flex-grow text-sm px-3 border-l border-gray-300 ml-1", style: "resize: none;", placeholder: "Message in #{@channel.name}", cols: "", rows: "1" %>
+            <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
+              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
+              <span class="leading-none w-4 h-4 -mt-px">@</span>
+            </button>
+            <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
+              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
+              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
+              <svg class="h-4 w-4 transform rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+              </svg>
+            </button>
+          </div>
+        <% end %>
+      </div>
+    </turbo-frame>
   </div>
 
   <!-- right path, thread -->
@@ -329,3 +325,69 @@
   </div>
   %>
 </div>
+
+<script>
+  function setThirdDivHeight() {
+    console.log("setThirdDivHeight");
+    const navBar = document.getElementById("navbar");
+    const channel = document.getElementById("channel");
+    const messageForm = document.getElementById("message-form");
+    
+    const centralMessages = document.getElementById("central-messages");
+
+    const navBarHeight = navBar.offsetHeight;
+    const channelHeight = channel.offsetHeight;
+    const messageFormHeight = messageForm.offsetHeight;
+    const windowHeight = window.innerHeight;
+
+    const centralMessagesHeight = windowHeight - navBarHeight - channelHeight - messageFormHeight;
+
+    centralMessages.style.height = `${centralMessagesHeight}px`;
+    console.log("centralMessagesHeight", centralMessagesHeight);
+    console.log("centralMessages", centralMessages);
+  }
+
+  window.addEventListener("resize", setThirdDivHeight);
+
+  // Exécute la fonction initialement pour définir la hauteur correcte au chargement de la page
+  document.addEventListener("DOMContentLoaded", setThirdDivHeight);
+
+
+  const targetNode = document.getElementById("central-messages");
+
+  // Options for the observer (which mutations to observe)
+  const config = { attributes: true, childList: true, subtree: true };
+
+  // Callback function to execute when mutations are observed
+  const callback = (mutationList, observer) => {
+    for (const mutation of mutationList) {
+      if (mutation.type === "childList") {
+        console.log("A child node has been added or removed.");
+      // after 500ms, scroll to bottom of messages
+      setTimeout(() => {
+        const centralMessages = document.getElementById("central-messages");
+        centralMessages.scrollTop = centralMessages.scrollHeight + 1000;
+      }, 10);
+      } else if (mutation.type === "attributes") {
+        console.log(`The ${mutation.attributeName} attribute was modified.`);
+      }
+    }
+  };
+
+  // Create an observer instance linked to the callback function
+  const observer = new MutationObserver(callback);
+
+  // Start observing the target node for configured mutations
+  observer.observe(targetNode, config);
+
+  function requestNotificationPermission() {
+  Notification.requestPermission().then((permission) => {
+    if (permission === "granted") {
+      console.log("Notification permission granted.");
+    } else {
+      console.error("Notification permission denied.");
+    }
+  });
+}
+
+</script>

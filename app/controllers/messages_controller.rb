@@ -7,6 +7,12 @@ class MessagesController < ApplicationController
     @message = @channel.messages.new(message_params)
     @message.user = current_user
     @message.save!
+
+    respond_to do |format|
+      format.html { redirect_to section_channel_path(current_section, @channel) }
+      format.turbo_stream
+      format.js
+    end
   end
 
   private

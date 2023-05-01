@@ -49,6 +49,7 @@ gem 'switch_user'
 gem 'tailwindcss-rails'
 gem 'turbo-rails'
 gem 'twilio-ruby'
+gem 'webpush'
 
 gem 'headless'
 gem 'watir'

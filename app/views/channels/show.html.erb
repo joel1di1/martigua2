@@ -1,3 +1,10 @@
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const maDiv = document.getElementById("central-messages");
+    maDiv.scrollTop = 1000;
+  });
+</script>
+
 <!-- source https://codepen.io/robstinson/pen/RwRGMJm -->
 <div class="flex w-screen h-screen text-gray-700">
   <%# left part, menu %>
@@ -154,7 +161,7 @@
         <span class="text-xs leading-none">This is a random description</span>
       </div>
     </div>
-    <div class="flex flex-col flex-grow overflow-auto">
+    <div id="central-messages" class="flex flex-col flex-grow overflow-auto">
 
       <%# Messages  %>
       <%= render @channel.messages %>

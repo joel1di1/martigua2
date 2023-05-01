@@ -86,7 +86,9 @@ Rails.application.routes.draw do
     resources :days, only: [:create]
     resources :locations, only: [:create]
     resources :teams, only: %i[create show delete new]
-    resources :channels
+    resources :channels do 
+      resources :messages, only: %i[create] 
+    end
 
     patch 'player_ffhb_association'
     delete 'dissociate_player'

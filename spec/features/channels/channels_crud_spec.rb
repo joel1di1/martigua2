@@ -9,7 +9,7 @@ describe 'channels' do
     signin_user user, close_notice: true
 
     within '#links' do
-      click_on 'Channels'
+      click_on 'Chats'
     end
 
     assert_text 'Général'

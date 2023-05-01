@@ -2,9 +2,9 @@
 
 FactoryBot.define do
   factory :channel do
-    section { nil }
-    name { 'MyString' }
-    private { false }
-    system { false }
+    section
+    name { Faker::Lorem.word }
+    private { Faker::Boolean.boolean }
+    system { Faker::Boolean.boolean }
   end
 end

@@ -704,6 +704,40 @@ ALTER SEQUENCE public.matches_id_seq OWNED BY public.matches.id;
 
 
 --
+-- Name: messages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.messages (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    channel_id bigint NOT NULL,
+    content text NOT NULL,
+    parent_message_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.messages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.messages_id_seq OWNED BY public.messages.id;
+
+
+--
 -- Name: participations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1455,6 +1489,13 @@ ALTER TABLE ONLY public.matches ALTER COLUMN id SET DEFAULT nextval('public.matc
 
 
 --
+-- Name: messages id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.messages ALTER COLUMN id SET DEFAULT nextval('public.messages_id_seq'::regclass);
+
+
+--
 -- Name: participations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1731,6 +1772,14 @@ ALTER TABLE ONLY public.match_selections
 
 ALTER TABLE ONLY public.matches
     ADD CONSTRAINT matches_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: messages messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
 
 
 --
@@ -2122,6 +2171,27 @@ CREATE INDEX index_matches_on_location_id ON public.matches USING btree (locatio
 
 
 --
+-- Name: index_messages_on_channel_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_messages_on_channel_id ON public.messages USING btree (channel_id);
+
+
+--
+-- Name: index_messages_on_parent_message_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_messages_on_parent_message_id ON public.messages USING btree (parent_message_id);
+
+
+--
+-- Name: index_messages_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_messages_on_user_id ON public.messages USING btree (user_id);
+
+
+--
 -- Name: index_participations_on_season_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2313,6 +2383,14 @@ ALTER TABLE ONLY public.burns
 
 
 --
+-- Name: messages fk_rails_273a25a7a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT fk_rails_273a25a7a6 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: championships fk_rails_28cd7f9140; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2326,6 +2404,14 @@ ALTER TABLE ONLY public.championships
 
 ALTER TABLE ONLY public.user_championship_stats
     ADD CONSTRAINT fk_rails_3c673c75ba FOREIGN KEY (championship_id) REFERENCES public.championships(id);
+
+
+--
+-- Name: messages fk_rails_5baf0f07af; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT fk_rails_5baf0f07af FOREIGN KEY (channel_id) REFERENCES public.channels(id);
 
 
 --
@@ -2390,6 +2476,14 @@ ALTER TABLE ONLY public.match_invitations
 
 ALTER TABLE ONLY public.championship_group_championships
     ADD CONSTRAINT fk_rails_c03e8d5650 FOREIGN KEY (championship_id) REFERENCES public.championships(id);
+
+
+--
+-- Name: messages fk_rails_c90b5a8a0c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT fk_rails_c90b5a8a0c FOREIGN KEY (parent_message_id) REFERENCES public.messages(id);
 
 
 --
@@ -2494,6 +2588,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20221122023407'),
 ('20221203130714'),
 ('20221203131102'),
-('20230430230119');
+('20230430230119'),
+('20230430231249');
 
 

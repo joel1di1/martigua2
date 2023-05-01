@@ -9,12 +9,15 @@ class ChannelsController < ApplicationController
   def index
     # find channel général
     @general_channel = current_section.general_channel
+
     # redirect to section channel
     redirect_to section_channel_path(current_section, @general_channel)
   end
 
   # GET /channels/1 or /channels/1.json
-  def show; end
+  def show
+    @message = Message.new(channel: @general_channel)
+  end
 
   # GET /channels/new
   def new

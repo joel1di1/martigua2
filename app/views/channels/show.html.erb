@@ -1,7 +1,8 @@
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const maDiv = document.getElementById("central-messages");
-    maDiv.scrollTop = 1000;
+  document.addEventListener("turbo:load", function() {
+    const centralDiv = document.getElementById("central-messages");
+    centralDiv.scrollTop = centralDiv.scrollHeight;
+    console.log("scrolling to bottom");
   });
 </script>
 
@@ -66,9 +67,10 @@
             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd" />
             </svg>
-            <span class="ml-2 leading-none font-bold">Général</span>
+            <span class="ml-2 leading-none font-bold"><%= @channel.name %></span>
           </a>
-          <a class="flex items-center h-8 hover:bg-gray-300 text-sm pl-8 pr-3" href="#">
+
+          <%# <a class="flex items-center h-8 hover:bg-gray-300 text-sm pl-8 pr-3" href="#">
             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd" />
             </svg>
@@ -91,7 +93,7 @@
               <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
             </svg>
             <span class="ml-2 leading-none">anduril-smithy-club</span>
-          </a>
+          </a> %>
         </div>
       </div>
       <%#  BLA TODO: add a menu item for direct messages 
@@ -162,9 +164,10 @@
       </div>
     </div>
     <div id="central-messages" class="flex flex-col flex-grow overflow-auto">
-
       <%# Messages  %>
       <%= render @channel.messages %>
+    </div>
+    <div class="h-12 bg-white px-4 pb-4">
     </div>
 
     <%# Message form %>

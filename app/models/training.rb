@@ -114,9 +114,9 @@ class Training < ApplicationRecord
       .where('start_datetime between ? and ?', tomorrow.to_datetime, (tomorrow + day_range.days).to_datetime)
       .order(:start_datetime)
 
-    trainings.each_with_index do |training, _index|
+    trainings.each do |training|
       next_duties = training.next_duties(DUTY_PER_TRAINING)
-      UserMailer.send_tig_mail_for_training(training, next_duties).deliver_later if next_duties.present?
+      UserMailer.send_tig_mail_for_training(training, next_duties.to_a).deliver_later if next_duties.present?
     end
   end
 

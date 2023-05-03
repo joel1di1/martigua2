@@ -167,7 +167,18 @@ RSpec.describe Training do
   end
 
   describe '.send_tig_mail_for_next_training' do
-    it 'is not tested'
+    let!(:training) { create(:training, with_section: section, group_ids: [group.id],
+                            start_datetime: 26.hours.from_now, end_datetime: 28.hours.from_now) }
+
+    before { 2.times { create(:user).present_for!(training) } }
+
+    it 'sends mail' do
+      Sidekiq::Testing.inline! do
+        expect do
+          described_class.send_tig_mail_for_next_training
+        end.to change(ActionMailer::Base.deliveries, :count).by(1)
+      end
+    end
   end
 
   describe '#next_duties' do

@@ -11,7 +11,7 @@
         <%= Time.now.strftime("%H:%M:%S") %>
       </span>
     </div>
-    <%= auto_link(simple_format(message.content), html: { :target => '_blank' }) %> 
+    <%= message.content %> 
     <%# <div class="flex space-x-2 mt-1">
       <button class="flex items-center pl-1 pr-2 h-5 bg-gray-300 hover:bg-gray-400 rounded-full text-xs">
         <span>🤷</span>

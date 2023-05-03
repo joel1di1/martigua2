@@ -90,7 +90,7 @@
           </a> %>
         </div>
       </div>
-      <%#  BLA TODO: add a menu item for direct messages 
+      <%#  BLA TODO: add a menu item for direct messages
       <div class="mt-4">
         <div class="flex items-center h-8 px-3 group">
           <button id="messages_toggle" class="flex items-center flex-grow focus:outline-none">
@@ -147,7 +147,7 @@
       </div>
       %>
     </div>
-  </div> 
+  </div>
 
   <%# Central part, main channel %>
   <div class="flex flex-col flex-grow ">
@@ -160,21 +160,24 @@
     <div id="central-messages" class="flex flex-col flex-grow" style="overflow-y: scroll;">
       <%# Messages  %>
       <turbo-frame id="messages">
-        <%= render @channel.messages %>
+        <%= render @channel.messages.with_rich_text_content_and_embeds %>
       </turbo-frame>
     </div>
     <%# Message form %>
     <turbo-frame id="message-form">
-      <div class="h-12 bg-white px-4 pb-4 flex-shrink-0">
+      <div class="h-24 bg-white px-4 pb-4 flex-shrink-0">
         <%= form_with(model: [current_section, @channel, @message], data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |form| %>
           <div class="flex items-center border-2 border-gray-300 rounded-sm p-1">
-            <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
+            <%# <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
               <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-            </button>
-            <%= form.text_area :content, required: true, data: { submit_on_cmd_enter_target: "textarea" }, class: "flex-grow text-sm px-3 border-l border-gray-300 ml-1", style: "resize: none;", placeholder: "Message in #{@channel.name}", cols: "", rows: "1" %>
-            <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
+            </button> %>
+            <div>
+              <%= form.rich_text_area :content %>
+            </div>
+            <%# <%= form.text_area :content, required: true, data: { submit_on_cmd_enter_target: "textarea" }, class: "flex-grow text-sm px-3 border-l border-gray-300 ml-1", style: "resize: none;", placeholder: "Message in #{@channel.name}", cols: "", rows: "1" %>
+            <%# <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
               <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
               </svg>
@@ -191,7 +194,7 @@
               <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
               </svg>
-            </button>
+            </button> %>
             <button class="flex-shrink flex items-center justify-center h-6 w-6 rounded hover:bg-gray-200">
               <svg class="h-4 w-4 transform rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
@@ -328,11 +331,10 @@
 
 <script>
   function setThirdDivHeight() {
-    console.log("setThirdDivHeight");
     const navBar = document.getElementById("navbar");
     const channel = document.getElementById("channel");
     const messageForm = document.getElementById("message-form");
-    
+
     const centralMessages = document.getElementById("central-messages");
 
     const navBarHeight = navBar.offsetHeight;

@@ -16,6 +16,7 @@ class ChannelsController < ApplicationController
 
   # GET /channels/1 or /channels/1.json
   def show
+    # new message
     @message = Message.new(channel: @general_channel)
   end
 

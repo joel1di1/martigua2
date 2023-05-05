@@ -175,7 +175,7 @@ GEM
       haml (>= 4.0.6)
       railties (>= 5.1)
     headless (2.3.1)
-    hkdf (0.3.0)
+    hkdf (1.0.0)
     httpclient (2.8.3)
     i18n (1.13.0)
       concurrent-ruby (~> 1.0)
@@ -249,6 +249,7 @@ GEM
     nokogiri (1.14.3-x86_64-linux)
       racc (~> 1.4)
     oj (3.14.3)
+    openssl (3.1.0)
     orm_adapter (0.5.0)
     os (1.1.4)
     parallel (1.23.0)
@@ -401,6 +402,8 @@ GEM
     sentry-sidekiq (5.9.0)
       sentry-ruby (~> 5.9.0)
       sidekiq (>= 3.0)
+    serviceworker-rails (0.6.0)
+      railties (>= 3.1)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
     sidekiq (7.0.9)
@@ -469,13 +472,14 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    web-push (3.0.0)
+      hkdf (~> 1.0)
+      jwt (~> 2.0)
+      openssl (~> 3.0)
     webdrivers (5.2.0)
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (~> 4.0)
-    webpush (1.1.0)
-      hkdf (~> 0.2)
-      jwt (~> 2.0)
     webrick (1.8.1)
     websocket (1.2.9)
     websocket-driver (0.7.5)
@@ -541,6 +545,7 @@ DEPENDENCIES
   sentry-rails
   sentry-ruby
   sentry-sidekiq
+  serviceworker-rails
   shoulda-matchers
   sidekiq
   sidekiq-delay_extensions
@@ -557,8 +562,8 @@ DEPENDENCIES
   twilio-ruby
   watir
   web-console
+  web-push
   webdrivers
-  webpush
 
 RUBY VERSION
    ruby 3.1.2p20

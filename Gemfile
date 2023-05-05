@@ -37,6 +37,7 @@ gem 'redis'
 gem 'sentry-rails'
 gem 'sentry-ruby'
 gem 'sentry-sidekiq'
+gem 'serviceworker-rails'
 gem 'sidekiq'
 gem 'sidekiq-delay_extensions'
 gem 'simple_form'
@@ -49,7 +50,7 @@ gem 'switch_user'
 gem 'tailwindcss-rails'
 gem 'turbo-rails'
 gem 'twilio-ruby'
-gem 'webpush'
+gem 'web-push'
 
 gem 'headless'
 gem 'watir'
@@ -59,7 +60,7 @@ group :production do
 end
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+gem 'image_processing', '~> 1.2'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"

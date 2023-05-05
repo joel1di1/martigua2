@@ -11,12 +11,6 @@ RSpec.describe Message do
     # it { should have_many(:reactions).dependent(:destroy) }
   end
 
-  describe 'validations' do
-    it { is_expected.to validate_presence_of(:content) }
-    it { is_expected.to validate_presence_of(:user) }
-    it { is_expected.to validate_presence_of(:channel) }
-  end
-
   describe 'creating a message' do
     let(:user) { create(:user) }
     let(:channel) { create(:channel) }

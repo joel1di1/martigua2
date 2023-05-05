@@ -11,6 +11,7 @@ html lang="fr" class="h-full"
     = javascript_importmap_tags
 
     link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet"
+    link rel="manifest" href="/manifest.json"
 
     - if Rails.env.production?
       javascript:
@@ -23,9 +24,9 @@ html lang="fr" class="h-full"
             a.appendChild(r);
         })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
 
-  body class="h-full"
+  body class="h-screen"
     = render 'layouts/navigation'
-    #content.min-h-full
+    #content
       .pt-5.px-10
         = yield
     = render 'layouts/alerts'

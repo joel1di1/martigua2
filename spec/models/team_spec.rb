@@ -24,20 +24,20 @@ RSpec.describe Team do
     context 'with one team in one match' do
       let!(:match1) { create(:match, day:, local_team: home_team1) }
 
-      it { is_expected.to match_array [[home_team1, match1]] }
+      it { is_expected.to contain_exactly([home_team1, match1]) }
     end
 
     context 'with two team in two different matches' do
       let!(:match1) { create(:match, day:, local_team: home_team1) }
       let!(:match2) { create(:match, day:, visitor_team: home_team2) }
 
-      it { is_expected.to match_array [[home_team1, match1], [home_team2, match2]] }
+      it { is_expected.to contain_exactly([home_team1, match1], [home_team2, match2]) }
     end
 
     context 'with two team in one match' do
       let!(:match1) { create(:match, day:, local_team: home_team1, visitor_team: home_team2) }
 
-      it { is_expected.to match_array [[home_team1, match1], [home_team2, match1]] }
+      it { is_expected.to contain_exactly([home_team1, match1], [home_team2, match1]) }
     end
   end
 end

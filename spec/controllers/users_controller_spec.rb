@@ -16,7 +16,7 @@ describe UsersController do
       context 'with on user' do
         before { sign_in(user) && request }
 
-        it { expect(assigns[:users]).to match_array([user]) }
+        it { expect(assigns[:users]).to contain_exactly(user) }
       end
 
       context 'with one user with several roles' do
@@ -28,7 +28,7 @@ describe UsersController do
 
         before { sign_in(user) && request }
 
-        it { expect(assigns[:users]).to match_array([user]) }
+        it { expect(assigns[:users]).to contain_exactly(user) }
       end
     end
   end

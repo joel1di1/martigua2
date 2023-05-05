@@ -86,7 +86,9 @@ Rails.application.routes.draw do
     resources :days, only: [:create]
     resources :locations, only: [:create]
     resources :teams, only: %i[create show delete new]
-    resources :discussions
+    resources :channels do
+      resources :messages, only: %i[create]
+    end
 
     patch 'player_ffhb_association'
     delete 'dissociate_player'
@@ -108,6 +110,8 @@ Rails.application.routes.draw do
       match 'match_availabilities', via: %i[get post]
     end
   end
+
+  resources :webpush_subscriptions, only: [:create], constraints: { format: :json }
 
   authenticate :user, ->(u) { u.super_admin? } do
     mount Sidekiq::Web => 'sidekiq'

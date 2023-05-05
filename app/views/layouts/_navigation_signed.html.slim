@@ -4,12 +4,12 @@
       ["Entrainements", section_trainings_path(current_section)], \
       ["Groupes", section_groups_path(current_section)], \
       ["Compétitions", section_championships_path(current_section)], \
-      # ["Discussions", section_discussions_path(current_section)], \
+      ["Chats", section_channels_path(current_section)], \
       ["Tigs", section_duty_tasks_path(current_section)], \
     current_user.coach_of?(current_section) ? ["Notification SMS", new_section_sms_notification_path(current_section) ] : nil].compact \
     : [['Accueil', root_path]]
 
-<nav class="bg-gray-800" data-controller="nav-dropdown">
+<nav id="navbar" class="bg-gray-800" data-controller="nav-dropdown">
   <div class="mx-auto max-w-7xl px-2 lg:px-6 lg:px-8">
     <div class="relative flex min-h-16 items-center justify-between">
       <div class="absolute inset-y-0 left-0 flex items-center lg:hidden">

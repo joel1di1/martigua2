@@ -52,7 +52,7 @@ class MatchesController < ApplicationController
     team = Team.find(params[:team_id])
     @match = Match.find(params[:id])
 
-    @selection = Selection.create! user: @user, team: team, match: @match
+    @selection = Selection.create! user: @user, team:, match: @match
 
     respond_to do |format|
       format.js do

@@ -175,12 +175,16 @@ GEM
       haml (>= 4.0.6)
       railties (>= 5.1)
     headless (2.3.1)
+    hkdf (1.0.0)
     httpclient (2.8.3)
     i18n (1.13.0)
       concurrent-ruby (~> 1.0)
     icalendar (2.8.0)
       ice_cube (~> 0.16)
     ice_cube (0.16.4)
+    image_processing (1.12.2)
+      mini_magick (>= 4.9.5, < 5)
+      ruby-vips (>= 2.0.17, < 3)
     importmap-rails (1.1.6)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
@@ -220,6 +224,7 @@ GEM
     matrix (0.4.2)
     memoist (0.16.2)
     method_source (1.0.0)
+    mini_magick (4.12.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
     minitest (5.18.0)
@@ -244,6 +249,7 @@ GEM
     nokogiri (1.14.3-x86_64-linux)
       racc (~> 1.4)
     oj (3.14.3)
+    openssl (3.1.0)
     orm_adapter (0.5.0)
     os (1.1.4)
     parallel (1.23.0)
@@ -293,6 +299,10 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.5.0)
       loofah (~> 2.19, >= 2.19.1)
+    rails_autolink (1.1.8)
+      actionview (> 3.1)
+      activesupport (> 3.1)
+      railties (> 3.1)
     rails_ping (0.1.5)
       rails (>= 5.0)
     railties (7.0.4.3)
@@ -364,7 +374,11 @@ GEM
     rubocop-rspec (2.20.0)
       rubocop (~> 1.33)
       rubocop-capybara (~> 2.17)
+    ruby-debug-ide (0.7.3)
+      rake (>= 0.8.1)
     ruby-progressbar (1.13.0)
+    ruby-vips (2.1.4)
+      ffi (~> 1.12)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     sassc (2.4.0)
@@ -388,6 +402,8 @@ GEM
     sentry-sidekiq (5.9.0)
       sentry-ruby (~> 5.9.0)
       sidekiq (>= 3.0)
+    serviceworker-rails (0.6.0)
+      railties (>= 3.1)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
     sidekiq (7.0.9)
@@ -456,6 +472,10 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    web-push (3.0.0)
+      hkdf (~> 1.0)
+      jwt (~> 2.0)
+      openssl (~> 3.0)
     webdrivers (5.2.0)
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
@@ -494,6 +514,7 @@ DEPENDENCIES
   haml-rails
   headless
   icalendar
+  image_processing (~> 1.2)
   importmap-rails
   jbuilder
   kaminari
@@ -511,6 +532,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (~> 7.0.4)
   rails-controller-testing
+  rails_autolink
   rails_ping
   redis
   rspec-its
@@ -519,9 +541,11 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   rubocop-rspec
+  ruby-debug-ide
   sentry-rails
   sentry-ruby
   sentry-sidekiq
+  serviceworker-rails
   shoulda-matchers
   sidekiq
   sidekiq-delay_extensions
@@ -538,6 +562,7 @@ DEPENDENCIES
   twilio-ruby
   watir
   web-console
+  web-push
   webdrivers
 
 RUBY VERSION

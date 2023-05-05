@@ -17,7 +17,7 @@ RSpec.describe Selection do
 
       it 'deletes old selections' do
         expect(described_class.where(user:, match: [match1, match2])).to eq [previous_selection]
-        new_selection = described_class.create! user: user, team: match2.local_team, match: match2
+        new_selection = described_class.create! user:, team: match2.local_team, match: match2
         expect(described_class.where(user:, match: [match1, match2])).to eq [new_selection]
       end
     end

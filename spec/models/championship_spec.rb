@@ -18,13 +18,13 @@ RSpec.describe Championship do
     subject { championship.enroll_team!(team) }
 
     context 'with new team' do
-      it { expect(subject.enrolled_teams).to match_array([team]) }
+      it { expect(subject.enrolled_teams).to contain_exactly(team) }
     end
 
     context 'with already enrolled team' do
       before { championship.enroll_team!(team) }
 
-      it { expect(subject.enrolled_teams).to match_array([team]) }
+      it { expect(subject.enrolled_teams).to contain_exactly(team) }
     end
   end
 
@@ -32,13 +32,13 @@ RSpec.describe Championship do
     subject { championship.unenroll_team!(team) }
 
     context 'with new team' do
-      it { expect(subject.enrolled_teams).to match_array([]) }
+      it { expect(subject.enrolled_teams).to be_empty }
     end
 
     context 'with already enrolled team' do
       before { championship.enroll_team!(team) }
 
-      it { expect(subject.enrolled_teams).to match_array([]) }
+      it { expect(subject.enrolled_teams).to be_empty }
     end
   end
 
@@ -109,7 +109,6 @@ RSpec.describe Championship do
         let(:clement) { create(:user, with_section: section) }
         let(:lower_championship) { create(:championship, season: Season.current, name: 'COMITE DE LOIRE ATLANTIQUE - 3EME DTM 44') }
 
-
         before do
           UserChampionshipStat.create!(user: alexis, championship:, player_id: '6244093100969')
           UserChampionshipStat.create!(user: alexis, championship: lower_championship, player_id: '6244093100969')
@@ -122,7 +121,7 @@ RSpec.describe Championship do
         it 'updates burned players in lower championship' do
           expect { championship.ffhb_sync! }.to change { lower_championship.reload.burned?(alexis) }.from(false).to(true)
         end
-        
+
         it 'keep player untouched for championship where he played' do
           expect { championship.ffhb_sync! }.not_to change { championship.reload.burned?(alexis) }
         end
@@ -143,6 +142,6 @@ RSpec.describe Championship do
       championship.unburn!(player2)
     end
 
-    it { expect(championship.burned_players.to_a).to eq([player1, player3]) }
+    it { expect(championship.burned_players).to contain_exactly(player1, player3) }
   end
 end

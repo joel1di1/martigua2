@@ -31,11 +31,13 @@ gem 'puma'
 gem 'pundit'
 gem 'rack-attack'
 gem 'rack-cors', require: 'rack/cors'
+gem 'rails_autolink'
 gem 'rails_ping'
 gem 'redis'
 gem 'sentry-rails'
 gem 'sentry-ruby'
 gem 'sentry-sidekiq'
+gem 'serviceworker-rails'
 gem 'sidekiq'
 gem 'sidekiq-delay_extensions'
 gem 'simple_form'
@@ -48,16 +50,17 @@ gem 'switch_user'
 gem 'tailwindcss-rails'
 gem 'turbo-rails'
 gem 'twilio-ruby'
+gem 'web-push'
 
-gem 'watir'
 gem 'headless'
+gem 'watir'
 
 group :production do
   gem 'postmark-rails'
 end
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+gem 'image_processing', '~> 1.2'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -71,6 +74,7 @@ group :development, :test do
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+  gem 'ruby-debug-ide', require: false
 end
 
 group :development do

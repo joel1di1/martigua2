@@ -36,13 +36,13 @@ describe 'create championship' do
       end
 
       alexis_stats = UserChampionshipStat.where(player_id: '6244093100969')
-      assert_equal 1, alexis_stats.count
+      expect(alexis_stats.count).to eq(1)
       assert_nil alexis_stats.first.user_id
 
       click_on 'Valider les associations'
       assert_text 'Les associations ont été mises à jour'
 
-      assert_equal alexis.id, alexis_stats.reload.first.user_id
+      expect(alexis_stats.reload.first.user_id).to eq(alexis.id)
     end
   end
 end

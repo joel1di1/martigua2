@@ -2,7 +2,6 @@
 
 class WebpushSubscriptionsController < ApplicationController
   def create
-    # Remplacez `current_user` par la méthode que vous utilisez pour récupérer l'utilisateur actuel
     webpush_subscription = current_user.webpush_subscriptions.find_or_create_by(webpush_subscription_params)
 
     if webpush_subscription.save

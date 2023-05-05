@@ -142,6 +142,6 @@ RSpec.describe Championship do
       championship.unburn!(player2)
     end
 
-    it { expect(championship.burned_players).to match_array([player1, player3]) }
+    it { expect(championship.burned_players).to contain_exactly(player1, player3) }
   end
 end

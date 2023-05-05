@@ -111,6 +111,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :webpush_subscriptions, only: [:create], constraints: { format: :json }
+
   authenticate :user, ->(u) { u.super_admin? } do
     mount Sidekiq::Web => 'sidekiq'
   end

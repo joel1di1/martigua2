@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_many :duty_tasks, inverse_of: :user, dependent: :destroy
   has_many :match_availabilities, inverse_of: :user, dependent: :destroy
   has_many :user_championship_stats, inverse_of: :user, dependent: :destroy
+  has_many :webpush_subscriptions, inverse_of: :user, dependent: :destroy
 
   has_and_belongs_to_many :groups, inverse_of: :users
 

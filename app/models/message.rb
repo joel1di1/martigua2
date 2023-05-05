@@ -8,5 +8,10 @@ class Message < ApplicationRecord
   has_many :child_messages, class_name: 'Message', foreign_key: :parent_message_id, dependent: :destroy
   # has_many :reactions, dependent: :destroy
 
+  # Validations
+  validates :content, presence: true
+  validates :user, presence: true
+  validates :channel, presence: true
+
   has_rich_text :content
 end

@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class WebpushService
-  def self.send_notification(subscription, title:, body:)
-    payload = { title: title, body: body }
+  def self.send_notification(subscription, **payload)
     WebPush.payload_send(
       message: payload.to_json,
       endpoint: subscription.endpoint,

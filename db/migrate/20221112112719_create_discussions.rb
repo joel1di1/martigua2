@@ -5,8 +5,8 @@ class CreateDiscussions < ActiveRecord::Migration[7.0]
     create_table :discussions do |t|
       t.references :section, null: false, foreign_key: true
       t.string :name
-      t.boolean :private
-      t.boolean :system
+      t.boolean :private # rubocop:disable Rails/ThreeStateBooleanColumn
+      t.boolean :system # rubocop:disable Rails/ThreeStateBooleanColumn
 
       t.timestamps
     end

@@ -19,3 +19,6 @@ RSpec/DescribedClass:
 
 Rails/I18nLocaleTexts:
   Enabled: false
+
+RSpec/IndexedLet:
+  Enabled: false

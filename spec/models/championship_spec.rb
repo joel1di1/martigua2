@@ -104,6 +104,7 @@ RSpec.describe Championship do
         expect(landreau_vertou.location.address).to eq("SALLE DES NOUELLES\n19  RUE DE LA LOIRE\nLE LANDREAU")
       end
 
+      # rubocop:disable RSpec/MultipleMemoizedHelpers
       describe 'updates user championship stats' do
         let(:alexis) { create(:user, with_section: section) }
         let(:clement) { create(:user, with_section: section) }
@@ -123,9 +124,10 @@ RSpec.describe Championship do
         end
 
         it 'keep player untouched for championship where he played' do
-          expect { championship.ffhb_sync! }.not_to change { championship.reload.burned?(alexis) }
+          expect { championship.ffhb_sync! }.not_to(change { championship.reload.burned?(alexis) })
         end
       end
+      # rubocop:enable RSpec/MultipleMemoizedHelpers
     end
   end
 

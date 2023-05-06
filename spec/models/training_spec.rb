@@ -167,8 +167,10 @@ RSpec.describe Training do
   end
 
   describe '.send_tig_mail_for_next_training' do
-    let!(:training) { create(:training, with_section: section, group_ids: [group.id],
-                            start_datetime: 26.hours.from_now, end_datetime: 28.hours.from_now) }
+    let!(:training) do
+      create(:training, with_section: section, group_ids: [group.id],
+                        start_datetime: 26.hours.from_now, end_datetime: 28.hours.from_now)
+    end
 
     before { 2.times { create(:user).present_for!(training) } }
 

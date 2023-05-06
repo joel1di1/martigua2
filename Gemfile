@@ -68,8 +68,8 @@ group :development, :test do
   gem 'debug'
   gem 'factory_bot_rails'
   gem 'foreman', require: false
-  gem 'rspec-rails'
   gem 'parallel_tests'
+  gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false

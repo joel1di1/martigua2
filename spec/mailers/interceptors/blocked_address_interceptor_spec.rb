@@ -7,7 +7,7 @@ RSpec.describe Interceptors::BlockedAddressInterceptor do
     before { described_class.delivering_email(message) }
 
     context 'when the email is sent to a blocked address' do
-      let(:message) { Mail.new(to: 'jeanbaptisteeve577@gmail.com' ) }
+      let(:message) { Mail.new(to: 'jeanbaptisteeve577@gmail.com') }
 
       it { expect(message.perform_deliveries).to be false }
     end

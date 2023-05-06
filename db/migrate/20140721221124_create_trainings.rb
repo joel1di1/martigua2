@@ -6,7 +6,7 @@ class CreateTrainings < ActiveRecord::Migration[4.2]
       t.datetime :start_datetime, null: false
       t.datetime :end_datetime
       t.belongs_to :location, index: true
-      t.boolean :canceled
+      t.boolean :canceled # rubocop:disable Rails/ThreeStateBooleanColumn
       t.text :cancelation_reason
 
       t.timestamps

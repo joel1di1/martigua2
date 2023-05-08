@@ -5,12 +5,14 @@ html lang="fr" class="h-full"
     meta name="viewport" content="width=device-width,initial-scale=1"
     = csrf_meta_tags
     = csp_meta_tag
-    = stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload"
 
-    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = stylesheet_link_tag "application", "tailwind", "inter-font", "data-turbo-track": "reload"
+
+    = hotwire_livereload_tags if Rails.env.development?
     = javascript_importmap_tags
 
     link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet"
+    link rel="manifest" href="/manifest.json"
 
     - if Rails.env.production?
       javascript:

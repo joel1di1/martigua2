@@ -67,3 +67,32 @@ if (navigator.serviceWorker) {
 else {
   console.error('Service worker is not supported in this browser');
 }
+
+
+
+function setThirdDivHeight() {
+  const messageForm = document.getElementById("message-form");
+  if (!messageForm) {
+    return;
+  }
+
+  const navBar = document.getElementById("navbar");
+  const channel = document.getElementById("channel");
+  const centralMessages = document.getElementById("central-messages");
+
+  const navBarHeight = navBar.offsetHeight;
+  const channelHeight = channel.offsetHeight;
+  const messageFormHeight = messageForm.offsetHeight;
+  const windowHeight = window.innerHeight;
+
+  const centralMessagesHeight = windowHeight - navBarHeight - channelHeight - messageFormHeight;
+
+  centralMessages.style.height = `${centralMessagesHeight}px`;
+  console.log(centralMessagesHeight);
+}
+
+window.addEventListener("resize", setThirdDivHeight);
+
+// Exécute la fonction initialement pour définir la hauteur correcte au chargement de la page
+// document.addEventListener("DOMContentLoaded", setThirdDivHeight);
+document.addEventListener("turbo:load", setThirdDivHeight)

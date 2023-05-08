@@ -150,7 +150,7 @@
   </div>
 
   <%# Central part, main channel %>
-  <div class="flex flex-col flex-grow ">
+  <div class="flex flex-col flex-grow" id="central-part">
     <div id="channel" class="flex items-center flex-shrink-0 h-16 bg-white border-b border-gray-300 px-4">
       <div>
         <h1 class="text-sm font-bold leading-none">#<%= @channel.name %></h1>
@@ -330,66 +330,14 @@
 </div>
 
 <script>
-  function setThirdDivHeight() {
-    const navBar = document.getElementById("navbar");
-    const channel = document.getElementById("channel");
-    const messageForm = document.getElementById("message-form");
-
-    const centralMessages = document.getElementById("central-messages");
-
-    const navBarHeight = navBar.offsetHeight;
-    const channelHeight = channel.offsetHeight;
-    const messageFormHeight = messageForm.offsetHeight;
-    const windowHeight = window.innerHeight;
-
-    const centralMessagesHeight = windowHeight - navBarHeight - channelHeight - messageFormHeight;
-
-    centralMessages.style.height = `${centralMessagesHeight}px`;
-    console.log("centralMessagesHeight", centralMessagesHeight);
-    console.log("centralMessages", centralMessages);
-  }
-
-  window.addEventListener("resize", setThirdDivHeight);
-
-  // Exécute la fonction initialement pour définir la hauteur correcte au chargement de la page
-  document.addEventListener("DOMContentLoaded", setThirdDivHeight);
-
-
-  const targetNode = document.getElementById("central-messages");
-
-  // Options for the observer (which mutations to observe)
-  const config = { attributes: true, childList: true, subtree: true };
-
-  // Callback function to execute when mutations are observed
-  const callback = (mutationList, observer) => {
-    for (const mutation of mutationList) {
-      if (mutation.type === "childList") {
-        console.log("A child node has been added or removed.");
-      // after 500ms, scroll to bottom of messages
-      setTimeout(() => {
-        const centralMessages = document.getElementById("central-messages");
-        centralMessages.scrollTop = centralMessages.scrollHeight + 1000;
-      }, 10);
-      } else if (mutation.type === "attributes") {
-        console.log(`The ${mutation.attributeName} attribute was modified.`);
-      }
-    }
-  };
-
-  // Create an observer instance linked to the callback function
-  const observer = new MutationObserver(callback);
-
-  // Start observing the target node for configured mutations
-  observer.observe(targetNode, config);
-
   function requestNotificationPermission() {
-  Notification.requestPermission().then((permission) => {
-    if (permission === "granted") {
-      console.log("Notification permission granted.");
-    } else {
-      console.error("Notification permission denied.");
-    }
-  });
-}
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        console.log("Notification permission granted.");
+      } else {
+        console.error("Notification permission denied.");
+      }
+    });
+  }
 
 </script>

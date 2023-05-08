@@ -1,6 +1,6 @@
 
+<%= turbo_stream_from @channel %>
 
-<!-- source https://codepen.io/robstinson/pen/RwRGMJm -->
 <div class="flex w-screen text-gray-700">
   <%# left part, menu %>
   <div class="flex flex-col flex-shrink-0 w-64 border-r border-gray-300 bg-gray-100">
@@ -153,15 +153,17 @@
   <div class="flex flex-col flex-grow" id="central-part">
     <div id="channel" class="flex items-center flex-shrink-0 h-16 bg-white border-b border-gray-300 px-4">
       <div>
-        <h1 class="text-sm font-bold leading-none">#<%= @channel.name %></h1>
-        <span class="text-xs leading-none">This is a random description</span>
+        <%= turbo_frame_tag "channel" do %>
+          <h1 class="text-sm font-bold leading-none">#<%= @channel.name %></h1>
+          <span class="text-xs leading-none">This is a random description</span>
+        <% end %>
       </div>
     </div>
     <div id="central-messages" class="flex flex-col flex-grow" style="overflow-y: scroll;">
       <%# Messages  %>
-      <turbo-frame id="messages">
-        <%= render @channel.messages.with_rich_text_content_and_embeds %>
-      </turbo-frame>
+      <div id="messages">
+        <%= render @channel.messages %>
+      </div>
     </div>
     <%# Message form %>
     <turbo-frame id="message-form">

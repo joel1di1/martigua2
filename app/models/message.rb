@@ -11,5 +11,7 @@ class Message < ApplicationRecord
   # Validations
   validates :content, presence: true
 
+  after_create_commit -> { broadcast_append_to channel }
+
   has_rich_text :content
 end

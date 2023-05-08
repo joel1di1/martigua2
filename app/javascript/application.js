@@ -88,7 +88,6 @@ function setThirdDivHeight() {
   const centralMessagesHeight = windowHeight - navBarHeight - channelHeight - messageFormHeight;
 
   centralMessages.style.height = `${centralMessagesHeight}px`;
-  console.log(centralMessagesHeight);
 }
 
 window.addEventListener("resize", setThirdDivHeight);

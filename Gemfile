@@ -78,6 +78,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'hotwire-livereload'
   gem 'rack-mini-profiler'
   gem 'web-console'
 end

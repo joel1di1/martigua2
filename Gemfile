@@ -69,10 +69,10 @@ group :development, :test do
   gem 'foreman', require: false
   gem 'parallel_tests'
   gem 'rspec-rails'
-  gem 'rubocop', require: false
-  gem 'rubocop-performance', require: false
-  gem 'rubocop-rails', require: false
-  gem 'rubocop-rspec', require: false
+  gem 'rubocop'
+  gem 'rubocop-performance'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
   gem 'ruby-debug-ide', require: false
 end
 

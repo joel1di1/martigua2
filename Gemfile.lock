@@ -423,8 +423,6 @@ GEM
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
       redis-client (>= 0.14.0)
-    sidekiq-delay_extensions (6.4.1)
-      sidekiq (>= 6.4.1)
     signet (0.17.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
@@ -561,7 +559,6 @@ DEPENDENCIES
   sentry-sidekiq
   shoulda-matchers
   sidekiq
-  sidekiq-delay_extensions
   simple_form
   simple_form-tailwind
   slim

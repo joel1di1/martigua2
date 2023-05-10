@@ -79,7 +79,7 @@ class Match < ApplicationRecord
   def self.send_availability_mail_for_next_weekend
     User.active_this_season.each do |user|
       next_weekend_matches = user.next_weekend_matches
-      UserMailer.delay.send_match_invitation(next_weekend_matches.to_a, user) unless next_weekend_matches.empty?
+      UserMailer.async_send_match_invitation(next_weekend_matches.to_a, user) unless next_weekend_matches.empty?
     end
   end
 

@@ -242,6 +242,37 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: blocked_addresses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.blocked_addresses (
+    id bigint NOT NULL,
+    email character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: blocked_addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.blocked_addresses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: blocked_addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.blocked_addresses_id_seq OWNED BY public.blocked_addresses.id;
+
+
+--
 -- Name: burns; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1564,6 +1595,13 @@ ALTER TABLE ONLY public.admin_users ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
+-- Name: blocked_addresses id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.blocked_addresses ALTER COLUMN id SET DEFAULT nextval('public.blocked_addresses_id_seq'::regclass);
+
+
+--
 -- Name: burns id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1869,6 +1907,14 @@ ALTER TABLE ONLY public.admin_users
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: blocked_addresses blocked_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.blocked_addresses
+    ADD CONSTRAINT blocked_addresses_pkey PRIMARY KEY (id);
 
 
 --
@@ -2227,6 +2273,13 @@ CREATE UNIQUE INDEX index_admin_users_on_email ON public.admin_users USING btree
 --
 
 CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON public.admin_users USING btree (reset_password_token);
+
+
+--
+-- Name: index_blocked_addresses_on_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_blocked_addresses_on_email ON public.blocked_addresses USING btree (email);
 
 
 --
@@ -2899,6 +2952,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230430231249'),
 ('20230501224338'),
 ('20230501224339'),
-('20230505130520');
+('20230505130520'),
+('20230510192951');
 
 

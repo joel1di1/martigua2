@@ -4,14 +4,14 @@ class BlockedAddress < ApplicationRecord
   validates :email, presence: true, uniqueness: true
 
   def self.blocked?(email)
-    exists?(email: email)
+    exists?(email:)
   end
 
   def self.block!(email)
-    create(email: email)
+    create(email:)
   end
 
   def self.unblock!(email)
-    find_by(email: email)&.destroy
+    find_by(email:)&.destroy
   end
 end

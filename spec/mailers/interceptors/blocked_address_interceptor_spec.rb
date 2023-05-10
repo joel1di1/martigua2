@@ -6,7 +6,6 @@ RSpec.describe Interceptors::BlockedAddressInterceptor do
   let(:email) { Faker::Internet.email }
 
   describe '.delivering_email' do
-
     let(:message) { Mail.new(to: email) }
 
     context 'when the email is sent to a blocked address' do

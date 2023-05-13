@@ -159,10 +159,12 @@
         <% end %>
       </div>
     </div>
-    <div id="central-messages" class="flex flex-col flex-grow" style="overflow-y: scroll;">
-      <%# Messages  %>
-      <div id="messages">
-        <%= render @channel.messages %>
+    <div data-controller="central-messages">
+      <div id="central-messages" class="flex flex-col flex-grow" style="overflow-y: scroll;"  data-central-messages-target="scroll">
+        <%# Messages  %>
+        <div id="messages">
+          <%= render @channel.messages %>
+        </div>
       </div>
     </div>
     <%# Message form %>

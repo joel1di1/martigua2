@@ -68,8 +68,6 @@ else {
   console.error('Service worker is not supported in this browser');
 }
 
-
-
 function setThirdDivHeight() {
   const messageForm = document.getElementById("message-form");
   if (!messageForm) {

@@ -1,4 +1,4 @@
-<div id="message_<%= message.id %>" class="flex px-4 py-3">
+<div id="message_<%= message.id %>" class="flex px-4 py-3" data-controller="message" data-message-target="message" data-central-messages-target="message">
   <%= message.id %>
   <div class="h-10 w-10 rounded flex-shrink-0 bg-gray-300">
     <!-- image of a gravatar based on email hash -->
@@ -20,7 +20,6 @@
     </div> %>
   </div>
 </div>
-
 
 
 <%#

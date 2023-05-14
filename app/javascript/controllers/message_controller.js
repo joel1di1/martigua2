@@ -6,7 +6,8 @@ export default class extends Controller {
   connect() {
     this.centralMessagesController = this.application.getControllerForElementAndIdentifier(document.getElementById("central-messages"), "central-messages");
 
-    if (this.centralMessagesController.isScrollAtBottom()) {
+    if (this.centralMessagesController && this.centralMessagesController.isScrollAtBottom(this.messageTarget)) {
+      console.log('scrollIntoView');
       this.messageTarget.scrollIntoView();
     }
   }

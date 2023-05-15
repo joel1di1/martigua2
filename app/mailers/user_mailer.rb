@@ -26,4 +26,19 @@ class UserMailer < ApplicationMailer
     ccs = next_training_duties[1..].map(&:email) + ['guillaume.pech@gmail.com']
     mail to: @user.email, cc: ccs, subject:
   end
+
+  # TODO: factorize method missing with ApplicationRecord
+  def self.method_missing(method, *args, &block)
+    if method.to_s.start_with?('async_')
+      raise 'async jobs with block are not supported' if block.present?
+
+      ActiveRecordAsyncJob.perform_async(name, nil, method.to_s.sub('async_', ''), *args)
+    else
+      super
+    end
+  end
+
+  def self.respond_to_missing?(method, include_private = false)
+    method.to_s.start_with?('async_') || super
+  end
 end

@@ -23,7 +23,7 @@ class UserMailer < ApplicationMailer
     @user = next_training_duties.first
 
     subject = "Chasubles, c'est ton tour : (#{training.start_datetime.strftime('%-d/%-m')})"
-    ccs = next_training_duties[1..].map(&:email) + ['guillaume.pech@gmail.com']
+    ccs = next_training_duties[1..].map(&:email)
     mail to: @user.email, cc: ccs, subject:
   end
 

@@ -1,21 +1,19 @@
 # frozen_string_literal: true
 
 class ChannelsController < ApplicationController
-  layout 'full_width'
+  layout 'empty'
 
   before_action :set_channel, only: %i[show edit update destroy]
 
   # GET /channels or /channels.json
   def index
-    # find channel général
-    @general_channel = current_section.general_channel
-
-    # redirect to section channel
-    redirect_to section_channel_path(current_section, @general_channel)
+    @channels = current_section.channels
   end
 
   # GET /channels/1 or /channels/1.json
   def show
+    @channels = current_section.channels
+
     # new message
     @message = Message.new(channel: @general_channel)
   end

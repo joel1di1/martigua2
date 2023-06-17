@@ -1,0 +1,4 @@
+div id=dom_id(channel)
+  - add_class = @channel == channel ? "bg-gray-300" : ""
+  = link_to([current_section, channel], class: "test w-full block hover:bg-indigo-200 rounded my-1 px-4 py-1 #{add_class}") do
+    = channel.name

@@ -1,18 +1,7 @@
 <!DOCTYPE html>
 html lang="fr" class="h-full"
   head
-    title Martigua
-    meta name="viewport" content="width=device-width,initial-scale=1"
-    = csrf_meta_tags
-    = csp_meta_tag
-
-    = stylesheet_link_tag "application", "tailwind", "inter-font", "data-turbo-track": "reload"
-
-    = javascript_importmap_tags
-
-    link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet"
-    link rel="manifest" href="/manifest.json"
-
+    = render 'layouts/headers'
   body class="h-screen"
     = render 'layouts/navigation'
     #content

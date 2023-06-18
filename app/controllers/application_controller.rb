@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  extend ActiveSupport::Concern
+
   include Pundit::Authorization
   include LogAllRequests
 
+  before_action :set_current_user_in_current
+  before_action :set_current_section_in_current
   before_action :authenticate_user_from_token!, except: :catch404
   before_action :authenticate_user!, except: :catch404
   before_action :set_sentry_context
@@ -76,5 +80,13 @@ class ApplicationController < ActionController::Base
     user       = user_email && User.find_by(email: user_email)
 
     sign_in user if user && Devise.secure_compare(user.authentication_token, params[:user_token])
+  end
+
+  def set_current_user_in_current
+    Current.user = current_user
+  end
+
+  def set_current_section_in_current
+    Current.section = current_section
   end
 end

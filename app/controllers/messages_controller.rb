@@ -21,7 +21,7 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to section_channel_path(current_section, @channel) }
-      format.turbo_stream { turbo_stream.remove(@message) }
+      format.turbo_stream
       format.js
     end
   end

@@ -67,4 +67,3 @@ if (navigator.serviceWorker) {
 else {
   console.error('Service worker is not supported in this browser');
 }
-

@@ -15,6 +15,17 @@ class MessagesController < ApplicationController
     end
   end
 
+  def destroy
+    @message = @channel.messages.find(params[:id])
+    @message.destroy
+
+    respond_to do |format|
+      format.html { redirect_to section_channel_path(current_section, @channel) }
+      format.turbo_stream { turbo_stream.remove(@message) }
+      format.js
+    end
+  end
+
   private
 
   def set_channel

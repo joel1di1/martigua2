@@ -9,15 +9,16 @@ div class="flex flex-col h-screen overflow-hidden"
           path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5"
         p class="font-medium" Channels
       div class="bg-gray-200 grow overflow-hidden"
-        div id="central-messages" class="h-full overflow-auto"
+        div class="h-full overflow-auto"
           = render @channels
 
+    / div id="central-messages" data-controller="central-messages" data-central-messages-target="scroll" class=""
     div id="messages" class="grow overflow-auto pb-24"
       = render @channel.messages.order(:id)
 
       div class="fixed bottom-0 mr-2 pt-2 bg-white"
         turbo-frame id="message-form"
-          div class="h-24 bg-white px-4 pb-4 flex-shrink-0"
+          div class="bg-white px-4 pb-4 flex-shrink-0"
             = form_with(model: [current_section, @channel, @message], data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |form|
               div class="flex items-center border-2 border-gray-300 rounded-sm p-1"
                 div

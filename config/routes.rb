@@ -87,7 +87,7 @@ Rails.application.routes.draw do
     resources :locations, only: [:create]
     resources :teams, only: %i[create show delete new]
     resources :channels do
-      resources :messages, only: %i[create]
+      resources :messages, only: %i[create destroy]
     end
 
     patch 'player_ffhb_association'

@@ -1,0 +1,12 @@
+div id="message_#{message.id}" class="flex px-4 py-3" data-controller="message" data-message-target="message" data-central-messages-target="message"
+  div class="h-10 w-10 rounded flex-shrink-0 bg-gray-300"
+    <!-- image of a gravatar based on email hash -->
+    img src="https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(message.user.email)}?d=identicon" class="h-10 w-10 rounded"
+  div class="ml-2 messages"
+    div class="-mt-1"
+      span class="text-sm font-semibold"= message.user.short_name
+      span class="ml-1 text-xs text-gray-500"
+        = message.created_at.strftime("%d/%m %H:%M")
+    = message.content
+    / - if current_user == message.user
+    /   = button_to "Supprimer", section_channel_message_path(current_section, message.channel, message), method: :delete, data: { confirm: "Voulez-vous vraiment supprimer ce message ?" }

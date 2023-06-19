@@ -13,16 +13,16 @@ div class="flex flex-col h-screen overflow-hidden"
           = render @channels
 
     / div id="central-messages" data-controller="central-messages" data-central-messages-target="scroll" class=""
-    div id="messages" class="grow overflow-auto pb-24 bg-gray-100" data-controller="scroll" data-scroll-target="messages"
+    div id="messages" class="grow overflow-auto pb-28 bg-gray-100" data-controller="scroll" data-scroll-target="messages"
       = render @channel.messages.order(:id)
 
-      div class="fixed bottom-0 mr-2 pt-2 bg-white"
-        turbo-frame id="message-form"
-          div class="bg-white px-4 pb-4 flex-shrink-0"
+      turbo-frame id="message-form"
+        div class="fixed bottom-0 pt-2 bg-white w-full"
+          div class="px-4 pb-4 w-fit"
             = form_with(model: [current_section, @channel, @message], data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |form|
-              div class="flex items-center border-2 border-gray-300 rounded-sm p-1"
+              div class="flex items-center border-2 border-gray-300 rounded-sm p-1 min-w-fit"
                 div
                   = form.rich_text_area :content
-                button class="flex-shrink flex items-center justify-center h-14 w-14 rounded-full hover:bg-gray-200 bg-green-300 m-2"
+                button class="flex items-center justify-center h-14 w-14 rounded-full hover:bg-gray-200 bg-green-300 m-2"
                   svg class="h-6 w-6 transform rotate-90" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                     path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"

@@ -38,3 +38,7 @@
   max-height: min-content;
   min-height: 2em;
 }
+
+trix-toolbar .trix-button-group.trix-button-group--history-tools{
+  display: none;
+}

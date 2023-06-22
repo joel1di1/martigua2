@@ -30,6 +30,10 @@
   color: #3182ce;
 }
 
+.message.unread {
+  background-color: rgb(233, 234, 236);
+}
+
 .messages a:hover {
   text-decoration: underline;
 }

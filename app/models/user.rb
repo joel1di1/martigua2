@@ -16,6 +16,7 @@ class User < ApplicationRecord
   has_many :match_availabilities, inverse_of: :user, dependent: :destroy
   has_many :user_championship_stats, inverse_of: :user, dependent: :destroy
   has_many :webpush_subscriptions, inverse_of: :user, dependent: :destroy
+  has_many :user_channel_messages, inverse_of: :user, dependent: :destroy
 
   has_and_belongs_to_many :groups, inverse_of: :users
 
@@ -151,6 +152,10 @@ class User < ApplicationRecord
 
   def super_admin?
     id == 1
+  end
+
+  def read?(message)
+    user_channel_messages.find_or_create_by(message: , channel: message.channel).read?
   end
 
   protected

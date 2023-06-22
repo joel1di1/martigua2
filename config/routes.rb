@@ -111,6 +111,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :messages, only: [] do
+    collection do
+      post 'mark_as_read'
+    end
+  end
+
   resources :webpush_subscriptions, only: [:create], constraints: { format: :json }
 
   authenticate :user, ->(u) { u.super_admin? } do

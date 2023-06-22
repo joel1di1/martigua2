@@ -1466,6 +1466,40 @@ ALTER SEQUENCE public.user_championship_stats_id_seq OWNED BY public.user_champi
 
 
 --
+-- Name: user_channel_messages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_channel_messages (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    channel_id bigint NOT NULL,
+    message_id bigint NOT NULL,
+    read boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: user_channel_messages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_channel_messages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_channel_messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_channel_messages_id_seq OWNED BY public.user_channel_messages.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1840,6 +1874,13 @@ ALTER TABLE ONLY public.user_championship_stats ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: user_channel_messages id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_channel_messages ALTER COLUMN id SET DEFAULT nextval('public.user_channel_messages_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2187,6 +2228,14 @@ ALTER TABLE ONLY public.trainings
 
 ALTER TABLE ONLY public.user_championship_stats
     ADD CONSTRAINT user_championship_stats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_channel_messages user_channel_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_channel_messages
+    ADD CONSTRAINT user_channel_messages_pkey PRIMARY KEY (id);
 
 
 --
@@ -2647,6 +2696,27 @@ CREATE INDEX index_user_championship_stats_on_user_id ON public.user_championshi
 
 
 --
+-- Name: index_user_channel_messages_on_channel_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_channel_messages_on_channel_id ON public.user_channel_messages USING btree (channel_id);
+
+
+--
+-- Name: index_user_channel_messages_on_message_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_channel_messages_on_message_id ON public.user_channel_messages USING btree (message_id);
+
+
+--
+-- Name: index_user_channel_messages_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_channel_messages_on_user_id ON public.user_channel_messages USING btree (user_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2711,6 +2781,14 @@ ALTER TABLE ONLY public.groups
 
 
 --
+-- Name: user_channel_messages fk_rails_06ba0d9ef5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_channel_messages
+    ADD CONSTRAINT fk_rails_06ba0d9ef5 FOREIGN KEY (message_id) REFERENCES public.messages(id);
+
+
+--
 -- Name: burns fk_rails_0ff98c47ee; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2751,6 +2829,14 @@ ALTER TABLE ONLY public.messages
 
 
 --
+-- Name: user_channel_messages fk_rails_5bcec6a1b6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_channel_messages
+    ADD CONSTRAINT fk_rails_5bcec6a1b6 FOREIGN KEY (channel_id) REFERENCES public.channels(id);
+
+
+--
 -- Name: championship_group_championships fk_rails_630a2514ca; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2788,6 +2874,14 @@ ALTER TABLE ONLY public.sms_notifications
 
 ALTER TABLE ONLY public.webpush_subscriptions
     ADD CONSTRAINT fk_rails_90c23a43b6 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: user_channel_messages fk_rails_9207d54fb1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_channel_messages
+    ADD CONSTRAINT fk_rails_9207d54fb1 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -2953,6 +3047,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230501224338'),
 ('20230501224339'),
 ('20230505130520'),
-('20230510192951');
+('20230510192951'),
+('20230619061517');
 
 

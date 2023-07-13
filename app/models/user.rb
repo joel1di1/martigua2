@@ -155,7 +155,15 @@ class User < ApplicationRecord
   end
 
   def read?(message)
-    user_channel_messages.find_or_create_by(message: , channel: message.channel).read?
+    user_channel_messages.find_or_create_by(message:, channel: message.channel).read?
+  end
+
+  def read!(message_ids)
+    message_ids = [*message_ids]
+    message_ids.each do |message_id|
+      message = Message.find(message_id)
+      user_channel_messages.find_or_create_by(message:, channel: message.channel).update!(read: true)
+    end
   end
 
   protected

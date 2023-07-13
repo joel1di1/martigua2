@@ -27,6 +27,11 @@ class MessagesController < ApplicationController
   end
 
   def mark_as_read
+    message_ids = params[:message_ids].presence || []
+    message_ids = message_ids.map(&:to_i)
+
+    current_user.read!(message_ids)
+
     render json: {}
   end
 

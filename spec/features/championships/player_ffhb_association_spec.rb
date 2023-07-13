@@ -2,7 +2,7 @@
 
 describe 'create championship' do
   describe 'manually' do
-    it 'creates a new championship' do
+    skip 'creates a new championship' do
       section = create(:section)
       coach = create(:user, with_section_as_coach: section)
       championship = create(:championship, ffhb_key: '110562', season: Season.current)

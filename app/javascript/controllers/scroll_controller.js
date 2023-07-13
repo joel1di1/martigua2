@@ -46,7 +46,7 @@ export default class extends Controller {
             'Content-Type': 'application/json',
             'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
           },
-          body: JSON.stringify({ message_ids: Array.from(this.newlyReadMessages) })
+          body: JSON.stringify({ message_ids: Array.from(this.newlyReadMessages).map(messageId => Number(messageId.replace('message_', ''))) })
         }).then(response => {
           if (response.ok){
             this.newlyReadMessages.forEach(messageId => this.querySelector(`#${messageId}`).classList.remove('unread'));

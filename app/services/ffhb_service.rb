@@ -33,6 +33,25 @@ class FfhbService
     end
   end
 
+  def http_get_with_cache(url)
+    Rails.cache.fetch url, expires_in: 30.minutes do
+      uri = URI(url)
+      Net::HTTP.get(uri)
+    end
+  end
+
+  def fetch_comites
+    response = http_get_with_cache('https://www.ffhandball.fr/competitions/saison-2022-2023-18/departemental/')
+    doc = Nokogiri::HTML(response)
+    smartfire_component = doc.at_xpath("//smartfire-component[@name='competitions---competition-main-menu']")
+    attributes_content = smartfire_component['attributes']
+    attributes_content_decoded = CGI.unescapeHTML(attributes_content)
+    attributes = Oj.load(attributes_content_decoded)
+
+    # transform array of hash in a hash with key, the value "id"
+    attributes['structures'].index_by { |structure| structure['oldUrl'][1..].to_i }
+  end
+
   def fetch_ffhb_url(path)
     Net::HTTP.get(URI("https://jjht57whqb.execute-api.us-west-2.amazonaws.com/prod/#{path}"))
   end

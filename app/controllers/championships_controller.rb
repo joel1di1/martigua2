@@ -22,7 +22,9 @@ class ChampionshipsController < ApplicationController
 
     return if params['type_competition'].blank?
 
-    @comites = FfhbService.instance.fetch_ffhb_url_as_json "championship/#{params['type_competition']}"
+    @comites_options = FfhbService.instance.fetch_comites.map do |dep_number, comite_hash|
+      ["#{dep_number} - #{comite_hash['libelle']}", dep_number]
+    end.sort_by(&:second)
 
     return if params['code_comite'].blank?
 

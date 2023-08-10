@@ -22,21 +22,32 @@ class ChampionshipsController < ApplicationController
 
     return if params['type_competition'].blank?
 
-    @comites_options = FfhbService.instance.fetch_comites.map do |dep_number, comite_hash|
+    @comites_options = FfhbService.instance.list_comites_by_id.map do |dep_number, comite_hash|
       ["#{dep_number} - #{comite_hash['libelle']}", dep_number]
     end.sort_by(&:second)
 
     return if params['code_comite'].blank?
 
-    @divisions = FfhbService.instance.fetch_ffhb_url_as_json "competition/#{params['code_comite']}"
+    @competitions_options = FfhbService.instance.list_competitions(params['code_comite'].to_i).map do |competition_hash|
+      [competition_hash['libelle'],
+      "#{competition_hash['libelle'].parameterize}-#{competition_hash['ext_competitionId']}"]
+    end.sort_by(&:first)
 
-    return if params['code_division'].blank?
+    return if params['code_competition'].blank?
 
-    @pools = FfhbService.instance.fetch_ffhb_url_as_json "competitionPool/#{params['code_division']}"
+    @competition_details = FfhbService.instance.fetch_competition_details(params['code_competition'])
+
+    @phases_options = @competition_details['phases'].map{|phase| [phase['libelle'], phase['id']]}
+
+    return if params['phase_id'].blank?
+
+    @pools_options = @competition_details['poules'].
+      select{|poule| poule['phaseId'] == params['phase_id']}.
+      map{|poule| [poule['libelle'], poule['ext_pouleId']]}
 
     return if params['code_pool'].blank?
 
-    @competition = FfhbService.instance.fetch_ffhb_url_as_json "pool/#{params['code_pool']}"
+    @teams = FfhbService.instance.list_teams_for_pool(params['code_competition'], params['code_pool'])
 
     @calendars = current_section.season_calendars
   end
@@ -44,7 +55,7 @@ class ChampionshipsController < ApplicationController
   def edit; end
 
   def create
-    all_params = %w[type_competition code_comite code_division code_pool ffhb team_links]
+    all_params = %w[type_competition code_comite code_competition phase_id code_pool ffhb team_links]
     if params['ffhb'].present?
       if all_params.any? { |param| params[param].blank? }
         redirect_to new_section_championship_path(current_section, params: params.permit(all_params))

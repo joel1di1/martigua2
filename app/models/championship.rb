@@ -18,9 +18,9 @@ class Championship < ApplicationRecord
 
   after_initialize :init
 
-  def self.create_from_ffhb!(code_pool:, code_division:, code_comite:, type_competition:, team_links:, linked_calendar: nil)
+  def self.create_from_ffhb!(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:, team_links:, linked_calendar: nil)
     championship =
-      FfhbService.instance.build_championship(code_pool:, code_division:, code_comite:, type_competition:, team_links:, linked_calendar:)
+      FfhbService.instance.build_championship(type_competition:, code_comite: code_comite.to_i, code_competition:, phase_id:, code_pool:, team_links:, linked_calendar:)
 
     championship.save!
     championship

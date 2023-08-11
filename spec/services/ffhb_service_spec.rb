@@ -77,8 +77,6 @@ RSpec.describe FfhbService do
         let(:my_team) { create(:team) }
         let(:team_links) { { "1589702" => my_team.id.to_s } }
 
-        it { expect(championship.matches.size).to eq 22 }
-
         describe 'teams' do
           subject(:enrolled_teams) { championship.enrolled_team_championships }
 

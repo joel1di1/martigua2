@@ -47,7 +47,13 @@ class FfhbService
       "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/#{competition_key}/poule-#{code_pool}/",
       "//smartfire-component[@name='competitions---poule-selector']"
     )
+  end
 
+  def fetch_journee_details(competition_key, code_pool, journee_number)
+    fetch_smartfire_attributes(
+      "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/#{competition_key}/poule-#{code_pool}/journee-#{journee_number}/",
+      "//smartfire-component[@name='competitions---rencontre-list']"
+    )
   end
 
   def list_teams_for_pool(competition_key, code_pool)
@@ -86,14 +92,10 @@ class FfhbService
 
       day = find_or_create_day(calendar, linked_calendar, day_name, period_start_date, period_end_date)
 
-      # date[''].each do |event|
-      #   event_team_names = event['teams'].pluck('name')
-      #   next if event_team_names.intersection(section_team_by_names.keys).blank?
+      journee_details = fetch_journee_details(pool_details['url_competition'], pool_details['ext_poule_id'], journee['journee_numero'])
+      journee_details['rencontres'].each do |match|
 
-      #   local_team = team_by_names[event_team_names.first]
-      #   visitor_team = team_by_names[event_team_names.second]
-      #   matches << Match.new(local_team:, visitor_team:, day:)
-      # end
+      end
     end
 
     [calendar, matches]
@@ -113,9 +115,10 @@ class FfhbService
 
     pool_details['equipe_options'].map do |team|
       name = team['libelle']
+      equipe_id = team['ext_equipeId']
       team =
-        if team_links[name].present?
-          Team.find(team_links[name])
+        if team_links[equipe_id].present?
+          Team.find(team_links[equipe_id])
         else
           Team.new name:, club: Club.new(name:)
         end

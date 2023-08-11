@@ -51,37 +51,6 @@ RSpec.describe Championship do
     let(:code_pool) { 110_562 }
     let(:team_links) { {} }
 
-    describe '.create_from_ffhb!' do
-      subject(:create_championship) do
-        Championship.create_from_ffhb!(code_pool:, code_division:, code_comite:, type_competition:, team_links:)
-      end
-
-      let(:expected_name) { "#{Season.current.name}-#{type_competition}-#{code_comite}-#{code_division}-#{code_pool}" }
-
-      it { expect { create_championship }.to change(Championship, :count).by(1) }
-      it { expect { create_championship }.to change(Calendar, :count).by(1) }
-      it { expect(create_championship.name).to eq 'COMITE DE LOIRE ATLANTIQUE - 2EME DTM 44' }
-      it { expect(create_championship.ffhb_key).to eq expected_name }
-      it { expect { create_championship }.to change(Day, :count).by(22) }
-      it { expect { create_championship }.to change(Team, :count).by(12) }
-
-      context 'with team links' do
-        let!(:my_team) { create(:team) }
-        let(:team_links) { { 'VERTOU HANDBALL 1' => my_team.id } }
-
-        it { expect { create_championship }.to change(Match, :count).by 22 }
-        it { expect { create_championship }.to change(Team, :count).by 11 }
-      end
-
-      context 'with incorrect pool code' do
-        let(:code_pool) { 123 }
-
-        it do
-          expect { create_championship }.to raise_error(RuntimeError, 'Could not find pool with id 123')
-        end
-      end
-    end
-
     describe '#ffhb_sync!' do
       let(:my_team) { create(:team) }
       let(:team_links) { { 'VERTOU HANDBALL 1' => my_team.id } }

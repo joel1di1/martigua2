@@ -21,39 +21,60 @@ class FfhbService
     Oj.load(attributes_content_decoded)
   end
 
+  def save_results_in_file(filename, json_content)
+    # File.open(Rails.root.join('spec/fixtures/ffhb/2023', filename), 'w') do |f|
+    #   f.write(json_content.to_json)
+    # end
+  end
+
   def fetch_departemental_details
-    attributes = fetch_smartfire_attributes(
+    attrs = fetch_smartfire_attributes(
       'https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/',
       "//smartfire-component[@name='competitions---competition-main-menu']")
+
+    save_results_in_file("fetch_departemental_details.json", attrs)
+    attrs
   end
 
   def fetch_comite_details(dep_number)
     comite_hash = list_comites_by_id[dep_number]
-    fetch_smartfire_attributes(
+    attrs = fetch_smartfire_attributes(
       "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/o-#{comite_hash['libelle'].parameterize}-#{comite_hash['ext_structureId']}/",
       "//smartfire-component[@name='competitions---competition-main-menu']"
       )
+
+    save_results_in_file("fetch_comite_details_#{dep_number}.json", attrs)
+    attrs
   end
 
   def fetch_competition_details(competition_key)
-    fetch_smartfire_attributes(
+    attrs = fetch_smartfire_attributes(
       "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/#{competition_key}/",
       "//smartfire-component[@name='competitions---poule-selector']"
     )
+
+    save_results_in_file("fetch_competition_details_#{competition_key}.json", attrs)
+    attrs
   end
 
   def fetch_pool_details(competition_key, code_pool)
-    fetch_smartfire_attributes(
+    attrs = fetch_smartfire_attributes(
       "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/#{competition_key}/poule-#{code_pool}/",
       "//smartfire-component[@name='competitions---poule-selector']"
     )
+
+    save_results_in_file("fetch_pool_details_#{competition_key}_#{code_pool}.json", attrs)
+    attrs
   end
 
   def fetch_journee_details(competition_key, code_pool, journee_number)
-    fetch_smartfire_attributes(
+    attrs = fetch_smartfire_attributes(
       "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/#{competition_key}/poule-#{code_pool}/journee-#{journee_number}/",
       "//smartfire-component[@name='competitions---rencontre-list']"
     )
+
+    # save_results_in_file("fetch_journee_details_#{competition_key}_#{code_pool}_#{journee_number}.json", attrs)
+    attrs
   end
 
   def list_teams_for_pool(competition_key, code_pool)

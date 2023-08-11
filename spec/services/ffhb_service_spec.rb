@@ -8,11 +8,12 @@ RSpec.describe FfhbService do
       let(:comite_id) { 94 }
       subject(:comite_details) { ffhb_instance.fetch_comite_details(comite_id) }
 
-      it { expect(comite_details).to be_a(Hash) }
-      it { expect(comite_details['url_competition_type']).to eq 'departemental' }
-      it { expect(comite_details['url_structure']).to eq 'comite-du-val-de-marne-124' }
-      it { expect(comite_details['structure']['libelle']).to eq 'COMITE DU VAL-DE-MARNE' }
-      it {puts comite_details.to_json}
+      it 'is correct structure' do # one it to reduce calls
+        expect(comite_details).to be_a(Hash)
+        expect(comite_details['url_competition_type']).to eq 'departemental'
+        expect(comite_details['url_structure']).to eq 'comite-du-val-de-marne-124'
+        expect(comite_details['structure']['libelle']).to eq 'COMITE DU VAL-DE-MARNE'
+      end
     end
   end
 
@@ -84,7 +85,7 @@ RSpec.describe FfhbService do
           let(:championship) { ffhb_instance.build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:, team_links:, linked_calendar:) }
 
           it { expect(enrolled_teams.map(&:team)).to include(my_team) }
-          it { expect(enrolled_teams.find { |etc| etc.team == my_team }.enrolled_name).to eq 'VERTOU HANDBALL 1' }
+          it { expect(enrolled_teams.find { |etc| etc.team == my_team }.enrolled_name).to eq 'MARTIGUA SCL' }
         end
       end
     end

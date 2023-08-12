@@ -26,7 +26,7 @@ describe TrainingsController do
           request
         end
 
-        it { expect(assigns[:trainings].map(&:id)).to contain_exactly(*([training1, training2].map(&:id))) }
+        it { expect(assigns[:trainings].map(&:id)).to match_array([training1, training2].map(&:id)) }
       end
     end
   end

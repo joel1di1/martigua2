@@ -10,7 +10,7 @@ describe 'channels index' do
     signin_user user, close_notice: true
   end
 
-  context 'on small screen' do
+  context 'with small screen' do
     it 'shows channels list' do
       within('#links') { click_on 'Chats' }
 

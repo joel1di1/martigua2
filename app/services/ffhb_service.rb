@@ -115,8 +115,6 @@ class FfhbService
       journee_details['rencontres'].each do |match|
         next unless ffhb_team_ids.intersect?([match['equipe1Id'], match['equipe2Id']])
 
-        match_details = fetch_match_details(pool_details['url_competition'], match['extPouleId'], match['ext_rencontreId'])
-
         local_team = enrolled_team_championships_by_ffhb_team_id[match['equipe1Id']].team
         visitor_team = enrolled_team_championships_by_ffhb_team_id[match['equipe2Id']].team
         ffhb_key = "#{pool_details['url_competition']} #{pool_details['ext_poule_id']} #{match['ext_rencontreId']}"
@@ -152,7 +150,7 @@ class FfhbService
     end
   end
 
-  def build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:, team_links:, linked_calendar: nil)
+  def build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:, team_links:, linked_calendar: nil) # rubocop:disable Metrics/ParameterLists Lint/UnusedMethodArgument
     comite_details = fetch_comite_details(code_comite.to_i)
     pool_details = fetch_pool_details(code_competition, code_pool)
 

@@ -28,11 +28,11 @@ class UserMailer < ApplicationMailer
   end
 
   # TODO: factorize method missing with ApplicationRecord
-  def self.method_missing(method, *args, &block)
+  def self.method_missing(method, *, &block)
     if method.to_s.start_with?('async_')
       raise 'async jobs with block are not supported' if block.present?
 
-      ActiveRecordAsyncJob.perform_async(name, nil, method.to_s.sub('async_', ''), *args)
+      ActiveRecordAsyncJob.perform_async(name, nil, method.to_s.sub('async_', ''), *)
     else
       super
     end

@@ -98,7 +98,7 @@ class Match < ApplicationRecord
   end
 
   def update_shared_calendar
-    return if Rails.env.test? || start_datetime.blank?
+    nil if Rails.env.test? || start_datetime.blank?
     # event = CalendarService.instance.create_or_update_event(
     #   shared_calendar_id,
     #   "#{local_team.try(:name)} - #{visitor_team.try(:name)}",

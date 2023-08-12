@@ -4,11 +4,11 @@ class ApplicationRecord < ActiveRecord::Base
   primary_abstract_class
 
   # respond to methods starting with 'async_' by sending them to a background job
-  def method_missing(method, *args, &block)
+  def method_missing(method, *, &block)
     if method.to_s.start_with?('async_')
       raise 'async jobs with block are not supported' if block.present?
 
-      ActiveRecordAsyncJob.perform_async(self.class.name, id, method.to_s.sub('async_', ''), *args)
+      ActiveRecordAsyncJob.perform_async(self.class.name, id, method.to_s.sub('async_', ''), *)
     else
       super
     end
@@ -18,11 +18,11 @@ class ApplicationRecord < ActiveRecord::Base
     method.to_s.start_with?('async_') || super
   end
 
-  def self.method_missing(method, *args, &block)
+  def self.method_missing(method, *, &block)
     if method.to_s.start_with?('async_')
       raise 'async jobs with block are not supported' if block.present?
 
-      ActiveRecordAsyncJob.perform_async(name, nil, method.to_s.sub('async_', ''), *args)
+      ActiveRecordAsyncJob.perform_async(name, nil, method.to_s.sub('async_', ''), *)
     else
       super
     end

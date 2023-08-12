@@ -50,12 +50,12 @@ class User < ApplicationRecord
     "#{participation.season} - #{participation.role} of #{participation.section.club.name} - #{participation.section.name}"
   end
 
-  def present_for!(training_or_array, *other_trainings)
-    _set_presence_for!(true, training_or_array, *other_trainings)
+  def present_for!(training_or_array, *)
+    _set_presence_for!(true, training_or_array, *)
   end
 
-  def not_present_for!(training_or_array, *other_trainings)
-    _set_presence_for!(false, training_or_array, *other_trainings)
+  def not_present_for!(training_or_array, *)
+    _set_presence_for!(false, training_or_array, *)
   end
 
   def _set_presence_for!(present, training_or_array, *other_trainings)
@@ -88,7 +88,7 @@ class User < ApplicationRecord
   end
 
   def admin_of?(club)
-    return if club.nil?
+    return false if club.nil?
 
     club_admin_roles.exists?(club:)
   end
@@ -112,9 +112,9 @@ class User < ApplicationRecord
   def next_weekend_matches
     next_matches = Match.of_next_weekend.includes(local_team: :sections, visitor_team: :sections)
     next_matches.reject do |match|
-      (match.local_team.sections + match.visitor_team.sections).flatten.select do |s|
+      (match.local_team.sections + match.visitor_team.sections).flatten.none? do |s|
         player_of?(s)
-      end.empty?
+      end
     end
   end
 
@@ -132,7 +132,7 @@ class User < ApplicationRecord
                         else
                           training_presences.where(training:).first
                         end
-    return unless training_presence
+    return false unless training_presence
 
     training_presence.presence_validated? || (training_presence.is_present? && training_presence.presence_validated.nil?)
   end

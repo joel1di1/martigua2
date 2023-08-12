@@ -63,9 +63,7 @@ RSpec.describe Championship do
       it 'updates matches with start_datetime, location and score' do
         expect(championship.matches.size).to eq(22)
 
-        championship.matches.each do |match|
-          expect(match).to receive(:ffhb_sync!)
-        end
+        expect(championship.matches).to all(receive(:ffhb_sync!))
 
         championship.ffhb_sync!
       end

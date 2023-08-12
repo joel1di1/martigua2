@@ -67,7 +67,7 @@ describe 'create championship' do
 
       expect { click_on 'Créer la compétition et lier les équipes' }.to change(Championship, :count)
 
-      championship = Championship.find_by(ffhb_key: "2023-2024-19 departemental 16-ans-maculine-2-eme-division-territoriale-23229 41894 128335")
+      championship = Championship.find_by(ffhb_key: '2023-2024-19 departemental 16-ans-maculine-2-eme-division-territoriale-23229 41894 128335')
       expect(championship.teams.size).to eq 12
     end
   end

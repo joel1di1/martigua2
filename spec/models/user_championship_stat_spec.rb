@@ -30,7 +30,9 @@ RSpec.describe UserChampionshipStat do
       end
 
       it 'burns the player if he has played enough matches' do
-        expect { user_championship_stat1.update(match_played: 6) }.to(change { championship2.burned?(user) }.from(false).to(true))
+        expect { user_championship_stat1.update(match_played: 6) }.to(change do
+                                                                        championship2.burned?(user)
+                                                                      end.from(false).to(true))
       end
 
       it 'does not burn the player for higger teams' do
@@ -46,7 +48,9 @@ RSpec.describe UserChampionshipStat do
       end
 
       it 'burns the player if he has played enough matches' do
-        expect { user_championship_stat1.update(match_played: 6) }.to(change { championship2.burned?(user) }.from(false).to(true))
+        expect { user_championship_stat1.update(match_played: 6) }.to(change do
+                                                                        championship2.burned?(user)
+                                                                      end.from(false).to(true))
       end
 
       it 'does not burn the player for higger teams' do

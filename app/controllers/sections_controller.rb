@@ -44,7 +44,8 @@ class SectionsController < ApplicationController
       UserChampionshipStat.where(player_id: ffhb_key).update_all(user_id: user.id) # rubocop:disable Rails/SkipsModelValidations
     end
 
-    redirect_to edit_club_section_path(current_section.club, current_section), notice: 'Les associations ont été mises à jour'
+    redirect_to edit_club_section_path(current_section.club, current_section),
+                notice: 'Les associations ont été mises à jour'
   end
 
   def create

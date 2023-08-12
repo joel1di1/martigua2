@@ -12,7 +12,8 @@ class BurnsController < ApplicationController
 
     @championship.burn!(@user)
 
-    redirect_with fallback: section_championship_path(current_section, @championship), notice: "#{@user.full_name} brûlé !"
+    redirect_with fallback: section_championship_path(current_section, @championship),
+                  notice: "#{@user.full_name} brûlé !"
   end
 
   def destroy
@@ -21,7 +22,8 @@ class BurnsController < ApplicationController
 
     burn.delete
 
-    redirect_with fallback: section_championship_path(current_section, @championship), notice: "#{user.full_name} rétabli"
+    redirect_with fallback: section_championship_path(current_section, @championship),
+                  notice: "#{user.full_name} rétabli"
   end
 
   protected

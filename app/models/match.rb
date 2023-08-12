@@ -116,7 +116,9 @@ class Match < ApplicationRecord
 
   def ffhb_sync!
     match_details = FfhbService.instance.fetch_match_details(*ffhb_key.split)
-    self.start_datetime = Time.zone.parse(match_details['rencontre']['date']) if match_details['rencontre']['date'].present?
+    if match_details['rencontre']['date'].present?
+      self.start_datetime = Time.zone.parse(match_details['rencontre']['date'])
+    end
 
     self.local_score = match_details['rencontre']['equipe1Score']&.to_i
     self.visitor_score = match_details['rencontre']['equipe2Score']&.to_i

@@ -17,9 +17,9 @@ class MatchesController < ApplicationController
     @match = Match.new match_params
     @championship = @match.championship || Championship.new
 
-    if params[:adversary_team_id].present? && @championship.persisted?
-      @championship.enroll_team! Team.find_by(id: params[:adversary_team_id])
-    end
+    return unless params[:adversary_team_id].present? && @championship.persisted?
+
+    @championship.enroll_team! Team.find_by(id: params[:adversary_team_id])
   end
 
   def edit

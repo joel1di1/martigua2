@@ -92,7 +92,9 @@ class FfhbService
 
   def build_specific_calendar(pool_details, name, team_links, enrolled_team_championships, linked_calendar = nil)
     # list teams that interest us
-    ffhb_team_ids = enrolled_team_championships.select { |etc| team_links.values.map(&:to_i).include?(etc.team_id) }.map(&:ffhb_team_id)
+    ffhb_team_ids = enrolled_team_championships.select do |etc|
+      team_links.values.map(&:to_i).include?(etc.team_id)
+    end.map(&:ffhb_team_id)
 
     enrolled_team_championships_by_ffhb_team_id = enrolled_team_championships.index_by(&:ffhb_team_id)
 
@@ -110,7 +112,8 @@ class FfhbService
 
       day = find_or_create_day(calendar, linked_calendar, day_name, period_start_date, period_end_date)
 
-      journee_details = fetch_journee_details(pool_details['url_competition'], pool_details['ext_poule_id'], journee['journee_numero'])
+      journee_details = fetch_journee_details(pool_details['url_competition'], pool_details['ext_poule_id'],
+                                              journee['journee_numero'])
 
       journee_details['rencontres'].each do |match|
         next unless ffhb_team_ids.intersect?([match['equipe1Id'], match['equipe2Id']])
@@ -155,14 +158,17 @@ class FfhbService
     pool_details = fetch_pool_details(code_competition, code_pool)
 
     comite_name = comite_details['structure']['libelle']
-    competition_name = comite_details['competitions'].find { |c| c['ext_competitionId'] == code_competition[/(\d+)$/] }['libelle']
+    competition_name = comite_details['competitions'].find do |c|
+                         c['ext_competitionId'] == code_competition[/(\d+)$/]
+                       end['libelle']
     name = "#{comite_name} - #{competition_name}"
 
     saison = "#{comite_details['saison']['libelle'].gsub(/\s+/, '')}-#{comite_details['saison']['ext_saisonId']}"
     ffhb_key = "#{saison} #{comite_details['url_competition_type']} #{pool_details['url_competition']} #{pool_details['selected_poule']['phaseId']} #{pool_details['selected_poule']['ext_pouleId']}"
 
     enrolled_team_championships = build_teams(pool_details, team_links)
-    calendar, matches = build_specific_calendar(pool_details, name, team_links, enrolled_team_championships, linked_calendar)
+    calendar, matches = build_specific_calendar(pool_details, name, team_links, enrolled_team_championships,
+                                                linked_calendar)
 
     Championship.new(name:, calendar:, ffhb_key:, enrolled_team_championships:, matches:)
   end

@@ -58,7 +58,8 @@ RSpec.describe FfhbService do
 
     describe '#build_championship' do
       subject(:championship) do
-        ffhb_instance.build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:, team_links:, linked_calendar:)
+        ffhb_instance.build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:,
+                                         team_links:, linked_calendar:)
       end
 
       it { expect { championship }.not_to change(Championship, :count) }
@@ -67,7 +68,10 @@ RSpec.describe FfhbService do
       it { expect { championship }.not_to change(Team, :count) }
 
       it { expect(championship.name).to eq 'COMITE DU VAL-DE-MARNE - +16 ANS MACULINE 2 EME DIVISION TERRITORIALE' }
-      it { expect(championship.ffhb_key).to eq '2023-2024-19 departemental 16-ans-maculine-2-eme-division-territoriale-23229 41894 128335' }
+
+      it {
+        expect(championship.ffhb_key).to eq '2023-2024-19 departemental 16-ans-maculine-2-eme-division-territoriale-23229 41894 128335'
+      }
 
       it { expect(championship.enrolled_team_championships.size).to eq(12) }
       it { expect(championship.calendar.days.size).to eq(22) }
@@ -79,13 +83,19 @@ RSpec.describe FfhbService do
         describe 'teams' do
           subject(:enrolled_teams) { championship.enrolled_team_championships }
 
-          let(:championship) { ffhb_instance.build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:, team_links:, linked_calendar:) }
+          let(:championship) do
+            ffhb_instance.build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:,
+                                             team_links:, linked_calendar:)
+          end
 
           it { expect(enrolled_teams.map(&:team)).to include(my_team) }
           it { expect(enrolled_teams.find { |etc| etc.team == my_team }.enrolled_name).to eq 'MARTIGUA SCL' }
 
           it { expect(championship.matches.size).to eq(22) }
-          it { expect(championship.matches.first.ffhb_key).to eq('16-ans-maculine-2-eme-division-territoriale-23229 128335 1891863') }
+
+          it {
+            expect(championship.matches.first.ffhb_key).to eq('16-ans-maculine-2-eme-division-territoriale-23229 128335 1891863')
+          }
         end
       end
     end

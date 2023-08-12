@@ -6,7 +6,8 @@ class TrainingsController < ApplicationController
 
   def index
     Season.current.start_date
-    section_trainings = current_section.trainings.eager_load(:location, :groups).where('start_datetime > ?', Season.current.start_date)
+    section_trainings = current_section.trainings.eager_load(:location, :groups).where('start_datetime > ?',
+                                                                                       Season.current.start_date)
 
     if params[:page].blank?
       training_before_beginning_of_week =

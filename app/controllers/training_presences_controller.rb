@@ -6,7 +6,7 @@ class TrainingPresencesController < ApplicationController
     @training = Training.find params[:training_id]
     @color = :green if @player.present_for?(@training)
     @color ||= :red if @player.set_present_for?(@training)
-    @color ||= :yellow
+    @show ||= :yellow
   end
 
   def create

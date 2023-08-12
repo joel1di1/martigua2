@@ -102,7 +102,10 @@ class Training < ApplicationRecord
   def self.send_presence_mail_for_next_week(date = Time.zone.now)
     User.active_this_season.each do |user|
       next_week_trainings = user.next_week_trainings(date:)
-      UserMailer.send_training_invitation(next_week_trainings.to_a, user).deliver_later unless next_week_trainings.empty?
+      unless next_week_trainings.empty?
+        UserMailer.send_training_invitation(next_week_trainings.to_a,
+                                            user).deliver_later
+      end
     end
   end
 

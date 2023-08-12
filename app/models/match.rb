@@ -110,24 +110,34 @@ class Match < ApplicationRecord
     # update! shared_calendar_id: event.id, shared_calendar_url: event.html_link
   end
 
-  def update_with_ffhb_event!(event)
-    if event['date']['date'].present?
-      match_date = Date.parse(event['date']['date'])
-      self.start_datetime = Time.zone.local(
-        match_date.year, match_date.month, match_date.day, event['date']['hour'], event['date']['minute']
-      )
-    end
-
-    event_team_scores = event['teams'].pluck('score')
-    self.local_score = event_team_scores.first || local_score
-    self.visitor_score = event_team_scores.second || visitor_score
-
-    self.location ||= Location.find_or_create_with_ffhb_location(event['location'])
-
-    save!
-  end
-
   def meeting_datetime
     super || start_datetime&.send(:-, 1.hour)
+  end
+
+  def ffhb_sync!
+    match_details = FfhbService.instance.fetch_match_details(*ffhb_key.split)
+    self.start_datetime = Time.zone.parse(match_details['rencontre']['date']) if match_details['rencontre']['date'].present?
+
+    self.local_score = match_details['rencontre']['equipe1Score']&.to_i
+    self.visitor_score = match_details['rencontre']['equipe2Score']&.to_i
+
+    ffhb_id = match_details['rencontre']['equipementId']
+    if ffhb_id.present?
+      location = Location.find_by(ffhb_id:)
+      if location.blank?
+        rencontre_details = FfhbService.instance.fetch_rencontre_salle(*ffhb_key.split)
+        name = rencontre_details['equipement']['libelle']
+        address = <<~TEXT.chomp
+          #{rencontre_details['equipement']['libelle']}
+          #{rencontre_details['equipement']['rue']}
+          #{rencontre_details['equipement']['codePostal']} #{rencontre_details['equipement']['ville']}
+        TEXT
+
+        location = Location.create!(name:, address:, ffhb_id:)
+      end
+      self.location = location
+    end
+
+    save!
   end
 end

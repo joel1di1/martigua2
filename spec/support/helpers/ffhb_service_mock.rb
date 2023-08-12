@@ -24,6 +24,18 @@ module Ffhb
         filename = "fetch_journee_details_#{competition_url}_#{pool_code}_#{journee_number}.json"
         load_json_content(filename)
       end
+
+      # mock fetch_match_details
+      allow(FfhbService.instance).to receive(:fetch_match_details) do |competition_url, pool_code, rencontre_id|
+        filename = "fetch_match_details_#{competition_url}_#{pool_code}_#{rencontre_id}.json"
+        load_json_content(filename)
+      end
+
+      # mock fetch_rencontre_salle
+      allow(FfhbService.instance).to receive(:fetch_rencontre_salle) do |competition_url, pool_code, rencontre_id|
+        filename = "fetch_rencontre_salle_#{competition_url}_#{pool_code}_#{rencontre_id}.json"
+        load_json_content(filename)
+      end
     end
   end
 end

@@ -4,11 +4,10 @@
 describe 'channels index' do
   let(:section) { create(:section) }
   let(:user) { create(:user, with_section: section) }
-  let!(:random_chan) { create(:channel, section: section) }
+  let!(:random_chan) { create(:channel, section:) }
 
   before do
     signin_user user, close_notice: true
-
   end
 
   context 'on small screen' do

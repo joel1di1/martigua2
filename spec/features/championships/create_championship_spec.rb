@@ -51,20 +51,23 @@ describe 'create championship' do
       select('Départements', from: 'type_competition')
       click_on 'Valider'
 
-      select('C44 - COMITE DE LOIRE ATLANTIQUE', from: 'code_comite')
+      select('94 - COMITE DU VAL-DE-MARNE', from: 'code_comite')
       click_on 'Valider'
 
-      select('2EME DTM 44', from: 'code_division')
+      select('+16 ANS MACULINE 2 EME DIVISION TERRITORIALE', from: 'code_competition')
       click_on 'Valider'
 
-      select('2EME DTM - 44', from: 'code_pool')
+      select('+16 ANS MACULINE 2 EME DIVISION TERRITORIALE', from: 'phase_id')
       click_on 'Valider'
 
-      select(team.name, from: 'team_links[VERTOU HANDBALL 1]')
+      select('UNIQUE', from: 'code_pool')
+      click_on 'Valider'
+
+      select(team.name, from: 'team_links[1589702]')
 
       expect { click_on 'Créer la compétition et lier les équipes' }.to change(Championship, :count)
 
-      championship = Championship.find_by(ffhb_key: "#{Season.current}-D-C44-20570-110562")
+      championship = Championship.find_by(ffhb_key: "2023-2024-19 departemental 16-ans-maculine-2-eme-division-territoriale-23229 41894 128335")
       expect(championship.teams.size).to eq 12
     end
   end

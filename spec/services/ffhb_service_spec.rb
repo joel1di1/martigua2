@@ -5,8 +5,9 @@ RSpec.describe FfhbService do
 
   describe 'real calls to ffhb' do
     describe '#fetch_comite_details' do
-      let(:comite_id) { 94 }
       subject(:comite_details) { ffhb_instance.fetch_comite_details(comite_id) }
+
+      let(:comite_id) { 94 }
 
       it 'is correct structure' do # one it to reduce calls
         expect(comite_details).to be_a(Hash)
@@ -20,15 +21,21 @@ RSpec.describe FfhbService do
   describe 'mocked' do
     before { mock_ffhb }
 
+    let(:type_competition) { 'D' }
+    let(:code_comite) { 94 }
+    let(:code_competition) { '16-ans-maculine-2-eme-division-territoriale-23229' }
+    let(:phase_id) { '41894' }
+    let(:code_pool) { '128335' }
+    let(:team_links) { {} }
+    let(:linked_calendar) { nil }
+
     describe '#build_specific_calendar' do
       subject(:calendar) do
         ffhb_instance.build_specific_calendar(
-          ffhb_instance.fetch_pool_details("16-ans-maculine-2-eme-division-territoriale-23229", "128335"),
+          ffhb_instance.fetch_pool_details(code_competition, code_pool),
           'test name', {}, [], linked_calendar
         ).first
       end
-
-      let(:linked_calendar) { nil }
 
       it { expect(calendar).to be_a(Calendar) }
       it { expect { calendar }.not_to change(Day, :count) }
@@ -54,14 +61,6 @@ RSpec.describe FfhbService do
         ffhb_instance.build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:, team_links:, linked_calendar:)
       end
 
-      let(:type_competition) { 'D' }
-      let(:code_comite) { 94 }
-      let(:code_competition) { "16-ans-maculine-2-eme-division-territoriale-23229" }
-      let(:phase_id) { "41894" }
-      let(:code_pool) { "128335" }
-      let(:team_links) { {} }
-      let(:linked_calendar) { nil }
-
       it { expect { championship }.not_to change(Championship, :count) }
       it { expect { championship }.not_to change(Calendar, :count) }
       it { expect { championship }.not_to change(Day, :count) }
@@ -75,7 +74,7 @@ RSpec.describe FfhbService do
 
       context 'with team links' do
         let(:my_team) { create(:team) }
-        let(:team_links) { { "1589702" => my_team.id.to_s } }
+        let(:team_links) { { '1589702' => my_team.id.to_s } }
 
         describe 'teams' do
           subject(:enrolled_teams) { championship.enrolled_team_championships }
@@ -84,6 +83,9 @@ RSpec.describe FfhbService do
 
           it { expect(enrolled_teams.map(&:team)).to include(my_team) }
           it { expect(enrolled_teams.find { |etc| etc.team == my_team }.enrolled_name).to eq 'MARTIGUA SCL' }
+
+          it { expect(championship.matches.size).to eq(22) }
+          it { expect(championship.matches.first.ffhb_key).to eq('16-ans-maculine-2-eme-division-territoriale-23229 128335 1891863') }
         end
       end
     end

@@ -12,5 +12,4 @@ class VisitorsController < ApplicationController
   def letsencrypt
     render plain: '4k3hP8fSRgCKf0inS8qYK9LYs8sU10ZMfSiYs8-Mcxg.BTYdv57u7ZQZV2-xtz9RMKzPSPMl8x8_iPbXUnsskWk'
   end
-
 end

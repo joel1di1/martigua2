@@ -1,0 +1,31 @@
+{
+  "ext_saison_id": "19",
+  "url_competition_type": "departemental",
+  "url_structure": "",
+  "url_competition": "16-ans-maculine-2-eme-division-territoriale-23229",
+  "ext_poule_id": "128335",
+  "numero_journee": "",
+  "ext_equipe_id": "",
+  "ext_rencontre_id": "1891863",
+  "rencontre": {
+    "id": "1400947",
+    "ext_rencontreId": "1891863",
+    "pouleId": "80210",
+    "equipe1Id": "470366",
+    "equipe2Id": "470373",
+    "equipe1Score": "25",
+    "equipe2Score": 30,
+    "equipe1ScoreMT": null,
+    "equipe2ScoreMT": null,
+    "date": "2023-09-16 18:30:00.000",
+    "fdmCode": "TAETRVU",
+    "equipementId": "1395",
+    "arbitre1": null,
+    "arbitre1Id": null,
+    "arbitre2": null,
+    "arbitre2Id": null,
+    "dateDernierUpdateEnfants": "2023-05-31 19:00:00.000",
+    "journeeNumero": "1"
+  },
+  "rematchs": []
+}

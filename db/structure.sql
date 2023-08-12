@@ -612,7 +612,8 @@ CREATE TABLE public.enrolled_team_championships (
     championship_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    enrolled_name character varying
+    enrolled_name character varying,
+    ffhb_team_id character varying
 );
 
 
@@ -701,7 +702,8 @@ CREATE TABLE public.locations (
     name character varying(255) NOT NULL,
     address text,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    ffhb_id character varying
 );
 
 
@@ -844,7 +846,8 @@ CREATE TABLE public.matches (
     updated_at timestamp without time zone,
     day_id integer,
     shared_calendar_id character varying,
-    shared_calendar_url character varying
+    shared_calendar_url character varying,
+    ffhb_key character varying
 );
 
 
@@ -3048,6 +3051,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230501224339'),
 ('20230505130520'),
 ('20230510192951'),
-('20230619061517');
+('20230619061517'),
+('20230811120426'),
+('20230811135453'),
+('20230812101849');
 
 

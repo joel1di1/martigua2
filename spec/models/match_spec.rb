@@ -112,4 +112,27 @@ RSpec.describe Match do
       expect(match.reload).not_to be_burned(user)
     end
   end
+
+  describe '#ffhb_sync!' do
+    let(:match) do
+      create(:match,
+             ffhb_key: '16-ans-maculine-2-eme-division-territoriale-23229 128335 1891863',
+             start_datetime: nil,
+             meeting_datetime: nil)
+    end
+
+    before do
+      mock_ffhb
+      match.ffhb_sync!
+      match.reload
+    end
+
+    it { expect(match.start_datetime).to eq Time.zone.local(2023, 9, 16, 18, 30) }
+    it { expect(match.meeting_datetime).to eq Time.zone.local(2023, 9, 16, 17, 30) }
+    it { expect(match.local_score).to eq 25 }
+    it { expect(match.visitor_score).to eq 30 }
+    it { expect(match.location.address).to eq("gymnase abel-rospide (ex jean-mace)\nCHEMIN DES BOUTAREINES\n94350 VILLIERS SUR MARNE") }
+    it { expect(match.location.name).to eq('gymnase abel-rospide (ex jean-mace)') }
+    it { expect(match.location.ffhb_id).to eq '1395' }
+  end
 end

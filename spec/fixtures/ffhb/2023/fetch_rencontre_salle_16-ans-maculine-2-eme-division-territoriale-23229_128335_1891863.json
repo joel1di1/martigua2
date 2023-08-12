@@ -1,0 +1,13 @@
+{
+  "equipement": {
+    "id": "1395",
+    "ext_equipementId": "1574",
+    "libelle": "gymnase abel-rospide (ex jean-mace)",
+    "rue": "CHEMIN DES BOUTAREINES",
+    "codePostal": "94350",
+    "ville": "VILLIERS SUR MARNE",
+    "latitude": "48.82402",
+    "longitude": "2.52972"
+  },
+  "mapsApiKey": "AIzaSyDH9_v1WqWl5HA7BR_0K_qtxPuzF435Nzk"
+}

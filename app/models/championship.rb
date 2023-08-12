@@ -29,38 +29,7 @@ class Championship < ApplicationRecord
   def ffhb_sync!
     return if ffhb_key.blank?
 
-    enrolled_team_names = enrolled_team_championships.pluck(:enrolled_name)
-
-    pool_as_json = FfhbService.instance.get_pool_as_json(ffhb_key[/[^-]+$/])
-    pool_as_json['dates'].each do |_index, date|
-      date['events'].each do |event|
-        event_team_names = event['teams'].pluck('name')
-        next if event_team_names.intersection(enrolled_team_names).blank?
-
-        match = find_match_by_team_names(event_team_names)
-
-        next if match.blank?
-
-        match.update_with_ffhb_event!(event)
-      end
-    end
-
-    pool_as_json['players'].each do |ffhb_player|
-      user_stats = UserChampionshipStat.find_or_create_by(championship: self, player_id: ffhb_player['playerId'])
-
-      statistics = ffhb_player['statistics'].to_h
-      user_stats.match_played = statistics['Mp']
-      user_stats.goals = statistics['Goal']
-      user_stats.saves = statistics['Saves']
-      user_stats.goal_average = statistics['Avg']
-      user_stats.save_average = statistics['Avg Stops']
-      user_stats.player_id = ffhb_player['playerId']
-      user_stats.first_name = ffhb_player['firstName']
-      user_stats.last_name = ffhb_player['lastName']
-      user_stats.save!
-    end
-
-    self
+    matches.each(&:ffhb_sync!)
   end
 
   def init

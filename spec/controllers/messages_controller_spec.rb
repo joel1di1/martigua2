@@ -15,11 +15,11 @@ describe MessagesController do
     let!(:message) { create(:message, channel: section.general_channel) }
 
     it 'mark message as read' do
-      expect(user.read?(message)).to be_falsey
+      expect(user).not_to be_read(message)
 
       post :mark_as_read, params: { section_id: section, message_ids: [message.id] }
 
-      expect(user.read?(message)).to be_truthy
+      expect(user).to be_read(message)
     end
   end
 end

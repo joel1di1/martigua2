@@ -30,20 +30,20 @@ class ChampionshipsController < ApplicationController
 
     @competitions_options = FfhbService.instance.list_competitions(params['code_comite'].to_i).map do |competition_hash|
       [competition_hash['libelle'],
-      "#{competition_hash['libelle'].parameterize}-#{competition_hash['ext_competitionId']}"]
+       "#{competition_hash['libelle'].parameterize}-#{competition_hash['ext_competitionId']}"]
     end.sort_by(&:first)
 
     return if params['code_competition'].blank?
 
     @competition_details = FfhbService.instance.fetch_competition_details(params['code_competition'])
 
-    @phases_options = @competition_details['phases'].map{|phase| [phase['libelle'], phase['id']]}
+    @phases_options = @competition_details['phases'].map { |phase| [phase['libelle'], phase['id']] }
 
     return if params['phase_id'].blank?
 
-    @pools_options = @competition_details['poules'].
-      select{|poule| poule['phaseId'] == params['phase_id']}.
-      map{|poule| [poule['libelle'], poule['ext_pouleId']]}
+    @pools_options = @competition_details['poules']
+                     .select { |poule| poule['phaseId'] == params['phase_id'] }
+                     .map { |poule| [poule['libelle'], poule['ext_pouleId']] }
 
     return if params['code_pool'].blank?
 

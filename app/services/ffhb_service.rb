@@ -15,66 +15,64 @@ class FfhbService
   def fetch_smartfire_attributes(url, attribute_name)
     response = http_get_with_cache(url)
     doc = Nokogiri::HTML(response)
-    smartfire_component = doc.at_xpath(attribute_name)
+    smartfire_component = doc.at_xpath("//smartfire-component[@name='#{attribute_name}']")
     attributes_content = smartfire_component['attributes']
     attributes_content_decoded = CGI.unescapeHTML(attributes_content)
     Oj.load(attributes_content_decoded)
   end
 
   def save_results_in_file(filename, json_content)
-    # File.open(Rails.root.join('spec/fixtures/ffhb/2023', filename), 'w') do |f|
-    #   f.write(json_content.to_json)
-    # end
+    Rails.root.join('spec/fixtures/ffhb/2023', filename).write(json_content.to_json)
   end
 
   def fetch_departemental_details
-    attrs = fetch_smartfire_attributes(
+    fetch_smartfire_attributes(
       'https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/',
-      "//smartfire-component[@name='competitions---competition-main-menu']")
-
-    save_results_in_file("fetch_departemental_details.json", attrs)
-    attrs
+      'competitions---competition-main-menu'
+    )
   end
 
   def fetch_comite_details(dep_number)
     comite_hash = list_comites_by_id[dep_number]
-    attrs = fetch_smartfire_attributes(
+    fetch_smartfire_attributes(
       "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/o-#{comite_hash['libelle'].parameterize}-#{comite_hash['ext_structureId']}/",
-      "//smartfire-component[@name='competitions---competition-main-menu']"
-      )
-
-    save_results_in_file("fetch_comite_details_#{dep_number}.json", attrs)
-    attrs
+      'competitions---competition-main-menu'
+    )
   end
 
   def fetch_competition_details(competition_key)
-    attrs = fetch_smartfire_attributes(
+    fetch_smartfire_attributes(
       "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/#{competition_key}/",
-      "//smartfire-component[@name='competitions---poule-selector']"
+      'competitions---poule-selector'
     )
-
-    save_results_in_file("fetch_competition_details_#{competition_key}.json", attrs)
-    attrs
   end
 
   def fetch_pool_details(competition_key, code_pool)
-    attrs = fetch_smartfire_attributes(
+    fetch_smartfire_attributes(
       "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/#{competition_key}/poule-#{code_pool}/",
-      "//smartfire-component[@name='competitions---poule-selector']"
+      'competitions---poule-selector'
     )
-
-    save_results_in_file("fetch_pool_details_#{competition_key}_#{code_pool}.json", attrs)
-    attrs
   end
 
   def fetch_journee_details(competition_key, code_pool, journee_number)
-    attrs = fetch_smartfire_attributes(
+    fetch_smartfire_attributes(
       "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/#{competition_key}/poule-#{code_pool}/journee-#{journee_number}/",
-      "//smartfire-component[@name='competitions---rencontre-list']"
+      'competitions---rencontre-list'
     )
+  end
 
-    # save_results_in_file("fetch_journee_details_#{competition_key}_#{code_pool}_#{journee_number}.json", attrs)
-    attrs
+  def fetch_match_details(competition_key, code_pool, rencontre_id)
+    fetch_smartfire_attributes(
+      "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/#{competition_key}/poule-#{code_pool}/rencontre-#{rencontre_id}/",
+      'competitions---rematch'
+    )
+  end
+
+  def fetch_rencontre_salle(competition_key, code_pool, rencontre_id)
+    fetch_smartfire_attributes(
+      "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/#{competition_key}/poule-#{code_pool}/rencontre-#{rencontre_id}/",
+      'competitions---rencontre-salle'
+    )
   end
 
   def list_teams_for_pool(competition_key, code_pool)
@@ -92,12 +90,11 @@ class FfhbService
     attributes['competitions']
   end
 
-  def build_specific_calendar(pool_details, name, team_links, teams, linked_calendar = nil)
-    team_links_invert = team_links.invert.select { |id_str, _team| id_str.present? }.transform_keys(&:to_i)
-    team_link_ids = team_links_invert.keys
-    team_by_names = teams.index_by { |team| team_link_ids.include?(team.id) ? team_links_invert[team.id] : team.name }
+  def build_specific_calendar(pool_details, name, team_links, enrolled_team_championships, linked_calendar = nil)
+    # list teams that interest us
+    ffhb_team_ids = enrolled_team_championships.select { |etc| team_links.values.map(&:to_i).include?(etc.team_id) }.map(&:ffhb_team_id)
 
-    section_team_by_names = team_links.select { |_key, value| value.present? }.transform_values { |v| Team.find(v) }
+    enrolled_team_championships_by_ffhb_team_id = enrolled_team_championships.index_by(&:ffhb_team_id)
 
     calendar = linked_calendar || Calendar.new(season: Season.current, name:)
     matches = []
@@ -114,8 +111,16 @@ class FfhbService
       day = find_or_create_day(calendar, linked_calendar, day_name, period_start_date, period_end_date)
 
       journee_details = fetch_journee_details(pool_details['url_competition'], pool_details['ext_poule_id'], journee['journee_numero'])
-      journee_details['rencontres'].each do |match|
 
+      journee_details['rencontres'].each do |match|
+        next unless ffhb_team_ids.intersect?([match['equipe1Id'], match['equipe2Id']])
+
+        match_details = fetch_match_details(pool_details['url_competition'], match['extPouleId'], match['ext_rencontreId'])
+
+        local_team = enrolled_team_championships_by_ffhb_team_id[match['equipe1Id']].team
+        visitor_team = enrolled_team_championships_by_ffhb_team_id[match['equipe2Id']].team
+        ffhb_key = "#{pool_details['url_competition']} #{pool_details['ext_poule_id']} #{match['ext_rencontreId']}"
+        matches << Match.new(local_team:, visitor_team:, day:, ffhb_key:)
       end
     end
 
@@ -134,16 +139,16 @@ class FfhbService
   def build_teams(pool_details, team_links = {})
     team_links = {} if team_links.blank?
 
-    pool_details['equipe_options'].map do |team|
-      name = team['libelle']
-      equipe_id = team['ext_equipeId']
+    pool_details['equipe_options'].map do |ffhb_team|
+      name = ffhb_team['libelle']
+      ext_equipe_id = ffhb_team['ext_equipeId']
       team =
-        if team_links[equipe_id].present?
-          Team.find(team_links[equipe_id])
+        if team_links[ext_equipe_id].present?
+          Team.find(team_links[ext_equipe_id])
         else
           Team.new name:, club: Club.new(name:)
         end
-      EnrolledTeamChampionship.new(team:, enrolled_name: name)
+      EnrolledTeamChampionship.new(team:, enrolled_name: name, ffhb_team_id: ffhb_team['id'])
     end
   end
 
@@ -152,14 +157,14 @@ class FfhbService
     pool_details = fetch_pool_details(code_competition, code_pool)
 
     comite_name = comite_details['structure']['libelle']
-    competition_name = comite_details['competitions'].find {|c| c['ext_competitionId'] == code_competition[/(\d+)$/]}['libelle']
+    competition_name = comite_details['competitions'].find { |c| c['ext_competitionId'] == code_competition[/(\d+)$/] }['libelle']
     name = "#{comite_name} - #{competition_name}"
 
     saison = "#{comite_details['saison']['libelle'].gsub(/\s+/, '')}-#{comite_details['saison']['ext_saisonId']}"
     ffhb_key = "#{saison} #{comite_details['url_competition_type']} #{pool_details['url_competition']} #{pool_details['selected_poule']['phaseId']} #{pool_details['selected_poule']['ext_pouleId']}"
 
     enrolled_team_championships = build_teams(pool_details, team_links)
-    calendar, matches = build_specific_calendar(pool_details, name, team_links, enrolled_team_championships.map(&:team), linked_calendar)
+    calendar, matches = build_specific_calendar(pool_details, name, team_links, enrolled_team_championships, linked_calendar)
 
     Championship.new(name:, calendar:, ffhb_key:, enrolled_team_championships:, matches:)
   end

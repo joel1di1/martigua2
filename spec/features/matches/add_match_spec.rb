@@ -72,7 +72,6 @@ describe 'Add Match', :devise do
     end
   end
 
-  # rubocop:disable RSpec/MultipleMemoizedHelpers
   describe 'with existing items' do
     let(:championship) { create(:championship, name: championship_name) }
     let(:adversary_team) { create(:team, name: adversary_team_name) }
@@ -122,6 +121,5 @@ describe 'Add Match', :devise do
       expect(match.location.name).to eq(location_name)
     end
   end
-  # rubocop:enable RSpec/MultipleMemoizedHelpers
   # rubocop:enable RSpec/ExampleLength
 end

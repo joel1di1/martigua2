@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Section < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class Section < ApplicationRecord
   belongs_to :club
 
   has_many :team_sections, dependent: :destroy, inverse_of: :section

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -178,4 +177,3 @@ class User < ApplicationRecord
     @membership_cache[{ section:, role:, season: }] ||= participations.where(section:, role:, season:).count.positive?
   end
 end
-# rubocop:enable Metrics/ClassLength

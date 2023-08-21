@@ -2,7 +2,7 @@
 = simple_form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => { :method => :put } do |f|
   = f.hidden_field :invitation_token
 
-  %h2 1. Vérifiez vos informations
+  %h2.text-xl.font-semibold.text-gray-900 1. Complétez vos informations
   = f.input :email
   = f.input :first_name
   = f.input :last_name
@@ -10,9 +10,9 @@
   = f.input :phone_number
 
 
-  %h2 2. Choisissez un mot de passe
+  %h2.text-xl.font-semibold.text-gray-900 2. Choisissez un mot de passe
   = f.input :password
   = f.input :password_confirmation
 
-  %h2 3. Accédez à Martigua
-  = f.submit 'Validez votre inscription'
+  %h2.text-xl.font-semibold.text-gray-900 3. Accédez à Martigua
+  = f.submit 'Validez votre inscription', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;'

@@ -89,8 +89,8 @@ RSpec.describe Section do
         user
       end
 
-      it { expect { invite_user }.to change(SectionUserInvitation, :count).by(1) }
-      it { expect { invite_user }.to change { section.section_user_invitations.reload.count }.by(1) }
+      it { expect { invite_user }.to change(SectionUserInvitation, :count) }
+      it { expect { invite_user }.to(change { section.section_user_invitations.reload.count }) }
 
       context 'invite player' do
         let(:roles) { Participation::PLAYER }
@@ -102,13 +102,20 @@ RSpec.describe Section do
       end
 
       context 'with new user' do
-        it { expect { invite_user }.to change(User, :count).by(1) }
+        it { expect { invite_user }.to change(User, :count) }
+        it { expect { invite_user }.to change(ActionMailer::Base.deliveries, :count) }
       end
 
       context 'with already known user' do
         before { User.create!(user_params) }
 
         it { expect { invite_user }.not_to change(User, :count) }
+
+        it do
+          Sidekiq::Testing.inline! do
+            expect { invite_user }.to change(ActionMailer::Base.deliveries, :count)
+          end
+        end
       end
     end
 

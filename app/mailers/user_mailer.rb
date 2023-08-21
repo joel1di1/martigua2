@@ -27,6 +27,13 @@ class UserMailer < ApplicationMailer
     mail to: @user.email, cc: ccs, subject:
   end
 
+  def send_section_addition_to_existing_user(user, inviter, section)
+    @user = user
+    @inviter = inviter
+    @section = section
+    mail to: user.email, subject: "#{inviter.full_name} t'a ajouté dans la section #{section.name} de #{section.club.name}"
+  end
+
   # TODO: factorize method missing with ApplicationRecord
   def self.method_missing(method, *, &block)
     if method.to_s.start_with?('async_')

@@ -31,7 +31,12 @@ class Section < ApplicationRecord
     invitation = SectionUserInvitation.create!(params_only_with_section)
 
     user = User.find_by(email: invitation.email)
-    user ||= User.invite!(params_only.delete_if { |k, _v| k.to_s == 'roles' }, inviter)
+
+    if user.present?
+      UserMailer.send_section_addition_to_existing_user(user, inviter, self).deliver_later
+    else
+      user = User.invite!(params_only.delete_if { |k, _v| k.to_s == 'roles' }, inviter)
+    end
 
     add_user! user, params[:roles]
     user

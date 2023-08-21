@@ -1,0 +1,13 @@
+= "Bonjour #{@user.first_name},"
+
+%p
+  = @inviter.full_name
+  = "t'a ajouté dans la section #{@section.name} de #{@section.club.name}"
+
+%p
+  Click sur le lien suivant pour voir la section
+
+%p
+  %a{href: section_url(@section)}
+    = section_url(@section)
+

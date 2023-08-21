@@ -31,8 +31,8 @@
 }
 
 .message.unread {
-/*  background-color: rgb(233, 234, 236);*/
-  background-color: red;
+  background-color: rgb(233, 234, 236);
+/*  background-color: red;*/
 }
 
 .messages a:hover {

@@ -23,7 +23,6 @@ Rails.application.routes.draw do
     resources :sections
     resources :section_user_invitations
     resources :selections
-    resources :sms_notifications
     resources :teams
     resources :trainings
     resources :training_invitations
@@ -78,7 +77,6 @@ Rails.application.routes.draw do
       resources :enrolled_team_championships, only: %i[index create destroy]
       resources :burns, only: %i[index create destroy]
     end
-    resources :sms_notifications, only: %i[new create]
     resources :day, only: [] do
       resources :selections, only: [:index]
     end

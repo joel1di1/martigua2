@@ -88,7 +88,12 @@ class Training < ApplicationRecord
   end
 
   def next_duties(limit)
-    present_players.left_outer_joins(:duty_tasks)
+    current_season_start = Season.current.start_date
+    current_season_end = Season.current.end_date
+
+    present_players.joins("LEFT OUTER JOIN duty_tasks \
+        ON duty_tasks.user_id = users.id AND duty_tasks.realised_at \
+        BETWEEN '#{current_season_start}' AND '#{current_season_end}'")
                    .distinct.select('users.*, max(duty_tasks.realised_at) as last_duty_date, ' \
                                     'COALESCE(sum(duty_tasks.weight), -1) as sum_duty_tasks_weight')
                    .group('users.id').order('sum_duty_tasks_weight, last_duty_date ASC, authentication_token ASC')

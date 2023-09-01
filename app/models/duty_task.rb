@@ -16,9 +16,9 @@ class DutyTask < ApplicationRecord
 
   before_validation :set_name_weight_from_key
 
-  scope :for_current_season, -> do
+  scope :for_current_season, lambda {
     where(realised_at: Season.current.start_date..Season.current.end_date)
-  end
+  }
 
   protected
 

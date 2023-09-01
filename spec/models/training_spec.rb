@@ -196,36 +196,41 @@ RSpec.describe Training do
     let(:training) { create(:training, with_section: section, group_ids: [group.id]) }
 
     before do
-      group.add_user!(present_player1)
-      group.add_user!(present_player2)
-      group.add_user!(present_player3)
-      group.add_user!(present_player4)
-      group.add_user!(not_present_player)
+      Timecop.freeze(Time.zone.local(2023, 12, 1, 10, 0, 0)) do  # 1st december 2023, 10:00
+        group.add_user!(present_player1)
+        group.add_user!(present_player2)
+        group.add_user!(present_player3)
+        group.add_user!(present_player4)
+        group.add_user!(not_present_player)
 
-      present_player1.present_for!(training)
-      present_player2.present_for!(training)
-      present_player3.present_for!(training)
-      present_player4.present_for!(training)
-      not_present_player.not_present_for!(training)
+        present_player1.present_for!(training)
+        present_player2.present_for!(training)
+        present_player3.present_for!(training)
+        present_player4.present_for!(training)
+        not_present_player.not_present_for!(training)
 
-      create(:duty_task, user: present_player1, weight: 2, realised_at: 1.day.ago, club:)
-      create(:duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago, club:)
-      create(:duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago, club:)
-      create(:duty_task, user: present_player2, weight: 1, realised_at: 6.months.ago, club:)
-      create(:duty_task, user: present_player3, weight: 2, realised_at: 2.months.ago, club:)
+        create(:duty_task, user: present_player1, weight: 2, realised_at: 1.day.ago, club:)
+        create(:duty_task, user: present_player2, weight: 1, realised_at: 2.months.ago, club:)
+        create(:duty_task, user: present_player2, weight: 1, realised_at: 2.months.ago, club:)
+        create(:duty_task, user: present_player2, weight: 1, realised_at: 2.months.ago, club:)
+        create(:duty_task, user: present_player3, weight: 2, realised_at: 1.month.ago, club:)
+        create(:duty_task, user: present_player4, weight: 200, realised_at: 2.years.ago, club:)
+      end
     end
 
     it 'select present players order by weight then date of last duties' do
-      next_duties = training.next_duties(10)
+      Timecop.freeze(Time.zone.local(2023, 12, 1, 10, 0, 0)) do  # 1st december 2023, 10:00
+        next_duties = training.next_duties(10)
 
-      expect(next_duties).to include(present_player1)
-      expect(next_duties).to include(present_player2)
-      expect(next_duties).to include(present_player3)
-      expect(next_duties).to include(present_player4)
-      expect(next_duties).not_to include(not_present_player)
-      expect(next_duties).not_to include(no_response_player)
+        expect(next_duties).to include(present_player1)
+        expect(next_duties).to include(present_player2)
+        expect(next_duties).to include(present_player3)
+        expect(next_duties).to include(present_player4)
+        expect(next_duties).not_to include(not_present_player)
+        expect(next_duties).not_to include(no_response_player)
 
-      expect(next_duties).to match([present_player4, present_player3, present_player1, present_player2])
+        expect(next_duties).to match([present_player4, present_player3, present_player1, present_player2])
+      end
     end
   end
 end

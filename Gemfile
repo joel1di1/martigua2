@@ -8,8 +8,8 @@ ruby '3.2.2'
 gem 'rails', '~> 7.0.4'
 
 gem 'activerecord-session_store'
-gem 'aws-sdk-s3', require: false
 gem 'administrate'
+gem 'aws-sdk-s3', require: false
 gem 'bcrypt'
 gem 'bootsnap', require: false
 gem 'colorist'

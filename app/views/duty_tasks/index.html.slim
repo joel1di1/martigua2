@@ -15,9 +15,7 @@
               path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
 
             p class="text-sm font-semibold leading-6 text-gray-900"
-              = sprintf("%02d", player_tasks_weight)
-            p class="text-sm font-semibold leading-6 text-gray-900"
-              = player.full_name
+              = "#{sprintf("%02d", player_tasks.count)} tigs - #{sprintf("%02d", player_tasks_weight)} pts - #{player.full_name}"
 
 .grid.place-content-center.flow-root.p-5
   ul.-mb-8 role="list"

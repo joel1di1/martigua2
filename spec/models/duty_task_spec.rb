@@ -25,7 +25,10 @@ RSpec.describe DutyTask do
         ]
 
         # Call the scope and check if it returns the correct records
-        expect(DutyTask.for_current_season.order(:realised_at)).to match_array(current_season_tasks)
+        # substraction of arrays should be empty
+        expect(DutyTask.for_current_season.to_a - current_season_tasks).to be_empty
+        # and vice versa
+        expect(current_season_tasks - DutyTask.for_current_season.to_a).to be_empty
 
         # Check if it does not return records from other seasons: intersecting arrays should be empty
         expect(DutyTask.for_current_season.to_a & other_season_tasks).to be_empty

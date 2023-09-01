@@ -31,7 +31,7 @@ describe 'duty_tasks', :devise do
     within '#links' do
       click_on 'Tigs'
     end
-    assert_text 'Tâches collectives'
+    assert_text 'Tâches collectives (TIGs)'
 
     click_on 'Ajouter une tâche'
     assert_text 'Nouvelle tache'
@@ -43,5 +43,20 @@ describe 'duty_tasks', :devise do
       click_on 'Créer une nouvelle tâche'
       assert_text 'TIG créée'
     end.to change(DutyTask, :count)
+  end
+
+  it 'member access leaderboard' do
+    section = create(:section)
+    user = create(:user, with_section: section)
+    duty_task = create(:duty_task, user:, realised_at: 1.hour.ago, club: section.club)
+    signin_user user, close_notice: true
+
+    within '#links' do
+      click_on 'Tigs'
+    end
+    assert_text 'Tâches collectives (TIGs)'
+
+    click_on 'leaderboard'
+    assert_text 'Leaderboard des TIGs'
   end
 end

@@ -12,7 +12,7 @@ RSpec.describe DutyTask do
       Timecop.freeze(Time.zone.local(Time.zone.today.year, 12, 1)) do
         # Create duty tasks for the current season
         current_season_tasks = [
-          create(:duty_task, realised_at: Season.current.start_date),
+          create(:duty_task, realised_at: Season.current.start_date + 1.day),
           create(:duty_task, realised_at: Season.current.start_date + 1.month),
           create(:duty_task, realised_at: Season.current.end_date - 1.month),
           create(:duty_task, realised_at: Season.current.end_date)

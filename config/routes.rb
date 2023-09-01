@@ -36,7 +36,11 @@ Rails.application.routes.draw do
   resources :championships
 
   resources :sections, only: %i[show] do
-    resources :duty_tasks
+    resources :duty_tasks do
+      collection do
+        get 'leaderboard'
+      end
+    end
     resources :section_user_invitations, path: 'user_invitations', only: %i[new show create index]
     resources :trainings do
       resources :users, only: [] do

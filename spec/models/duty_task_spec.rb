@@ -26,4 +26,20 @@ RSpec.describe DutyTask do
       expect(DutyTask.for_current_season).to match_array(current_season_tasks)
     end
   end
+
+  describe '#set_name_weight_from_key' do
+    let(:duty_key) { :mark_table }
+    let(:duty_task) { create(:duty_task, key: duty_key) }
+
+    it 'sets the name and weight from the key' do
+      expect(duty_task.name).to eq('Faire la table')
+      expect(duty_task.weight).to eq(6)
+    end
+
+    context 'with a key that does not exist' do
+      let(:duty_key) { :not_existing_key }
+
+      it { expect { duty_task }.to raise_error('No details for duty task not_existing_key') }
+    end
+  end
 end

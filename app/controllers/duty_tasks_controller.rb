@@ -2,7 +2,22 @@
 
 class DutyTasksController < ApplicationController
   def index
-    @duty_tasks = DutyTask.for_current_season.order(realised_at: :desc).page(params[:page])
+    task_scope = DutyTask.for_current_season.joins(user: :participations)
+                         .where(users: { participations: { section: current_section, season: Season.current } })
+
+    @duty_tasks = task_scope.order(realised_at: :desc).page(params[:page])
+
+    all_tasks = task_scope.to_a
+    @players_with_tasks = current_section.players.map do |player|
+      player_tasks = all_tasks.select { |task| task.user_id == player.id }
+      Rails.logger.debug { "#{player.short_name} : #{player_tasks.sum(&:weight)}" }
+      [
+        player,
+        player_tasks,
+        player_tasks.sum(&:weight)
+      ]
+    end
+    @players_with_tasks = @players_with_tasks.sort_by { |_, _, weight| weight }.reverse
   end
 
   def new

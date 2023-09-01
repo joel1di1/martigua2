@@ -8,23 +8,27 @@ RSpec.describe DutyTask do
   it { is_expected.to validate_presence_of :name }
 
   describe '.for_current_season' do
-    let(:current_season_start) { Date.new(Time.zone.today.year, 8, 1) }
-    let(:current_season_end) { Date.new(Time.zone.today.year + 1, 6, 30) }
-
     it 'returns duty tasks for the current season' do
       Timecop.freeze(Time.zone.local(Time.zone.today.year, 12, 1)) do
         # Create duty tasks for the current season
         current_season_tasks = [
-          create(:duty_task, realised_at: current_season_start),
-          create(:duty_task, realised_at: current_season_end),
-          create(:duty_task, realised_at: current_season_start + 1.month),
-          create(:duty_task, realised_at: current_season_end - 1.month)
+          create(:duty_task, realised_at: Season.current.start_date),
+          create(:duty_task, realised_at: Season.current.start_date + 1.month),
+          create(:duty_task, realised_at: Season.current.end_date),
+          create(:duty_task, realised_at: Season.current.end_date - 1.month)
         ]
 
         # Create duty tasks for other seasons
+        other_season_tasks = [
+          create(:duty_task, realised_at: Season.current.start_date - 1.month),
+          create(:duty_task, realised_at: Season.current.end_date + 1.month),
+        ]
 
         # Call the scope and check if it returns the correct records
-        expect(DutyTask.for_current_season).to match_array(current_season_tasks)
+        expect(DutyTask.for_current_season.order(:realised_at)).to match_array(current_season_tasks)
+
+        # Check if it does not return records from other seasons: intersecting arrays should be empty
+        expect(DutyTask.for_current_season.to_a & other_season_tasks).to be_empty
       end
     end
   end

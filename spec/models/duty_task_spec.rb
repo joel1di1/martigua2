@@ -14,24 +14,18 @@ RSpec.describe DutyTask do
         current_season_tasks = [
           create(:duty_task, realised_at: Season.current.start_date),
           create(:duty_task, realised_at: Season.current.start_date + 1.month),
-          create(:duty_task, realised_at: Season.current.end_date),
-          create(:duty_task, realised_at: Season.current.end_date - 1.month)
+          create(:duty_task, realised_at: Season.current.end_date - 1.month),
+          create(:duty_task, realised_at: Season.current.end_date)
         ]
 
         # Create duty tasks for other seasons
         other_season_tasks = [
           create(:duty_task, realised_at: Season.current.start_date - 1.month),
-          create(:duty_task, realised_at: Season.current.end_date + 1.month),
+          create(:duty_task, realised_at: Season.current.end_date + 1.month)
         ]
 
         # Call the scope and check if it returns the correct records
-        # substraction of arrays should be empty
-        expect(DutyTask.for_current_season.to_a - current_season_tasks).to be_empty
-        # and vice versa
-        expect(current_season_tasks - DutyTask.for_current_season.to_a).to be_empty
-
-        # Check if it does not return records from other seasons: intersecting arrays should be empty
-        expect(DutyTask.for_current_season.to_a & other_season_tasks).to be_empty
+        expect(DutyTask.for_current_season.order(:realised_at).pluck(:id)).to match_array(current_season_tasks.map(&:id))
       end
     end
   end

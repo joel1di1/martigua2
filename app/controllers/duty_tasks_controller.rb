@@ -45,6 +45,6 @@ class DutyTasksController < ApplicationController
 
   def task_scope
     DutyTask.for_current_season.joins(user: :participations)
-                         .where(users: { participations: { section: current_section, season: Season.current } })
+            .where(users: { participations: { section: current_section, season: Season.current } })
   end
 end

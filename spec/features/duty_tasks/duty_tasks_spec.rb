@@ -48,7 +48,7 @@ describe 'duty_tasks', :devise do
   it 'member access leaderboard' do
     section = create(:section)
     user = create(:user, with_section: section)
-    duty_task = create(:duty_task, user:, realised_at: 1.hour.ago, club: section.club)
+    create(:duty_task, user:, realised_at: 1.hour.ago, club: section.club)
     signin_user user, close_notice: true
 
     within '#links' do

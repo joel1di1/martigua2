@@ -2,7 +2,7 @@
 
 class DutyTasksController < ApplicationController
   def index
-    @duty_tasks = DutyTask.order(realised_at: :desc).page(params[:page])
+    @duty_tasks = DutyTask.for_current_season.order(realised_at: :desc).page(params[:page])
   end
 
   def new

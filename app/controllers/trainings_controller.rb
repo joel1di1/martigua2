@@ -5,7 +5,6 @@ class TrainingsController < ApplicationController
   include PrefetchTrainingData
 
   def index
-    Season.current.start_date
     section_trainings = current_section.trainings.eager_load(:location, :groups).where('start_datetime > ?',
                                                                                        Season.current.start_date)
 

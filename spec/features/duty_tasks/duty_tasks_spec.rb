@@ -31,7 +31,7 @@ describe 'duty_tasks', :devise do
     within '#links' do
       click_on 'Tigs'
     end
-    assert_text 'Tâches collectives (TIGs)'
+    assert_text 'Tâches d’intérêt général (TIGs)'
 
     click_on 'Ajouter une tâche'
     assert_text 'Nouvelle tache'
@@ -54,7 +54,7 @@ describe 'duty_tasks', :devise do
     within '#links' do
       click_on 'Tigs'
     end
-    assert_text 'Tâches collectives (TIGs)'
+    assert_text 'Tâches d’intérêt général (TIGs)'
 
     click_on 'leaderboard'
     assert_text 'Leaderboard des TIGs'

@@ -59,7 +59,7 @@ Rack::Attack.throttle('logins/email', limit: 5, period: 20.seconds) do |req|
 end
 
 # Block suspicious requests for '/etc/password' or wordpress specific paths.
-# After 3 blocked requests in 10 minutes, block all requests from that IP for 5 minutes.
+# After 3 blocked requests in 10 minutes, block all requests from that IP for 15 minutes.
 Rack::Attack.blocklist('fail2ban pentesters') do |req|
   # `filter` returns truthy value if request fails, or if it's from a previously banned IP
   # so the request is blocked

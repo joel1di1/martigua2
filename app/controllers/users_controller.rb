@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  before_action :verify_user_member_of_section
   before_action :find_user_by_id, except: :index
   skip_before_action :verify_authenticity_token, only: %i[training_presences match_availabilities]
 
@@ -15,7 +16,11 @@ class UsersController < ApplicationController
   end
 
   def show
-    render body: 'Access denied.' if current_user != @user
+    # if current_section is empty, only accept current user
+    if current_section.blank? && current_user != @user
+      render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false)
+      return
+    end
   end
 
   def edit
@@ -102,6 +107,12 @@ class UsersController < ApplicationController
     @user = User.find params[user_key]
   rescue ActiveRecord::RecordNotFound
     catch404
+  end
+
+  def verify_user_member_of_section
+    if current_section && !current_user.member_of?(current_section)
+      render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false)
+    end
   end
 
   private

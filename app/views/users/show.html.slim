@@ -1,0 +1,16 @@
+/ display @user profile
+
+/display avatar
+- if @user.avatar.attached?
+  = image_tag @user.avatar.variant(:portrait)
+
+p class=""
+  | Prénom: #{@user.first_name}
+p class=""
+  | Nom: #{@user.last_name}
+p class=""
+  | Surnom: #{@user.nickname}
+p class=""
+  | Email: #{@user.email}
+p class=""
+  | Téléphone: #{@user.phone_number}

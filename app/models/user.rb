@@ -34,6 +34,10 @@ class User < ApplicationRecord
     sections.count == 1
   end
 
+  def member_of?(section, season: nil)
+    is_member_of?(section, [Participation::COACH, Participation::PLAYER], season:)
+  end
+
   def coach_of?(section, season: nil)
     is_member_of?(section, Participation::COACH, season:)
   end

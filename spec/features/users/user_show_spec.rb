@@ -34,6 +34,34 @@ describe 'User profile page', :devise do
     login_as(me, scope: :user)
     Capybara.current_session.driver.header 'Referer', root_path
     visit user_path(other)
-    expect(page).to have_content 'Access denied.'
+    expect(page).to have_content 'Access denied (403)'
+  end
+
+  # Scenario: if member of the same section, user can see another user's profile
+  #   Given I am signed in in a section i'm member of
+  #   When I visit another user's profile
+  #   Then I see the other person profile
+  it "user can see another user's profile if member of the same section" do
+    section = create(:section)
+    me = create(:user)
+    other = create(:user)
+    create(:participation, user: me, section: section)
+    create(:participation, user: other, section: section)
+    login_as(me, scope: :user)
+    visit section_user_path(other, section_id: section.to_param)
+    expect(page).to have_content other.email
+  end
+
+  # Scenario: user can see his profile in the section url
+  #   Given I am signed in in a section I'm member of
+  #   When I visit my profile
+  #   Then I see my profile
+  it "user can see his profile in the section url" do
+    section = create(:section)
+    me = create(:user)
+    create(:participation, user: me, section: section)
+    login_as(me, scope: :user)
+    visit section_user_path(me, section_id: section.to_param)
+    expect(page).to have_content me.email
   end
 end

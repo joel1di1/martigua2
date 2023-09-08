@@ -1,7 +1,9 @@
 <tr>
   <td class="whitespace-nowrap text-sm font-medium text-gray-900">
     <% if user.avatar.attached? %>
-      <%= image_tag user.avatar.variant(:thumb), class: "h-8 w-8 rounded-full" %>
+      <%= link_to user.avatar, target: "_blank" do %>
+        <%= image_tag user.avatar.variant(:thumb), class: "h-8 w-8 rounded-full", loading: "lazy" %>
+      <% end %>
     <% end %>
   </td>
 

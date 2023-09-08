@@ -23,6 +23,11 @@ class UsersController < ApplicationController
   end
 
   def update
+    if current_user != @user && !current_user.coach_of?(current_section)
+      render body: 'Access denied.'
+      return
+    end
+
     if current_section.present? && [params[:coach], params[:player]].compact.empty?
       flash[:error] = 'Gardez un role ou utilisez le bouton supprimer'
       redirect_with(fallback: section_users_path(current_section))

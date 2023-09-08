@@ -19,4 +19,5 @@
     .form-group.optional
       = check_box_tag :coach, 'coach', @user.coach_of?(current_section)
       = label_tag(:coach, 'Coach')
-  = f.button :submit
+  - if current_user == @user || current_user.coach_of?(current_section)
+    =  f.button :submit

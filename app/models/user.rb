@@ -6,6 +6,11 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_fit: [32, 32]
+    attachable.variant :portrait, resize_to_limit: [100, 100]
+  end
+
   has_many :burns, dependent: :destroy
   has_many :club_admin_roles, dependent: :destroy
   has_many :participations, dependent: :destroy

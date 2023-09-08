@@ -2,14 +2,17 @@
 
 li.p-1.text-sm draggable="true" data-player-id=player.id data-controller=(current_user.coach_of?(current_section) && "dropdown")
   .flex.justify-between.content-center
-    button.justify-between id="assign-#{player.id}" type="button" aria-haspopup="true" aria-expanded="false" data-action=(current_user.coach_of?(current_section) && "dropdown#toggle click@window->dropdown#hide")
-      - if selection.present? && selection.match.burned?(player)
-        span.text-red-700.whitespace-nowrap
-          = "BRÛLÉ: "
+    .flex.flex-row
+      button.justify-between id="assign-#{player.id}" type="button" aria-haspopup="true" aria-expanded="false" data-action=(current_user.coach_of?(current_section) && "dropdown#toggle click@window->dropdown#hide")
+        - if selection.present? && selection.match.burned?(player)
+          span.text-red-700.whitespace-nowrap
+            = "BRÛLÉ: "
 
-      = player.short_name
-      span.text-xs
-        = " (#{teams_with_matches.map { |team, match| player.user_championship_stats.find_by(championship: match.championship)&.match_played || 0 }.join('/')})"
+        = player.short_name
+        span.text-xs
+          = " (#{teams_with_matches.map { |team, match| player.user_championship_stats.find_by(championship: match.championship)&.match_played || 0 }.join('/')})"
+      - if player.avatar.attached?
+        = image_tag player.avatar.variant(:thumb), class: "h-5 w-5 rounded-full ml-1"
     .flex.flex-row
       .flex.flex-col.justify-center
         .flex.hidden.lg:block.whitespace-nowrap style="line-height: 0;"

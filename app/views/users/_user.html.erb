@@ -1,5 +1,11 @@
 <tr>
-  <td class="whitespace-nowrap py-2 pl-2 pr-3 text-sm font-medium text-gray-900 sm:pl-2">
+  <td class="whitespace-nowrap text-sm font-medium text-gray-900">
+    <% if user.avatar.attached? %>
+      <%= image_tag user.avatar.variant(:thumb), class: "h-8 w-8 rounded-full" %>
+    <% end %>
+  </td>
+
+  <td class="whitespace-nowrap py-2 pr-3 text-sm font-medium text-gray-900 sm:pl-2">
     <%= user.first_name %> <%= user.last_name %>
     <em><%= user.nickname %></em>
   </td>

@@ -1,5 +1,9 @@
 - url_objects = [current_section, @user].compact
 
+- if @user.avatar.attached?
+  = image_tag @user.avatar.variant(:portrait)
+
+
 = simple_form_for url_objects do |f|
   = hidden_field_tag :return_to, @return_to
   = f.input :email
@@ -7,6 +11,7 @@
   = f.input :last_name
   = f.input :nickname
   = f.input :phone_number
+  = f.input :avatar
   - if current_section.present?
     .form-group.optional
       = check_box_tag :player, 'player', @user.player_of?(current_section)

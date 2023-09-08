@@ -44,7 +44,10 @@
             button#user-menu-button.flex.max-w-xs.items-center.rounded-full.bg-gray-800.text-sm aria-expanded="false" aria-haspopup="true" data-action="dropdown#toggle click@window->dropdown#hide" type="button"
               span.sr-only Open user menu
               span.text-gray-300
-                = current_user.email
+                - if current_user.avatar.attached?
+                  = image_tag current_user.avatar.variant(:thumb), class: "h-8 w-8 rounded-full"
+                - else
+                  = gravatar_image_tag current_user.email, class: "h-8 w-8 rounded-full"
                 span
           .absolute.right-0.z-10.mt-2.origin-top-right.rounded-md.bg-white.py-1.shadow-lg.ring-1.ring-black.ring-opacity-5.focus:outline-none.hidden aria-labelledby="user-menu-button" aria-orientation="vertical" data-dropdown-target="menu" role="menu" tabindex="-1"
             /! Active: "bg-gray-100", Not Active: ""

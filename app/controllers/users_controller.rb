@@ -17,10 +17,10 @@ class UsersController < ApplicationController
 
   def show
     # if current_section is empty, only accept current user
-    if current_section.blank? && current_user != @user
-      render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false)
-      return
-    end
+    return unless current_section.blank? && current_user != @user
+
+    render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false)
+    nil
   end
 
   def edit
@@ -110,9 +110,9 @@ class UsersController < ApplicationController
   end
 
   def verify_user_member_of_section
-    if current_section && !current_user.member_of?(current_section)
-      render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false)
-    end
+    return unless current_section && !current_user.member_of?(current_section)
+
+    render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false)
   end
 
   private

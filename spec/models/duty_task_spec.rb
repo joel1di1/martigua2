@@ -26,6 +26,7 @@ RSpec.describe DutyTask do
 
         # Call the scope and check if it returns the correct records
         expect(DutyTask.for_current_season.order(:realised_at).pluck(:id)).to match_array(current_season_tasks.map(&:id))
+        expect(DutyTask.for_current_season.order(:realised_at).pluck(:id)).not_to match_array(other_season_tasks.map(&:id))
       end
     end
   end

@@ -45,21 +45,26 @@ describe 'User profile page', :devise do
     section = create(:section)
     me = create(:user)
     other = create(:user)
-    create(:participation, user: me, section: section)
-    create(:participation, user: other, section: section)
+    create(:participation, user: me, section:)
+    create(:participation, user: other, section:)
     login_as(me, scope: :user)
     visit section_user_path(other, section_id: section.to_param)
     expect(page).to have_content other.email
+
+    visit section_users_path(section_id: section.to_param)
+    click_link other.full_name
+    expect(page).to have_content other.phone_number
+    expect(page).to have_content 'Surnom'
   end
 
   # Scenario: user can see his profile in the section url
   #   Given I am signed in in a section I'm member of
   #   When I visit my profile
   #   Then I see my profile
-  it "user can see his profile in the section url" do
+  it 'user can see his profile in the section url' do
     section = create(:section)
     me = create(:user)
-    create(:participation, user: me, section: section)
+    create(:participation, user: me, section:)
     login_as(me, scope: :user)
     visit section_user_path(me, section_id: section.to_param)
     expect(page).to have_content me.email

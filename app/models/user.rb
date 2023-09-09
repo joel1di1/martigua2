@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_fit: [32, 32]
-    attachable.variant :portrait, resize_to_limit: [100, 100]
+    attachable.variant :portrait, resize_to_limit: [300, 300]
   end
 
   has_many :burns, dependent: :destroy

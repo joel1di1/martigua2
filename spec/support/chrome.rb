@@ -16,5 +16,9 @@ RSpec.configure do |_config|
     Capybara::Selenium::Driver.new(app, browser: :chrome, options:)
   end
 
-  Capybara.current_driver = :selenium_chrome if ENV['SHOW_BROWSER'].present?
+  if ENV['SHOW_BROWSER'].present?
+    Capybara.current_driver = :selenium_chrome
+  else
+    Capybara.current_driver = :selenium_chrome_headless
+  end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe 'create championship' do
+RSpec.feature 'create championship', type: :feature, js: true do
   describe 'manually' do
     it 'creates a new championship' do
       championship_name = Faker::Company.name

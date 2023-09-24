@@ -12,7 +12,6 @@ div class="flex flex-col h-screen overflow-hidden"
         div class="h-full overflow-auto"
           = render @channels
 
-    / div id="central-messages" data-controller="central-messages" data-central-messages-target="scroll" class=""
     div id="messages" class="grow overflow-auto pb-28 bg-gray-100" data-controller="scroll" data-scroll-target="messages"
       = render @channel.messages.order(:id)
 

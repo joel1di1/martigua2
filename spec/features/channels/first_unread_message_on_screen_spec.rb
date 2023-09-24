@@ -24,7 +24,7 @@ describe 'channels' do
   it 'last read message and first read message should be displayed' do
     general = section.general_channel
 
-    messages = (0...100).map do |i|
+    messages = (0...100).map do
       create(:message, channel: general, user: other_user)
     end
 

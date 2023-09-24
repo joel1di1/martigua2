@@ -1,4 +1,4 @@
-div id="message_#{message.id}" class="flex px-4 py-3 message #{ (Current.user.present? && Current.user == message.user) && "place-content-end"} #{Current.user.present? && Current.user.read?(message) ? "read" : "unread"}" data-controller="message" data-message-target="message" data-central-messages-target="message"
+div id="message_#{message.id}" class="flex px-4 py-3 message #{ (Current.user.present? && Current.user == message.user) && "place-content-end"} #{Current.user.present? && Current.user.read?(message) ? "read" : "unread"}"
   div class="h-8 w-8 flex-shrink-0 bg-gray-300"
     <!-- image of a gravatar based on email hash -->
     img src="https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(message.user.email)}?d=identicon" class="h-8 w-8 rounded"

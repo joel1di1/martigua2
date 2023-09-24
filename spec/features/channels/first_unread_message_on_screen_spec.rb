@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Feature: duty tasks
-RSpec.feature 'channels', type: :feature, js: true do
+describe 'channels' do
   let(:section) { create(:section) }
   let(:user) { create(:user, with_section: section) }
   let(:other_user) { create(:user, with_section: section) }

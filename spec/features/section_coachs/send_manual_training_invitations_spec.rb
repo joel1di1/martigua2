@@ -4,7 +4,7 @@
 #   As a coach
 #   I want to invite a new user
 #   So he can access the site
-describe 'send training invitation', :devise do
+describe 'send training invitation', :devise, js: true do
   # Scenario: coach add new training
   #   Given I am a signed in coach
   #   When I go to trainings page

@@ -36,9 +36,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
+
       - name: Setup Chromedriver
         run: |
-          CHROMEDRIVER_VERSION="117.0.5938.92"
+          CHROME_VERSION=$(google-chrome-stable --version | cut -d " " -f 3 | cut -d "." -f 1)
+          CHROMEDRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/latest-versions-per-milestone.json" | jq -r ".milestones[\"$CHROME_VERSION\"].version")
           wget "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip"
           unzip chromedriver-linux64.zip
           sudo mv chromedriver-linux64/chromedriver /usr/bin/

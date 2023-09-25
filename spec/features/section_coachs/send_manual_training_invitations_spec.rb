@@ -20,6 +20,9 @@ describe 'send training invitation', :devise do
     end
 
     submit_id = "training_invitations_#{training.id}"
-    expect { click_button(submit_id) }.to change { training.invitations.count }.by(1)
+    expect do
+      accept_confirm('Renvoyer les mails pour les indécits ?') { click_button(submit_id) }
+      assert_text 'Notifications envoyées'
+    end.to change { training.invitations.count }.by(1)
   end
 end

@@ -47,7 +47,7 @@ RSpec.describe Championship do
 
     let(:type_competition) { 'D' }
     let(:code_comite) { 94 }
-    let(:code_competition) { '16-ans-maculine-2-eme-division-territoriale-23229' }
+    let(:code_competition) { '16-ans-masculins-2-eme-division-territoriale-23229' }
     let(:phase_id) { '41894' }
     let(:code_pool) { '128335' }
     let(:linked_calendar) { nil }

@@ -9,6 +9,15 @@ module Ffhb
     end
 
     def mock_ffhb
+      # mock fetch_departemental_details
+      allow(FfhbService.instance).to receive(:fetch_departemental_details) do
+        load_json_content('fetch_departemental_details.json')
+      end
+
+      allow(FfhbService.instance).to receive(:fetch_competition_details) do |competition_key|
+        load_json_content("fetch_competition_details_#{competition_key}.json")
+      end
+
       # mock fetch_comite_details
       allow(FfhbService.instance).to receive(:fetch_comite_details) do |comite_id|
         load_json_content("fetch_comite_details_#{comite_id}.json")

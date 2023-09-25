@@ -23,7 +23,7 @@ RSpec.describe FfhbService do
 
     let(:type_competition) { 'D' }
     let(:code_comite) { 94 }
-    let(:code_competition) { '16-ans-maculine-2-eme-division-territoriale-23229' }
+    let(:code_competition) { '16-ans-masculins-2-eme-division-territoriale-23229' }
     let(:phase_id) { '41894' }
     let(:code_pool) { '128335' }
     let(:team_links) { {} }
@@ -67,10 +67,10 @@ RSpec.describe FfhbService do
       it { expect { championship }.not_to change(Day, :count) }
       it { expect { championship }.not_to change(Team, :count) }
 
-      it { expect(championship.name).to eq 'COMITE DU VAL-DE-MARNE - +16 ANS MACULINE 2 EME DIVISION TERRITORIALE' }
+      it { expect(championship.name).to eq 'COMITE DU VAL-DE-MARNE - +16 ANS MASCULINS 2 EME DIVISION TERRITORIALE' }
 
       it {
-        expect(championship.ffhb_key).to eq '2023-2024-19 departemental 16-ans-maculine-2-eme-division-territoriale-23229 41894 128335'
+        expect(championship.ffhb_key).to eq '2023-2024-19 departemental 16-ans-masculins-2-eme-division-territoriale-23229 41894 128335'
       }
 
       it { expect(championship.enrolled_team_championships.size).to eq(12) }
@@ -94,7 +94,7 @@ RSpec.describe FfhbService do
           it { expect(championship.matches.size).to eq(22) }
 
           it {
-            expect(championship.matches.first.ffhb_key).to eq('16-ans-maculine-2-eme-division-territoriale-23229 128335 1891863')
+            expect(championship.matches.first.ffhb_key).to eq('16-ans-masculins-2-eme-division-territoriale-23229 128335 1891863')
           }
         end
       end

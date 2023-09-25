@@ -116,7 +116,7 @@ RSpec.describe Match do
   describe '#ffhb_sync!' do
     let(:match) do
       create(:match,
-             ffhb_key: '16-ans-maculine-2-eme-division-territoriale-23229 128335 1891863',
+             ffhb_key: '16-ans-masculins-2-eme-division-territoriale-23229 128335 1891863',
              start_datetime: nil,
              meeting_datetime: nil)
     end

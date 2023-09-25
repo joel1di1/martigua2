@@ -35,7 +35,7 @@ describe 'create championship' do
   describe 'with ffhb' do
     before { mock_ffhb }
 
-    skip 'creates a new championship with a section team' do
+    it 'creates a new championship with a section team' do
       section = create(:section)
       coach = create(:user, with_section_as_coach: section)
       team = create(:team, with_section: section)

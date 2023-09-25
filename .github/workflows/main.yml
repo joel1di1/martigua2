@@ -38,8 +38,8 @@ jobs:
           sudo apt-get install -y google-chrome-stable
       - name: Setup Chromedriver
         run: |
-          CHROMEDRIVER_VERSION="114.0.5735.90"
-          wget "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+          CHROMEDRIVER_VERSION="117.0.5938.92"
+          wget "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip"
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/bin/
           chromedriver --version

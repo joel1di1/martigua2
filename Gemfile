@@ -89,4 +89,5 @@ group :test do
   gem 'rspec-its'
   gem 'shoulda-matchers', require: false
   gem 'timecop'
+  gem 'vcr'
 end

@@ -486,6 +486,7 @@ GEM
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
     unicode-display_width (2.4.2)
+    vcr (6.2.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     watir (7.3.0)
@@ -578,6 +579,7 @@ DEPENDENCIES
   tailwindcss-rails
   timecop
   turbo-rails
+  vcr
   watir
   web-console
   web-push

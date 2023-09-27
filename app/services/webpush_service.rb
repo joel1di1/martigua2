@@ -23,7 +23,7 @@ class WebpushService
   end
 
   def self.send_notification_to_all_user_subscriptions(user, title:, body:)
-    user.subscriptions.each do |subscription|
+    user.webpush_subscriptions.each do |subscription|
       send_notification(subscription, title:, body:)
     end
   end

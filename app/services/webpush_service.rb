@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class WebpushService
+  # payload = { title: 'Hello', body: 'World' }
   def self.send_notification(subscription,
                              icon: 'https://static.wixstatic.com/media/52897d_00efa59c0af84a7eabebd99c94ee77e9.jpg/v1/fill/w_85,h_80,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/52897d_00efa59c0af84a7eabebd99c94ee77e9.jpg',
                              **payload)
@@ -19,5 +20,11 @@ class WebpushService
     )
   rescue WebPush::InvalidSubscription, WebPush::ExpiredSubscription
     subscription.destroy
+  end
+
+  def self.send_notification_to_all_user_subscriptions(user, title:, body:)
+    user.subscriptions.each do |subscription|
+      send_notification(subscription, title:, body:)
+    end
   end
 end

@@ -8,12 +8,11 @@ class MessagesController < ApplicationController
     @message.user = current_user
 
     respond_to do |format|
+      format.html { redirect_to section_channel_path(current_section, @channel) }
       if @message.save
-        format.html { redirect_to section_channel_path(current_section, @channel) }
         format.turbo_stream
         format.js
       else
-        format.html { redirect_to section_channel_path(current_section, @channel) }
         format.js { render json: { errors: @message.errors }, status: :unprocessable_entity }
       end
     end

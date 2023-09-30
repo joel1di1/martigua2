@@ -6,12 +6,16 @@ class MessagesController < ApplicationController
   def create
     @message = @channel.messages.new(message_params)
     @message.user = current_user
-    @message.save!
 
     respond_to do |format|
-      format.html { redirect_to section_channel_path(current_section, @channel) }
-      format.turbo_stream
-      format.js
+      if @message.save
+        format.html { redirect_to section_channel_path(current_section, @channel) }
+        format.turbo_stream
+        format.js
+      else
+        format.html { redirect_to section_channel_path(current_section, @channel) }
+        format.js { render json: { errors: @message.errors }, status: :unprocessable_entity }
+      end
     end
   end
 

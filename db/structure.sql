@@ -1445,7 +1445,8 @@ CREATE TABLE public.user_championship_stats (
     first_name character varying,
     last_name character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    season_id bigint
 );
 
 
@@ -2692,6 +2693,13 @@ CREATE INDEX index_user_championship_stats_on_championship_id ON public.user_cha
 
 
 --
+-- Name: index_user_championship_stats_on_season_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_championship_stats_on_season_id ON public.user_championship_stats USING btree (season_id);
+
+
+--
 -- Name: index_user_championship_stats_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2797,6 +2805,14 @@ ALTER TABLE ONLY public.user_channel_messages
 
 ALTER TABLE ONLY public.burns
     ADD CONSTRAINT fk_rails_0ff98c47ee FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: user_championship_stats fk_rails_157c40f3f8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_championship_stats
+    ADD CONSTRAINT fk_rails_157c40f3f8 FOREIGN KEY (season_id) REFERENCES public.seasons(id);
 
 
 --
@@ -3054,6 +3070,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230619061517'),
 ('20230811120426'),
 ('20230811135453'),
-('20230812101849');
+('20230812101849'),
+('20230930145923');
 
 

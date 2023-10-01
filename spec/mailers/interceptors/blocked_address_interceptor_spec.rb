@@ -22,5 +22,16 @@ RSpec.describe Interceptors::BlockedAddressInterceptor do
 
       it { expect(message.perform_deliveries).to be true }
     end
+
+    context 'with a wildcard blocked domain' do
+      let(:email) { Faker::Internet.email(domain: 'example.com') }
+
+      before do
+        BlockedAddress.block!('*@example.com')
+        described_class.delivering_email(message)
+      end
+
+      it { expect(message.perform_deliveries).to be false }
+    end
   end
 end

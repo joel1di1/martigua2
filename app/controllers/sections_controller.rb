@@ -21,11 +21,11 @@ class SectionsController < ApplicationController
 
   def edit
     @players = @section.players.order(:first_name, :last_name)
-    @user_stats = UserChampionshipStat.where(championship: @section.championships)
+    user_stats_scope = UserChampionshipStat.where(championship: @section.championships.where(season: Season.current))
 
-    @user_stats = @user_stats.index_by(&:player_id).values
+    @user_stats = user_stats_scope.index_by(&:player_id).values
 
-    @associations = UserChampionshipStat.joins(:championship).where(championship: @section.championships).where(championship: { season: Season.current }).index_by(&:user)
+    @associations = user_stats_scope.index_by(&:user)
 
     @suggested_associations = (@players - @associations.keys).index_with do |player|
       suggested_user_stat(player, @user_stats)

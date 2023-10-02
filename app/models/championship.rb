@@ -32,8 +32,23 @@ class Championship < ApplicationRecord
 
     matches.each(&:ffhb_sync!)
 
-    # get stats from ffhb
-    FfhbService.instance.fetch_competition_stats(self)
+    _, _, championship_id, phase_id, pool_id = ffhb_key.split
+    stats_sync!(championship_id, phase_id, pool_id)
+  end
+
+  def stats_sync!(championship_id, phase_id, pool_id)
+    stats_json = FfhbService.instance.fetch_competition_stats(championship_id, phase_id, pool_id)
+
+    stats_json['rowsData'].each do |stat_json|
+      user_stat = UserChampionshipStat.find_or_create_by!(championship: self, player_id: stat_json['individuId'])
+      user_stat.update!(
+        match_played: stat_json['matchCount'],
+        goals: stat_json['totalButs'],
+        saves: stat_json['totalArrets'],
+        first_name: stat_json['prenom'],
+        last_name: stat_json['nom']
+      )
+    end
   end
 
   def init

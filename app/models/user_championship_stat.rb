@@ -3,7 +3,6 @@
 class UserChampionshipStat < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :championship
-  belongs_to :season
 
   after_save :burn_player_if_needed
 

@@ -47,6 +47,13 @@ class FfhbService
     )
   end
 
+  def fetch_competition_stats(competition_key, phase_id, code_pool)
+    fetch_smartfire_attributes(
+      "https://www.ffhandball.fr/competitions/saison-2022-2023-18/departemental/#{competition_key.gsub('_', '-')}/poule-#{code_pool}/statistiques/",
+      'competitions---stats-joueurs'
+    )
+  end
+
   def fetch_pool_details(competition_key, code_pool)
     fetch_smartfire_attributes(
       "https://www.ffhandball.fr/competitions/saison-2023-2024-19/departemental/#{competition_key.gsub('_', '-')}/poule-#{code_pool}/",

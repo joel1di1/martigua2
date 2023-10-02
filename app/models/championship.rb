@@ -31,6 +31,9 @@ class Championship < ApplicationRecord
     return if ffhb_key.blank?
 
     matches.each(&:ffhb_sync!)
+
+    # get stats from ffhb
+    FfhbService.instance.fetch_competition_stats(self)
   end
 
   def init

@@ -1,8 +1,9 @@
 // bg-lime-50.text-lime-800.text-lime-400.text-lime-500
 // bg-red-50.text-red-800.text-red-400.text-red-500
 
+
 - [[:alert, 'red'], [:notice, 'lime']].each do |alert_type, color|
-  div aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+  div class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
     div class="flex w-full flex-col items-center space-y-4 sm:items-end"
       - if flash[alert_type].present?
         div class="hidden pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5" data-alert-target="panel" data-controller="alert" aria-hidden="true" data-transition-enter="transition ease-out duration-200" data-transition-enter-start="transform opacity-0 scale-95" data-transition-enter-end="transform opacity-100 scale-100" data-transition-leave="transition ease-in duration-75" data-transition-leave-start="transform opacity-100 scale-100" data-transition-leave-end="transform opacity-0 scale-95"

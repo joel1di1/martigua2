@@ -27,7 +27,7 @@
               <div class="bg-white sm:mx-auto sm:w-full sm:max-w-md sm:overflow-hidden sm:rounded-lg">
                 <div class="px-4 py-8 sm:px-10">
                   <div class="mt-6">
-                    = simple_form_for(resource, :as => resource_name, :url => session_path(resource), html:{ role: 'form', class: 'space-y-6'}) do |f|
+                    = simple_form_for(resource, :as => resource_name, :url => session_path(resource), html:{ role: 'form', class: 'space-y-6', data: {turbo: false}}) do |f|
                       = f.label :email, class: 'sr-only'
                       = f.input :email, placeholder: 'Email', label: false, input_html: {class: 'sm:text-sm'}
                       = f.label :password, class: 'sr-only'

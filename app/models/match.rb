@@ -115,6 +115,12 @@ class Match < ApplicationRecord
   end
 
   def ffhb_sync!
+
+    if ffhb_key.blank?
+      logger.warn "No ffhb_key for match #{id}"
+      return
+    end
+
     match_details = FfhbService.instance.fetch_match_details(*ffhb_key.split)
     if match_details['rencontre']['date'].present?
       self.start_datetime = Time.zone.parse(match_details['rencontre']['date'])

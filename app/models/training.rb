@@ -91,7 +91,7 @@ class Training < ApplicationRecord
     current_season_start = Season.current.start_date
     current_season_end = Season.current.end_date
 
-    present_players.joins("LEFT OUTER JOIN duty_tasks \
+    present_players.where("email not like '%@example.com'").joins("LEFT OUTER JOIN duty_tasks \
         ON duty_tasks.user_id = users.id AND duty_tasks.realised_at \
         BETWEEN '#{current_season_start}' AND '#{current_season_end}'")
                    .distinct.select('users.*, max(duty_tasks.realised_at) as last_duty_date, ' \
@@ -105,7 +105,7 @@ class Training < ApplicationRecord
   end
 
   def self.send_presence_mail_for_next_week(date = Time.zone.now)
-    User.active_this_season.each do |user|
+    User.where("email not like '%@example.com'").active_this_season.each do |user|
       next_week_trainings = user.next_week_trainings(date:)
       unless next_week_trainings.empty?
         UserMailer.send_training_invitation(next_week_trainings.to_a,

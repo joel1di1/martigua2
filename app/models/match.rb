@@ -77,7 +77,7 @@ class Match < ApplicationRecord
   end
 
   def self.send_availability_mail_for_next_weekend
-    User.active_this_season.each do |user|
+    User.where("email not like '%@example.com'").active_this_season.each do |user|
       next_weekend_matches = user.next_weekend_matches
       UserMailer.send_match_invitation(next_weekend_matches.to_a, user) unless next_weekend_matches.empty?
     end

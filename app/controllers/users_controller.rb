@@ -109,12 +109,6 @@ class UsersController < ApplicationController
     catch404
   end
 
-  def verify_user_member_of_section
-    return unless current_section && !current_user.member_of?(current_section)
-
-    render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false)
-  end
-
   private
 
   def user_params

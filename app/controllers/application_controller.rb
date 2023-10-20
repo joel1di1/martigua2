@@ -69,6 +69,17 @@ class ApplicationController < ActionController::Base
     [last_trainings, presences_by_user_and_training]
   end
 
+  def verify_user_member_of_section
+    return unless current_section && !current_user.member_of?(current_section)
+
+    respond_to do |format|
+      format.html { render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false) }
+      format.xml  { head :forbidden }
+      format.json { head :forbidden }
+      format.js  { head :forbidden }
+    end
+  end
+
   private
 
   def set_sentry_context

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DutyTasksController < ApplicationController
+  before_action :verify_user_member_of_section
+
   def index
     @duty_tasks = task_scope.order(realised_at: :desc).page(params[:page])
     @players_with_tasks = section_players_with_tasks
@@ -19,6 +21,19 @@ class DutyTasksController < ApplicationController
     end
   end
 
+  def edit
+    @duty_task = current_section.club.duty_tasks.find(params[:id])
+  end
+
+  def update
+    @duty_task = current_section.club.duty_tasks.find(params[:id])
+    if @duty_task.update(duty_task_params)
+      redirect_to section_duty_tasks_path(current_section), notice: 'TIG modifiée'
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def leaderboard
     @players_with_tasks = section_players_with_tasks
   end
@@ -33,7 +48,6 @@ class DutyTasksController < ApplicationController
     all_tasks = task_scope.to_a
     players_with_tasks = current_section.players.map do |player|
       player_tasks = all_tasks.select { |task| task.user_id == player.id }
-      Rails.logger.debug { "#{player.short_name} : #{player_tasks.sum(&:weight)}" }
       [
         player,
         player_tasks,

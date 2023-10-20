@@ -30,7 +30,7 @@ class DutyTask < ApplicationRecord
     task_details = TASKS[key.to_sym]
     raise "No details for duty task #{key}" if task_details.blank?
 
-    self.weight = task_details[:weight] if weight.blank? || weight.zero?
-    self.name = task_details[:name] if name.blank?
+    self.weight = task_details[:weight]
+    self.name = task_details[:name]
   end
 end

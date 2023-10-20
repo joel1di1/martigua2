@@ -93,7 +93,7 @@ class Training < ApplicationRecord
 
     present_players.where("email not like '%@example.com'").joins("LEFT OUTER JOIN duty_tasks \
         ON duty_tasks.user_id = users.id AND duty_tasks.realised_at \
-        BETWEEN '#{current_season_start}' AND '#{current_season_end}'")
+        BETWEEN '#{current_season_start}' AND '#{current_season_end}' AND duty_tasks.club_id in (#{sections.map(&:club_id).join(',')})")
                    .distinct.select('users.*, max(duty_tasks.realised_at) as last_duty_date, ' \
                                     'COALESCE(sum(duty_tasks.weight), -1) as sum_duty_tasks_weight')
                    .group('users.id').order('sum_duty_tasks_weight, last_duty_date ASC, authentication_token ASC')

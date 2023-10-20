@@ -209,12 +209,12 @@ RSpec.describe Training do
         present_player4.present_for!(training)
         not_present_player.not_present_for!(training)
 
-        create(:duty_task, user: present_player1, weight: 2, realised_at: 1.day.ago, club:)
-        create(:duty_task, user: present_player2, weight: 1, realised_at: 2.months.ago, club:)
-        create(:duty_task, user: present_player2, weight: 1, realised_at: 2.months.ago, club:)
-        create(:duty_task, user: present_player2, weight: 1, realised_at: 2.months.ago, club:)
-        create(:duty_task, user: present_player3, weight: 2, realised_at: 1.month.ago, club:)
-        create(:duty_task, user: present_player4, weight: 200, realised_at: 2.years.ago, club:)
+        create(:duty_task, user: present_player1, key: :training_bibs, realised_at: 1.day.ago, club:)
+        create(:duty_task, user: present_player2, key: :training_bibs, realised_at: 2.months.ago, club:)
+        create(:duty_task, user: present_player2, key: :training_bibs, realised_at: 2.months.ago, club:)
+        create(:duty_task, user: present_player2, key: :training_bibs, realised_at: 2.months.ago, club:)
+        create(:duty_task, user: present_player3, key: :training_bibs, realised_at: 1.month.ago, club:)
+        create(:duty_task, user: present_player4, key: :youth_training, realised_at: 2.years.ago, club:)
       end
     end
 

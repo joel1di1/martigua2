@@ -24,7 +24,9 @@ class UserMailer < ApplicationMailer
 
     subject = "Chasubles, c'est ton tour : (#{training.start_datetime.strftime('%-d/%-m')})"
     ccs = next_training_duties[1..].map(&:email)
-    mail to: @user.email, cc: ccs + [*cc], subject:
+    cc_email = cc&.email
+    ccs << cc_email if cc_email.present?
+    mail to: @user.email, cc: ccs, subject:
   end
 
   def send_section_addition_to_existing_user(user, inviter, section)

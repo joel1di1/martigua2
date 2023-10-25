@@ -17,14 +17,14 @@ class UserMailer < ApplicationMailer
     mail to: user.email, subject: "Matches : #{match_dates}"
   end
 
-  def send_tig_mail_for_training(training, next_training_duties)
+  def send_tig_mail_for_training(training, next_training_duties, cc = nil)
     @next_training_duties = next_training_duties
     @training = training
     @user = next_training_duties.first
 
     subject = "Chasubles, c'est ton tour : (#{training.start_datetime.strftime('%-d/%-m')})"
     ccs = next_training_duties[1..].map(&:email)
-    mail to: @user.email, cc: ccs, subject:
+    mail to: @user.email, cc: ccs + [*cc], subject:
   end
 
   def send_section_addition_to_existing_user(user, inviter, section)

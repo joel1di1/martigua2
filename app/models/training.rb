@@ -124,7 +124,12 @@ class Training < ApplicationRecord
 
     trainings.each do |training|
       next_duties = training.next_duties(DUTY_PER_TRAINING)
-      UserMailer.send_tig_mail_for_training(training, next_duties.to_a).deliver_later if next_duties.present?
+      next if next_duties.blank?
+
+      # if training is in section 1, than add pechou as last next duty
+      cc = training.sections.map(&:id).include?(1) ? User.find(49) : nil
+
+      UserMailer.send_tig_mail_for_training(training, next_duties.to_a, cc).deliver_later
     end
   end
 

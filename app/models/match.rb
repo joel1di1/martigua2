@@ -115,7 +115,6 @@ class Match < ApplicationRecord
   end
 
   def ffhb_sync!
-
     if ffhb_key.blank?
       logger.warn "No ffhb_key for match #{id}"
       return

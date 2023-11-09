@@ -33,7 +33,7 @@ Rails.application.configure do
   config.assets.compile = false
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.action_controller.asset_host = 'https://d27sj2p8c08vei.cloudfront.net'
+  # config.action_controller.asset_host = 'https://d27sj2p8c08vei.cloudfront.net'
 
   # This will affect assets served from /app/assets
   config.static_cache_control = 'public, max-age=31536000'

@@ -1,0 +1,143 @@
+{
+    "ext_saison_id": "19",
+    "url_competition_type": "departemental",
+    "url_structure": "",
+    "url_competition": "16-ans-m-2-eme-division-territoriale-94-75-23229",
+    "ext_poule_id": "",
+    "numero_journee": "",
+    "ext_equipe_id": "",
+    "ext_rencontre_id": "",
+    "selected_equipe": null,
+    "selected_poule":
+    {
+        "id": "80210",
+        "ext_pouleId": "128335",
+        "phaseId": "41894",
+        "libelle": "UNIQUE",
+        "journees": "[{\"journee_numero\":1,\"date_debut\":\"2023-09-15\",\"date_fin\":\"2023-09-17\"},{\"journee_numero\":2,\"date_debut\":\"2023-09-22\",\"date_fin\":\"2023-09-24\"},{\"journee_numero\":3,\"date_debut\":\"2023-09-29\",\"date_fin\":\"2023-10-01\"},{\"journee_numero\":4,\"date_debut\":\"2023-10-06\",\"date_fin\":\"2023-10-08\"},{\"journee_numero\":5,\"date_debut\":\"2023-10-13\",\"date_fin\":\"2023-10-15\"},{\"journee_numero\":6,\"date_debut\":\"2023-11-10\",\"date_fin\":\"2023-11-12\"},{\"journee_numero\":7,\"date_debut\":\"2023-11-24\",\"date_fin\":\"2023-11-26\"},{\"journee_numero\":8,\"date_debut\":\"2023-12-01\",\"date_fin\":\"2023-12-03\"},{\"journee_numero\":9,\"date_debut\":\"2023-12-08\",\"date_fin\":\"2023-12-10\"},{\"journee_numero\":10,\"date_debut\":\"2024-01-12\",\"date_fin\":\"2024-01-14\"},{\"journee_numero\":11,\"date_debut\":\"2024-01-19\",\"date_fin\":\"2024-01-21\"},{\"journee_numero\":12,\"date_debut\":\"2024-01-26\",\"date_fin\":\"2024-01-28\"},{\"journee_numero\":13,\"date_debut\":\"2024-02-02\",\"date_fin\":\"2024-02-04\"},{\"journee_numero\":14,\"date_debut\":\"2024-03-01\",\"date_fin\":\"2024-03-03\"},{\"journee_numero\":15,\"date_debut\":\"2024-03-08\",\"date_fin\":\"2024-03-10\"},{\"journee_numero\":16,\"date_debut\":\"2024-03-22\",\"date_fin\":\"2024-03-24\"},{\"journee_numero\":17,\"date_debut\":\"2024-04-05\",\"date_fin\":\"2024-04-07\"},{\"journee_numero\":18,\"date_debut\":\"2024-04-26\",\"date_fin\":\"2024-04-28\"},{\"journee_numero\":19,\"date_debut\":\"2024-05-03\",\"date_fin\":\"2024-05-05\"},{\"journee_numero\":20,\"date_debut\":\"2024-05-24\",\"date_fin\":\"2024-05-26\"},{\"journee_numero\":21,\"date_debut\":\"2024-05-31\",\"date_fin\":\"2024-06-02\"},{\"journee_numero\":22,\"date_debut\":\"2024-06-07\",\"date_fin\":\"2024-06-09\"}]",
+        "dateDernierUpdateEnfants": "2023-09-25 18:01:10.000",
+        "phase_competitionId": "17095"
+    },
+    "equipe_options":
+    [
+        {
+            "id": "470364",
+            "ext_equipeId": "1589700",
+            "pouleId": "80210",
+            "structureId": "1921",
+            "libelle": "ASM DU PERREUX 2",
+            "logoActif": "1"
+        },
+        {
+            "id": "470365",
+            "ext_equipeId": "1589701",
+            "pouleId": "80210",
+            "structureId": "1903",
+            "libelle": "STELLA SAINT-MAUR HB 2",
+            "logoActif": "1"
+        },
+        {
+            "id": "470366",
+            "ext_equipeId": "1589702",
+            "pouleId": "80210",
+            "structureId": "1939",
+            "libelle": "MARTIGUA SCL",
+            "logoActif": "1"
+        },
+        {
+            "id": "470367",
+            "ext_equipeId": "1589703",
+            "pouleId": "80210",
+            "structureId": "1916",
+            "libelle": "CS VALENTON",
+            "logoActif": "1"
+        },
+        {
+            "id": "470368",
+            "ext_equipeId": "1589704",
+            "pouleId": "80210",
+            "structureId": "1925",
+            "libelle": "CHENNEVIERES HBC",
+            "logoActif": "1"
+        },
+        {
+            "id": "470369",
+            "ext_equipeId": "1589705",
+            "pouleId": "80210",
+            "structureId": "1928",
+            "libelle": "JOINVILLE HB AS 2",
+            "logoActif": "1"
+        },
+        {
+            "id": "470370",
+            "ext_equipeId": "1589706",
+            "pouleId": "80210",
+            "structureId": "1911",
+            "libelle": "US FONTENAY HB",
+            "logoActif": "1"
+        },
+        {
+            "id": "470371",
+            "ext_equipeId": "1589707",
+            "pouleId": "80210",
+            "structureId": "1906",
+            "libelle": "CA BOISSY HB",
+            "logoActif": "1"
+        },
+        {
+            "id": "470372",
+            "ext_equipeId": "1589708",
+            "pouleId": "80210",
+            "structureId": "1904",
+            "libelle": "REVEIL DE NOGENT HB 3",
+            "logoActif": "1"
+        },
+        {
+            "id": "470373",
+            "ext_equipeId": "1589709",
+            "pouleId": "80210",
+            "structureId": "1932",
+            "libelle": "PARIS UC 3",
+            "logoActif": "1"
+        },
+        {
+            "id": "470374",
+            "ext_equipeId": "1589710",
+            "pouleId": "80210",
+            "structureId": "1901",
+            "libelle": "CSA KREMLIN-BICETRE 3",
+            "logoActif": "1"
+        },
+        {
+            "id": "470375",
+            "ext_equipeId": "1589711",
+            "pouleId": "80210",
+            "structureId": "1929",
+            "libelle": "HBC ARCUEIL 2",
+            "logoActif": "1"
+        }
+    ],
+    "phases":
+    [
+        {
+            "id": "41894",
+            "ext_phaseId": "74020",
+            "competitionId": "17095",
+            "libelle": "+16 ANS MASCULINS 2 EME DIVISION TERRITORIALE",
+            "dateDernierUpdateEnfants": "2023-09-25 09:52:38.000",
+            "classement": "1"
+        }
+    ],
+    "poules":
+    [
+        {
+            "id": "80210",
+            "ext_pouleId": "128335",
+            "phaseId": "41894",
+            "libelle": "UNIQUE",
+            "journees": "[{\"journee_numero\":1,\"date_debut\":\"2023-09-15\",\"date_fin\":\"2023-09-17\"},{\"journee_numero\":2,\"date_debut\":\"2023-09-22\",\"date_fin\":\"2023-09-24\"},{\"journee_numero\":3,\"date_debut\":\"2023-09-29\",\"date_fin\":\"2023-10-01\"},{\"journee_numero\":4,\"date_debut\":\"2023-10-06\",\"date_fin\":\"2023-10-08\"},{\"journee_numero\":5,\"date_debut\":\"2023-10-13\",\"date_fin\":\"2023-10-15\"},{\"journee_numero\":6,\"date_debut\":\"2023-11-10\",\"date_fin\":\"2023-11-12\"},{\"journee_numero\":7,\"date_debut\":\"2023-11-24\",\"date_fin\":\"2023-11-26\"},{\"journee_numero\":8,\"date_debut\":\"2023-12-01\",\"date_fin\":\"2023-12-03\"},{\"journee_numero\":9,\"date_debut\":\"2023-12-08\",\"date_fin\":\"2023-12-10\"},{\"journee_numero\":10,\"date_debut\":\"2024-01-12\",\"date_fin\":\"2024-01-14\"},{\"journee_numero\":11,\"date_debut\":\"2024-01-19\",\"date_fin\":\"2024-01-21\"},{\"journee_numero\":12,\"date_debut\":\"2024-01-26\",\"date_fin\":\"2024-01-28\"},{\"journee_numero\":13,\"date_debut\":\"2024-02-02\",\"date_fin\":\"2024-02-04\"},{\"journee_numero\":14,\"date_debut\":\"2024-03-01\",\"date_fin\":\"2024-03-03\"},{\"journee_numero\":15,\"date_debut\":\"2024-03-08\",\"date_fin\":\"2024-03-10\"},{\"journee_numero\":16,\"date_debut\":\"2024-03-22\",\"date_fin\":\"2024-03-24\"},{\"journee_numero\":17,\"date_debut\":\"2024-04-05\",\"date_fin\":\"2024-04-07\"},{\"journee_numero\":18,\"date_debut\":\"2024-04-26\",\"date_fin\":\"2024-04-28\"},{\"journee_numero\":19,\"date_debut\":\"2024-05-03\",\"date_fin\":\"2024-05-05\"},{\"journee_numero\":20,\"date_debut\":\"2024-05-24\",\"date_fin\":\"2024-05-26\"},{\"journee_numero\":21,\"date_debut\":\"2024-05-31\",\"date_fin\":\"2024-06-02\"},{\"journee_numero\":22,\"date_debut\":\"2024-06-07\",\"date_fin\":\"2024-06-09\"}]",
+            "dateDernierUpdateEnfants": "2023-09-25 18:01:10.000",
+            "phase_competitionId": "17095"
+        }
+    ]
+}

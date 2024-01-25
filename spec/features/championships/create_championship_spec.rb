@@ -70,7 +70,7 @@ describe 'create championship' do
         assert_text 'Compétition créée'
       end.to change(Championship, :count)
 
-      championship = Championship.find_by(ffhb_key: '2023-2024-19 departemental 16-ans-masculins-2-eme-division-territoriale-23229 41894 128335')
+      championship = Championship.find_by(ffhb_key: '2023-2024-19 departemental 16-ans-m-2-eme-division-territoriale-94-75-23229 41894 128335')
       expect(championship.teams.size).to eq 12
     end
   end

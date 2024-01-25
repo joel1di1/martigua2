@@ -67,7 +67,7 @@ RSpec.describe FfhbService do
       it { expect { championship }.not_to change(Day, :count) }
       it { expect { championship }.not_to change(Team, :count) }
 
-      it { expect(championship.name).to eq 'COMITE DU VAL-DE-MARNE - +16 ANS MASCULINS 2 EME DIVISION TERRITORIALE' }
+      it { expect(championship.name).to eq 'COMITE DU VAL-DE-MARNE - +16 ANS M 2 EME DIVISION TERRITORIALE 94 & 75' }
 
       it {
         expect(championship.ffhb_key).to eq '2023-2024-19 departemental 16-ans-m-2-eme-division-territoriale-94-75-23229 41894 128335'

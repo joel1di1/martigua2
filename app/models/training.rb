@@ -114,7 +114,7 @@ class Training < ApplicationRecord
     end
   end
 
-  def self.send_tig_mail_for_next_training(day_range = 1)
+  def self.send_tig_mail_for_next_training(day_range = 2)
     tomorrow = Date.tomorrow
     trainings =
       Training

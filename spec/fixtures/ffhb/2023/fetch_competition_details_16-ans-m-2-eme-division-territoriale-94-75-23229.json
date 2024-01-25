@@ -15,7 +15,7 @@
         "phaseId": "41894",
         "libelle": "UNIQUE",
         "journees": "[{\"journee_numero\":1,\"date_debut\":\"2023-09-15\",\"date_fin\":\"2023-09-17\"},{\"journee_numero\":2,\"date_debut\":\"2023-09-22\",\"date_fin\":\"2023-09-24\"},{\"journee_numero\":3,\"date_debut\":\"2023-09-29\",\"date_fin\":\"2023-10-01\"},{\"journee_numero\":4,\"date_debut\":\"2023-10-06\",\"date_fin\":\"2023-10-08\"},{\"journee_numero\":5,\"date_debut\":\"2023-10-13\",\"date_fin\":\"2023-10-15\"},{\"journee_numero\":6,\"date_debut\":\"2023-11-10\",\"date_fin\":\"2023-11-12\"},{\"journee_numero\":7,\"date_debut\":\"2023-11-24\",\"date_fin\":\"2023-11-26\"},{\"journee_numero\":8,\"date_debut\":\"2023-12-01\",\"date_fin\":\"2023-12-03\"},{\"journee_numero\":9,\"date_debut\":\"2023-12-08\",\"date_fin\":\"2023-12-10\"},{\"journee_numero\":10,\"date_debut\":\"2024-01-12\",\"date_fin\":\"2024-01-14\"},{\"journee_numero\":11,\"date_debut\":\"2024-01-19\",\"date_fin\":\"2024-01-21\"},{\"journee_numero\":12,\"date_debut\":\"2024-01-26\",\"date_fin\":\"2024-01-28\"},{\"journee_numero\":13,\"date_debut\":\"2024-02-02\",\"date_fin\":\"2024-02-04\"},{\"journee_numero\":14,\"date_debut\":\"2024-03-01\",\"date_fin\":\"2024-03-03\"},{\"journee_numero\":15,\"date_debut\":\"2024-03-08\",\"date_fin\":\"2024-03-10\"},{\"journee_numero\":16,\"date_debut\":\"2024-03-22\",\"date_fin\":\"2024-03-24\"},{\"journee_numero\":17,\"date_debut\":\"2024-04-05\",\"date_fin\":\"2024-04-07\"},{\"journee_numero\":18,\"date_debut\":\"2024-04-26\",\"date_fin\":\"2024-04-28\"},{\"journee_numero\":19,\"date_debut\":\"2024-05-03\",\"date_fin\":\"2024-05-05\"},{\"journee_numero\":20,\"date_debut\":\"2024-05-24\",\"date_fin\":\"2024-05-26\"},{\"journee_numero\":21,\"date_debut\":\"2024-05-31\",\"date_fin\":\"2024-06-02\"},{\"journee_numero\":22,\"date_debut\":\"2024-06-07\",\"date_fin\":\"2024-06-09\"}]",
-        "dateDernierUpdateEnfants": "2023-09-25 18:01:10.000",
+        "dateDernierUpdateEnfants": "2024-01-23 18:02:31.000",
         "phase_competitionId": "17095"
     },
     "equipe_options":
@@ -123,8 +123,8 @@
             "id": "41894",
             "ext_phaseId": "74020",
             "competitionId": "17095",
-            "libelle": "+16 ANS MASCULINS 2 EME DIVISION TERRITORIALE",
-            "dateDernierUpdateEnfants": "2023-09-25 09:52:38.000",
+            "libelle": "+16 ANS MACULINE 2 EME DIVISION TERRITORIALE 94 & 75",
+            "dateDernierUpdateEnfants": "2024-01-23 18:02:31.000",
             "classement": "1"
         }
     ],
@@ -136,7 +136,7 @@
             "phaseId": "41894",
             "libelle": "UNIQUE",
             "journees": "[{\"journee_numero\":1,\"date_debut\":\"2023-09-15\",\"date_fin\":\"2023-09-17\"},{\"journee_numero\":2,\"date_debut\":\"2023-09-22\",\"date_fin\":\"2023-09-24\"},{\"journee_numero\":3,\"date_debut\":\"2023-09-29\",\"date_fin\":\"2023-10-01\"},{\"journee_numero\":4,\"date_debut\":\"2023-10-06\",\"date_fin\":\"2023-10-08\"},{\"journee_numero\":5,\"date_debut\":\"2023-10-13\",\"date_fin\":\"2023-10-15\"},{\"journee_numero\":6,\"date_debut\":\"2023-11-10\",\"date_fin\":\"2023-11-12\"},{\"journee_numero\":7,\"date_debut\":\"2023-11-24\",\"date_fin\":\"2023-11-26\"},{\"journee_numero\":8,\"date_debut\":\"2023-12-01\",\"date_fin\":\"2023-12-03\"},{\"journee_numero\":9,\"date_debut\":\"2023-12-08\",\"date_fin\":\"2023-12-10\"},{\"journee_numero\":10,\"date_debut\":\"2024-01-12\",\"date_fin\":\"2024-01-14\"},{\"journee_numero\":11,\"date_debut\":\"2024-01-19\",\"date_fin\":\"2024-01-21\"},{\"journee_numero\":12,\"date_debut\":\"2024-01-26\",\"date_fin\":\"2024-01-28\"},{\"journee_numero\":13,\"date_debut\":\"2024-02-02\",\"date_fin\":\"2024-02-04\"},{\"journee_numero\":14,\"date_debut\":\"2024-03-01\",\"date_fin\":\"2024-03-03\"},{\"journee_numero\":15,\"date_debut\":\"2024-03-08\",\"date_fin\":\"2024-03-10\"},{\"journee_numero\":16,\"date_debut\":\"2024-03-22\",\"date_fin\":\"2024-03-24\"},{\"journee_numero\":17,\"date_debut\":\"2024-04-05\",\"date_fin\":\"2024-04-07\"},{\"journee_numero\":18,\"date_debut\":\"2024-04-26\",\"date_fin\":\"2024-04-28\"},{\"journee_numero\":19,\"date_debut\":\"2024-05-03\",\"date_fin\":\"2024-05-05\"},{\"journee_numero\":20,\"date_debut\":\"2024-05-24\",\"date_fin\":\"2024-05-26\"},{\"journee_numero\":21,\"date_debut\":\"2024-05-31\",\"date_fin\":\"2024-06-02\"},{\"journee_numero\":22,\"date_debut\":\"2024-06-07\",\"date_fin\":\"2024-06-09\"}]",
-            "dateDernierUpdateEnfants": "2023-09-25 18:01:10.000",
+            "dateDernierUpdateEnfants": "2024-01-23 18:02:31.000",
             "phase_competitionId": "17095"
         }
     ]

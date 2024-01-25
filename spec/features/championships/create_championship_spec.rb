@@ -54,10 +54,10 @@ describe 'create championship' do
       select('94 - COMITE DU VAL-DE-MARNE', from: 'code_comite')
       click_on 'Valider'
 
-      select('+16 ANS MASCULINS 2 EME DIVISION TERRITORIALE', from: 'code_competition')
+      select('+16 ANS M 2 EME DIVISION TERRITORIALE 94 & 75', from: 'code_competition')
       click_on 'Valider'
 
-      select('+16 ANS MASCULINS 2 EME DIVISION TERRITORIALE', from: 'phase_id')
+      select('+16 ANS MACULINE 2 EME DIVISION TERRITORIALE 94 & 75', from: 'phase_id')
       click_on 'Valider'
 
       select('UNIQUE', from: 'code_pool')

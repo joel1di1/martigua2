@@ -103,7 +103,7 @@ describe 'Add Match', :devise do
       click_on 'Next'
 
       assert_text 'Equipe adverse ?'
-      select adversary_team.name, from: 'Equipe adverse'
+      select adversary_team.name, from: 'adversary_team_id'
       click_on 'Next'
 
       assert_text 'Nouveau match'

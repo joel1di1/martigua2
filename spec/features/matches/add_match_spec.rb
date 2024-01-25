@@ -36,7 +36,7 @@ describe 'Add Match', :devise do
       click_on 'Ajouter une journée'
       select(17, from: 'day_period_start_date_3i')
       select('octobre', from: 'day_period_start_date_2i')
-      select(2018, from: 'day_period_start_date_1i')
+      select(2024, from: 'day_period_start_date_1i')
       fill_in 'day[name]', with: day_name
       expect do
         click_on 'Créer un(e) Journée'

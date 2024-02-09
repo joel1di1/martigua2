@@ -110,4 +110,17 @@ RSpec.describe Championship do
 
     it { expect(championship.burned_players).to contain_exactly(player1, player3) }
   end
+
+  describe '#find_or_create_day_for' do
+    context 'with no existing day' do
+      it 'creates a new day' do
+        day = championship.find_or_create_day_for(Time.parse('2023-09-16'))
+        expect(day).to be_persisted
+        expect(day.period_start_date).to eq(Date.parse('2023-09-11'))
+        expect(day.period_end_date).to eq(Date.parse('2023-09-18'))
+        expect(day.name).to eq('Week 2023-09-11 2023-09-17')
+      end
+    end
+    
+  end
 end

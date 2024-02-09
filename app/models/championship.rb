@@ -85,6 +85,10 @@ class Championship < ApplicationRecord
     championship_groups.map { |championship_group| championship_group.freeze!(user, championship: self) }
   end
 
+  def find_or_create_day_for(datetime)
+    calendar.find_or_create_day_for(datetime)
+  end
+
   private
 
   def find_match_by_team_names(event_team_names)

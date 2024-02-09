@@ -138,5 +138,7 @@ RSpec.describe Match do
 
     it { expect(match.location.name).to eq('gymnase abel-rospide (ex jean-mace)') }
     it { expect(match.location.ffhb_id).to eq '1395' }
+
+    it { expect(match.day.name).to eq('Week 2023-09-11 2023-09-17') }
   end
 end

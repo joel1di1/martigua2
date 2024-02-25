@@ -12,8 +12,9 @@ RSpec.describe Message do
   end
 
   describe 'creating a message' do
-    let(:user) { create(:user) }
-    let(:channel) { create(:channel) }
+    let(:section) { create(:section) }
+    let(:user) { create(:user, with_section: section) }
+    let(:channel) { create(:channel, section: section) }
     let(:parent_message) { create(:message, user:, channel:) }
 
     it 'creates a valid message' do
@@ -24,6 +25,19 @@ RSpec.describe Message do
     it 'creates a valid child message' do
       child_message = build(:message, user:, channel:, parent_message:)
       expect(child_message).to be_valid
+    end
+
+    context 'with another user' do
+      let!(:other_user) { create(:user, with_section: section) }
+
+      it "expect notifications to be sent" do 
+        Sidekiq::Testing.inline! do
+          # expect to have WebPushService called on send_notification_to_all_user_subscriptions
+          expect(WebpushService).to receive(:send_notification_to_all_user_subscriptions).once
+
+          create(:message, user:, channel:)
+        end
+      end
     end
   end
 end

@@ -14,6 +14,18 @@ class Message < ApplicationRecord
   validates :content, presence: true
 
   after_create_commit -> { broadcast_append_to channel }
+  after_create_commit :async_notify_users
 
   has_rich_text :content
+
+  def notify_users
+    title = "New message in #{channel.section.name}"
+    body = "#{user.short_name}: #{content.to_plain_text.truncate(50)}"
+
+    channel.section.users.each do |user|
+      next if user == self.user
+
+      WebpushService.send_notification_to_all_user_subscriptions(user, title:, body:)
+    end
+  end
 end

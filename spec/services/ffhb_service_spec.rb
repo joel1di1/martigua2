@@ -43,7 +43,7 @@ RSpec.describe FfhbService do
       it { expect(calendar.days[1]).to be_a(Day) }
       it { expect(calendar.days[1].name).to eq('WE du 22 sept. au 24 sept.') }
       it { expect(calendar.days[19].name).to eq('WE du 24 mai au 26 mai') }
-      it { expect(calendar.days[1].period_start_date).to eq(Date.new(2023, 9, 22)) }
+      it { expect(calendar.days[1].period_start_date).to eq(Date.new(2023, 9, 18)) }
       it { expect(calendar.days[1].period_end_date).to eq(Date.new(2023, 9, 24)) }
 
       context 'with a linked calendar' do

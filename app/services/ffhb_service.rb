@@ -117,7 +117,7 @@ class FfhbService
       period_end_date = Date.parse(journee['date_fin'])
       day_name = "WE du #{I18n.l(period_start_date, format: :short)} au #{I18n.l(period_end_date, format: :short)}"
 
-      day = find_or_create_day(calendar, linked_calendar, day_name, period_start_date, period_end_date)
+      day = find_or_create_day(calendar, day_name, period_start_date.beginning_of_week, period_end_date)
 
       journee_details = fetch_journee_details(pool_details['url_competition'], pool_details['ext_poule_id'],
                                               journee['journee_numero'])
@@ -135,8 +135,8 @@ class FfhbService
     [calendar, matches]
   end
 
-  def find_or_create_day(calendar, linked_calendar, day_name, period_start_date, period_end_date)
-    day = linked_calendar.days.find_by(name: day_name) if linked_calendar.present?
+  def find_or_create_day(calendar, day_name, period_start_date, period_end_date)
+    day = calendar.days.find_by(name: day_name)
     if day.blank?
       day = Day.new(name: day_name, period_start_date:, period_end_date:)
       calendar.days << day

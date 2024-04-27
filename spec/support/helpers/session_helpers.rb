@@ -7,16 +7,16 @@ module Features
       fill_in 'Email', with: email
       fill_in 'Mot de passe', with: password
       fill_in 'Confirmation du mot de passe', with: confirmation
-      click_button 'Sign up'
+      click_on 'Sign up'
     end
 
     def signin(email, password, close_notice: false)
       visit root_path
       fill_in 'Email', with: email
       fill_in 'Mot de passe', with: password
-      click_button 'Se connecter'
+      click_on 'Se connecter'
 
-      click_button 'close-flash-notice' if close_notice
+      click_on 'close-flash-notice' if close_notice
     end
 
     def signin_user(user, close_notice: false)

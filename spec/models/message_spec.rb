@@ -14,7 +14,7 @@ RSpec.describe Message do
   describe 'creating a message' do
     let(:section) { create(:section) }
     let(:user) { create(:user, with_section: section) }
-    let(:channel) { create(:channel, section: section) }
+    let(:channel) { create(:channel, section:) }
     let(:parent_message) { create(:message, user:, channel:) }
 
     it 'creates a valid message' do
@@ -30,7 +30,7 @@ RSpec.describe Message do
     context 'with another user' do
       let!(:other_user) { create(:user, with_section: section) }
 
-      it "expect notifications to be sent" do 
+      it 'expect notifications to be sent' do
         Sidekiq::Testing.inline! do
           # expect to have WebPushService called on send_notification_to_all_user_subscriptions
           expect(WebpushService).to receive(:send_notification_to_all_user_subscriptions).once

@@ -16,7 +16,7 @@ class MoveAllPreviousDaysToDefaultCalendar < ActiveRecord::Migration[5.1]
   DEFAULT_NAME = '*DEFAULT_CALENDAR_FOR_MIGRATION*'
 
   def up
-    Season.all.each do |season|
+    Season.find_each do |season|
       next if season.calendars.count.positive?
 
       calendar = Calendar.create! season:, name: DEFAULT_NAME

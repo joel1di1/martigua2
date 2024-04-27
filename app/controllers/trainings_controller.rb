@@ -78,6 +78,6 @@ class TrainingsController < ApplicationController
   end
 
   def set_current_training
-    @training = Training.of_section(current_section).where(id: params[:id]).take if params[:id]
+    @training = Training.of_section(current_section).find_by(id: params[:id]) if params[:id]
   end
 end

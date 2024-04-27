@@ -16,12 +16,12 @@ describe 'send training invitation', :devise, :js do
 
     signin coach.email, coach.password
     within '#links' do
-      click_link 'Entrainements'
+      click_on 'Entrainements'
     end
 
     submit_id = "training_invitations_#{training.id}"
     expect do
-      accept_confirm('Renvoyer les mails pour les indécits ?') { click_button(submit_id) }
+      accept_confirm('Renvoyer les mails pour les indécits ?') { click_on(submit_id) }
       assert_text 'Notifications envoyées'
     end.to change { training.invitations.count }.by(1)
   end

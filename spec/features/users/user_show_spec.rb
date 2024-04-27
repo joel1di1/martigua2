@@ -52,7 +52,7 @@ describe 'User profile page', :devise do
     expect(page).to have_content other.email
 
     visit section_users_path(section_id: section.to_param)
-    click_link other.full_name
+    click_on other.full_name
     expect(page).to have_content other.phone_number
     expect(page).to have_content 'Surnom'
   end

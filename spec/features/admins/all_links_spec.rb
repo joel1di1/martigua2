@@ -28,10 +28,10 @@ describe 'Active Admin', :devise do
                     'Trainings', 'Training Presences', 'Utilisateurs']
 
     admins_pages.each do |admin_page|
-      click_link admin_page
+      click_on admin_page
       expect(page.all('#page-title', text: admin_page).size).to eq 1
 
-      click_link "Création #{admin_page.chop.downcase}"
+      click_on "Création #{admin_page.chop.downcase}"
       expect(page.all('h1.main-content__page-title', text: "Création #{admin_page.chop}").size).to eq(1), admin_page
     end
   end

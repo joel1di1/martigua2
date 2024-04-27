@@ -76,7 +76,7 @@ class ApplicationController < ActionController::Base
       format.html { render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false) }
       format.xml  { head :forbidden }
       format.json { head :forbidden }
-      format.js  { head :forbidden }
+      format.js { head :forbidden }
     end
   end
 

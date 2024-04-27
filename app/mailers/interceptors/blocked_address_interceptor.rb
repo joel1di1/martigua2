@@ -24,7 +24,7 @@ module Interceptors
       wildcard_blocked_addresses = BlockedAddress.where('email LIKE ?', '*%').pluck(:email)
 
       # retrieve all wildcard blocked domains, removing the *
-      wildcard_blocked_domains = wildcard_blocked_addresses.map { |blocked_address| blocked_address[1..] }
+      wildcard_blocked_domains = wildcard_blocked_addresses.pluck(1..)
 
       # remove all blocked addresses matching the wildcard blocked domains
       message.to = message.to.select { |address| wildcard_blocked_domains.none? { |domain| address.ends_with?(domain) } }

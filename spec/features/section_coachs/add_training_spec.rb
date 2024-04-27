@@ -14,15 +14,15 @@ describe 'Add training', :devise do
     location = create(:location)
     signin section_coach.email, section_coach.password
     within '#links' do
-      click_link 'Entrainements'
+      click_on 'Entrainements'
     end
 
-    click_link 'Ajouter un entrainement'
+    click_on 'Ajouter un entrainement'
 
     select(location.name, from: 'training_location_id')
 
     expect do
-      click_button('Ajouter l\'entrainement')
+      click_on('Ajouter l\'entrainement')
       assert_text 'Entrainement créé'
     end.to change(Training, :count).by(1)
   end

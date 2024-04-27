@@ -15,11 +15,11 @@ describe 'Invite User', :devise do
     signin section_coach.email, section_coach.password
     expect(page).to have_link 'Membres'
     within '#links' do
-      click_link 'Membres'
+      click_on 'Membres'
     end
     expect(page).to have_current_path section_users_path(section_coach.sections.first), ignore_query: true
     expect(page).to have_link 'Ajouter un joueur'
-    click_link 'Ajouter un joueur'
+    click_on 'Ajouter un joueur'
     expect(page).to have_current_path new_section_section_user_invitation_path(section_coach.sections.first),
                                       ignore_query: true
 
@@ -31,7 +31,7 @@ describe 'Invite User', :devise do
     fill_in 'section_user_invitation[phone_number]', with: invited_user.phone_number
 
     expect do
-      click_button('Inviter le joueur')
+      click_on('Inviter le joueur')
       assert_text "#{invited_user.email} invité !"
     end.to change(SectionUserInvitation, :count).by(1)
   end

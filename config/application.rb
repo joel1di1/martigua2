@@ -27,7 +27,6 @@ module Martigua2
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.active_record.schema_format = :sql
-    config.active_record.legacy_connection_handling = false
 
     # TODO: remove when get rid of scss
     config.assets.css_compressor = nil

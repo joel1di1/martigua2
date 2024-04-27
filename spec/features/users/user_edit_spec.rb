@@ -25,7 +25,7 @@ describe 'User edit', :devise do
     fill_in 'Mot de passe actuel', with: user.password
     fill_in 'Nouveau mot de passe', with: new_password
     fill_in 'Confimation du nouveau mot de passe', with: new_password
-    click_button 'Mettre à jour'
+    click_on 'Mettre à jour'
     expect(page).to have_content 'Votre compte a bien été modifié.'
   end
 
@@ -41,7 +41,7 @@ describe 'User edit', :devise do
     visit edit_section_user_url(section, user)
     check 'Coach'
     uncheck 'Player'
-    click_button 'Modifier ce(tte) Utilisateur'
+    click_on 'Modifier ce(tte) Utilisateur'
 
     expect(page).to have_content 'Prochains matchs'
     user.reload

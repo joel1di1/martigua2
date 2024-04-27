@@ -7,8 +7,7 @@ class Calendar < ApplicationRecord
   validates :name, presence: true
 
   def find_or_create_day_for(datetime)
-
-    existing_day = days.find do |day| 
+    existing_day = days.find do |day|
       day.period_start_date <= datetime && day.period_end_date >= datetime
     end
 
@@ -16,6 +15,6 @@ class Calendar < ApplicationRecord
 
     period_start_date = datetime.beginning_of_week.to_date
     period_end_date = period_start_date + 1.week
-    days.create!(name: "Week #{period_start_date} #{period_end_date - 1.day}",period_start_date:, period_end_date:)
+    days.create!(name: "Week #{period_start_date} #{period_end_date - 1.day}", period_start_date:, period_end_date:)
   end
 end

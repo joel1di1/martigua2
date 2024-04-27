@@ -12,6 +12,10 @@ class DutyTasksController < ApplicationController
     @duty_task = DutyTask.new
   end
 
+  def edit
+    @duty_task = current_section.club.duty_tasks.find(params[:id])
+  end
+
   def create
     @duty_task = DutyTask.new(duty_task_params.merge(club: current_section.club))
     if @duty_task.save
@@ -19,10 +23,6 @@ class DutyTasksController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
-  end
-
-  def edit
-    @duty_task = current_section.club.duty_tasks.find(params[:id])
   end
 
   def update

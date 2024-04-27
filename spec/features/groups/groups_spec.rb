@@ -14,7 +14,7 @@ describe 'See group detail' do
 
     it 'visit the group page with defaults groups' do
       within '#links' do
-        click_link 'Groupes'
+        click_on 'Groupes'
       end
       expect(page).to have_content section.group_everybody.name
     end
@@ -25,14 +25,14 @@ describe 'See group detail' do
 
       group1.add_user!(user)
       within '#links' do
-        click_link 'Groupes'
+        click_on 'Groupes'
       end
 
       expect(page).to have_content group1.name
       expect(page).to have_content group2.name
       expect(page).to have_content section.group_everybody.name
 
-      click_link group1.name
+      click_on group1.name
       expect(page).to have_content group1.name
     end
   end
@@ -42,7 +42,7 @@ describe 'See group detail' do
 
     it 'admin creates new group' do
       within '#links' do
-        click_link 'Groupes'
+        click_on 'Groupes'
       end
       assert_text '2 groupes'
 

@@ -16,7 +16,7 @@ describe 'send training invitation', :devise, :js do
 
     signin coach.email, coach.password
     within '#links' do
-      click_link 'Entrainements'
+      click_on 'Entrainements'
     end
 
     submit_id = "training_invitations_#{training.id}"

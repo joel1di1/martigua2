@@ -85,9 +85,7 @@ class Championship < ApplicationRecord
     championship_groups.map { |championship_group| championship_group.freeze!(user, championship: self) }
   end
 
-  def find_or_create_day_for(datetime)
-    calendar.find_or_create_day_for(datetime)
-  end
+  delegate :find_or_create_day_for, to: :calendar
 
   private
 

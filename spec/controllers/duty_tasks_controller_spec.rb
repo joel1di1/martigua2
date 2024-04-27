@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe DutyTasksController, type: :controller do
+RSpec.describe DutyTasksController do
   let(:section) { create(:section) }
   let(:user) { create(:user, with_section: section) }
-  let(:duty_task) { create(:duty_task, user: user, club: section.club) }
+  let(:duty_task) { create(:duty_task, user:, club: section.club) }
   let(:duty_task_attributes) { attributes_for(:duty_task).merge(user_id: user.id, club_id: section.club.id) }
 
   before do
@@ -19,7 +21,7 @@ RSpec.describe DutyTasksController, type: :controller do
 
   describe 'GET #new' do
     it 'assigns a new duty task as @duty_task' do
-      get :new , params: { section_id: section.to_param }
+      get :new, params: { section_id: section.to_param }
       expect(assigns(:duty_task)).to be_a_new(DutyTask)
     end
   end
@@ -27,9 +29,9 @@ RSpec.describe DutyTasksController, type: :controller do
   describe 'POST #create' do
     context 'with valid params' do
       it 'creates a new DutyTask' do
-        expect {
+        expect do
           post :create, params: { section_id: section.to_param, duty_task: duty_task_attributes }
-        }.to change(DutyTask, :count).by(1)
+        end.to change(DutyTask, :count).by(1)
       end
 
       it 'redirects to the created duty task' do
@@ -66,12 +68,12 @@ RSpec.describe DutyTasksController, type: :controller do
       it 'does not update the duty task' do
         put :update, params: { section_id: section.to_param, id: duty_task.to_param, duty_task: { key: nil } }
         duty_task.reload
-        expect(duty_task.key).not_to eq(nil)
+        expect(duty_task.key).not_to be_nil
       end
 
       it 're-renders the "edit" template' do
         put :update, params: { section_id: section.to_param, id: duty_task.to_param, duty_task: { key: nil } }
-        expect(response).to render_template("edit")
+        expect(response).to render_template('edit')
       end
     end
   end

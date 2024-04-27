@@ -431,8 +431,6 @@ GEM
       rubocop-rspec_rails (~> 2.28)
     rubocop-rspec_rails (2.28.3)
       rubocop (~> 1.40)
-    ruby-debug-ide (0.7.3)
-      rake (>= 0.8.1)
     ruby-progressbar (1.13.0)
     ruby-vips (2.2.1)
       ffi (~> 1.12)
@@ -589,7 +587,6 @@ DEPENDENCIES
   rubocop
   rubocop-rails
   rubocop-rspec
-  ruby-debug-ide
   sentry-rails
   sentry-ruby
   sentry-sidekiq
@@ -610,7 +607,7 @@ DEPENDENCIES
   web-push
 
 RUBY VERSION
-   ruby 3.2.2p53
+   ruby 3.3.1p55
 
 BUNDLED WITH
    2.5.9

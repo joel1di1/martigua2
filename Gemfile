@@ -76,6 +76,7 @@ end
 
 group :development do
   gem 'rack-mini-profiler'
+  gem 'ruby-lsp-rspec', require: false
   gem 'web-console'
 end
 

@@ -28,7 +28,9 @@ RSpec.describe Message do
     end
 
     context 'with another user' do
-      let!(:other_user) { create(:user, with_section: section) }
+      let(:other_user) { create(:user, with_section: section) }
+
+      before { other_user }
 
       it 'expect notifications to be sent' do
         Sidekiq::Testing.inline! do

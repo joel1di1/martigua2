@@ -2,7 +2,7 @@
 
 require 'singleton'
 
-class FfhbService
+class FfhbService # rubocop:disable Metrics/ClassLength
   include Singleton
 
   def http_get_with_cache(url)

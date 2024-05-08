@@ -34,7 +34,7 @@ class CalendarService
   end
 
   def create_client_id
-    if Rails.env.development? || Rails.env.test?
+    if Rails.env.local?
       Google::Auth::ClientId.from_file(CLIENT_SECRETS_PATH)
     else
       Google::Auth::ClientId.new(Rails.application.secrets.google_client_id,
@@ -43,7 +43,7 @@ class CalendarService
   end
 
   def create_token_store
-    if Rails.env.development? || Rails.env.test?
+    if Rails.env.local?
       FileUtils.mkdir_p(File.dirname(CREDENTIALS_PATH))
       Google::Auth::Stores::FileTokenStore.new(file: CREDENTIALS_PATH)
     else

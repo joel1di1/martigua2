@@ -1,10 +1,17 @@
 languages:
    Ruby: true
    JavaScript: true
-   Python: true
-   PHP: true
 exclude_paths:
-- "app/assets/javascripts/3rd/*"
-- "app/assets/stylesheets/3rd/*"
-- "db/*"
-- "spec/*"
+   - "app/assets/javascripts/3rd/*"
+   - "app/assets/stylesheets/3rd/*"
+   - "db/*"
+   - "spec/*"
+
+# add brakeman plugin
+
+plugins:
+   brakeman:
+      enabled: true
+   reek:
+      enabled: true
+      channel: beta

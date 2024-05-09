@@ -1,5 +1,6 @@
-[![Code Climate](https://codeclimate.com/github/joel1di1/martigua2.png)](https://codeclimate.com/github/joel1di1/martigua2)
-[![Test Coverage](https://codeclimate.com/github/joel1di1/martigua2/coverage.png)](https://codeclimate.com/github/joel1di1/martigua2)
+[![Maintainability](https://api.codeclimate.com/v1/badges/f023a142fab9d17c0d7b/maintainability)](https://codeclimate.com/github/joel1di1/martigua2/maintainability)
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/f023a142fab9d17c0d7b/test_coverage)](https://codeclimate.com/github/joel1di1/martigua2/test_coverage)
 
 Martigua2
 =========

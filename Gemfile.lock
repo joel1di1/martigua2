@@ -611,6 +611,7 @@ DEPENDENCIES
   simple_form
   simple_form-tailwind
   simplecov
+  simplecov_json_formatter
   slim
   sprockets-rails
   stimulus-rails

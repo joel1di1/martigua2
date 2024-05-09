@@ -89,5 +89,6 @@ group :test do
   gem 'rspec-its'
   gem 'shoulda-matchers', require: false
   gem 'simplecov', require: false
+  gem 'simplecov_json_formatter', require: false
   gem 'timecop'
 end

@@ -64,29 +64,36 @@ const sendSubscriptionToServer = async (subscription) => {
   }
 };
 
-document.addEventListener('turbo:load', () => {
-  if (('serviceWorker' in navigator) && ('PushManager' in window)) {
-    if (window.location.pathname.startsWith('/sections')) {
-      registerServiceWorker();
+document.addEventListener('turbo:load', async () => {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    return;
+  }
 
-      navigator.serviceWorker.ready.then(async (serviceWorkerRegistration) => {
-        console.log('Service worker ready, checking subscription status');
-        const existingSubscription = await serviceWorkerRegistration.pushManager.getSubscription();
+  if (!window.location.pathname.startsWith('/sections')) {
+    return;
+  }
 
-        if (existingSubscription) {
-          console.log('Already subscribed to pushManager');
-        } else {
-          const permission = await Notification.requestPermission();
-          if (permission === 'granted') {
-            const subscription = await subscribeToPushManager(serviceWorkerRegistration);
-            if (subscription) {
-              await sendSubscriptionToServer(subscription);
-            }
-          } else {
-            console.log('Permission not granted for Notifications');
-          }
-        }
-      });
+  try {
+    const serviceWorkerRegistration = await navigator.serviceWorker.register(SERVICE_WORKER_PATH);
+    console.log('Service worker registered');
+
+    const existingSubscription = await serviceWorkerRegistration.pushManager.getSubscription();
+    if (existingSubscription) {
+      console.log('Already subscribed to pushManager');
+      return;
     }
+
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      console.log('Permission not granted for Notifications');
+      return;
+    }
+
+    const subscription = await subscribeToPushManager(serviceWorkerRegistration);
+    if (subscription) {
+      await sendSubscriptionToServer(subscription);
+    }
+  } catch (error) {
+    console.error('Error:', error);
   }
 });

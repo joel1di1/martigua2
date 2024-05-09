@@ -49,10 +49,7 @@ jobs:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/martigua2_test
 
-      - name: Collect coverage data
-        uses: paambaati/codeclimate-action@v3.0.0
+      - name: Publish coverage data to Code Climate
+        uses: paambaati/codeclimate-action@v6.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: bundle exec rspec
-          debug: true

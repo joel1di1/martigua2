@@ -29,15 +29,27 @@ class ApplicationController < ActionController::Base
   protected
 
   def redirect_with(fallback: root_path, additionnal_params: {}, use_referrer: true, **options)
-    if params[:_redirect_url].present?
-      url = params[:_redirect_url].presence
-      url += url['?'] ? '&' : '?'
-      url += URI.encode_www_form(additionnal_params)
-    else
-      url = filtered_referrer if use_referrer
-      url ||= fallback
-    end
+    url = construct_url(additionnal_params, use_referrer, fallback)
     redirect_to url, options
+  end
+
+  def construct_url(additionnal_params, use_referrer, fallback)
+    if params[:_redirect_url].present?
+      construct_url_with_redirect_url(additionnal_params)
+    else
+      construct_url_with_referrer_and_fallback(use_referrer, fallback)
+    end
+  end
+
+  def construct_url_with_redirect_url(additionnal_params)
+    url = params[:_redirect_url].presence
+    url += url['?'] ? '&' : '?'
+    url + URI.encode_www_form(additionnal_params)
+  end
+
+  def construct_url_with_referrer_and_fallback(use_referrer, fallback)
+    url = filtered_referrer if use_referrer
+    url || fallback
   end
 
   def filtered_referrer

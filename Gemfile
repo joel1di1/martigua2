@@ -88,5 +88,6 @@ group :test do
   gem 'rails-controller-testing'
   gem 'rspec-its'
   gem 'shoulda-matchers', require: false
+  gem 'simplecov', require: false
   gem 'timecop'
 end

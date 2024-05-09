@@ -39,3 +39,4 @@ latest.dump*
 spec/failures.txt
 .idea/
 .vscode/launch.json
+coverage

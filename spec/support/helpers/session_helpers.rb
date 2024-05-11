@@ -7,7 +7,7 @@ module Features
       fill_in 'Email', with: email
       fill_in 'Mot de passe', with: password
       fill_in 'Confirmation du mot de passe', with: confirmation
-      click_on 'Sign up'
+      click_on 'Inscription'
     end
 
     def signin(email, password, close_notice: false)

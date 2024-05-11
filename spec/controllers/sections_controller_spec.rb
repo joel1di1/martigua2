@@ -43,4 +43,34 @@ describe SectionsController do
     it { expect(response).to have_http_status(:success) }
     it { expect(assigns[:next_trainings]).to be }
   end
+
+  describe '#suggested_user_stat' do
+    let(:player) { create(:user, first_name: 'John', last_name: 'Doe') }
+    let(:user_stats) do
+      [
+        create(:user_championship_stat, first_name: 'John', last_name: 'Doe'),
+        create(:user_championship_stat, first_name: 'Jane', last_name: 'Doe'),
+        create(:user_championship_stat, first_name: 'John', last_name: 'Smith')
+      ]
+    end
+
+    it 'returns the user_stat with the same name as the player' do
+      suggested_user_stat = subject.send(:suggested_user_stat, player, user_stats)
+      expect(suggested_user_stat.first_name).to eq('John')
+      expect(suggested_user_stat.last_name).to eq('Doe')
+    end
+
+    it 'returns the user_stat with the most similar name to the player' do
+      player = create(:user, first_name: 'John', last_name: 'Smith')
+      suggested_user_stat = subject.send(:suggested_user_stat, player, user_stats)
+      expect(suggested_user_stat.first_name).to eq('John')
+      expect(suggested_user_stat.last_name).to eq('Smith')
+    end
+
+    it 'returns nil if no user_stat has a similar name to the player' do
+      player = create(:user, first_name: 'Alice', last_name: 'Johnson')
+      suggested_user_stat = subject.send(:suggested_user_stat, player, user_stats)
+      expect(suggested_user_stat).to be_nil
+    end
+  end
 end

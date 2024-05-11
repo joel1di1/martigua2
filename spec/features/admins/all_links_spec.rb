@@ -56,7 +56,6 @@ describe 'Active Admin', :devise do
     expect(page).to have_content 'Users'
 
     admins_pages.each do |admin_page|
-      puts "Checking #{admin_page}"
       click_on admin_page
       expect(page.all('#page-title', text: admin_page).size).to eq 1
 

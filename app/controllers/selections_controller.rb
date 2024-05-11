@@ -49,38 +49,9 @@ class SelectionsController < ApplicationController
 
   def destroy
     selection = Selection.find(params[:id])
-    @match = selection.match
-    @user = selection.user
     selection.destroy!
 
     respond_to do |format|
-      format.js do
-        @teams_with_matches = Team.team_with_match_on(@match.day, current_section)
-        @availabilities_by_user_and_match = {}
-        player = @user
-        @availabilities_by_user_and_match[player.id] = {}
-
-        matches = @match.day.matches
-        matches.each { |match| @availabilities_by_user_and_match[player.id][match.id] = nil }
-
-        @players_target = 'no-response-players'
-        availabilities = MatchAvailability.includes(:user).where(match: matches, user: @user)
-        availabilities.each do |availability|
-          if @availabilities_by_user_and_match[availability.user_id]
-            @availabilities_by_user_and_match[availability.user_id][availability.match_id] =
-              availability.available
-          end
-          if availability.available
-            @players_target = 'available-players'
-          elsif @players_target == 'no-response-players' && availability.available == false
-            @players_target = '#non-available-players'
-          end
-        end
-
-        @last_trainings ||= Training.of_section(current_section).with_start_between(2.months.ago,
-                                                                                    6.hours.from_now).last(10)
-        render 'matches/selection'
-      end
       format.html { redirect_with(fallback: root_path) }
     end
   end

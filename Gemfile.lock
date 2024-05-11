@@ -600,6 +600,7 @@ DEPENDENCIES
   rspec-its
   rspec-rails
   rubocop
+  rubocop-capybara
   rubocop-rails
   rubocop-rspec
   ruby-lsp-rspec

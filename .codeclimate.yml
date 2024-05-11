@@ -12,6 +12,3 @@ exclude_paths:
 plugins:
    brakeman:
       enabled: true
-   reek:
-      enabled: true
-      channel: beta

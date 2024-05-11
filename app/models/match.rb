@@ -22,8 +22,6 @@ class Match < ApplicationRecord
 
   delegate :burned?, to: :championship
 
-  after_save :update_shared_calendar
-
   def date
     if start_datetime
       start_datetime.to_fs(:short)
@@ -95,19 +93,6 @@ class Match < ApplicationRecord
 
   def selections(team)
     Selection.includes(:user).where(match: self, team:)
-  end
-
-  def update_shared_calendar
-    nil if Rails.env.test? || start_datetime.blank?
-    # event = CalendarService.instance.create_or_update_event(
-    #   shared_calendar_id,
-    #   "#{local_team.try(:name)} - #{visitor_team.try(:name)}",
-    #   nil,
-    #   start_datetime, start_datetime + 2.hours,
-    #   "#{location.try(:name)}, #{location.try(:address)}"
-    # )
-
-    # update! shared_calendar_id: event.id, shared_calendar_url: event.html_link
   end
 
   def meeting_datetime

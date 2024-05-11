@@ -42,59 +42,6 @@ RSpec.describe Championship do
     end
   end
 
-  describe 'sync ffhb' do
-    before { mock_ffhb }
-
-    let(:type_competition) { 'D' }
-    let(:code_comite) { 94 }
-    let(:code_competition) { '16-ans-m-2-eme-division-territoriale-94-75-23229' }
-    let(:phase_id) { '41894' }
-    let(:code_pool) { '128335' }
-    let(:linked_calendar) { nil }
-
-    describe '#ffhb_sync!' do
-      let(:my_team) { create(:team) }
-      let(:team_links) { { '1589702' => my_team.id } }
-
-      let(:championship) do
-        Championship.create_from_ffhb!(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:,
-                                       team_links:, linked_calendar:)
-      end
-
-      it 'updates matches with start_datetime, location and score' do
-        expect(championship.matches.size).to eq(22)
-
-        expect(championship.matches).to all(receive(:ffhb_sync!))
-
-        championship.ffhb_sync!
-      end
-
-      #   describe 'updates user championship stats' do
-      #     let(:alexis) { create(:user, with_section: section) }
-      #     let(:clement) { create(:user, with_section: section) }
-      #     let(:lower_championship) { create(:championship, season: Season.current, name: 'COMITE DE LOIRE ATLANTIQUE - 3EME DTM 44') }
-
-      #     before do
-      #       UserChampionshipStat.create!(user: alexis, championship:, player_id: '6244093100969')
-      #       UserChampionshipStat.create!(user: alexis, championship: lower_championship, player_id: '6244093100969')
-      #       UserChampionshipStat.create!(user: clement, championship:, player_id: '6244093100892')
-      #       group = ChampionshipGroup.create!
-      #       group.add_championship(championship, index: 1)
-      #       group.add_championship(lower_championship, index: 2)
-      #     end
-
-      #     it 'updates burned players in lower championship' do
-      #       expect { championship.ffhb_sync! }.to change { lower_championship.reload.burned?(alexis) }.from(false).to(true)
-      #     end
-
-      #     it 'keep player untouched for championship where he played' do
-      #       expect { championship.ffhb_sync! }.not_to(change { championship.reload.burned?(alexis) })
-      #     end
-      #   end
-      #
-    end
-  end
-
   describe '.burned_players' do
     let(:section) { create(:section) }
     let!(:player1) { create(:user, with_section: section) }

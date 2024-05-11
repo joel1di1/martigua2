@@ -39,16 +39,21 @@ class Championship < ApplicationRecord
   def stats_sync!(championship_id, phase_id, pool_id)
     stats_json = FfhbService.instance.fetch_competition_stats(championship_id, phase_id, pool_id)
 
-    stats_json['rowsData'].each do |stat_json|
-      user_stat = UserChampionshipStat.find_or_create_by!(championship: self, player_id: stat_json['individuId'])
-      user_stat.update!(
+    stats = stats_json['rowsData'].map do |stat_json|
+      {
+        championship_id: id,
+        player_id: stat_json['individuId'],
         match_played: stat_json['matchCount'],
         goals: stat_json['totalButs'],
         saves: stat_json['totalArrets'],
         first_name: stat_json['prenom'],
-        last_name: stat_json['nom']
-      )
+        last_name: stat_json['nom'],
+        created_at: Time.zone.now,
+        updated_at: Time.zone.now
+      }
     end
+
+    UserChampionshipStat.upsert_all(stats, unique_by: %i[championship_id player_id])
   end
 
   def init

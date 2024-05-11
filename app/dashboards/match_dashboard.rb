@@ -54,7 +54,6 @@ class MatchDashboard < Administrate::BaseDashboard
     day
     local_team
     visitor_team
-    selections
     match_availabilities
     id
     local_team_id
@@ -82,7 +81,6 @@ class MatchDashboard < Administrate::BaseDashboard
     day
     local_team
     visitor_team
-    selections
     match_availabilities
     local_team_id
     visitor_team_id

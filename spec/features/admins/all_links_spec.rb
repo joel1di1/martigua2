@@ -1,15 +1,35 @@
 # frozen_string_literal: true
 
 describe 'Active Admin', :devise do
-  it 'admin can list any page in admin section' do
-    admin = create(:user)
-    create(:admin_user, email: admin.email)
+  let(:admins_pages) do
+    [
+      'Admin Users',
+      'Calendars',
+      'Compétitions',
+      'Clubs',
+      'Club Admin Roles',
+      'Journées',
+      'Duty Tasks',
+      'Enrolled Team Championships',
+      'Groups',
+      'Lieux',
+      'Matchs',
+      'Match Availabilit',
+      'Match Selections',
+      'Participations',
+      'Seasons',
+      'Sections',
+      'Section User Invitations',
+      'Selections',
+      'Équipes',
+      'Trainings',
+      'Training Invitations',
+      'Training Presences',
+      'Utilisateurs'
+    ]
+  end
 
-    signin admin.email, admin.password
-    visit '/admin'
-
-    expect(page).to have_content 'Users'
-
+  before do
     create(:admin_user)
     create(:calendar)
     create(:championship)
@@ -23,11 +43,20 @@ describe 'Active Admin', :devise do
     create(:training)
     create(:training_presence)
     create(:user)
+    create(:match)
+  end
 
-    admins_pages = ['Admin Users', 'Calendar', 'Compétitions', 'Clubs', 'Journées', 'Lieux', 'Seasons', 'Sections',
-                    'Trainings', 'Training Presences', 'Utilisateurs']
+  it 'admin can list any page in admin section' do
+    admin = create(:user)
+    create(:admin_user, email: admin.email)
+
+    signin admin.email, admin.password
+    visit '/admin'
+
+    expect(page).to have_content 'Users'
 
     admins_pages.each do |admin_page|
+      puts "Checking #{admin_page}"
       click_on admin_page
       expect(page.all('#page-title', text: admin_page).size).to eq 1
 

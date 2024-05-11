@@ -70,6 +70,7 @@ group :development, :test do
   gem 'parallel_tests'
   gem 'rspec-rails'
   gem 'rubocop'
+  gem 'rubocop-capybara'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
 end

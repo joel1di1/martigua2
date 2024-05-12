@@ -4,13 +4,14 @@ class ApplicationController < ActionController::Base
   extend ActiveSupport::Concern
 
   include Pundit::Authorization
-  include LogAllRequests
 
+  around_action :log_requests
+
+  before_action :set_sentry_context
   before_action :set_current_user_in_current
   before_action :set_current_section_in_current
   before_action :authenticate_user_from_token!, except: :catch404
   before_action :authenticate_user!, except: :catch404
-  before_action :set_sentry_context
 
   helper_method :current_section, :origin_path_or
 
@@ -27,6 +28,26 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
+  def log_requests
+    yield
+    return if Rails.env.test?
+
+    Rails.logger.info "#{request_string} --RESP-- #{response.status};#{response.redirect_url}"
+  rescue StandardError => e
+    Rails.logger.info("#{request_string} --RESP-- 500;#{e.message};#{e.backtrace}") unless Rails.env.test?
+    raise
+  end
+
+  def request_string
+    "--REQ-- #{Rails.env};#{current_user.try(:id)};#{current_user.try(:email)};#{request.method};#{request.url};#{request.host};#{request.query_string};#{filter_params(params)}"
+  end
+
+  def filter_params(params)
+    filters = Rails.application.config.filter_parameters
+    f = ActiveSupport::ParameterFilter.new filters
+    f.filter params
+  end
 
   def redirect_with(fallback: root_path, additionnal_params: {}, use_referrer: true, **options)
     url = construct_url(additionnal_params, use_referrer, fallback)

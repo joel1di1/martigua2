@@ -31,16 +31,23 @@ class ApplicationController < ActionController::Base
 
   def log_requests
     yield
-    return if Rails.env.test?
 
-    Rails.logger.info "#{request_string} --RESP-- #{response.status};#{response.redirect_url}"
+    Rails.logger.info(log_request_message_sucess) unless Rails.env.test?
   rescue StandardError => e
-    Rails.logger.info("#{request_string} --RESP-- 500;#{e.message};#{e.backtrace}") unless Rails.env.test?
+    Rails.logger.info(log_request_message_error(e)) unless Rails.env.test?
     raise
   end
 
+  def log_request_message_sucess
+    "#{request_string}--RESP--;#{response.status};#{response.redirect_url}"
+  end
+
+  def log_request_message_error(e)
+    "#{request_string}--RESP--;5xx;#{e.message};#{e.backtrace}"
+  end
+
   def request_string
-    "--REQ-- #{Rails.env};#{current_user.try(:id)};#{current_user.try(:email)};#{request.method};#{request.url};#{request.host};#{request.query_string};#{filter_params(params)}"
+    "--REQ--;#{Rails.env};#{current_user&.id};#{current_user&.email};#{request.method};#{request.url};#{request.host};#{request.query_string};#{filter_params(params)};"
   end
 
   def filter_params(params)

@@ -9,6 +9,7 @@ class SelectionsController < ApplicationController
     @users_already_selected = @day_selections.map(&:user).uniq
 
     matches = @teams_with_matches.map(&:second)
+
     @players = current_section.players
 
     @availabilities_by_user_and_match = availabilities_by_user_and_match(@players, matches)
@@ -26,7 +27,7 @@ class SelectionsController < ApplicationController
     available_players = Set.new
     non_available_players = Set.new
 
-    availabilities = MatchAvailability.includes(:user).where(match: matches)
+    availabilities = MatchAvailability.includes(user: :user_championship_stats).where(match: matches)
     availabilities.each do |availability|
       if availabilities_by_user_and_match[availability.user_id]
         availabilities_by_user_and_match[availability.user_id][availability.match_id] =

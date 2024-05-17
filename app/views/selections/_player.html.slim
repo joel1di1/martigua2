@@ -10,7 +10,7 @@ li.p-1.text-sm draggable="true" data-player-id=player.id data-controller=(curren
 
         = player.short_name
         span.text-xs
-          = " (#{teams_with_matches.map { |team, match| player.user_championship_stats.find_by(championship: match.championship)&.match_played || 0 }.join('/')})"
+          = " (#{teams_with_matches.map { |team, match| player.user_championship_stats.select{|ucs| ucs.championship_id == match.championship_id }.first&.match_played || 0 }.join('/')})"
       - if player.avatar.attached?
         = image_tag player.avatar.variant(:thumb), class: "h-5 w-5 rounded-full ml-1"
     .flex.flex-row

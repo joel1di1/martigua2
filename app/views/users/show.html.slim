@@ -2,7 +2,7 @@
 
 /display avatar
 - if @user.avatar.attached?
-  = image_tag @user.avatar.variant(:portrait)
+  = image_tag rails_storage_proxy_path(@user.avatar.variant(:portrait))
 
 p class=""
   | Prénom: #{@user.first_name}

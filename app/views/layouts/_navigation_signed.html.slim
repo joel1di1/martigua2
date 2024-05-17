@@ -45,7 +45,7 @@
               span.sr-only Open user menu
               span.text-gray-300
                 - if current_user.avatar.attached?
-                  = image_tag current_user.avatar.variant(:thumb), class: "h-8 w-8 rounded-full"
+                  = image_tag rails_storage_proxy_path(current_user.avatar.variant(:thumb)), class: "h-8 w-8 rounded-full"
                 - else
                   = current_user.email
                 span

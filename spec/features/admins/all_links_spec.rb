@@ -1,49 +1,40 @@
 # frozen_string_literal: true
 
 describe 'Active Admin', :devise do
-  let(:admins_pages) do
+  let(:models) do
     [
-      'Admin Users',
-      'Calendars',
-      'Compétitions',
-      'Clubs',
-      'Club Admin Roles',
-      'Journées',
-      'Duty Tasks',
-      'Enrolled Team Championships',
-      'Groups',
-      'Lieux',
-      'Matchs',
-      'Match Availabilit',
-      'Match Selections',
-      'Participations',
-      'Seasons',
-      'Sections',
-      'Section User Invitations',
-      'Selections',
-      'Équipes',
-      'Trainings',
-      'Training Invitations',
-      'Training Presences',
-      'Utilisateurs'
+      AdminUser,
+      BlockedAddress,
+      Calendar,
+      Championship,
+      Club,
+      ClubAdminRole,
+      Day,
+      DutyTask,
+      EnrolledTeamChampionship,
+      Group,
+      Location,
+      Match,
+      MatchAvailability,
+      MatchSelection,
+      Participation,
+      Season,
+      Section,
+      SectionUserInvitation,
+      Selection,
+      Team,
+      Training,
+      TrainingInvitation,
+      TrainingPresence,
+      User
     ]
   end
 
   before do
-    create(:admin_user)
-    create(:calendar)
-    create(:championship)
-    create(:club)
-    create(:day)
-    create(:location)
-    create(:season)
-    create(:section)
-    create(:team)
-    create(:team_section)
-    create(:training)
-    create(:training_presence)
-    create(:user)
-    create(:match)
+    models.each do |model|
+      puts "Creating #{model}"
+      create(model.to_s.underscore.to_sym)
+    end
   end
 
   it 'admin can list any page in admin section' do
@@ -55,12 +46,17 @@ describe 'Active Admin', :devise do
 
     expect(page).to have_content 'Users'
 
-    admins_pages.each do |admin_page|
-      click_on admin_page
-      expect(page.all('#page-title', text: admin_page).size).to eq 1
+    models.each do |model_class|
 
-      click_on "Création #{admin_page.chop.downcase}"
-      expect(page.all('h1.main-content__page-title', text: "Création #{admin_page.chop}").size).to eq(1), admin_page
+      model_class = model_class.to_s.underscore
+      model_plural = I18n.translate("activerecord.models.#{model_class}.other", default: model_class.humanize.pluralize)
+      model_name = I18n.translate("activerecord.models.#{model_class}.one", default: model_class.humanize)
+
+      click_on model_plural.titleize
+      expect(page.all('#page-title', text: model_plural.titleize).size).to eq 1
+
+      click_on "Création #{model_name.downcase}"
+      expect(page.all('h1.main-content__page-title', text: "Création #{model_plural.titleize}").size).to eq(1), model_class
     end
   end
 end

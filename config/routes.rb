@@ -6,6 +6,7 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   namespace :admin do
     resources :admin_users
+    resources :blocked_addresses
     resources :calendars
     resources :championships
     resources :clubs

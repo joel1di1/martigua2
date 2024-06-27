@@ -4,8 +4,8 @@
 
 FactoryBot.define do
   factory :match_availability do
-    match { nil }
-    user { nil }
-    available { false }
+    match
+    user
+    available { Faker::Boolean.boolean }
   end
 end

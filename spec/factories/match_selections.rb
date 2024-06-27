@@ -4,8 +4,8 @@
 
 FactoryBot.define do
   factory :match_selection do
-    match { nil }
-    team { '' }
-    user { nil }
+    match
+    team
+    user
   end
 end

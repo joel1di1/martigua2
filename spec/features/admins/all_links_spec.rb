@@ -32,7 +32,6 @@ describe 'Active Admin', :devise do
 
   before do
     models.each do |model|
-      puts "Creating #{model}"
       create(model.to_s.underscore.to_sym)
     end
   end

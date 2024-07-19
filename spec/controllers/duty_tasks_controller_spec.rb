@@ -13,6 +13,8 @@ RSpec.describe DutyTasksController do
   end
 
   describe 'GET #index' do
+    before { [duty_task] }
+
     it 'assigns all duty tasks as @duty_tasks' do
       get :index, params: { section_id: section.to_param }
       expect(assigns(:duty_tasks)).to eq([duty_task])

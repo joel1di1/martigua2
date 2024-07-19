@@ -30,7 +30,7 @@ class Season < ApplicationRecord
   end
 
   def self.create_default_season
-    Season.create!(start_date: Date.new(2014, 8, 1), end_date: Date.new(2015, 7, 1), name: '2014-2015')
+    Season.create!(start_date: Date.new(2014, 8, 1), end_date: Date.new(2015, 7, 31), name: '2014-2015')
   end
 
   def self.create_next_season(season)

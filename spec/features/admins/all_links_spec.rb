@@ -46,10 +46,9 @@ describe 'Active Admin', :devise do
     expect(page).to have_content 'Users'
 
     models.each do |model_class|
-
       model_class = model_class.to_s.underscore
-      model_plural = I18n.translate("activerecord.models.#{model_class}.other", default: model_class.humanize.pluralize)
-      model_name = I18n.translate("activerecord.models.#{model_class}.one", default: model_class.humanize)
+      model_plural = I18n.t("activerecord.models.#{model_class}.other", default: model_class.humanize.pluralize)
+      model_name = I18n.t("activerecord.models.#{model_class}.one", default: model_class.humanize)
 
       click_on model_plural.titleize
       expect(page.all('#page-title', text: model_plural.titleize).size).to eq 1

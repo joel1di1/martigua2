@@ -53,7 +53,7 @@ class Championship < ApplicationRecord
       }
     end
 
-    UserChampionshipStat.upsert_all(stats, unique_by: %i[championship_id player_id])
+    UserChampionshipStat.upsert_all(stats, unique_by: %i[championship_id player_id]) # rubocop:disable Rails/SkipsModelValidations
   end
 
   def init

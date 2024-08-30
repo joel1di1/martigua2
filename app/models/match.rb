@@ -17,7 +17,7 @@ class Match < ApplicationRecord
   scope :date_ordered, -> { order(Arel.sql('LEAST(days.period_end_date, start_datetime) ASC')) }
 
   scope :with_start_between, lambda { |start_period, end_period|
-                               where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period)
+                               where(start_datetime: start_period..end_period)
                              }
 
   delegate :burned?, to: :championship

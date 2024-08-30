@@ -10,7 +10,7 @@ class TrainingsController < ApplicationController
 
     if params[:page].blank?
       training_before_beginning_of_week =
-        section_trainings.where('start_datetime < ?', Time.zone.now.beginning_of_week)
+        section_trainings.where(start_datetime: ...Time.zone.now.beginning_of_week)
       page = (training_before_beginning_of_week.count / 10) + 1
       redirect_to section_trainings_path(current_section, page:)
       return

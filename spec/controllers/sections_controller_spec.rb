@@ -55,21 +55,21 @@ describe SectionsController do
     end
 
     it 'returns the user_stat with the same name as the player' do
-      suggested_user_stat = subject.send(:suggested_user_stat, player, user_stats)
+      suggested_user_stat = described_class.new.send(:suggested_user_stat, player, user_stats)
       expect(suggested_user_stat.first_name).to eq('John')
       expect(suggested_user_stat.last_name).to eq('Doe')
     end
 
     it 'returns the user_stat with the most similar name to the player' do
       player = create(:user, first_name: 'John', last_name: 'Smith')
-      suggested_user_stat = subject.send(:suggested_user_stat, player, user_stats)
+      suggested_user_stat = described_class.new.send(:suggested_user_stat, player, user_stats)
       expect(suggested_user_stat.first_name).to eq('John')
       expect(suggested_user_stat.last_name).to eq('Smith')
     end
 
     it 'returns nil if no user_stat has a similar name to the player' do
       player = create(:user, first_name: 'Alice', last_name: 'Johnson')
-      suggested_user_stat = subject.send(:suggested_user_stat, player, user_stats)
+      suggested_user_stat = described_class.new.send(:suggested_user_stat, player, user_stats)
       expect(suggested_user_stat).to be_nil
     end
   end

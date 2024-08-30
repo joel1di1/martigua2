@@ -18,7 +18,7 @@ class Training < ApplicationRecord
   scope :of_section, ->(section) { joins(:sections).where(sections: { id: section.id }) }
   scope :not_cancelled, -> { where.not('cancelled') }
   scope :with_start_between, lambda { |start_period, end_period|
-                               where('start_datetime >= ? AND start_datetime <= ?', start_period, end_period)
+                               where(start_datetime: start_period..end_period)
                              }
 
   default_scope { order 'start_datetime, location_id' }

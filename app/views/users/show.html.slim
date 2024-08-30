@@ -1,16 +1,17 @@
-/ display @user profile
+div class="flex flex-col items-center"
 
-/display avatar
-- if @user.avatar.attached?
-  = image_tag rails_storage_proxy_path(@user.avatar.variant(:portrait))
+  - if @user.avatar.attached?
+    = image_tag rails_storage_proxy_path(@user.avatar.variant(:portrait))
 
-p class=""
-  | Prénom: #{@user.first_name}
-p class=""
-  | Nom: #{@user.last_name}
-p class=""
-  | Surnom: #{@user.nickname}
-p class=""
-  | Email: #{@user.email}
-p class=""
-  | Téléphone: #{@user.phone_number}
+  div class="flex flex-col w-full md:max-w-80"
+    div class="text-2xl font-bold"
+      = @user.first_name
+      =< @user.last_name
+    - if @user.nickname.present?
+      / italic
+      div class="text-lg italic"
+        = @user.nickname
+    div class="text-lg hover:underline pointer"
+      = mail_to @user.email
+    div class="text-lg hover:underline pointer"
+      = phone_to @user.phone_number

@@ -54,7 +54,7 @@ describe 'User profile page', :devise do
     visit section_users_path(section_id: section.to_param)
     click_on other.full_name
     expect(page).to have_content other.phone_number
-    expect(page).to have_content 'Surnom'
+    expect(page).to have_current_path(section_user_path(other, section_id: section.to_param))
   end
 
   # Scenario: user can see his profile in the section url

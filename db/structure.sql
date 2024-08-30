@@ -10,13 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: math_trainer; Type: SCHEMA; Schema: -; Owner: -
---
-
-CREATE SCHEMA math_trainer;
-
-
---
 -- Name: public; Type: SCHEMA; Schema: -; Owner: -
 --
 
@@ -1853,57 +1846,6 @@ ALTER SEQUENCE public.trainings_id_seq OWNED BY public.trainings.id;
 
 
 --
--- Name: tsa_ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.tsa_ar_internal_metadata (
-    key character varying NOT NULL,
-    value character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: tsa_schema_migrations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.tsa_schema_migrations (
-    version character varying NOT NULL
-);
-
-
---
--- Name: tsa_users; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.tsa_users (
-    id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: tsa_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.tsa_users_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: tsa_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.tsa_users_id_seq OWNED BY public.tsa_users.id;
-
-
---
 -- Name: user_championship_stats; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2422,13 +2364,6 @@ ALTER TABLE ONLY public.trainings ALTER COLUMN id SET DEFAULT nextval('public.tr
 
 
 --
--- Name: tsa_users id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.tsa_users ALTER COLUMN id SET DEFAULT nextval('public.tsa_users_id_seq'::regclass);
-
-
---
 -- Name: user_championship_stats id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2886,30 +2821,6 @@ ALTER TABLE ONLY public.training_invitations
 
 ALTER TABLE ONLY public.trainings
     ADD CONSTRAINT trainings_pkey PRIMARY KEY (id);
-
-
---
--- Name: tsa_ar_internal_metadata tsa_ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.tsa_ar_internal_metadata
-    ADD CONSTRAINT tsa_ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
--- Name: tsa_schema_migrations tsa_schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.tsa_schema_migrations
-    ADD CONSTRAINT tsa_schema_migrations_pkey PRIMARY KEY (version);
-
-
---
--- Name: tsa_users tsa_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.tsa_users
-    ADD CONSTRAINT tsa_users_pkey PRIMARY KEY (id);
 
 
 --

@@ -4,6 +4,7 @@ require 'sidekiq/web'
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
+  resources :injuries
   namespace :admin do
     resources :admin_users
     resources :blocked_addresses

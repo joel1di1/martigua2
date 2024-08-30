@@ -6,6 +6,7 @@ RSpec.configure do |_config|
 
     options.add_argument('--headless') if ENV['SHOW_BROWSER'].blank?
     options.add_argument('--disable-gpu')
+    options.add_argument('--disable-search-engine-choice-screen')
     options.add_argument('--window-size=1280,800')
 
     Capybara::Selenium::Driver.new(app, browser: :chrome, options:)

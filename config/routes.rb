@@ -4,7 +4,6 @@ require 'sidekiq/web'
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
-  resources :injuries
   namespace :admin do
     resources :admin_users
     resources :blocked_addresses
@@ -61,6 +60,7 @@ Rails.application.routes.draw do
         delete 'training_presences' => 'training_presences#destroy'
         post 'confirm_presence' => 'training_presences#confirm_presence'
       end
+      resources :injuries, only: %i[index create destroy new]
       match 'training_presences', via: %i[get post]
       match 'match_availabilities', via: %i[get post]
     end
@@ -106,7 +106,7 @@ Rails.application.routes.draw do
     resources :sections, only: %i[index new create destroy edit update]
   end
 
-  devise_for :users
+  devise_for :users, except: %i[show]
 
   resources :users, only: %i[show edit update] do
     member do

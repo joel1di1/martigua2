@@ -18,8 +18,15 @@ describe 'Add Injury', :devise do
       click_on 'Ajouter une blessure'
 
       # fill in the form
+      fill_in 'Nom de la blessure', with: 'Entorse cheville gauche'
+      fill_in 'Commentaire', with: 'Blessure de merde lors du dernier match'
+      fill_in 'injury[start_at]', with: '23/06/2024'
+      fill_in 'injury[end_at]', with: '12/08/2024'
       # submit the form
+      click_on 'Ajouter la blessure'
       # expect to see the injury on the player profile
+      expect(page).to have_text '1 blessures'
+      expect(page).to have_text 'Entorse cheville gauche'
     end
   end
 end

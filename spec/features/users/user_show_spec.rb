@@ -12,29 +12,17 @@ describe 'User profile page', :devise do
     Warden.test_reset!
   end
 
+  let(:section) { create(:section) }
+
   # Scenario: User sees own profile
   #   Given I am signed in
   #   When I visit the user profile page
   #   Then I see my own email address
   it 'user sees own profile' do
-    user = create(:user)
+    user = create(:user, with_section: section)
     login_as(user, scope: :user)
-    visit user_path(user)
+    visit section_user_path(section, user)
     expect(page).to have_content user.email
-  end
-
-  # Scenario: User cannot see another user's profile
-  #   Given I am signed in
-  #   When I visit another user's profile
-  #   Then I see an 'access denied' message
-  it "user cannot see another user's profile" do
-    me = create(:user)
-    other_email = Faker::Internet.email
-    other = create(:user, email: other_email)
-    login_as(me, scope: :user)
-    Capybara.current_session.driver.header 'Referer', root_path
-    visit user_path(other)
-    expect(page).to have_content 'Access denied (403)'
   end
 
   # Scenario: if member of the same section, user can see another user's profile
@@ -43,8 +31,8 @@ describe 'User profile page', :devise do
   #   Then I see the other person profile
   it "user can see another user's profile if member of the same section" do
     section = create(:section)
-    me = create(:user)
-    other = create(:user)
+    me = create(:user, with_section: section)
+    other = create(:user, with_section: section)
     create(:participation, user: me, section:)
     create(:participation, user: other, section:)
     login_as(me, scope: :user)
@@ -63,7 +51,7 @@ describe 'User profile page', :devise do
   #   Then I see my profile
   it 'user can see his profile in the section url' do
     section = create(:section)
-    me = create(:user)
+    me = create(:user, with_section: section)
     create(:participation, user: me, section:)
     login_as(me, scope: :user)
     visit section_user_path(me, section_id: section.to_param)

@@ -1,0 +1,9 @@
+= simple_form_for([current_section, @user, @injury], url: section_user_injuries_path([current_section, @user])) do |f|
+  = f.input :name, label: 'Nom de la blessure'
+  | indispo du
+  = f.input :start_at, label: '', html5: true
+  | au
+  = f.input :end_at, label: '', html5: true
+  = f.input :comment, label: 'Commentaire'
+  = f.button :submit, class: 'btn btn-primary', value: 'Ajouter la blessure'
+

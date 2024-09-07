@@ -19,6 +19,8 @@ class FfhbService # rubocop:disable Metrics/ClassLength
     attributes_content = smartfire_component['attributes']
     attributes_content_decoded = CGI.unescapeHTML(attributes_content)
     Oj.load(attributes_content_decoded)
+  rescue StandardError => e
+    raise FfhbServiceError, e.message
   end
 
   def save_results_in_file(filename, json_content)

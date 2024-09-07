@@ -30,7 +30,14 @@ class Championship < ApplicationRecord
   def ffhb_sync!
     return if ffhb_key.blank?
 
-    matches.each(&:ffhb_sync!)
+    matches.each do |match|
+      begin
+        match.ffhb_sync!
+      rescue FfhbServiceError => e
+        Sentry.capture_exception(e)
+        puts "Error while syncing match #{match.id}: #{e.message}"
+      end
+    end
 
     _, _, championship_id, phase_id, pool_id = ffhb_key.split
     stats_sync!(championship_id, phase_id, pool_id)

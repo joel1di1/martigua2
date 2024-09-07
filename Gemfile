@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.3.4'
+ruby '3.3.5'
 
 gem 'rails', '~> 7.1'
 
@@ -77,7 +77,8 @@ end
 
 group :development do
   gem 'rack-mini-profiler'
-  gem 'ruby-lsp-rspec', require: false
+  gem 'ruby-lsp'
+  gem 'ruby-lsp-rspec'
   gem 'web-console'
 end
 

@@ -64,6 +64,7 @@ gem 'image_processing', '~> 1.2'
 # gem "kredis"
 
 group :development, :test do
+  gem 'brakeman', require: false
   gem 'debug'
   gem 'factory_bot_rails'
   gem 'foreman', require: false

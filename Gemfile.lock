@@ -433,6 +433,9 @@ GEM
       rubocop-ast (>= 1.31.1, < 2.0)
     rubocop-rspec (3.0.5)
       rubocop (~> 1.61)
+    rubocop-rspec_rails (2.30.0)
+      rubocop (~> 1.61)
+      rubocop-rspec (~> 3, >= 3.0.1)
     ruby-lsp (0.17.17)
       language_server-protocol (~> 3.17.0)
       prism (~> 1.0)
@@ -611,6 +614,7 @@ DEPENDENCIES
   rubocop-factory_bot
   rubocop-rails
   rubocop-rspec
+  rubocop-rspec_rails
   ruby-lsp
   ruby-lsp-rspec
   sentry-rails

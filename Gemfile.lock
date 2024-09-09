@@ -111,8 +111,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
-    brakeman (6.2.1)
-      racc
+    brakeman (5.4.1)
     builder (3.3.0)
     capybara (3.40.0)
       addressable
@@ -294,6 +293,13 @@ GEM
     orm_adapter (0.5.0)
     os (1.1.4)
     ostruct (0.6.0)
+    panolint (0.1.6)
+      brakeman (>= 4.8, < 6.0)
+      rubocop (>= 0.83, < 2.0)
+      rubocop-performance (~> 1.5)
+      rubocop-rails (~> 2.5)
+      rubocop-rake (~> 0.5)
+      rubocop-rspec (~> 2.0)
     parallel (1.26.3)
     parallel_tests (4.7.1)
       parallel
@@ -426,6 +432,9 @@ GEM
       rubocop (~> 1.41)
     rubocop-factory_bot (2.26.1)
       rubocop (~> 1.61)
+    rubocop-performance (1.21.1)
+      rubocop (>= 1.48.1, < 2.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
     rubocop-rails (2.26.1)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
@@ -433,11 +442,13 @@ GEM
       rubocop-ast (>= 1.31.1, < 2.0)
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
-    rubocop-rspec (3.0.5)
+    rubocop-rspec (2.31.0)
+      rubocop (~> 1.40)
+      rubocop-capybara (~> 2.17)
+      rubocop-factory_bot (~> 2.22)
+      rubocop-rspec_rails (~> 2.28)
+    rubocop-rspec_rails (2.29.1)
       rubocop (~> 1.61)
-    rubocop-rspec_rails (2.30.0)
-      rubocop (~> 1.61)
-      rubocop-rspec (~> 3, >= 3.0.1)
     ruby-lsp (0.17.17)
       language_server-protocol (~> 3.17.0)
       prism (~> 1.0)
@@ -596,6 +607,7 @@ DEPENDENCIES
   net-smtp
   newrelic_rpm
   oj
+  panolint
   parallel_tests
   pg
   postmark-rails

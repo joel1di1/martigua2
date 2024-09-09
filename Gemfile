@@ -79,6 +79,7 @@ group :development, :test do
   gem 'rubocop-rake', require: false
   gem 'rubocop-rspec', require: false
   gem 'rubocop-rspec_rails', require: false
+  gem 'rubocop-rubycw', require: false
 end
 
 group :development do

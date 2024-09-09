@@ -456,6 +456,8 @@ GEM
       rubocop-rspec_rails (~> 2.28)
     rubocop-rspec_rails (2.29.1)
       rubocop (~> 1.61)
+    rubocop-rubycw (0.1.6)
+      rubocop (~> 1.0)
     ruby-lsp (0.17.17)
       language_server-protocol (~> 3.17.0)
       prism (~> 1.0)
@@ -638,6 +640,7 @@ DEPENDENCIES
   rubocop-rake
   rubocop-rspec
   rubocop-rspec_rails
+  rubocop-rubycw
   ruby-lsp
   ruby-lsp-rspec
   sentry-rails

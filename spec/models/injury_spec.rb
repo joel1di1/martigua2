@@ -3,5 +3,5 @@
 require 'rails_helper'
 
 RSpec.describe Injury do
-  it { should belong_to(:user) }
+  it { is_expected.to belong_to(:user) }
 end

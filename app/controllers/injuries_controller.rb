@@ -49,6 +49,7 @@ class InjuriesController < ApplicationController
   def set_injury
     @injury = Injury.find(params[:id])
   end
+
   def set_user
     @user = User.find(params[:user_id])
   end

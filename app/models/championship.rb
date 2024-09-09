@@ -31,12 +31,10 @@ class Championship < ApplicationRecord
     return if ffhb_key.blank?
 
     matches.each do |match|
-      begin
-        match.ffhb_sync!
-      rescue FfhbServiceError => e
-        Sentry.capture_exception(e)
-        puts "Error while syncing match #{match.id}: #{e.message}"
-      end
+      match.ffhb_sync!
+    rescue FfhbServiceError => e
+      Sentry.capture_exception(e)
+      Rails.logger.debug { "Error while syncing match #{match.id}: #{e.message}" }
     end
 
     _, _, championship_id, phase_id, pool_id = ffhb_key.split

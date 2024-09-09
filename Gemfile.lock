@@ -364,7 +364,7 @@ GEM
       actionview (> 3.1)
       activesupport (> 3.1)
       railties (> 3.1)
-    rails_ping (0.2.1)
+    rails_ping (0.2.2)
       rails (>= 5.0)
     railties (7.2.1)
       actionpack (= 7.2.1)

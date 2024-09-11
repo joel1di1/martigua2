@@ -23,7 +23,7 @@ describe 'Add Absence', :devise do
       fill_in 'absence[start_at]', with: '23/06/2024'
       fill_in 'absence[end_at]', with: '12/08/2024'
       # submit the form
-      click_on 'Ajouter la absence'
+      click_on 'Ajouter l\'absence'
       # expect to see the absence on the player profile
       expect(page).to have_text '1 absences'
       expect(page).to have_text 'Entorse cheville gauche'

@@ -253,6 +253,12 @@ describe User do
 
       it { expect(user.next_week_trainings).to include(training) }
       it { expect(user.next_week_trainings.count).to eq 1 }
+
+      context 'when user is away' do
+        before { create(:absence, user:, start_at: training_date - 2.days, end_at: training_date + 2.days) }
+
+        it { expect(user.next_week_trainings).not_to include(training) }
+      end
     end
   end
 

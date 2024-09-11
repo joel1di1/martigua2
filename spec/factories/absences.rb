@@ -5,7 +5,7 @@ FactoryBot.define do
     user
     start_at { 2.days.ago }
     end_at { 2.weeks.from_now }
-    name { Faker::Name.name }
+    name { Absence::MOTIVES.sample }
     comment { Faker::Lorem.sentence }
   end
 end

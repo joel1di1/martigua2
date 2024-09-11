@@ -7,5 +7,5 @@
   | au
   = f.input :end_at, label: '', html5: true
   = f.input :comment, label: 'Commentaire', placeholder: 'Tendinite au poignet gauche / Tour du monde'
-  = f.button :submit, class: 'btn btn-primary', value: 'Ajouter la absence'
+  = f.button :submit, class: 'btn btn-primary', value: @absence.new_record? ? "Ajouter l'absence" : "Mettre à jour l'absence"
 

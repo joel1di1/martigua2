@@ -20,6 +20,7 @@ class Training < ApplicationRecord
   scope :with_start_between, lambda { |start_period, end_period|
                                where(start_datetime: start_period..end_period)
                              }
+  scope :with_start_on, ->(days) { where('DATE(start_datetime) in (?)', days) }
 
   default_scope { order 'start_datetime, location_id' }
 
@@ -131,13 +132,5 @@ class Training < ApplicationRecord
 
       UserMailer.send_tig_mail_for_training(training, next_duties.to_a, cc).deliver_later
     end
-  end
-
-  def self.of_next_week(section: nil, date: DateTime.now)
-    start_period = date.next_week
-    end_period = start_period.end_of_week
-    trainings = Training.with_start_between(start_period, end_period)
-    trainings = trainings.of_section(section) unless section.nil?
-    trainings
   end
 end

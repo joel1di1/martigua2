@@ -60,7 +60,7 @@ Rails.application.routes.draw do
         delete 'training_presences' => 'training_presences#destroy'
         post 'confirm_presence' => 'training_presences#confirm_presence'
       end
-      resources :absences, only: %i[index create destroy new]
+      resources :absences, only: %i[index create edit update destroy new]
       match 'training_presences', via: %i[get post]
       match 'match_availabilities', via: %i[get post]
     end

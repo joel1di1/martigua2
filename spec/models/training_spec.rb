@@ -79,7 +79,7 @@ RSpec.describe Training do
     end
   end
 
-  describe '.of_next_week' do
+  describe '.with_start_on' do
     let(:now) { DateTime.new(2014, 8, 19, 13, 12, 55, '1') } # tuesday
     let(:dates) do
       [
@@ -94,7 +94,9 @@ RSpec.describe Training do
 
     let!(:trainings) { dates.map { |date| create(:training, with_section: section, start_datetime: date) } }
 
-    it { expect(described_class.of_next_week(section:, date: now)).to eq trainings[2..4] }
+    let(:days) { [now + 6.days, now + 7.days, now + 12.days] }
+
+    it { expect(described_class.with_start_on(days)).to eq trainings[2..4] }
   end
 
   describe 'users' do

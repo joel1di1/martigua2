@@ -115,7 +115,16 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def next_week_trainings(date: DateTime.now)
-    Training.of_next_week(date:).joins(:groups).where(groups: { id: group_ids }).distinct
+    start_date = date.next_week
+    end_date = start_date + 1.week
+    # retrieve all days where the user is absent
+    current_absences = absences.where(start_at: date..(date.next_week)).or(absences.where(end_at: date..(date.next_week)))
+    days_to_check = (start_date..end_date).to_a.map(&:to_date)
+    days_to_check.reject! { |d| current_absences.any? { |a| a.start_at <= d && a.end_at >= d } }
+
+    Training.with_start_on(days_to_check)
+            .includes(:groups)
+            .where(groups: { id: group_ids })
   end
 
   def next_weekend_matches

@@ -31,7 +31,7 @@ div class="mt-8 flex flex-col"
           thead class="bg-gray-50"
             tr
               th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6" Période
-              th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6" Blessure
+              th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6" Motif
               th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6" Commentaire
               th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6"
                 span class="sr-only" Supprimer
@@ -39,10 +39,11 @@ div class="mt-8 flex flex-col"
             - @user.absences.each do |absence|
               tr class=""
                 td scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 sm:pl-6"
-                  = l(absence.start_at, format: '%-d %B %Y') if absence.start_at
-                  = ' -> '
-                  = l(absence.end_at, format: '%-d %B %Y') if absence.end_at
-                td scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 sm:pl-6 text-indigo-600"
+                  = link_to edit_section_user_absence_path(current_section, @user, absence), class: "text-indigo-600 hover:text-indigo-900" do
+                    = l(absence.start_at, format: '%-d %B %Y') if absence.start_at
+                    = ' -> '
+                    = l(absence.end_at, format: '%-d %B %Y') if absence.end_at
+                td scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 sm:pl-6"
                   = absence.name
                 td scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 sm:pl-6"
                   = absence.comment

@@ -2,6 +2,6 @@
 
 require 'rails_helper'
 
-RSpec.describe Injury do
+RSpec.describe Absence do
   it { is_expected.to belong_to(:user) }
 end

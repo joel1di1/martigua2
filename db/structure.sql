@@ -35,6 +35,41 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: absences; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.absences (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    start_at date,
+    end_at date,
+    name character varying,
+    comment character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: absences_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.absences_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: absences_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.absences_id_seq OWNED BY public.absences.id;
+
+
+--
 -- Name: action_text_rich_texts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -705,41 +740,6 @@ CREATE TABLE public.groups_users (
     user_id integer NOT NULL,
     group_id integer NOT NULL
 );
-
-
---
--- Name: injuries; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.injuries (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    start_at date,
-    end_at date,
-    name character varying,
-    comment character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: injuries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.injuries_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: injuries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.injuries_id_seq OWNED BY public.injuries.id;
 
 
 --
@@ -2007,6 +2007,13 @@ ALTER SEQUENCE public.webpush_subscriptions_id_seq OWNED BY public.webpush_subsc
 
 
 --
+-- Name: absences id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.absences ALTER COLUMN id SET DEFAULT nextval('public.absences_id_seq'::regclass);
+
+
+--
 -- Name: action_text_rich_texts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2137,13 +2144,6 @@ ALTER TABLE ONLY public.enrolled_team_championships ALTER COLUMN id SET DEFAULT 
 --
 
 ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.groups_id_seq'::regclass);
-
-
---
--- Name: injuries id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.injuries ALTER COLUMN id SET DEFAULT nextval('public.injuries_id_seq'::regclass);
 
 
 --
@@ -2392,6 +2392,14 @@ ALTER TABLE ONLY public.webpush_subscriptions ALTER COLUMN id SET DEFAULT nextva
 
 
 --
+-- Name: absences absences_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.absences
+    ADD CONSTRAINT absences_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: action_text_rich_texts action_text_rich_texts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2549,14 +2557,6 @@ ALTER TABLE ONLY public.enrolled_team_championships
 
 ALTER TABLE ONLY public.groups
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
-
-
---
--- Name: injuries injuries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.injuries
-    ADD CONSTRAINT injuries_pkey PRIMARY KEY (id);
 
 
 --
@@ -2856,6 +2856,13 @@ ALTER TABLE ONLY public.webpush_subscriptions
 
 
 --
+-- Name: index_absences_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_absences_on_user_id ON public.absences USING btree (user_id);
+
+
+--
 -- Name: index_action_text_rich_texts_uniqueness; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3077,13 +3084,6 @@ CREATE INDEX index_groups_users_on_group_id ON public.groups_users USING btree (
 --
 
 CREATE INDEX index_groups_users_on_user_id ON public.groups_users USING btree (user_id);
-
-
---
--- Name: index_injuries_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_injuries_on_user_id ON public.injuries USING btree (user_id);
 
 
 --
@@ -3691,10 +3691,10 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 
 --
--- Name: injuries fk_rails_99832e8dde; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: absences fk_rails_99832e8dde; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.injuries
+ALTER TABLE ONLY public.absences
     ADD CONSTRAINT fk_rails_99832e8dde FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
@@ -3817,6 +3817,7 @@ ALTER TABLE ONLY public.channels
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240911191722'),
 ('20240824082227'),
 ('20240511190103'),
 ('20240508190226'),

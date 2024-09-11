@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class Injury < ApplicationRecord
+class Absence < ApplicationRecord
   belongs_to :user
 end

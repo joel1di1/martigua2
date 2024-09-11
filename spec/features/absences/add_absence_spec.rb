@@ -12,21 +12,22 @@ describe 'Add Absence', :devise do
       # connect on the player profile
       visit section_user_path(section, player)
 
-      expect(page).to have_text '0 blessures'
+      expect(page).to have_text '0 absences'
 
       # click on the add absence button
-      click_on 'Ajouter une blessure'
+      click_on 'Ajouter une absence'
 
       # fill in the form
-      fill_in 'Nom de la blessure', with: 'Entorse cheville gauche'
-      fill_in 'Commentaire', with: 'Blessure de merde lors du dernier match'
+      select 'Blessure', from: 'Motif'
+      fill_in 'Commentaire', with: 'Entorse cheville gauche'
       fill_in 'absence[start_at]', with: '23/06/2024'
       fill_in 'absence[end_at]', with: '12/08/2024'
       # submit the form
-      click_on 'Ajouter la blessure'
+      click_on 'Ajouter la absence'
       # expect to see the absence on the player profile
-      expect(page).to have_text '1 blessures'
+      expect(page).to have_text '1 absences'
       expect(page).to have_text 'Entorse cheville gauche'
+      expect(page).to have_text 'Blessure'
     end
   end
 end

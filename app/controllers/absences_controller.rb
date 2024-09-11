@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AbsencesController < ApplicationController
-  before_action :set_absence, only: %i[show edit destroy]
+  before_action :set_absence, only: %i[edit destroy]
   before_action :set_user
 
   # GET /absences or /absences.json
@@ -11,7 +11,7 @@ class AbsencesController < ApplicationController
 
   # GET /absences/new
   def new
-    @absence = Absence.new(user: @user)
+    @absence = Absence.new(user: @user, start_at: Time.zone.today)
   end
 
   # GET /absences/1/edit

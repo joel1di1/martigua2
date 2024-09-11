@@ -19,6 +19,7 @@ class Match < ApplicationRecord
   scope :with_start_between, lambda { |start_period, end_period|
                                where(start_datetime: start_period..end_period)
                              }
+  scope :on_days, ->(days) { where('DATE(start_datetime) IN (?)', days) }
 
   delegate :burned?, to: :championship
 
@@ -76,12 +77,12 @@ class Match < ApplicationRecord
 
   def self.send_availability_mail_for_next_weekend
     User.where("email not like '%@example.com'").active_this_season.each do |user|
-      next_weekend_matches = user.next_weekend_matches
-      UserMailer.send_match_invitation(next_weekend_matches.to_a, user) unless next_weekend_matches.empty?
+      next_7_days_matches = user.next_7_days_matches
+      UserMailer.send_match_invitation(next_7_days_matches.to_a, user) unless next_7_days_matches.empty?
     end
   end
 
-  def self.of_next_weekend(date: DateTime.now)
+  def self.of_next_7_days(date: DateTime.now)
     start_period = date.at_beginning_of_week
     end_period = start_period.at_end_of_week
     Match.with_start_between(start_period, end_period)

@@ -127,8 +127,17 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
             .where(groups: { id: group_ids })
   end
 
-  def next_weekend_matches
-    next_matches = Match.of_next_weekend.includes(local_team: :sections, visitor_team: :sections)
+  def next_7_days_matches
+    start_date = Time.zone.now.to_date
+    end_date = start_date + 7.days
+
+    # remove days where user is absent
+    current_absences = absences.where(start_at: start_date..end_date).or(absences.where(end_at: start_date..end_date))
+    days_to_check = (start_date..end_date).to_a.map(&:to_date)
+    days_to_check.reject! { |d| current_absences.any? { |a| a.start_at <= d && a.end_at >= d } }
+
+    next_matches = Match.on_days(days_to_check)
+                        .includes(local_team: :sections, visitor_team: :sections)
     next_matches.reject do |match|
       (match.local_team.sections + match.visitor_team.sections).flatten.none? do |s|
         player_of?(s)

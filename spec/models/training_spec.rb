@@ -190,6 +190,7 @@ RSpec.describe Training do
     let(:present_player2) { create(:user) }
     let(:present_player3) { create(:user) }
     let(:present_player4) { create(:user) }
+    let(:injured_player) { create(:user) }
     let(:not_present_player) { create(:user) }
     let(:no_response_player) { create(:user) }
     let(:section) { create(:section) }

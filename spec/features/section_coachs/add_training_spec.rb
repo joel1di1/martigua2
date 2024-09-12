@@ -16,8 +16,11 @@ describe 'Add training', :devise do
     within '#links' do
       click_on 'Entrainements'
     end
-
     click_on 'Ajouter un entrainement'
+    expect(page).to have_text 'Prévoir un entrainement'
+
+    fill_in 'training[start_datetime]', with: 1.day.from_now
+    fill_in 'training[end_datetime]', with: (1.day.from_now + 1.hour)
 
     select(location.name, from: 'training_location_id')
 

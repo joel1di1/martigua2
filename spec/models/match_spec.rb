@@ -141,4 +141,27 @@ RSpec.describe Match do
 
     it { expect(match.day.name).to eq('Week 2023-09-11 2023-09-17') }
   end
+
+  describe '#aways' do
+    context 'with a player sick' do
+      let(:section) { create(:section) }
+      let(:team) { create(:team, with_section: section) }
+      let(:match) { create(:match, local_team: team) }
+      let(:player) { create(:user, with_section: section) }
+      let(:player_sick) { create(:user, with_section: section) }
+
+      before do
+        create(:match_availability, user: player, match:, available: true)
+        create(:match_availability, user: player_sick, match:, available: true)
+        create(:absence, user: player_sick, start_at: match.start_datetime - 1.day, end_at: match.start_datetime + 2.days)
+        [player, player_sick]
+      end
+
+      it { expect(match.aways).to contain_exactly(player_sick) }
+      it { expect(match.availables).to contain_exactly(player) }
+      it { expect(match.nb_availables).to eq 1 }
+      it { expect(match.nb_not_availables).to eq 1 }
+      it { expect(match.not_availables).to contain_exactly(player_sick) }
+    end
+  end
 end

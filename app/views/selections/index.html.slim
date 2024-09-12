@@ -54,21 +54,21 @@ div class="sm:flex sm:items-center mb-5"
         .bg-green-200.p-1 aria-expanded="true"
           button.w-full data-action="dropdown#toggle"
             = "#{@available_players.count} dispos"
-        ul.divide-y.divide-green-200 data-dropdown-target="menu" class=(params['showAvailables']=='false' && 'hidden')
+        ul#available_players.divide-y.divide-green-200 data-dropdown-target="menu" class=(params['showAvailables']=='false' && 'hidden')
           - @available_players.each do |player|
             = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
       .overflow-hidden.shadow.shadow-yellow-200.ring-1.ring-black.ring-opacity-5.rounded-sm data-controller="dropdown" data-dropdown-open-value=(params['showNoAnswer'] || "false") data-dropdown-url-param-value="showNoAnswer"
         .bg-yellow-200.p-1 aria-expanded="true"
           button.w-full data-action="dropdown#toggle"
             = "#{@no_response_players.count} sans réponses"
-        ul.divide-y.divide-yellow-200 data-dropdown-target="menu" class=(params['showNoAnswer']!='true' && 'hidden')
+        ul#no_response_players.divide-y.divide-yellow-200 data-dropdown-target="menu" class=(params['showNoAnswer']!='true' && 'hidden')
           - @no_response_players.each do |player|
             = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
       .overflow-hidden.shadow.shadow-red-200.ring-1.ring-black.ring-opacity-5.rounded-sm data-controller="dropdown" data-dropdown-open-value=(params['showNotAvailable'] || "false") data-dropdown-url-param-value="showNotAvailable"
         .bg-red-200.p-1 aria-expanded="true"
           button.w-full data-action="dropdown#toggle"
             = "#{@non_available_players.count} non dispos"
-        ul.hidden.divide-y.divide-red-200 data-dropdown-target="menu" class=(params['showNotAvailable']!='true' && 'hidden')
+        ul#non_available_players.hidden.divide-y.divide-red-200 data-dropdown-target="menu" class=(params['showNotAvailable']!='true' && 'hidden')
           - @non_available_players.each do |player|
             = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
 

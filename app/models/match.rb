@@ -44,7 +44,7 @@ class Match < ApplicationRecord
   end
 
   def _availables
-    match_availabilities.includes(:user).where(available: true)
+    match_availabilities.includes(:user).where(available: true) - aways
   end
 
   def availables
@@ -60,11 +60,20 @@ class Match < ApplicationRecord
   end
 
   def not_availables
-    _not_availables.map(&:user)
+    (_not_availables.map(&:user) + aways).uniq
+  end
+
+  def aways
+    users.joins(:absences)
+         .where('absences.start_at < ? AND absences.end_at > ?', start_datetime || day.period_start_date, start_datetime || day.period_end_date)
+  end
+
+  def nb_aways
+    aways.count
   end
 
   def nb_not_availables
-    _not_availables.count
+    not_availables.count
   end
 
   def nb_availability_not_set

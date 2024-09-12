@@ -214,7 +214,7 @@ describe User do
 
   describe '#next_week_trainings' do
     let(:training_group_ids) { [group.id] }
-    let(:training_date) { 1.week.from_now }
+    let(:training_date) { Time.zone.now.next_week + 2.days }
     let(:user_group_ids) { [group.id] }
     let(:group) { create(:group, section:) }
     let(:user) { create(:user, with_section: section, group_ids: user_group_ids) }
@@ -255,9 +255,9 @@ describe User do
       it { expect(user.next_week_trainings.count).to eq 1 }
 
       context 'when user is away' do
-        before { create(:absence, user:, start_at: training_date - 2.days, end_at: training_date + 2.days) }
+        before { create(:absence, user:, start_at: training_date - 2.weeks, end_at: training_date + 2.weeks) }
 
-        it { expect(user.next_week_trainings).not_to include(training) }
+        it { expect(user.reload.next_week_trainings).not_to include(training) }
       end
     end
   end

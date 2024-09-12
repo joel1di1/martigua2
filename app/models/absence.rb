@@ -11,12 +11,13 @@ class Absence < ApplicationRecord
   belongs_to :user
 
   def update_training_presences
-    TrainingPresence.where(user:)
-                    .where(training: Training.with_start_between(start_at, end_at)).update_all(is_present: false) # rubocop:disable Rails/SkipsModelValidations
+    # all training that start between start_at and end_at
+    trainings = Training.with_start_between(start_at, end_at)
+    user.not_present_for!(trainings)
   end
 
   def update_match_availabilities
-    MatchAvailability.where(user:)
-                     .where(match: Match.with_start_between(start_at, end_at)).update_all(available: false) # rubocop:disable Rails/SkipsModelValidations
+    matchs = Match.with_start_between(start_at, end_at)
+    user.not_available_for!(matchs)
   end
 end

@@ -1,4 +1,4 @@
-= simple_form_for([current_section, @user, @absence], url: section_user_absences_path([current_section, @user])) do |f|
+= simple_form_for([current_section, @user, @absence]) do |f|
   / name is a select input, with a list of predefined reasons MOTIVES
   = f.input :name, label: 'Motif', as: :select, collection: Absence::MOTIVES
   | indispo du

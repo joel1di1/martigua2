@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AbsencesController < ApplicationController
-  before_action :set_absence, only: %i[edit destroy]
+  before_action :set_absence, only: %i[edit update destroy]
   before_action :set_user
 
   # GET /absences or /absences.json
@@ -28,6 +28,18 @@ class AbsencesController < ApplicationController
         format.json { render :show, status: :created, location: @absence }
       else
         format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @absence.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def update
+    respond_to do |format|
+      if @absence.update(absence_params)
+        format.html { redirect_to section_user_path(current_section, @user), notice: 'Absence was successfully updated.' }
+        format.json { render :show, status: :ok, location: @absence }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @absence.errors, status: :unprocessable_entity }
       end
     end

@@ -391,4 +391,38 @@ describe User do
       end
     end
   end
+
+  describe '#not_available_for!' do
+    let(:user) { create(:user, with_section: section) }
+    let(:match) { create(:match) }
+    let(:other_match) { create(:match) }
+
+    context 'with availability not set' do
+      it 'create match_availability' do
+        expect(user.is_available_for?(match)).to be_nil
+        expect { user.not_available_for!(match) }.to change(user.match_availabilities, :count).by(1)
+        expect(user).not_to be_is_available_for(match)
+      end
+    end
+
+    context 'with availability set to true' do
+      before { create(:match_availability, user:, match:, available: true) }
+
+      it 'create match_availability' do
+        expect(user).to be_is_available_for(match)
+        user.not_available_for!(match)
+        expect(user.reload).not_to be_is_available_for(match)
+      end
+    end
+
+    context 'with array of matchs' do
+      it 'update match_availabilities' do
+        expect(user.reload.is_available_for?(match)).to be_nil
+        expect(user.reload.is_available_for?(other_match)).to be_nil
+        user.not_available_for!([match, other_match])
+        expect(user.reload).not_to be_is_available_for(match)
+        expect(user.reload).not_to be_is_available_for(other_match)
+      end
+    end
+  end
 end

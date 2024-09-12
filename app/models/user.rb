@@ -68,7 +68,7 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def _set_presence_for!(present, training_or_array, *other_trainings)
-    trainings = training_or_array if training_or_array.is_a? Array
+    trainings = training_or_array if training_or_array.is_a?(Array) || training_or_array.is_a?(ActiveRecord::Relation)
     trainings ||= [training_or_array] + other_trainings
 
     presences = {}
@@ -196,6 +196,15 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     absences.any? do |absence|
       absence.start_at <= (match.start_datetime || match.day.period_start_date) &&
         absence.end_at >= (match.end_datetime || match.day.period_end_date)
+    end
+  end
+
+  def not_available_for!(match_or_array)
+    matches = match_or_array if match_or_array.is_a?(Array) || match_or_array.is_a?(ActiveRecord::Relation)
+    matches ||= [match_or_array]
+    matches.each do |match|
+      match_availability = MatchAvailability.find_or_create_by(user: self, match:)
+      match_availability.update!(available: false)
     end
   end
 

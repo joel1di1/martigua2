@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe 'Absent player seen as unavailable for match', type: :feature do
+describe 'Absent player seen as unavailable for match' do
   let(:section) { create(:section) }
   let(:coach) { create(:coach, with_section: section) }
   let(:player) { create(:user, with_section: section) }

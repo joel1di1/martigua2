@@ -1,11 +1,11 @@
 = simple_form_for([current_section, @user, @absence]) do |f|
   / name is a select input, with a list of predefined reasons MOTIVES
   = f.input :name, label: 'Motif', as: :select, collection: Absence::MOTIVES
+  = f.input :comment, label: 'Commentaire', placeholder: 'Tendinite au poignet gauche / Tour du monde'
   | indispo du
   / input inline
   = f.input :start_at, label: '', html5: true, input_html: { class: 'input-small' }
   | au
   = f.input :end_at, label: '', html5: true
-  = f.input :comment, label: 'Commentaire', placeholder: 'Tendinite au poignet gauche / Tour du monde'
   = f.button :submit, class: 'btn btn-primary', value: @absence.new_record? ? "Ajouter l'absence" : "Mettre à jour l'absence"
 

@@ -194,8 +194,8 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   def absent_for?(match)
     absences.any? do |absence|
-      absence.start_at <= match.start_datetime &&
-        absence.end_at >= match.start_datetime
+      absence.start_at <= (match.start_datetime || match.day.period_start_date) &&
+        absence.end_at >= (match.end_datetime || match.day.period_end_date)
     end
   end
 

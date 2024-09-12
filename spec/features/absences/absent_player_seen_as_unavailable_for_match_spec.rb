@@ -9,10 +9,11 @@ describe 'Absent player seen as unavailable for match', type: :feature do
   before do
     signin_user coach
     match
-    visit section_path(section)
+    create(:absence, user: player, start_at: match.start_datetime - 2.days, end_at: match.start_datetime + 10.days)
   end
 
   it 'coach sees player as unavailable' do
+    visit section_path(section)
     click_on "#{match.local_team&.name} - #{match.visitor_team&.name}"
 
     # check url match "sections/xxx/day/xxx/selections
@@ -20,7 +21,7 @@ describe 'Absent player seen as unavailable for match', type: :feature do
     assert_text '1 non dispos'
     click_on '1 non dispos'
     within '#non_available_players' do
-      except(page).to have_text player.full_name
+      expect(page).to have_text player.full_name
     end
   end
 end

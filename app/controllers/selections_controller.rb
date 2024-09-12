@@ -13,8 +13,18 @@ class SelectionsController < ApplicationController
     @players = current_section.players
 
     @availabilities_by_user_and_match = availabilities_by_user_and_match(@players, matches)
-
     @available_players, @non_available_players = prepare_availabilities(matches, @availabilities_by_user_and_match)
+
+    # absence overrides availability
+    @players.each do |player|
+      matches.each do |match|
+        next unless player.absent_for?(match)
+
+        @availabilities_by_user_and_match[player.id][match.id] = false
+        @available_players.delete(player)
+        @non_available_players << player
+      end
+    end
 
     @available_players = (@available_players - @users_already_selected).to_a.sort_by(&:short_name)
     @non_available_players = (@non_available_players - @available_players - @users_already_selected).to_a.sort_by(&:short_name)

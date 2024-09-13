@@ -1,22 +1,22 @@
 version: 2
 updates:
-- package-ecosystem: bundler
-  directory: "/"
-  schedule:
-    interval: weekly
-    day: saturday
-    time: "04:00"
-  open-pull-requests-limit: 10
-  target-branch: master
-  assignees:
-  - joel1di1
-  labels:
-  - dependencies
-  - ruby
-  ignore:
-  - dependency-name: webpack-rails
-    versions:
-    - ">= 0"
-  - dependency-name: rack
-    versions:
-    - 2.2.3
+  - package-ecosystem: bundler
+    directory: "/"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+    assignees:
+      - joel1di1
+    labels:
+      - dependencies
+      - ruby
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+    assignees:
+      - joel1di1
+    labels:
+      - dependencies
+      - ruby

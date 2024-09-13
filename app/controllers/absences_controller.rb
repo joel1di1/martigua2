@@ -6,7 +6,7 @@ class AbsencesController < ApplicationController
 
   # GET /absences or /absences.json
   def index
-    @absences = Absence.all
+    @absences = Absence.includes(user: :sections).where(users: { sections: current_section }).order(:start_at)
   end
 
   # GET /absences/new
@@ -63,7 +63,7 @@ class AbsencesController < ApplicationController
   end
 
   def set_user
-    @user = User.find(params[:user_id])
+    @user = User.find(params[:user_id]) if params[:user_id]
   end
 
   # Only allow a list of trusted parameters through.

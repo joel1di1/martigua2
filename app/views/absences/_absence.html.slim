@@ -1,0 +1,12 @@
+tr id=dom_id(absence)
+  td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
+    = absence.user
+  td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+    = l(absence.start_at, format: :long)
+  td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+    = l(absence.end_at, format: :long)
+  td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+    = absence.name
+  td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+    = absence.comment
+

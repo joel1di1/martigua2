@@ -54,6 +54,7 @@ Rails.application.routes.draw do
         delete 'uncancel'
       end
     end
+    resources :absences, only: %i[index]
     resources :users, path: 'members' do
       resources :trainings, only: [] do
         resources :training_presences, only: %i[create show]

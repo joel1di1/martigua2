@@ -40,7 +40,9 @@ describe 'User profile page', :devise do
     expect(page).to have_content other.email
 
     visit section_users_path(section_id: section.to_param)
-    click_on other.full_name
+
+    # full_name  capitalize all words
+    click_on other.full_name.split.map(&:capitalize).join(' ')
     expect(page).to have_content other.phone_number
     expect(page).to have_current_path(section_user_path(other, section_id: section.to_param))
   end

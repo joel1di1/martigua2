@@ -3,13 +3,20 @@
 require 'rails_helper'
 
 RSpec.describe Absence do
+  let(:section) { create(:section) }
+  let(:user) { create(:user, with_section: section) }
+  let(:team) { create(:team, with_section: section) }
+
   it { is_expected.to belong_to(:user) }
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_inclusion_of(:name).in_array(%w[Blessure Maladie Perso Travail Autre]) }
 
   describe '#update_training_presences' do
-    let(:user) { create(:user) }
-    let(:training) { create(:training) }
+    let(:training) { create(:training, with_section: section) }
+
+    before do
+      [user, team]
+    end
 
     context 'when user declared nothing' do
       describe 'on create' do
@@ -61,8 +68,7 @@ RSpec.describe Absence do
   end
 
   describe '#update_match_availabilities' do
-    let(:user) { create(:user) }
-    let(:match) { create(:match) }
+    let(:match) { create(:match, local_team: team) }
 
     context 'when user declared nothing' do
       describe 'on create' do

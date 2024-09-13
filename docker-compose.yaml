@@ -4,7 +4,7 @@ services:
     image: postgres:14
     container_name: postgres_martigua2
     ports:
-     - '127.0.0.1:5432:5432'
+     - '127.0.0.1:54321:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -14,5 +14,5 @@ services:
   redis:
     image: redis:7
     ports:
-      - '127.0.0.1:6379:6379'
+      - '127.0.0.1:63791:6379'
     container_name: redis_martigua2

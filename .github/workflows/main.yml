@@ -85,4 +85,4 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/martigua2_test
 
       - name: Publish coverage data to Code Climate
-        uses: paambaati/codeclimate-action@v6.0.0
+        uses: paambaati/codeclimate-action@v9.0.0

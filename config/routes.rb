@@ -84,12 +84,11 @@ Rails.application.routes.draw do
       resources :enrolled_team_championships, only: %i[index create destroy]
       resources :burns, only: %i[index create destroy]
     end
-    resources :day, only: [] do
+    resources :days, only: %i[create update] do
       resources :selections, only: [:index]
     end
     resources :calendars, only: %i[index create edit update]
     resources :days, only: [:create]
-    resources :locations, only: [:create]
     resources :teams, only: %i[create show delete new]
     resources :channels do
       resources :messages, only: %i[create destroy]

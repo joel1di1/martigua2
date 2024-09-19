@@ -592,7 +592,8 @@ CREATE TABLE public.days (
     period_end_date date,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    calendar_id bigint
+    calendar_id bigint,
+    selection_hidden boolean DEFAULT false NOT NULL
 );
 
 
@@ -3817,6 +3818,7 @@ ALTER TABLE ONLY public.channels
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240919161108'),
 ('20240911191722'),
 ('20240824082227'),
 ('20240511190103'),

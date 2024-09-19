@@ -16,6 +16,13 @@ class DaysController < ApplicationController
                   notice: 'Journée créée')
   end
 
+  def update
+    @day = Day.find(params[:id])
+    @day.update!(selection_hidden: params[:selection_hidden])
+
+    redirect_to section_day_selections_path(current_section, @day)
+  end
+
   protected
 
   def day_params

@@ -68,18 +68,14 @@ group :development, :test do
   gem 'debug'
   gem 'factory_bot_rails'
   gem 'foreman', require: false
-  gem 'panolint'
   gem 'parallel_tests'
   gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'rubocop-capybara', require: false
-  gem 'rubocop-discourse', require: false
   gem 'rubocop-factory_bot', require: false
   gem 'rubocop-rails', require: false
-  gem 'rubocop-rake', require: false
   gem 'rubocop-rspec', require: false
   gem 'rubocop-rspec_rails', require: false
-  gem 'rubocop-rubycw', require: false
 end
 
 group :development do

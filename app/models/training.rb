@@ -115,7 +115,7 @@ class Training < ApplicationRecord
     "#{start_datetime.strftime('%d %b')} - #{location&.name}"
   end
 
-  def self.send_presence_mail_for_next_week(date = Time.zone.now)
+  def self.send_presence_mail_for_next_week(date = DateTime.now)
     User.where("email not like '%@example.com'").active_this_season.each do |user|
       next_week_trainings = user.next_week_trainings(date:)
       unless next_week_trainings.empty?

@@ -478,6 +478,8 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    scout_apm (5.4.0)
+      parser
     securerandom (0.3.1)
     selectize-rails (0.12.6)
     selenium-webdriver (4.24.0)
@@ -638,6 +640,7 @@ DEPENDENCIES
   rubocop-rspec_rails
   ruby-lsp
   ruby-lsp-rspec
+  scout_apm
   sentry-rails
   sentry-ruby
   sentry-sidekiq

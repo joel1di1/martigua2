@@ -1395,6 +1395,436 @@ ALTER SEQUENCE public.passeport_availability_checks_id_seq OWNED BY public.passe
 
 
 --
+-- Name: resajaaf_action_text_rich_texts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_action_text_rich_texts (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    body text,
+    record_type character varying NOT NULL,
+    record_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: resajaaf_action_text_rich_texts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.resajaaf_action_text_rich_texts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: resajaaf_action_text_rich_texts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.resajaaf_action_text_rich_texts_id_seq OWNED BY public.resajaaf_action_text_rich_texts.id;
+
+
+--
+-- Name: resajaaf_active_storage_attachments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_active_storage_attachments (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    record_type character varying NOT NULL,
+    record_id bigint NOT NULL,
+    blob_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: resajaaf_active_storage_attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.resajaaf_active_storage_attachments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: resajaaf_active_storage_attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.resajaaf_active_storage_attachments_id_seq OWNED BY public.resajaaf_active_storage_attachments.id;
+
+
+--
+-- Name: resajaaf_active_storage_blobs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_active_storage_blobs (
+    id bigint NOT NULL,
+    key character varying NOT NULL,
+    filename character varying NOT NULL,
+    content_type character varying,
+    metadata text,
+    service_name character varying NOT NULL,
+    byte_size bigint NOT NULL,
+    checksum character varying,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: resajaaf_active_storage_blobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.resajaaf_active_storage_blobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: resajaaf_active_storage_blobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.resajaaf_active_storage_blobs_id_seq OWNED BY public.resajaaf_active_storage_blobs.id;
+
+
+--
+-- Name: resajaaf_active_storage_variant_records; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_active_storage_variant_records (
+    id bigint NOT NULL,
+    blob_id bigint NOT NULL,
+    variation_digest character varying NOT NULL
+);
+
+
+--
+-- Name: resajaaf_active_storage_variant_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.resajaaf_active_storage_variant_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: resajaaf_active_storage_variant_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.resajaaf_active_storage_variant_records_id_seq OWNED BY public.resajaaf_active_storage_variant_records.id;
+
+
+--
+-- Name: resajaaf_ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_ar_internal_metadata (
+    key character varying NOT NULL,
+    value character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: resajaaf_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_events (
+    id bigint NOT NULL,
+    name character varying,
+    start_at timestamp(6) without time zone,
+    end_at timestamp(6) without time zone,
+    address character varying,
+    location_details character varying,
+    max_participants integer,
+    user_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    repeat_until date,
+    repeat boolean DEFAULT false NOT NULL,
+    main_event_id bigint
+);
+
+
+--
+-- Name: resajaaf_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.resajaaf_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: resajaaf_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.resajaaf_events_id_seq OWNED BY public.resajaaf_events.id;
+
+
+--
+-- Name: resajaaf_identities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_identities (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    provider character varying,
+    uid character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: resajaaf_identities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.resajaaf_identities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: resajaaf_identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.resajaaf_identities_id_seq OWNED BY public.resajaaf_identities.id;
+
+
+--
+-- Name: resajaaf_pack_participations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_pack_participations (
+    id bigint NOT NULL,
+    pack_id bigint NOT NULL,
+    participation_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: resajaaf_pack_participations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.resajaaf_pack_participations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: resajaaf_pack_participations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.resajaaf_pack_participations_id_seq OWNED BY public.resajaaf_pack_participations.id;
+
+
+--
+-- Name: resajaaf_packs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_packs (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    value integer,
+    price integer,
+    start_at date,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: resajaaf_packs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.resajaaf_packs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: resajaaf_packs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.resajaaf_packs_id_seq OWNED BY public.resajaaf_packs.id;
+
+
+--
+-- Name: resajaaf_participations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_participations (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    event_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    num integer DEFAULT 1 NOT NULL,
+    additionnal_participant_paid_with_cash integer DEFAULT 0,
+    additionnal_participant_paid_with_pack integer DEFAULT 0
+);
+
+
+--
+-- Name: resajaaf_participations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.resajaaf_participations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: resajaaf_participations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.resajaaf_participations_id_seq OWNED BY public.resajaaf_participations.id;
+
+
+--
+-- Name: resajaaf_schema_migrations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_schema_migrations (
+    version character varying NOT NULL
+);
+
+
+--
+-- Name: resajaaf_test_models; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_test_models (
+    id bigint NOT NULL,
+    name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: resajaaf_test_models_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.resajaaf_test_models_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: resajaaf_test_models_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.resajaaf_test_models_id_seq OWNED BY public.resajaaf_test_models.id;
+
+
+--
+-- Name: resajaaf_users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_users (
+    id bigint NOT NULL,
+    email character varying DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying,
+    reset_password_sent_at timestamp(6) without time zone,
+    remember_created_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    name character varying,
+    phone character varying
+);
+
+
+--
+-- Name: resajaaf_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.resajaaf_users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: resajaaf_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.resajaaf_users_id_seq OWNED BY public.resajaaf_users.id;
+
+
+--
+-- Name: resajaaf_webpush_subscriptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resajaaf_webpush_subscriptions (
+    id bigint NOT NULL,
+    endpoint character varying,
+    p256dh_key character varying,
+    auth_key character varying,
+    user_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: resajaaf_webpush_subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.resajaaf_webpush_subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: resajaaf_webpush_subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.resajaaf_webpush_subscriptions_id_seq OWNED BY public.resajaaf_webpush_subscriptions.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2274,6 +2704,90 @@ ALTER TABLE ONLY public.passeport_availability_checks ALTER COLUMN id SET DEFAUL
 
 
 --
+-- Name: resajaaf_action_text_rich_texts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_action_text_rich_texts ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_action_text_rich_texts_id_seq'::regclass);
+
+
+--
+-- Name: resajaaf_active_storage_attachments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_active_storage_attachments ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_active_storage_attachments_id_seq'::regclass);
+
+
+--
+-- Name: resajaaf_active_storage_blobs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_active_storage_blobs ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_active_storage_blobs_id_seq'::regclass);
+
+
+--
+-- Name: resajaaf_active_storage_variant_records id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_active_storage_variant_records ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_active_storage_variant_records_id_seq'::regclass);
+
+
+--
+-- Name: resajaaf_events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_events ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_events_id_seq'::regclass);
+
+
+--
+-- Name: resajaaf_identities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_identities ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_identities_id_seq'::regclass);
+
+
+--
+-- Name: resajaaf_pack_participations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_pack_participations ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_pack_participations_id_seq'::regclass);
+
+
+--
+-- Name: resajaaf_packs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_packs ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_packs_id_seq'::regclass);
+
+
+--
+-- Name: resajaaf_participations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_participations ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_participations_id_seq'::regclass);
+
+
+--
+-- Name: resajaaf_test_models id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_test_models ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_test_models_id_seq'::regclass);
+
+
+--
+-- Name: resajaaf_users id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_users ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_users_id_seq'::regclass);
+
+
+--
+-- Name: resajaaf_webpush_subscriptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_webpush_subscriptions ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_webpush_subscriptions_id_seq'::regclass);
+
+
+--
 -- Name: scrapped_rankings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2718,6 +3232,118 @@ ALTER TABLE ONLY public.participations
 
 ALTER TABLE ONLY public.passeport_availability_checks
     ADD CONSTRAINT passeport_availability_checks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resajaaf_action_text_rich_texts resajaaf_action_text_rich_texts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_action_text_rich_texts
+    ADD CONSTRAINT resajaaf_action_text_rich_texts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resajaaf_active_storage_attachments resajaaf_active_storage_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_active_storage_attachments
+    ADD CONSTRAINT resajaaf_active_storage_attachments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resajaaf_active_storage_blobs resajaaf_active_storage_blobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_active_storage_blobs
+    ADD CONSTRAINT resajaaf_active_storage_blobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resajaaf_active_storage_variant_records resajaaf_active_storage_variant_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_active_storage_variant_records
+    ADD CONSTRAINT resajaaf_active_storage_variant_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resajaaf_ar_internal_metadata resajaaf_ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_ar_internal_metadata
+    ADD CONSTRAINT resajaaf_ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: resajaaf_events resajaaf_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_events
+    ADD CONSTRAINT resajaaf_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resajaaf_identities resajaaf_identities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_identities
+    ADD CONSTRAINT resajaaf_identities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resajaaf_pack_participations resajaaf_pack_participations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_pack_participations
+    ADD CONSTRAINT resajaaf_pack_participations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resajaaf_packs resajaaf_packs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_packs
+    ADD CONSTRAINT resajaaf_packs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resajaaf_participations resajaaf_participations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_participations
+    ADD CONSTRAINT resajaaf_participations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resajaaf_schema_migrations resajaaf_schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_schema_migrations
+    ADD CONSTRAINT resajaaf_schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: resajaaf_test_models resajaaf_test_models_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_test_models
+    ADD CONSTRAINT resajaaf_test_models_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resajaaf_users resajaaf_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_users
+    ADD CONSTRAINT resajaaf_users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resajaaf_webpush_subscriptions resajaaf_webpush_subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_webpush_subscriptions
+    ADD CONSTRAINT resajaaf_webpush_subscriptions_pkey PRIMARY KEY (id);
 
 
 --
@@ -3319,6 +3945,118 @@ CREATE INDEX index_participations_on_user_id ON public.participations USING btre
 
 
 --
+-- Name: index_resajaaf_action_text_rich_texts_uniqueness; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_resajaaf_action_text_rich_texts_uniqueness ON public.resajaaf_action_text_rich_texts USING btree (record_type, record_id, name);
+
+
+--
+-- Name: index_resajaaf_active_storage_attachments_on_blob_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_resajaaf_active_storage_attachments_on_blob_id ON public.resajaaf_active_storage_attachments USING btree (blob_id);
+
+
+--
+-- Name: index_resajaaf_active_storage_attachments_uniqueness; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_resajaaf_active_storage_attachments_uniqueness ON public.resajaaf_active_storage_attachments USING btree (record_type, record_id, name, blob_id);
+
+
+--
+-- Name: index_resajaaf_active_storage_blobs_on_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_resajaaf_active_storage_blobs_on_key ON public.resajaaf_active_storage_blobs USING btree (key);
+
+
+--
+-- Name: index_resajaaf_active_storage_variant_records_uniqueness; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_resajaaf_active_storage_variant_records_uniqueness ON public.resajaaf_active_storage_variant_records USING btree (blob_id, variation_digest);
+
+
+--
+-- Name: index_resajaaf_events_on_main_event_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_resajaaf_events_on_main_event_id ON public.resajaaf_events USING btree (main_event_id);
+
+
+--
+-- Name: index_resajaaf_events_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_resajaaf_events_on_user_id ON public.resajaaf_events USING btree (user_id);
+
+
+--
+-- Name: index_resajaaf_identities_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_resajaaf_identities_on_user_id ON public.resajaaf_identities USING btree (user_id);
+
+
+--
+-- Name: index_resajaaf_pack_participations_on_pack_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_resajaaf_pack_participations_on_pack_id ON public.resajaaf_pack_participations USING btree (pack_id);
+
+
+--
+-- Name: index_resajaaf_pack_participations_on_participation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_resajaaf_pack_participations_on_participation_id ON public.resajaaf_pack_participations USING btree (participation_id);
+
+
+--
+-- Name: index_resajaaf_packs_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_resajaaf_packs_on_user_id ON public.resajaaf_packs USING btree (user_id);
+
+
+--
+-- Name: index_resajaaf_participations_on_event_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_resajaaf_participations_on_event_id ON public.resajaaf_participations USING btree (event_id);
+
+
+--
+-- Name: index_resajaaf_participations_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_resajaaf_participations_on_user_id ON public.resajaaf_participations USING btree (user_id);
+
+
+--
+-- Name: index_resajaaf_users_on_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_resajaaf_users_on_email ON public.resajaaf_users USING btree (email);
+
+
+--
+-- Name: index_resajaaf_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_resajaaf_users_on_reset_password_token ON public.resajaaf_users USING btree (reset_password_token);
+
+
+--
+-- Name: index_resajaaf_webpush_subscriptions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_resajaaf_webpush_subscriptions_on_user_id ON public.resajaaf_webpush_subscriptions USING btree (user_id);
+
+
+--
 -- Name: index_section_user_invitations_on_section_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3548,6 +4286,14 @@ ALTER TABLE ONLY public.math_trainer_answers_sessions
 
 
 --
+-- Name: resajaaf_identities fk_rails_1350714310; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_identities
+    ADD CONSTRAINT fk_rails_1350714310 FOREIGN KEY (user_id) REFERENCES public.resajaaf_users(id);
+
+
+--
 -- Name: math_trainer_card_session_problems fk_rails_1a68b9ce67; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3572,6 +4318,14 @@ ALTER TABLE ONLY public.championships
 
 
 --
+-- Name: resajaaf_active_storage_attachments fk_rails_3145820d0c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_active_storage_attachments
+    ADD CONSTRAINT fk_rails_3145820d0c FOREIGN KEY (blob_id) REFERENCES public.resajaaf_active_storage_blobs(id);
+
+
+--
 -- Name: math_trainer_answers fk_rails_397d14b689; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3593,6 +4347,14 @@ ALTER TABLE ONLY public.user_championship_stats
 
 ALTER TABLE ONLY public.math_trainer_fights
     ADD CONSTRAINT fk_rails_4fa7a6c133 FOREIGN KEY (fight_opponent_id) REFERENCES public.math_trainer_fight_opponents(id);
+
+
+--
+-- Name: resajaaf_webpush_subscriptions fk_rails_50dfc5a924; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_webpush_subscriptions
+    ADD CONSTRAINT fk_rails_50dfc5a924 FOREIGN KEY (user_id) REFERENCES public.resajaaf_users(id);
 
 
 --
@@ -3636,6 +4398,22 @@ ALTER TABLE ONLY public.duty_tasks
 
 
 --
+-- Name: resajaaf_pack_participations fk_rails_6f1c5ddf29; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_pack_participations
+    ADD CONSTRAINT fk_rails_6f1c5ddf29 FOREIGN KEY (participation_id) REFERENCES public.resajaaf_participations(id);
+
+
+--
+-- Name: resajaaf_active_storage_variant_records fk_rails_6ff2d3beb9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_active_storage_variant_records
+    ADD CONSTRAINT fk_rails_6ff2d3beb9 FOREIGN KEY (blob_id) REFERENCES public.resajaaf_active_storage_blobs(id);
+
+
+--
 -- Name: math_trainer_answer_fights fk_rails_792464e76b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3660,6 +4438,14 @@ ALTER TABLE ONLY public.duty_tasks
 
 
 --
+-- Name: resajaaf_events fk_rails_8b547bd5cd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_events
+    ADD CONSTRAINT fk_rails_8b547bd5cd FOREIGN KEY (user_id) REFERENCES public.resajaaf_users(id);
+
+
+--
 -- Name: sms_notifications fk_rails_8bf31290ff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3681,6 +4467,14 @@ ALTER TABLE ONLY public.webpush_subscriptions
 
 ALTER TABLE ONLY public.user_channel_messages
     ADD CONSTRAINT fk_rails_9207d54fb1 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: resajaaf_pack_participations fk_rails_93a450be6e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_pack_participations
+    ADD CONSTRAINT fk_rails_93a450be6e FOREIGN KEY (pack_id) REFERENCES public.resajaaf_packs(id);
 
 
 --
@@ -3756,6 +4550,14 @@ ALTER TABLE ONLY public.active_storage_attachments
 
 
 --
+-- Name: resajaaf_packs fk_rails_c80e9ee549; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_packs
+    ADD CONSTRAINT fk_rails_c80e9ee549 FOREIGN KEY (user_id) REFERENCES public.resajaaf_users(id);
+
+
+--
 -- Name: messages fk_rails_c90b5a8a0c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3788,11 +4590,27 @@ ALTER TABLE ONLY public.math_trainer_answers
 
 
 --
+-- Name: resajaaf_participations fk_rails_d529d7027f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_participations
+    ADD CONSTRAINT fk_rails_d529d7027f FOREIGN KEY (user_id) REFERENCES public.resajaaf_users(id);
+
+
+--
 -- Name: calendars fk_rails_d5af2ea0d7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.calendars
     ADD CONSTRAINT fk_rails_d5af2ea0d7 FOREIGN KEY (season_id) REFERENCES public.seasons(id);
+
+
+--
+-- Name: resajaaf_participations fk_rails_efd8161620; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.resajaaf_participations
+    ADD CONSTRAINT fk_rails_efd8161620 FOREIGN KEY (event_id) REFERENCES public.resajaaf_events(id);
 
 
 --

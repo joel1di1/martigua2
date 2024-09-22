@@ -16,7 +16,7 @@ class Season < ApplicationRecord
   end
 
   def self.current
-    return _current if Rails.env.test?
+    return _current if Rails.env.local?
 
     Thread.current[:current_season] ||= _current
   end

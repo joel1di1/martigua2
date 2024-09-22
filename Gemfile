@@ -32,9 +32,9 @@ gem 'puma'
 gem 'pundit'
 gem 'rack-attack'
 gem 'rack-cors', require: 'rack/cors'
-gem 'rails_autolink'
 gem 'rails_ping'
 gem 'redis'
+gem 'scout_apm'
 gem 'sentry-rails'
 gem 'sentry-ruby'
 gem 'sentry-sidekiq'
@@ -48,10 +48,8 @@ gem 'string-similarity'
 gem 'switch_user'
 gem 'tailwindcss-rails'
 gem 'turbo-rails'
-gem 'web-push'
-
-gem 'headless'
 gem 'watir'
+gem 'web-push'
 
 group :production do
   gem 'postmark-rails'
@@ -79,9 +77,11 @@ group :development, :test do
 end
 
 group :development do
+  gem 'derailed_benchmarks', group: :development, git: 'https://github.com/rzilient-club/derailed_benchmarks.git'
   gem 'rack-mini-profiler'
   gem 'ruby-lsp'
   gem 'ruby-lsp-rspec'
+  gem 'stackprof', group: :development
   gem 'web-console'
 end
 

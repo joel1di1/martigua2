@@ -88,7 +88,7 @@ class Championship < ApplicationRecord
   end
 
   def burned?(user)
-    burned_players.include?(user)
+    burned_players.to_a.include?(user)
   end
 
   def freeze!(user)

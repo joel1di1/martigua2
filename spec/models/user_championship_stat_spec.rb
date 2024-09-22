@@ -26,17 +26,17 @@ RSpec.describe UserChampionshipStat do
       let(:nb_matches_in_championship) { 11 }
 
       it 'does not burn the player if he has not played enough matches' do
-        expect { user_championship_stat1.update(match_played: 5) }.not_to(change { championship2.burned?(user) })
+        expect { user_championship_stat1.update(match_played: 5) }.not_to(change { championship2.reload.burned?(user) })
       end
 
       it 'burns the player if he has played enough matches' do
         expect { user_championship_stat1.update(match_played: 6) }.to(change do
-                                                                        championship2.burned?(user)
+                                                                        championship2.reload.burned?(user)
                                                                       end.from(false).to(true))
       end
 
       it 'does not burn the player for higger teams' do
-        expect { user_championship_stat2.update(match_played: 6) }.not_to(change { championship1.burned?(user) })
+        expect { user_championship_stat2.update(match_played: 6) }.not_to(change { championship1.reload.burned?(user) })
       end
     end
 
@@ -44,17 +44,17 @@ RSpec.describe UserChampionshipStat do
       let(:nb_matches_in_championship) { 12 }
 
       it 'does not burn the player if he has not played enough matches' do
-        expect { user_championship_stat1.update(match_played: 5) }.not_to(change { championship2.burned?(user) })
+        expect { user_championship_stat1.update(match_played: 5) }.not_to(change { championship2.reload.burned?(user) })
       end
 
       it 'burns the player if he has played enough matches' do
         expect { user_championship_stat1.update(match_played: 6) }.to(change do
-                                                                        championship2.burned?(user)
+                                                                        championship2.reload.burned?(user)
                                                                       end.from(false).to(true))
       end
 
       it 'does not burn the player for higger teams' do
-        expect { user_championship_stat2.update(match_played: 6) }.not_to(change { championship1.burned?(user) })
+        expect { user_championship_stat2.update(match_played: 6) }.not_to(change { championship1.reload.burned?(user) })
       end
     end
   end

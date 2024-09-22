@@ -5,15 +5,16 @@ class SelectionsController < ApplicationController
     @day = Day.find(params[:day_id])
     @teams_with_matches = Team.team_with_match_on(@day, current_section)
 
-    @day_selections = Selection.joins(match: :day).where(matches: { day_id: @day.id }).includes(:user)
-    @users_already_selected = @day_selections.map(&:user).uniq
+    @players = current_section.players.includes(:user_championship_stats, :absences)
+    players_by_id = @players.index_by(&:id)
+
+    @day_selections = Selection.joins(match: :day).where(matches: { day_id: @day.id })
+    @users_already_selected = @day_selections.map(&:user_id).uniq.map { |id| players_by_id[id] }
 
     matches = @teams_with_matches.map(&:second)
 
-    @players = current_section.players
-
     @availabilities_by_user_and_match = availabilities_by_user_and_match(@players, matches)
-    @available_players, @non_available_players = prepare_availabilities(matches, @availabilities_by_user_and_match)
+    @available_players, @non_available_players = prepare_availabilities(matches, @availabilities_by_user_and_match, players_by_id)
 
     # absence overrides availability
     @players.each do |player|
@@ -33,17 +34,17 @@ class SelectionsController < ApplicationController
     @last_trainings, @presences_by_user_and_training = prepare_training_presences(current_section, @players)
   end
 
-  def prepare_availabilities(matches, availabilities_by_user_and_match)
+  def prepare_availabilities(matches, availabilities_by_user_and_match, players_by_id)
     available_players = Set.new
     non_available_players = Set.new
 
-    availabilities = MatchAvailability.includes(user: :user_championship_stats).where(match: matches)
+    availabilities = MatchAvailability.where(match: matches)
     availabilities.each do |availability|
       if availabilities_by_user_and_match[availability.user_id]
         availabilities_by_user_and_match[availability.user_id][availability.match_id] =
           availability.available
       end
-      (availability.available ? available_players : non_available_players) << availability.user
+      (availability.available ? available_players : non_available_players) << players_by_id[availability.user_id]
     end
 
     [available_players, non_available_players]

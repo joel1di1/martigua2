@@ -25,7 +25,7 @@ div class="sm:flex sm:items-center mb-5"
           hr
           .select-all
             - @teams_with_matches.each do |team, match|
-              - selections = match.selections(team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
+              - selections = match.selections(team).includes(:user).sort{|a, b| a.user.short_name <=> b.user.short_name}
               p.py-4
                 h3.text-xl= team.name
                 'Match :
@@ -87,7 +87,7 @@ div class="sm:flex sm:items-center mb-5"
               = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
 
     - @teams_with_matches.each do |team, match|
-      - selections = match.selections(team).includes(:match).includes(:team).includes(user: :match_availabilities).sort{|a, b| a.user.short_name <=> b.user.short_name}
+      - selections = match.selections(team).includes(:match).includes(:team).includes(user: [:match_availabilities, :user_championship_stats]).sort{|a, b| a.user.short_name <=> b.user.short_name}
       div
         .overflow-hidden.shadow.shadow-sky-600.ring-1.ring-black.ring-opacity-5.rounded-sm data-match_id=match.id data-team_id=team.id
           .bg-sky-600.p-1.text-white.text-center

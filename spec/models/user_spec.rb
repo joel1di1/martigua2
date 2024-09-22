@@ -235,7 +235,7 @@ describe User do
     end
 
     context 'when date is in 2 weeks' do
-      let(:training_date) { 2.weeks.from_now }
+      let(:training_date) { 16.days.from_now }
 
       it { expect(user.next_week_trainings).not_to include(training) }
     end

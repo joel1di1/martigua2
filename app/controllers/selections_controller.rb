@@ -47,6 +47,10 @@ class SelectionsController < ApplicationController
       (availability.available ? available_players : non_available_players) << players_by_id[availability.user_id]
     end
 
+    # remove nil values
+    non_available_players.delete(nil)
+    available_players.delete(nil)
+
     [available_players, non_available_players]
   end
 

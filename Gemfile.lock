@@ -258,7 +258,7 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (2.7.2)
-    jwt (2.9.0)
+    jwt (2.9.1)
       base64
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
@@ -483,7 +483,7 @@ GEM
       parser
     securerandom (0.3.1)
     selectize-rails (0.12.6)
-    selenium-webdriver (4.24.0)
+    selenium-webdriver (4.25.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -526,7 +526,7 @@ GEM
     slim (5.2.1)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
-    sorbet-runtime (0.5.11572)
+    sorbet-runtime (0.5.11577)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)

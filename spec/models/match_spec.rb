@@ -142,6 +142,31 @@ RSpec.describe Match do
     it { expect(match.day.name).to eq('Week 2023-09-11 2023-09-17') }
   end
 
+  describe '#ffhb_sync! with several days on same period' do
+    let(:day1) { create(:day, period_start_date: '2023-09-11', period_end_date: '2023-09-17', calendar: match.championship.calendar) }
+    let(:day2) { create(:day, period_start_date: '2023-09-11', period_end_date: '2023-09-17', calendar: match.championship.calendar) }
+
+    let(:match) do
+      create(:match,
+             ffhb_key: '16-ans-m-2-eme-division-territoriale-94-75-23229 128335 1891863',
+             start_datetime: nil,
+             meeting_datetime: nil)
+    end
+
+    before do
+      mock_ffhb
+      # initialize day1 before day2 and before the match, so day1 is the first day
+      day1
+      match.update!(day: day2)
+    end
+
+    it 'associate the match with the first day' do
+      match.ffhb_sync!
+      match.reload
+      expect(match.day.id).to eq(day1.id)
+    end
+  end
+
   describe '#aways' do
     context 'with a player sick' do
       let(:section) { create(:section) }

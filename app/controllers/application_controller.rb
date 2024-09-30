@@ -89,6 +89,7 @@ class ApplicationController < ActionController::Base
 
   def current_section
     @current_section ||= current_section_from_params
+    cookies[:something] = @current_section&.id
   end
 
   def current_section_from_params

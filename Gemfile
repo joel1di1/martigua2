@@ -66,6 +66,7 @@ gem 'image_processing', '~> 1.2'
 group :development, :test do
   gem 'brakeman', require: false
   gem 'debug'
+  gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'foreman', require: false
   gem 'parallel_tests'

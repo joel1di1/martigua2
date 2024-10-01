@@ -168,6 +168,10 @@ GEM
       devise (>= 4.6)
     diff-lcs (1.5.1)
     docile (1.4.1)
+    dotenv (3.1.4)
+    dotenv-rails (3.1.4)
+      dotenv (= 3.1.4)
+      railties (>= 6.1)
     drb (2.2.1)
     erubi (1.13.0)
     factory_bot (6.5.0)
@@ -604,6 +608,7 @@ DEPENDENCIES
   devise
   devise-i18n
   devise_invitable
+  dotenv-rails
   factory_bot_rails
   faker
   foreman

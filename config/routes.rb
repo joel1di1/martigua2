@@ -51,6 +51,7 @@ Rails.application.routes.draw do
         get 'presence_validation'
         post 'invitations'
         post 'cancellation'
+        post 'repeat'
         delete 'uncancel'
       end
     end

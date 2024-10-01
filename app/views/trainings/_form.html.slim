@@ -1,6 +1,15 @@
-= simple_form_for [current_section, @training] do |f|
-  = f.input :start_datetime, :as => :datetime, :autofocus => true, html5: true
-  = f.input :end_datetime, :as => :datetime, html5: true
-  = f.input :location_id, collection: Location.order('name ASC'), input_html: { data: { controller: 'ts--select' }, class: 'px-0 py-0' }
-  = f.association :groups, collection: current_section.groups.where(season: Season.current).order("system DESC, name"), input_html: { data: { controller: 'ts--select' }, class: 'px-0 py-0' }, selected: current_section.group_every_players.id
-  = f.button :submit, value: 'Ajouter l\'entrainement', class: 'btn btn-primary'
+div class="flex flex-col space-y-8"
+  = simple_form_for [current_section, @training] do |f|
+    = f.input :start_datetime, :as => :datetime, :autofocus => true, html5: true
+    = f.input :end_datetime, :as => :datetime, html5: true
+    = f.input :location_id, collection: Location.order('name ASC'), input_html: { data: { controller: 'ts--select' }, class: 'px-0 py-0' }
+    = f.association :groups, collection: current_section.groups.where(season: Season.current).order("system DESC, name"), input_html: { data: { controller: 'ts--select' }, class: 'px-0 py-0' }, selected: current_section.group_every_players.id
+    = f.button :submit, value: 'Ajouter l\'entrainement', class: 'btn btn-primary'
+
+
+  - if @training.persisted?
+    = form_tag repeat_section_training_path(current_section, @training) do
+      = label_tag 'Répéter j\'usqu\'au'
+      div class="inline-flex space-x-1 ml-2"
+        = date_field_tag :repeat_until, nil, required: :required, class: 'flex w-auto w-auto shadow appearance-none border border-gray-300 rounded w-full bg-white focus:outline-none focus:border-blue-500 text-gray-900 leading-4 transition-colors duration-200 ease-in-out datetime required'
+        = submit_tag 'Répéter', class: 'btn btn-primary'

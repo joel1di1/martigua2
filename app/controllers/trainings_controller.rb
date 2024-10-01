@@ -52,6 +52,14 @@ class TrainingsController < ApplicationController
     end
   end
 
+  def repeat
+    date = params['repeat_until'].to_date
+    @training.repeat_until!(date)
+
+    redirect_to section_training_path(section_id: current_section.to_param, id: @training.to_param),
+                notice: 'Entrainement répété'
+  end
+
   def destroy
     @training.destroy
     redirect_to section_trainings_path(section_id: current_section.to_param), notice: 'Entrainement supprimé'

@@ -132,6 +132,7 @@ RSpec.describe Training do
     its(:sections) { is_expected.to eq(training.sections) }
     its(:groups) { is_expected.to eq(training.groups) }
     its(:location) { is_expected.to eq(training.location) }
+    its(:max_capacity) { is_expected.to eq(training.max_capacity) }
   end
 
   describe '#repeat_until!' do

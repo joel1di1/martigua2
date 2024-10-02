@@ -67,7 +67,7 @@ class Training < ApplicationRecord
   def repeat_next_week!
     Training.create!(start_datetime: start_datetime + 1.week,
                      end_datetime: end_datetime + 1.week,
-                     sections:, groups:, location:)
+                     sections:, groups:, location:, max_capacity:)
   end
 
   def repeat_until!(end_date)

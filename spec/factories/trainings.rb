@@ -7,6 +7,7 @@ FactoryBot.define do
     start_datetime { Season.current.start_date + rand(200) }
     end_datetime { start_datetime + 2.hours }
     location
+    max_capacity { [nil, 10, 20, 30].sample }
 
     transient do
       with_section { nil }

@@ -59,11 +59,9 @@ class UsersController < ApplicationController
     present_ids = (params[:present_ids] || []).map(&:to_i)
     checked_ids = (params[:checked_ids] || []).map(&:to_i)
 
-    TrainingPresence.where(training_id: present_ids, user_id: current_user.id).delete_all
-
     trainings = Training.where(id: present_ids)
     trainings.each do |training|
-      TrainingPresence.create! user: current_user, training:, is_present: checked_ids.include?(training.id)
+      current_user._set_presence_for!(checked_ids.include?(training.id), training)
     end
 
     redirect_with(fallback: root_path)

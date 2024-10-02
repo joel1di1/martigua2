@@ -88,11 +88,12 @@ describe UsersController do
   describe 'POST training_presences' do
     let(:training1) { create(:training) }
     let(:training2) { create(:training) }
+    let(:training_full) { create(:training, max_capacity: 0) }
 
     let(:post_training_presences) do
       post :training_presences, params: {
         id: user.to_param, user_email: user.email, user_token: user.authentication_token,
-        present_ids: [training1.id, training2.id], checked_ids: [training1.id]
+        present_ids: [training1.id, training2.id, training_full.id], checked_ids: [training1.id, training_full.id]
       }
     end
 
@@ -101,6 +102,7 @@ describe UsersController do
     it 'updates training presences' do
       expect(user.reload).to be_present_for(training1)
       expect(user.reload).not_to be_present_for(training2)
+      expect(user.reload).not_to be_present_for(training_full)
     end
 
     it { expect(response).to redirect_to(root_path) }

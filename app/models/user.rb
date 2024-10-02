@@ -75,6 +75,8 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     training_presences.each { |training_presence| presences[training_presence.training_id] = training_presence }
 
     [*trainings].each do |training|
+      next if present && training.max_capacity_reached?
+
       presence = presences[training.id]
       if presence.nil?
         training_presences << TrainingPresence.new(training:, user: self, is_present: present)

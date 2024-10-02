@@ -236,4 +236,26 @@ RSpec.describe Training do
       end
     end
   end
+
+  describe '#max_capacity_reached?' do
+    let(:training) { create(:training, with_section: section, group_ids: [group.id], max_capacity: 2) }
+
+    context 'with max capacity nil' do
+      before { training.update(max_capacity: nil) }
+
+      it { expect(training).not_to be_max_capacity_reached }
+    end
+
+    context 'with max capacity reached' do
+      before { 2.times { create(:user).present_for!(training) } }
+
+      it { expect(training).to be_max_capacity_reached }
+    end
+
+    context 'with max capacity not reached' do
+      before { create(:user).present_for!(training) }
+
+      it { expect(training).not_to be_max_capacity_reached }
+    end
+  end
 end

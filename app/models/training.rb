@@ -143,4 +143,10 @@ class Training < ApplicationRecord
       UserMailer.send_tig_mail_for_training(training, next_duties.to_a, cc).deliver_later
     end
   end
+
+  def max_capacity_reached?
+    return false if max_capacity.nil?
+
+    present_players.count >= max_capacity
+  end
 end

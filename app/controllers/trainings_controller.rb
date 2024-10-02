@@ -45,8 +45,7 @@ class TrainingsController < ApplicationController
     @training.assign_attributes(training_params)
     @training.groups = current_section.groups.where(id: params[:training][:group_ids])
     if @training.save
-      redirect_to section_training_path(section_id: current_section.to_param, id: @training.to_param),
-                  notice: 'Entrainement modifié'
+      redirect_with(fallback: section_training_path(current_section, @training), notice: 'Entrainement modifié')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -82,7 +81,7 @@ class TrainingsController < ApplicationController
   private
 
   def training_params
-    params.require(:training).permit(:start_datetime, :end_datetime, :location_id, :group_ids)
+    params.require(:training).permit(:start_datetime, :end_datetime, :location_id, :group_ids, :max_capacity)
   end
 
   def set_current_training

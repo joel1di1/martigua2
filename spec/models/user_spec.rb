@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 describe User do
-  let(:user) { create(:user) }
   let(:section) { create(:section) }
+  let(:user) { create(:user) }
 
   it { is_expected.to validate_presence_of :email }
   it { is_expected.to have_db_column :first_name }
@@ -135,7 +135,7 @@ describe User do
     context 'with one training' do
       subject(:set_presence) { user.present_for!(training) }
 
-      let(:training) { create(:training) }
+      let(:training) { create(:training, with_section: section, with_group: section.group_every_players) }
 
       it { expect { set_presence }.to change(TrainingPresence, :count).by(1) }
 
@@ -147,6 +147,18 @@ describe User do
 
       describe 'double presence set' do
         it { expect { 2.times { user.present_for!(training) } }.to change(TrainingPresence, :count).by(1) }
+      end
+
+      context 'when training reached max players' do
+        before do
+          training.update!(max_capacity: 1)
+          other_user = create(:user, with_section: section)
+          create(:training_presence, training:, user: other_user, is_present: true)
+        end
+
+        it 'does not create a presence' do
+          expect { set_presence }.not_to change(TrainingPresence, :count)
+        end
       end
     end
 

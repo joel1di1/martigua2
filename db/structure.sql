@@ -1723,37 +1723,6 @@ CREATE TABLE public.resajaaf_schema_migrations (
 
 
 --
--- Name: resajaaf_test_models; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.resajaaf_test_models (
-    id bigint NOT NULL,
-    name character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: resajaaf_test_models_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.resajaaf_test_models_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: resajaaf_test_models_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.resajaaf_test_models_id_seq OWNED BY public.resajaaf_test_models.id;
-
-
---
 -- Name: resajaaf_users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2253,7 +2222,8 @@ CREATE TABLE public.trainings (
     cancelled boolean DEFAULT false,
     cancel_reason text,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    max_capacity integer
 );
 
 
@@ -2764,13 +2734,6 @@ ALTER TABLE ONLY public.resajaaf_packs ALTER COLUMN id SET DEFAULT nextval('publ
 --
 
 ALTER TABLE ONLY public.resajaaf_participations ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_participations_id_seq'::regclass);
-
-
---
--- Name: resajaaf_test_models id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.resajaaf_test_models ALTER COLUMN id SET DEFAULT nextval('public.resajaaf_test_models_id_seq'::regclass);
 
 
 --
@@ -3320,14 +3283,6 @@ ALTER TABLE ONLY public.resajaaf_participations
 
 ALTER TABLE ONLY public.resajaaf_schema_migrations
     ADD CONSTRAINT resajaaf_schema_migrations_pkey PRIMARY KEY (version);
-
-
---
--- Name: resajaaf_test_models resajaaf_test_models_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.resajaaf_test_models
-    ADD CONSTRAINT resajaaf_test_models_pkey PRIMARY KEY (id);
 
 
 --
@@ -4636,6 +4591,7 @@ ALTER TABLE ONLY public.channels
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241001230918'),
 ('20240919161108'),
 ('20240911191722'),
 ('20240824082227'),

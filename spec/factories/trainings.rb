@@ -18,5 +18,9 @@ FactoryBot.define do
       training.sections << evaluator.with_section if evaluator.with_section
       training.groups   << evaluator.with_group if evaluator.with_group
     end
+
+    trait :futur do
+      start_datetime { Season.current.start_date + [2, 3, 4].sample.days }
+    end
   end
 end

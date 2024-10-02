@@ -12,7 +12,7 @@ describe 'send training invitation', :devise, :js do
   it 'coach send training invitation' do
     section = create(:section)
     coach = create(:user, with_section_as_coach: section)
-    training = create(:training, with_section: section)
+    training = create(:training, :futur, with_section: section)
 
     signin coach.email, coach.password
     within '#links' do

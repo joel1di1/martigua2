@@ -17,12 +17,13 @@ describe TrainingsController do
         render_views
         let(:user) { create(:user, with_section: section) }
 
-        let!(:training1) { create(:training, with_section: section) }
-        let!(:training2) { create(:training, with_section: section, location: nil) }
-        let!(:training_not_in_section) { create(:training) }
+        let!(:training1) { create(:training, :futur, with_section: section) }
+        let!(:training2) { create(:training, :futur, with_section: section, location: nil) }
+        let!(:training_not_in_section) { create(:training, :futur) }
 
         before do
           sign_in user
+          [training1, training2, training_not_in_section]
           request
         end
 

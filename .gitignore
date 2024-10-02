@@ -40,3 +40,6 @@ spec/failures.txt
 .idea/
 .vscode/launch.json
 coverage
+
+# ignore all .env files
+.env*

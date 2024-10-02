@@ -1,8 +1,7 @@
-h1.text-xl.font-semibold.text-gray-900.flex.flex-row.space-x-3
+h1.text-xl.font-semibold.text-gray-900.flex.flex-row.space-x-3.items-center
   p
     'Entrainement du
     = l @training.start_datetime, format: :short
-
 
   - if current_user.coach_of?(current_section)
     = link_to edit_section_training_path(current_section, @training) do
@@ -19,6 +18,10 @@ p.flex
 p.flex
   'Groupes :
   = @training.groups.map(&:name).join(", ")
+- if @training.max_capacity.present?
+  p
+    = "Max: #{@training.max_capacity}"
+
 
 .flex.flex-row.my-5.space-x-5.justify-between
   div

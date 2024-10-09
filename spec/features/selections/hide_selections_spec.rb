@@ -34,5 +34,13 @@ describe 'Hide selections', :devise do
 
       expect(page).to have_text 'Les sélections sont en cours de construction'
     end
+
+    it 'cannot see selection on match page' do
+      signin_user player
+
+      visit section_match_path(section, match)
+
+      expect(page).to have_text 'Les sélections sont en cours de construction'
+    end
   end
 end

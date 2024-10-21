@@ -9,8 +9,8 @@ div class="border-b border-gray-200 pb-5 sm:flex sm:items-center"
 
 .mb-10
   = render partial: 'matches/matches', object: @next_matches
-  / = link_to section_match_path(current_section), class: 'text-sm font-medium text-indigo-600 hover:text-indigo-500 block text-right mt-2' do
-  /   'Voir tous les matchs
+  = link_to section_matches_path(current_section), class: 'text-sm font-medium text-indigo-600 hover:text-indigo-500 block text-right mt-2' do
+    'Voir tous les matchs
 
 div class="border-b border-gray-200 pb-5 sm:flex sm:items-center"
   h3 class="text-lg font-medium leading-6 text-gray-900"

@@ -159,7 +159,7 @@ class Section < ApplicationRecord
   end
 
   def next_events
-    next_trainings
+    (next_trainings + next_matches).sort_by(&:start_datetime)
   end
 
   protected

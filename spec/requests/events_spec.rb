@@ -12,7 +12,20 @@ RSpec.describe 'Events' do
   describe 'GET /index' do
     it 'returns http success' do
       get "/sections/#{section.id}/events"
+
       expect(response).to have_http_status(:success)
+    end
+
+    context 'with training' do
+      let (:training) { create(:training, with_section: section, start_datetime: 2.days.from_now) }
+
+      before { training }
+
+      it 'displays training' do
+        get "/sections/#{section.id}/events"
+
+        expect(response.body).to include(training.name)
+      end
     end
   end
 end

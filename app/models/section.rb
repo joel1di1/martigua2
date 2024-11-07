@@ -158,6 +158,10 @@ class Section < ApplicationRecord
     channels.find_or_create_by!(system: true, name: 'Général')
   end
 
+  def next_events
+    next_trainings
+  end
+
   protected
 
   def _default_group(players_role, group_name, color, season: nil)

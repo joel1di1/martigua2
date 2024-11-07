@@ -347,4 +347,21 @@ RSpec.describe Section do
 
     expect(user.roles_for(section).sort).to eq(new_roles.sort)
   end
+
+  describe '#next_events' do
+    subject(:next_events) { section.next_events }
+
+    context 'with trainings' do
+      let!(:training) { create(:training, with_section: section, start_datetime: 2.days.from_now) }
+
+      it { expect(next_events).to eq [training] }
+    end
+
+    context 'with trainings before and after time window' do
+      let!(:training) { create(:training, with_section: section, start_datetime: 2.days.ago) }
+      let!(:training) { create(:training, with_section: section, start_datetime: 20.days.from_now) }
+
+      it { expect(next_events).to eq [] }
+    end
+  end
 end

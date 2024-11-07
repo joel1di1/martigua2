@@ -16,8 +16,8 @@ RSpec.describe Section do
     end
 
     context 'with trainings before and after time window' do
-      let!(:training) { create(:training, with_section: section, start_datetime: 2.days.ago) }
-      let!(:training) { create(:training, with_section: section, start_datetime: 20.days.from_now) }
+      let!(:first_training) { create(:training, with_section: section, start_datetime: 2.days.ago) } # rubocop:disable RSpec/LetSetup
+      let!(:second_training) { create(:training, with_section: section, start_datetime: 20.days.from_now) } # rubocop:disable RSpec/LetSetup
 
       it { expect(next_events).to eq [] }
     end
@@ -28,9 +28,17 @@ RSpec.describe Section do
       it { expect(next_events).to eq [match] }
     end
 
+    context 'with match without specific time' do
+      let(:day) { create(:day, period_start_date: 2.days.from_now, period_end_date: 4.days.from_now) }
+      let!(:no_time_match) { create(:match, local_team: team, start_datetime: nil, end_datetime: nil, day:) }
+      let!(:match) { create(:match, local_team: team, start_datetime: 3.days.from_now) }
+
+      it { expect(next_events).to eq [no_time_match, match] }
+    end
+
     context 'with matches before and after time window' do
-      let!(:match) { create(:match, local_team: team, start_datetime: 2.days.ago) }
-      let!(:match) { create(:match, local_team: team, start_datetime: 20.days.from_now) }
+      let!(:second_match) { create(:match, local_team: team, start_datetime: 20.days.from_now) } # rubocop:disable RSpec/LetSetup
+      let!(:first_match) { create(:match, local_team: team, start_datetime: 2.days.ago) } # rubocop:disable RSpec/LetSetup
 
       it { expect(next_events).to eq [] }
     end

@@ -189,4 +189,21 @@ RSpec.describe Match do
       it { expect(match.not_availables).to contain_exactly(player_sick) }
     end
   end
+
+  describe '#calculated_start_datetime' do
+    let(:day) { create(:day) }
+    let(:match) { create(:match, start_datetime:, day:) }
+
+    context 'with start_datetime specified' do
+      let(:start_datetime) { 2.days.from_now }
+
+      it { expect(match.calculated_start_datetime).to eq start_datetime }
+    end
+
+    context 'with start_datetime not specified' do
+      let(:start_datetime) { nil }
+
+      it { expect(match.calculated_start_datetime).to eq day.period_start_date }
+    end
+  end
 end

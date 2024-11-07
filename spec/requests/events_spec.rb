@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Events' do
-
   let(:section) { create(:section) }
   let(:user) { create(:user, with_section: section) }
 
@@ -17,14 +16,14 @@ RSpec.describe 'Events' do
     end
 
     context 'with training' do
-      let (:training) { create(:training, with_section: section, start_datetime: 2.days.from_now) }
+      let(:training) { create(:training, with_section: section, start_datetime: 2.days.from_now) }
 
       before { training }
 
       it 'displays training' do
         get "/sections/#{section.id}/events"
 
-        expect(response.body).to include(training.name)
+        expect(response.body).to include(I18n.l(training.start_datetime, format: '%a %d %b %R'))
       end
     end
   end

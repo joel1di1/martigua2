@@ -16,7 +16,7 @@ describe 'display_events', :devise do
 
     visit section_events_path(section)
 
-    assert_text next_training.name
-    assert_text next_match.name
+    assert_text I18n.l(next_training.start_datetime, format: '%a %d %b %R')
+    assert_text "#{next_match.local_team.name} - #{next_match.visitor_team.name}"
   end
 end

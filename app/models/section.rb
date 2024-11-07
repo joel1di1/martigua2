@@ -71,14 +71,14 @@ class Section < ApplicationRecord
     "Section #{name} - #{club.name}"
   end
 
-  def next_trainings
-    now = 1.day.ago
-    end_date = (now + 2.days).end_of_week + 1.week
-    trainings.where('start_datetime > ? AND start_datetime < ?', now, end_date)
+  def next_trainings(start_date: nil, end_date: nil)
+    start_date ||= 1.day.ago
+    end_date ||= (start_date + 2.days).end_of_week + 1.week
+    trainings.where('start_datetime > ? AND start_datetime < ?', start_date, end_date)
   end
 
-  def next_matches(end_date: nil)
-    now = DateTime.now.at_beginning_of_week
+  def next_matches(start_date: nil, end_date: nil)
+    now = start_date || DateTime.now.at_beginning_of_week
 
     end_date ||= now.at_end_of_week + 2.weeks + 2.days
 
@@ -159,7 +159,9 @@ class Section < ApplicationRecord
   end
 
   def next_events
-    (next_trainings + next_matches).sort_by(&:start_datetime)
+    start_date = Time.zone.now
+    end_date = start_date + 7.days
+    (next_trainings(start_date:, end_date:) + next_matches(start_date:, end_date:)).sort_by(&:calculated_start_datetime)
   end
 
   protected

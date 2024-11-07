@@ -143,4 +143,8 @@ class Match < ApplicationRecord
 
     save!
   end
+
+  def calculated_start_datetime
+    start_datetime || day&.period_start_date
+  end
 end

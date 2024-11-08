@@ -1,0 +1,10 @@
+/ <!-- remove placeholders -->
+= turbo_stream.remove("events_placeholder")
+<!-- append @articles to the #article_list turbo_frame -->
+= turbo_stream.append("events_list") do
+  - @events.each do |event|
+    = render event
+
+/ <!-- update the pagination turbo_frame with the current pagination offset -->
+= turbo_stream.replace "events_pagination" do
+  = turbo_frame_tag "events_pagination", src: section_events_path(start_date: @next_date.to_date, format: 'turbo_stream'), loading: "lazy", class: "bg-red-200"

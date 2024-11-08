@@ -24,19 +24,7 @@ class Section < ApplicationRecord
   def invite_user!(params, inviter)
     raise "Inviter (#{inviter.email}) is not coach of #{self}" unless inviter.coach_of?(self) || inviter.admin_of?(club)
 
-    column_names = SectionUserInvitation.column_names
-    column_syms = column_names.map(&:to_sym)
-    params_only = params.slice(*column_syms)
-    params_only_with_section = params_only.merge(section: self)
-    invitation = SectionUserInvitation.create!(params_only_with_section)
-
-    user = User.find_by(email: invitation.email)
-
-    if user.present?
-      UserMailer.send_section_addition_to_existing_user(user, inviter, self).deliver_later
-    else
-      user = User.invite!(params_only.delete_if { |k, _v| k.to_s == 'roles' }, inviter)
-    end
+    user = SectionInviteService.new(self, params, inviter).call
 
     add_user! user, params[:roles]
     user

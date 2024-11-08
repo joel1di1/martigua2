@@ -6,5 +6,4 @@ class EventsController < ApplicationController
   def index
     @events = current_section.next_events
   end
-
 end

@@ -146,9 +146,7 @@ class Section < ApplicationRecord
     channels.find_or_create_by!(system: true, name: 'Général')
   end
 
-  def next_events
-    start_date = Time.zone.now
-    end_date = start_date + 7.days
+  def next_events(start_date: Time.zone.now, end_date: start_date + 7.days)
     (next_trainings(start_date:, end_date:) + next_matches(start_date:, end_date:)).sort_by(&:calculated_start_datetime)
   end
 

@@ -1,2 +1,11 @@
-- @events.each do |event|
-  = render event
+= turbo_frame_tag "events_list", src: section_events_path(format: :turbo_stream), loading: "lazy" do
+  div id="events_placeholder" class="bg-gray-100"
+    | loading events...
+
+div id="events_pagination"
+  div class="relative"
+    div class="absolute inset-0 flex items-center" aria-hidden="true"
+      div class="w-full border-t border-gray-300"
+    div class="relative flex justify-center"
+      = link_to section_events_path(start_date: @next_date.to_date), class: 'bg-white px-2 text-sm text-gray-500' do
+        | Prochains événements

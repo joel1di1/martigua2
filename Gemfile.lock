@@ -125,7 +125,7 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.2.0)
     bcrypt (3.1.20)
-    benchmark (0.3.0)
+    benchmark (0.4.0)
     benchmark-ips (2.14.0)
     bigdecimal (3.1.8)
     bindex (0.8.1)
@@ -325,7 +325,7 @@ GEM
     openssl (3.2.0)
     orm_adapter (0.5.0)
     os (1.1.4)
-    ostruct (0.6.0)
+    ostruct (0.6.1)
     parallel (1.26.3)
     parallel_tests (4.7.2)
       parallel
@@ -406,7 +406,7 @@ GEM
     redis-client (0.22.2)
       connection_pool
     regexp_parser (2.9.2)
-    reline (0.5.10)
+    reline (0.5.11)
       io-console (~> 0.5)
     representable (3.2.0)
       declarative (< 0.1.0)
@@ -530,7 +530,7 @@ GEM
     slim (5.2.1)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
-    sorbet-runtime (0.5.11641)
+    sorbet-runtime (0.5.11642)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -563,7 +563,7 @@ GEM
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
     unicode-display_width (2.6.0)
-    uri (1.0.0)
+    uri (1.0.1)
     useragent (0.16.10)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -672,4 +672,4 @@ RUBY VERSION
    ruby 3.3.5p100
 
 BUNDLED WITH
-   2.5.14
+   2.5.20

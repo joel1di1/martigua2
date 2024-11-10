@@ -26,6 +26,8 @@ class Training < ApplicationRecord
 
   paginates_per 10
 
+  alias_attribute :calculated_start_datetime, :start_datetime
+
   DUTY_PER_TRAINING = 4
 
   def send_invitations!

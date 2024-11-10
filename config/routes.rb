@@ -95,6 +95,7 @@ Rails.application.routes.draw do
     resources :channels do
       resources :messages, only: %i[create destroy]
     end
+    resources :events, only: %i[index]
 
     patch 'player_ffhb_association'
     delete 'dissociate_player'

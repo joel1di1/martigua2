@@ -1,0 +1,21 @@
+div id="events_pagination_previous" class="mb-5"
+  div class="relative"
+    div class="relative flex justify-center text-gray-500"
+      svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"
+        path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18"
+      = link_to section_events_path(start_date: @previous_date.to_date), class: 'bg-white px-2 text-sm text-gray-500 italic' do
+        | Remonter d'une semaine
+      svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"
+        path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18"
+
+= turbo_frame_tag "events_list", src: section_events_path(start_date: params[:start_date], format: :turbo_stream), loading: "lazy" do
+  div id="events_placeholder" class="bg-gray-100"
+    | loading events...
+
+div id="events_pagination_next"
+  div class="relative"
+    div class="absolute inset-0 flex items-center" aria-hidden="true"
+      div class="w-full border-t border-gray-300"
+    div class="relative flex justify-center"
+      = link_to section_events_path(start_date: @next_date.to_date, insert: 'append', format: :turbo_stream), class: 'bg-white px-2 text-sm text-gray-500' do
+        | Prochains événements

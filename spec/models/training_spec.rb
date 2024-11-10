@@ -259,4 +259,8 @@ RSpec.describe Training do
       it { expect(training).not_to be_max_capacity_reached }
     end
   end
+
+  describe '#calculated_start_datetime' do
+    it { expect(training.calculated_start_datetime).to eq training.start_datetime }
+  end
 end

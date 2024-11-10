@@ -10,9 +10,9 @@
   = turbo_stream.append("events_list") do
     - @events.each do |event|
       = render event
-  / / update the pagination turbo_frame with the current pagination offset
-  / = turbo_stream.replace "events_pagination_next" do
-  /   = turbo_frame_tag "events_pagination_next", src: section_events_path(start_date: @next_date.to_date, insert: 'append', format: 'turbo_stream'), loading: "lazy", class: "h-4 relative -top-80 md:-top-20"
-  /     / keep the next line or tell me how to add &nbsp; in a slim template
-  /     == "&nbsp;"
+  / update the pagination turbo_frame with the current pagination offset
+  = turbo_stream.replace "events_pagination_next" do
+    = turbo_frame_tag "events_pagination_next", src: section_events_path(start_date: @next_date.to_date, insert: 'append', format: 'turbo_stream'), loading: "lazy", class: "h-4 relative -top-80 md:-top-20"
+      / keep the next line or tell me how to add &nbsp; in a slim template
+      == "&nbsp;"
 

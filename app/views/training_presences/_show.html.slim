@@ -4,5 +4,5 @@
       label for="input-checkbox-player-#{player.id}"
         = player.full_name
     div
-      = simple_form_for player, url: section_user_training_confirm_presence_path(current_section, player, training), method: :post, html: {'data-controller' => 'auto-submit', 'data-auto-submit-target' => 'form'} do |f|
-        input type='checkbox' class='auto-submit' name='present' value='present' checked=player.was_present?(training) id="input-checkbox-player-#{player.id}" style="width: 30px; height: 30px;" data-action="change->auto-submit#submit"
+      = simple_form_for player, url: section_user_training_confirm_presence_path(current_section, player, training), method: :post, html: {'data-controller' => 'auto-submit'} do |f|
+        input type='checkbox' class='auto-submit' name='present' value='present' checked=player.was_present?(training) id="input-checkbox-player-#{player.id}" style="width: 30px; height: 30px;" data-action="auto-submit#submit"

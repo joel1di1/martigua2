@@ -6,7 +6,16 @@
   div class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
     div class="flex w-full flex-col items-center space-y-4 sm:items-end"
       - if flash[alert_type].present?
-        div class="hidden pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5" data-alert-target="panel" data-controller="alert" aria-hidden="true" data-transition-enter="transition ease-out duration-200" data-transition-enter-start="transform opacity-0 scale-95" data-transition-enter-end="transform opacity-100 scale-100" data-transition-leave="transition ease-in duration-75" data-transition-leave-start="transform opacity-100 scale-100" data-transition-leave-end="transform opacity-0 scale-95"
+        div{
+          class="hidden pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5"
+          data-controller="notification"
+          data-notification-delay-value="5000"
+          class="transition transform duration-1000 hidden"
+          data-transition-enter-from="opacity-0 translate-x-6"
+          data-transition-enter-to="opacity-100 translate-x-0"
+          data-transition-leave-from="opacity-100 translate-x-0"
+          data-transition-leave-to="opacity-0 translate-x-6"
+        }
           div class="p-4 bg-#{color}-50"
             div class="flex items-start"
               div class="flex-shrink-0"
@@ -16,7 +25,7 @@
                 p class="text-sm font-medium text-#{color}-800"
                   = flash[alert_type]
               div class="ml-4 flex flex-shrink-0"
-                button id="close-flash-#{alert_type}" type="button" class="inline-flex rounded-md text-#{color}-400 hover:text-#{color}-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 bg-#{color}-50" data-action="alert#dismiss"
+                button id="close-flash-#{alert_type}" type="button" class="inline-flex rounded-md text-#{color}-400 hover:text-#{color}-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 bg-#{color}-50" data-action="notification#hide"
                   span class="sr-only" Close
                   <!-- Heroicon name: mini/x-mark -->
                   svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"

@@ -138,6 +138,7 @@ class Training < ApplicationRecord
     trainings.each do |training|
       next_duties = training.next_duties(DUTY_PER_TRAINING)
       next if next_duties.blank?
+      next if training.sections.map(&:id).uniq == [1]
 
       # if training is in section 1, than add pechou as last next duty
       cc = training.sections.map(&:id).include?(1) ? User.find(49) : nil

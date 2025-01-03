@@ -485,7 +485,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    scout_apm (5.4.0)
+    scout_apm (5.5.0)
       parser
     securerandom (0.4.1)
     selectize-rails (0.12.6)

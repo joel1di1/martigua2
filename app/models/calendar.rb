@@ -8,7 +8,7 @@ class Calendar < ApplicationRecord
 
   def find_or_create_day_for(datetime)
     existing_day = days.order(:id).find do |day|
-      day.period_start_date <= datetime && day.period_end_date >= datetime
+      day.period_start_date <= datetime && (day.period_end_date + 1 >= datetime)
     end
 
     return existing_day if existing_day

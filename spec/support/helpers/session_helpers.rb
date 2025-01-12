@@ -12,7 +12,7 @@ module Features
 
     def signin(email, password, close_notice: false)
       visit root_path
-      fill_in 'Email', with: email
+      fill_in 'user[email]', with: email
       fill_in 'Mot de passe', with: password
       click_on 'Se connecter'
 

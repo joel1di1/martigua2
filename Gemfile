@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.3.6'
 
-gem 'rails', '~> 7.2'
+gem 'rails', '~> 8.0'
 
 gem 'activerecord-session_store'
 gem 'administrate'

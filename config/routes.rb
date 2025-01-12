@@ -91,7 +91,7 @@ Rails.application.routes.draw do
     resources :calendars, only: %i[index create edit update]
     resources :days, only: [:create]
     resources :locations, only: [:create]
-    resources :teams, only: %i[create show delete new]
+    resources :teams, only: %i[create show destroy new]
     resources :channels do
       resources :messages, only: %i[create destroy]
     end

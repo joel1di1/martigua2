@@ -160,10 +160,10 @@ RSpec.describe Match do
       match.update!(day: day2)
     end
 
-    it 'associate the match with the first day' do
+    it 'associate the match with the last day' do
       match.ffhb_sync!
       match.reload
-      expect(match.day.id).to eq(day1.id)
+      expect(match.day.id).to eq(day2.id)
     end
   end
 

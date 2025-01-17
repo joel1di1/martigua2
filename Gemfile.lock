@@ -520,7 +520,7 @@ GEM
     simple_form (5.3.1)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
-    simple_form-tailwind (0.1.1)
+    simple_form-tailwind (0.1.2)
       railties (>= 4.0)
       simple_form (>= 5.0)
     simplecov (0.22.0)

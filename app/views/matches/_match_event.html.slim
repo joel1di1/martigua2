@@ -1,0 +1,68 @@
+- match_link_url = defined?(championship) ? section_championship_match_path(current_section, championship, match) : section_match_path(current_section, match)
+- match_title = "#{match.local_team&.name} - #{match.visitor_team&.name}"
+
+
+div class="w-full h-40 bg-yellow-100 relative overflow-hidden" data-controller="swipe"
+  / Swipe controller with swipe left and right
+  / When swiping left, the left div is hidden and the right div is shown while the central div is moved to the left
+  / When swiping right, the right div is hidden and the left div is shown while the central div is moved to the right
+  / Center div takes the full width of the container
+  / Left and right divs are hidden by default
+  div data-swipe-target="left" class="absolute top-0 left-0 w-full h-full bg-red-200 z-0 transition-all duration-300"
+    | LEFT
+  div data-swipe-target="center" class="absolute top-0 left-0 w-full h-full bg-green-200 z-20 transition-transform duration-300" data-action="click->swipe#test"
+    div class="flex flex-col text-sm text-center rounded-lg border border-gray-200 space-y-2 bg-gray-200"
+      div class="bg-gray-200"
+        - if match.start_datetime.present?
+          = l(match.start_datetime, format: "%a %d %b %R")
+        - else
+          = l(match.day.period_start_date, format: "%d/%m")
+          |<> -
+          = l(match.day.period_end_date, format: "%d/%m")
+      div class="flex flex-row justify-center space-x-2 bg-gray-200"
+        div class="font-semibold flex place-content-end"
+          div class="text-center"
+            = match.local_team&.name
+        div class=""
+          | vs
+        div class="font-semibold flex place-content-start"
+          div class="text-center"
+            = match.visitor_team&.name
+      - if match.local_score.present?
+        div class="text-indigo-500 bg-gray-200"
+          = "#{match.local_score} - #{match.visitor_score}"
+
+      div class="flex flex-col text-sm text-center rounded-b-lg space-y-2 bg-white py-2"
+        div class="flex flex-row justify-center"
+          svg class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
+            path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.273 1.765 11.842 11.842 0 00.976.544l.062.029.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" clip-rule="evenodd"
+          = render partial: 'locations/gmaps_link', locals: { location: match.location }
+
+        div class="flex flex-row justify-center"
+          = render partial: 'matches/presences', locals: {link_url: match_link_url, nb_presents: match.nb_availables, nb_not_presents: match.nb_not_availables, nb_no_response: match.nb_availability_not_set}
+
+        div class="flex flex-row justify-center"
+          - if current_user.is_available_for?(match).nil?
+            = button_to 'Dispo', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: [match.id]), method: :post, class: 'inline-flex items-center rounded border border-transparent bg-indigo-100 px-1.5 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-1'
+            = button_to 'Non dispo', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: []), method: :post, class: 'inline-flex items-center rounded border border-transparent bg-indigo-100 px-1.5 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-1'
+          - elsif current_user.is_available_for?(match) == true
+            .inline-flex.items-center.rounded-full.bg-green-100.px-2.5.py-0.5.text-xs.font-medium.text-green-800 Dispo
+            = button_to "m'indiquer non dispo", match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: []), method: :post, class: 'inline-flex items-center px-1 py-0.5 text-xs text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 underline ml-1', title: 'Change sa présence en "disponible"'
+          - else
+            .inline-flex.items-center.rounded-full.bg-red-100.px-2.5.py-0.5.text-xs.font-medium.text-red-800 Non dispo
+            = button_to "m'indiquer dispo", match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: [match.id]), method: :post, class: 'inline-flex items-center px-1 py-0.5 text-xs text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 underline ml-1', title: 'Change sa présence en "non disponible"'
+
+        - if current_user.coach_of?(current_section)
+          div class="flex flex-row justify-center"
+            = button_to invitations_section_match_path(match, section_id: current_section), title: 'Relancer les indécits',id: "match_invitations_#{match.id}", form: { data: {turbo_confirm: 'Renvoyer les mails pour les indécits ?'} }, method: :post, class: 'align-middle' do
+                svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"
+                  path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+            =  button_to section_match_path(current_section, match), class: 'align-middle', :method => :delete, form: { data: {turbo_confirm: 'Supprimer ce match?'} } do
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+              </svg>
+
+  div data-swipe-target="right" class="absolute top-0 left-0 w-full h-full bg-blue-200 z-0 transition-all duration-300"
+    | RIGHT
+
+

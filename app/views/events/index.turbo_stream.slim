@@ -2,17 +2,17 @@
 = turbo_stream.remove("events_placeholder")
 
 / append @articles to the #article_list turbo_frame
-- if params['insert'] == "prepend"
-  = turbo_stream.prepend("events_list") do
-    - @events.each do |event|
-      = render event
-- else
-  = turbo_stream.append("events_list") do
-    - @events.each do |event|
-      = render event
-  / update the pagination turbo_frame with the current pagination offset
-  = turbo_stream.replace "events_pagination_next" do
-    = turbo_frame_tag "events_pagination_next", src: section_events_path(start_date: @next_date.to_date, insert: 'append', format: 'turbo_stream'), loading: "lazy", class: "h-4 relative -top-80 md:-top-20"
-      / keep the next line or tell me how to add &nbsp; in a slim template
-      == "&nbsp;"
+= turbo_stream.append("events_list") do
+  - @events.each do |event|
+    - case event
+    - when Match
+      = render :partial => 'matches/match_event', locals: { match: event }
+    - when Training
+      = render :partial => 'trainings/training_event', locals: { training: event }
+
+/ update the pagination turbo_frame with the current pagination offset
+= turbo_stream.replace "events_pagination_next" do
+  = turbo_frame_tag "events_pagination_next", src: section_events_path(start_date: @next_date.to_date, insert: 'append', format: 'turbo_stream'), loading: "lazy", class: "h-4 relative -top-80 md:-top-20"
+    / keep the next line or tell me how to add &nbsp; in a slim template
+    == "&nbsp;"
 

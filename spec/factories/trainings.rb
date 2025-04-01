@@ -20,7 +20,7 @@ FactoryBot.define do
     end
 
     trait :futur do
-      start_datetime { Season.current.start_date + [2, 3, 4].sample.days }
+      start_datetime { [2, 3, 4].sample.days.from_now }
     end
   end
 end

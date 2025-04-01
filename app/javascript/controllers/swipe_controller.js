@@ -1,3 +1,4 @@
+/* eslint-env es6 */
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {

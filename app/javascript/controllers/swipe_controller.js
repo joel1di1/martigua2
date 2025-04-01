@@ -2,7 +2,9 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["left", "center", "right"];
+  static get targets() {
+    return ["left", "center", "right"];
+  }
 
   constructor() {
     super();

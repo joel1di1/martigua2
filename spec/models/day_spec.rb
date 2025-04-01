@@ -55,10 +55,13 @@ RSpec.describe Day do
     let(:old_end_date) { Date.parse('2003-03-06') }
     let(:day) { create(:day, period_end_date: old_end_date) }
 
-    before { day.update(params) }
+    before do
+      day.save!
+      day.update!(params)
+    end
 
     context 'with start_date random' do
-      let(:new_start_date) { Time.zone.today + 3 }
+      let(:new_start_date) { day.period_start_date + 3 }
 
       context 'and end_date not set' do
         let(:params) { { period_start_date: new_start_date } }

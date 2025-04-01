@@ -4,6 +4,14 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = ["left", "center", "right"];
 
+  constructor() {
+    super();
+    this.touchStartX = 0;
+    this.currentX = 0;
+    this.isSwiping = false;
+    this.currentIndex = 0;
+  }
+
   initialize() {
     this.touchStartX = 0;
     this.currentX = 0;
@@ -38,9 +46,6 @@ export default class extends Controller {
   }
 
   test(event) {
-    // toggle central div
-    console.info("test");
-
     // if central is hidden, show it
     if (this.centerTarget.style.display === 'none') {
       this.centerTarget.style.display = 'block';

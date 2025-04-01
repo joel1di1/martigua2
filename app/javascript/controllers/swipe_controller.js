@@ -1,4 +1,4 @@
-/* eslint-env es6 */
+/*jshint esversion: 6 */
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {

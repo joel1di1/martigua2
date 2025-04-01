@@ -14,6 +14,6 @@ class WebpushSubscriptionsController < ApplicationController
   private
 
   def webpush_subscription_params
-    params.require(:webpush_subscription).permit(:endpoint, :p256dh_key, :auth_key)
+    params.expect(webpush_subscription: %i[endpoint p256dh_key auth_key])
   end
 end

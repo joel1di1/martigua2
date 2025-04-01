@@ -21,6 +21,6 @@ class TeamsController < ApplicationController
   private
 
   def team_params
-    params.require(:team).permit(:name, :club_id, section_ids: [])
+    params.expect(team: [:name, :club_id, { section_ids: [] }])
   end
 end

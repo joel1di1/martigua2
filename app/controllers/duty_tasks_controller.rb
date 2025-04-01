@@ -41,7 +41,7 @@ class DutyTasksController < ApplicationController
   private
 
   def duty_task_params
-    params.require(:duty_task).permit(:key, :user_id, :realised_at)
+    params.expect(duty_task: %i[key user_id realised_at])
   end
 
   def section_players_with_tasks

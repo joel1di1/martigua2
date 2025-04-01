@@ -95,7 +95,7 @@ class SectionsController < ApplicationController
   private
 
   def section_params
-    params.require(:section).permit(:name)
+    params.expect(section: [:name])
   end
 
   def set_section

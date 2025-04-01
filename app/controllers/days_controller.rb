@@ -26,6 +26,6 @@ class DaysController < ApplicationController
   protected
 
   def day_params
-    params.require(:day).permit(:name, :period_start_date, :calendar_id)
+    params.expect(day: %i[name period_start_date calendar_id])
   end
 end

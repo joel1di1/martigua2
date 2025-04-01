@@ -14,7 +14,7 @@ class SectionUserInvitationsController < ApplicationController
   private
 
   def section_user_invitation_params
-    params.require(:section_user_invitation).permit(:email, :first_name, :last_name, :nickname, :phone_number,
-                                                    :section_id, :roles)
+    params.expect(section_user_invitation: %i[email first_name last_name nickname phone_number
+                                              section_id roles])
   end
 end

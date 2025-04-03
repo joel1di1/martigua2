@@ -73,6 +73,6 @@ class ChannelsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def channel_params
-    params.require(:channel).permit(:name, :private)
+    params.expect(channel: %i[name private])
   end
 end

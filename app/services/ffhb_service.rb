@@ -162,7 +162,7 @@ class FfhbService # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:, team_links:, linked_calendar: nil) # rubocop:disable Metrics/ParameterLists Lint/UnusedMethodArgument
+  def build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:, team_links:, linked_calendar: nil) # rubocop:disable Metrics/ParameterLists
     comite_details = fetch_comite_details(code_comite.to_i)
     pool_details = fetch_pool_details(code_competition, code_pool)
 

@@ -102,9 +102,9 @@ class MatchesController < ApplicationController
 
   def match_params
     if params[:match].present?
-      params.require(:match).permit(:visitor_team_id, :local_team_id, :start_datetime, :end_datetime,
-                                    :meeting_datetime, :meeting_location, :location_id, :local_score, :visitor_score,
-                                    :day_id, :championship_id)
+      params.expect(match: %i[visitor_team_id local_team_id start_datetime end_datetime
+                              meeting_datetime meeting_location location_id local_score visitor_score
+                              day_id championship_id])
     else
       {}
     end

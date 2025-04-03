@@ -49,7 +49,7 @@ class GroupsController < ApplicationController
   private
 
   def group_params
-    params.require(:group).permit(:name, :color, :description)
+    params.expect(group: %i[name color description])
   end
 
   def find_group

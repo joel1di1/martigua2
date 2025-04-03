@@ -5,11 +5,11 @@ class EventsController < ApplicationController
 
   def index
     start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : Time.zone.today
-    end_date = start_date + 7.days
+    end_date = start_date + 1.month
 
     @events = current_section.next_events(start_date: start_date, end_date: end_date)
-    @next_date = start_date + 7.days
-    @previous_date = start_date - 7.days
+    @next_date = start_date + 1.month
+    @previous_date = start_date - 1.month
 
     respond_to do |format|
       format.html

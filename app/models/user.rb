@@ -121,7 +121,7 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     end_date = start_date + 1.week
     days_to_check = (start_date..end_date).to_a.map(&:to_date)
 
-    days_to_check.reject! { |d| absences.any? { |a| a.start_at <= d && a.end_at >= d } }
+    days_to_check.reject! { |d| absences.any? { |a| d.between?(a.start_at, a.end_at) } }
 
     Training.with_start_on(days_to_check)
             .includes(:groups)
@@ -135,7 +135,7 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     # remove days where user is absent
     current_absences = absences.where(start_at: start_date..end_date).or(absences.where(end_at: start_date..end_date))
     days_to_check = (start_date..end_date).to_a.map(&:to_date)
-    days_to_check.reject! { |d| current_absences.any? { |a| a.start_at <= d && a.end_at >= d } }
+    days_to_check.reject! { |d| current_absences.any? { |a| d.between?(a.start_at, a.end_at) } }
 
     next_matches = Match.on_days(days_to_check)
                         .includes(local_team: :sections, visitor_team: :sections)

@@ -31,7 +31,7 @@ class CalendarsController < ApplicationController
 
   def calendar_params
     if params[:calendar]
-      params.require(:calendar).permit(:name, :season_id)
+      params.expect(calendar: %i[name season_id])
     else
       {}
     end

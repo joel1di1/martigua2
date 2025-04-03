@@ -68,6 +68,6 @@ class AbsencesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def absence_params
-    params.require(:absence).permit(:start_at, :end_at, :name, :comment)
+    params.expect(absence: %i[start_at end_at name comment])
   end
 end

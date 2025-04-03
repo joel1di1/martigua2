@@ -81,7 +81,7 @@ class TrainingsController < ApplicationController
   private
 
   def training_params
-    params.require(:training).permit(:start_datetime, :end_datetime, :location_id, :group_ids, :max_capacity)
+    params.expect(training: %i[start_datetime end_datetime location_id group_ids max_capacity])
   end
 
   def set_current_training

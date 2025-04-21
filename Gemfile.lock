@@ -688,7 +688,7 @@ DEPENDENCIES
   stimulus-rails
   string-similarity
   switch_user
-  tailwindcss-rails
+  tailwindcss-rails (~> 3.3.1)
   timecop
   turbo-rails
   watir

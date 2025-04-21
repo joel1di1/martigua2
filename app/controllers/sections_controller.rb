@@ -13,9 +13,14 @@ class SectionsController < ApplicationController
   end
 
   def new
-    @section = Section.new(params[:section] ? section_params : nil)
-
     club = Club.find(params[:club_id])
+
+    unless current_user.admin_of?(club)
+      redirect_with(fallback: club_path(club), notice: 'Vous n\'êtes pas admin de ce club')
+      return
+    end
+
+    @section = Section.new(params[:section] ? section_params : nil)
     @section.club = club
   end
 

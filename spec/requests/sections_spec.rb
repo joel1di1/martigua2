@@ -8,12 +8,41 @@ RSpec.describe 'Sections', type: :request do
   let(:section) { create(:section, club:) }
 
   describe 'GET /clubs/:club_id/sections/new' do
-    before do
-      get new_club_section_path(club), params: { user_email: user.email, user_token: user.authentication_token }
+    context 'when user is authenticated' do
+      before do
+        club.add_admin!(user)
+        get new_club_section_path(club), params: { user_email: user.email, user_token: user.authentication_token }
+      end
+
+      it { expect(response).to have_http_status(:success) }
+
+      it 'renders the new template' do
+        expect(response).to render_template(:new)
+      end
+
+      it 'includes section form in the response' do
+        expect(response.body).to include('form')
+        expect(response.body).to include('section[name]')
+      end
     end
 
-    it { expect(response).to have_http_status(:success) }
-    # We can't test assigns in request specs, but we could test that the rendered content includes relevant information
+    context 'when user is not authenticated' do
+      before do
+        get new_club_section_path(club)
+      end
+
+      it { expect(response).to have_http_status(302) }
+    end
+
+    context 'when user is authenticated but not authorized for this club' do
+      let(:another_user) { create(:user) }
+
+      before do
+        get new_club_section_path(club), params: { user_email: another_user.email, user_token: another_user.authentication_token }
+      end
+
+      it { expect(response).to have_http_status(:redirect) }
+    end
   end
 
   describe 'POST /clubs/:club_id/sections' do
@@ -27,7 +56,7 @@ RSpec.describe 'Sections', type: :request do
     end
 
     it { expect(response).to have_http_status(:created) }
-    
+
     it "makes the user a coach of the section" do
       expect(user).to be_coach_of(Section.where(club:, name: section_attributes[:name]))
     end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Groups', type: :request do
+RSpec.describe 'Groups' do
   let(:section) { create(:section) }
   let(:user) { create(:user, with_section: section) }
   let(:group) { create(:group, section:) }
@@ -31,9 +31,9 @@ RSpec.describe 'Groups', type: :request do
       let(:new_group_attributes) { attributes_for(:group) }
 
       it 'creates a new group' do
-        expect {
+        expect do
           post section_groups_path(section), params: { group: new_group_attributes }
-        }.to change(Group, :count).by(1)
+        end.to change(Group, :count).by(1)
       end
 
       it 'redirects to the new group' do
@@ -46,9 +46,9 @@ RSpec.describe 'Groups', type: :request do
       let(:new_group_attributes) { attributes_for(:group, name: nil) }
 
       it 'does not create a new group' do
-        expect {
+        expect do
           post section_groups_path(section), params: { group: new_group_attributes }
-        }.not_to change(Group, :count)
+        end.not_to change(Group, :count)
       end
 
       it 'returns unprocessable entity status' do

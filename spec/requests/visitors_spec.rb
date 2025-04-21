@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Visitors', type: :request do
+RSpec.describe 'Visitors' do
   describe 'GET /' do
     context 'when not signed in' do
       before { get '/' }

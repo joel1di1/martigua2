@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Sections', type: :request do
+RSpec.describe 'Sections' do
   let(:club) { create(:club) }
   let(:user) { create(:user) }
   let(:section) { create(:section, club:) }

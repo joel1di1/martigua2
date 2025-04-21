@@ -53,14 +53,15 @@ describe 'Championships' do
     let!(:championship) { create(:championship) }
     let(:new_championship_params) { { name: Faker::Company.name } }
     let(:params) { { championship: new_championship_params } }
-    let(:do_request) { post section_championship_path(section, championship), params: params }
-
-    before { sign_in user, scope: :user }
 
     describe 'response' do
-      before { do_request }
+      before do
+        sign_in user, scope: :user
+        patch section_championship_path(section, championship), params: params
+      end
 
       it { expect(response).to redirect_to(section_championship_path(section, championship)) }
+      it { expect(championship.reload.name).to eq(new_championship_params[:name]) }
     end
   end
 end

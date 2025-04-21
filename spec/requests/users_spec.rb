@@ -9,24 +9,22 @@ describe 'Users' do
   describe 'GET index' do
     let(:request) { get section_users_path(section_id: section.to_param) }
 
-    context 'within section' do
-      context 'with one user' do
-        before { sign_in(user, scope: :user) && request }
+    context 'with one user' do
+      before { sign_in(user, scope: :user) && request }
 
-        it { expect(response).to have_http_status(:success) }
+      it { expect(response).to have_http_status(:success) }
+    end
+
+    context 'with one user with several roles' do
+      let(:user) do
+        user = create(:user, with_section_as_coach: section)
+        section.add_player! user
+        user
       end
 
-      context 'with one user with several roles' do
-        let(:user) do
-          user = create(:user, with_section_as_coach: section)
-          section.add_player! user
-          user
-        end
+      before { sign_in(user, scope: :user) && request }
 
-        before { sign_in(user, scope: :user) && request }
-
-        it { expect(response).to have_http_status(:success) }
-      end
+      it { expect(response).to have_http_status(:success) }
     end
   end
 
@@ -43,12 +41,12 @@ describe 'Users' do
   describe 'PATCH update' do
     let(:new_attributes) { attributes_for(:user).except(:password) }
 
-    context 'within section' do
-      let!(:old_password) { user.password }
+    context 'when in section' do
+      let(:old_password) { user.password }
 
       before do
         sign_in user, scope: :user
-        patch section_user_path(id: user.to_param, section_id: section.to_param), 
+        patch section_user_path(id: user.to_param, section_id: section.to_param),
               params: { user: new_attributes, player: 'player' }
         user.reload
       end
@@ -67,8 +65,8 @@ describe 'Users' do
       end
     end
 
-    context 'within no section' do
-      let!(:old_password) { user.password }
+    context 'when not in section' do
+      let(:old_password) { user.password }
 
       before do
         sign_in user, scope: :user
@@ -105,7 +103,7 @@ describe 'Users' do
   end
 
   describe 'DELETE destroy user' do
-    context 'from section' do
+    context 'when in section' do
       before { sign_in user, scope: :user }
 
       let(:do_request) { delete section_user_path(section_id: section.to_param, id: user.to_param) }
@@ -119,7 +117,7 @@ describe 'Users' do
       end
     end
 
-    context 'from section group' do
+    context 'when in section group' do
       let(:group) { create(:group, section:) }
       let(:do_request) do
         delete section_group_user_path(section_id: section.to_param, group_id: group.to_param, id: user.to_param)

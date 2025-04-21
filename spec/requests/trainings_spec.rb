@@ -5,35 +5,36 @@ require 'rails_helper'
 describe 'Trainings' do
   let(:section) { create(:section) }
   let(:user) { create(:user, with_section: section) }
+  let(:coach) { create(:user, with_section_as_coach: section) }
+  let(:training) { create(:training, with_section: section) }
+
+  # Common path helpers
+  let(:section_path_param) { { section_id: section.to_param } }
+  let(:training_path_param) { { id: training.to_param } }
 
   describe 'GET index' do
-    let(:request) { get section_trainings_path(section_id: section.to_param, page: 1) }
+    subject(:request) { get section_trainings_path(section_path_param.merge(page: 1)) }
 
-    context 'within section' do
-      context 'signed as user' do
-        let(:user) { create(:user, with_section: section) }
+    context 'when signed in as user' do
+      before do
+        sign_in user, scope: :user
 
-        let!(:training1) { create(:training, :futur, with_section: section) }
-        let!(:training2) { create(:training, :futur, with_section: section, location: nil) }
-        let!(:training_not_in_section) { create(:training, :futur) }
+        # Create trainings directly in the before block instead of using let!
+        create(:training, :futur, with_section: section)
+        create(:training, :futur, with_section: section, location: nil)
+        create(:training, :futur) # training not in section
 
-        before do
-          sign_in user, scope: :user
-          [training1, training2, training_not_in_section]
-          request
-        end
-
-        it { expect(response).to have_http_status(:success) }
+        request
       end
+
+      it { expect(response).to have_http_status(:success) }
     end
   end
 
   describe 'GET edit' do
-    let(:request) { get edit_section_training_path(section_id: section.to_param, id: training.id) }
+    subject(:request) { get edit_section_training_path(section_path_param.merge(training_path_param)) }
 
     context 'with existing training' do
-      let(:training) { create(:training, with_section: section) }
-
       before do
         sign_in user
         request
@@ -44,79 +45,76 @@ describe 'Trainings' do
   end
 
   describe 'PATCH update' do
+    subject(:request) do
+      patch(
+        section_training_path(section_path_param.merge(training_path_param)),
+        params: { training: training.attributes }
+      )
+    end
+
     context 'with existing training' do
-      subject { patch section_training_path(section_id: section.to_param, id: training.to_param), params: { training: training.attributes } }
-
-      let(:training) { create(:training, with_section: section) }
-
       before { sign_in user, scope: :user }
 
-      it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param)) }
+      it { is_expected.to redirect_to(section_training_path(section_path_param.merge(training_path_param))) }
     end
   end
 
   describe 'POST create' do
     let(:new_training) { build(:training) }
+    let(:training_params) { { training: new_training.attributes.slice('start_datetime', 'end_datetime') } }
+    let(:create_request) { post section_trainings_path(section_path_param), params: training_params }
 
-    context 'signed as user' do
-      let(:training_params) { { training: new_training.attributes.slice('start_datetime', 'end_datetime') } }
-      let(:request) { post section_trainings_path(section_id: section.id), params: training_params }
-
+    context 'when signed in as user' do
       before { sign_in user, scope: :user }
 
-      describe 'effects' do
-        it { expect { request }.to change { section.trainings.count }.by(1) }
+      it 'creates a new training' do
+        expect { create_request }.to change { section.trainings.count }.by(1)
       end
 
-      describe 'response' do
-        subject { post section_trainings_path(section_id: section.id), params: training_params }
-
-        it { expect(subject).to redirect_to(section_trainings_path(section_id: section.to_param)) }
+      it 'redirects to trainings index' do
+        create_request
+        expect(response).to redirect_to(section_trainings_path(section_path_param))
       end
     end
   end
 
   describe 'POST invitations' do
-    subject { post invitations_section_training_path(section_id: section.to_param, id: training.to_param) }
-
-    let(:section) { create(:section) }
-    let(:coach) { create(:user, with_section_as_coach: section) }
-    let(:training) { create(:training, with_section: section) }
+    subject(:request) { post invitations_section_training_path(section_path_param.merge(training_path_param)) }
 
     before { sign_in coach, scope: :user }
 
-    it { expect(subject).to redirect_to(section_trainings_path(section_id: section.to_param)) }
+    it { is_expected.to redirect_to(section_trainings_path(section_path_param)) }
   end
 
   describe 'POST cancellation' do
-    subject do
-      post cancellation_section_training_path(section_id: section.to_param, id: training.to_param), 
+    subject(:request) do
+      post cancellation_section_training_path(section_path_param.merge(training_path_param)),
            params: { cancellation: { reason: 'TEST' } }
     end
 
-    let(:section) { create(:section) }
-    let(:coach) { create(:user, with_section_as_coach: section) }
-    let(:training) { create(:training, with_section: section) }
-
     before { sign_in coach, scope: :user }
 
-    it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param)) }
-    it { expect(subject && training.reload.cancelled?).to be_truthy }
+    it { is_expected.to redirect_to(section_training_path(section_path_param.merge(training_path_param))) }
+
+    it 'marks the training as cancelled' do
+      request
+      expect(training.reload).to be_cancelled
+    end
   end
 
   describe 'DELETE cancellation' do
-    subject { delete uncancel_section_training_path(section_id: section.to_param, id: training.to_param) }
-
-    let(:section) { create(:section) }
-    let(:coach) { create(:user, with_section_as_coach: section) }
-    let(:training) { create(:training, with_section: section) }
+    subject(:request) { delete uncancel_section_training_path(section_path_param.merge(training_path_param)) }
 
     before do
       training.cancel!(reason: 'for some reason')
-      sign_in coach
+      sign_in coach, scope: :user
     end
 
-    it { expect(subject && training.reload.cancelled?).to be_falsy }
-    it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param)) }
+    it 'marks the training as not cancelled' do
+      request
+      expect(training.reload).not_to be_cancelled
+    end
+
+    it { is_expected.to redirect_to(section_training_path(section_path_param.merge(training_path_param))) }
   end
 end

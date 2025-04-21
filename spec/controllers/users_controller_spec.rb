@@ -14,7 +14,7 @@ describe UsersController do
       let(:request_params) { { section_id: section.to_param } }
 
       context 'with on user' do
-        before { sign_in(user) && request }
+        before { sign_in(user, scope: :user) && request }
 
         it { expect(assigns[:users]).to contain_exactly(user) }
       end
@@ -26,7 +26,7 @@ describe UsersController do
           user
         end
 
-        before { sign_in(user) && request }
+        before { sign_in(user, scope: :user) && request }
 
         it { expect(assigns[:users]).to contain_exactly(user) }
       end
@@ -35,7 +35,7 @@ describe UsersController do
 
   describe 'GET edit' do
     it 'assign @user' do
-      sign_in user
+      sign_in user, scope: :user
       get :edit, params: { id: user.to_param, section_id: section.to_param }
 
       expect(response).to have_http_status(:success)
@@ -51,7 +51,7 @@ describe UsersController do
       let!(:old_password) { user.password }
 
       before do
-        sign_in user
+        sign_in user, scope: :user
         patch :update,
               params: { id: user.to_param, section_id: section.to_param, user: new_attributes, player: 'player' }
         user.reload
@@ -75,7 +75,7 @@ describe UsersController do
       let!(:old_password) { user.password }
 
       before do
-        sign_in user
+        sign_in user, scope: :user
         patch :update, params: { id: user.to_param, user: new_attributes }, flash: nil
       end
 
@@ -110,7 +110,7 @@ describe UsersController do
 
   describe 'DELETE destroy user' do
     context 'from section' do
-      before { sign_in user }
+      before { sign_in user, scope: :user }
 
       let(:do_request) { delete :destroy, params: { section_id: section.to_param, id: user.to_param } }
 
@@ -131,7 +131,7 @@ describe UsersController do
 
       before do
         group.add_user! user
-        sign_in user
+        sign_in user, scope: :user
       end
 
       it { expect { do_request }.not_to(change { section.users.count }) }

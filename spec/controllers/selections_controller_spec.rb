@@ -8,7 +8,7 @@ describe SelectionsController do
   let(:day) { create(:day) }
   let(:team_with_matches) { double }
 
-  before { sign_in coach }
+  before { sign_in coach, scope: :user }
 
   describe 'GET index' do
     let(:request_params) { { section_id: section.to_param, day_id: day.id } }

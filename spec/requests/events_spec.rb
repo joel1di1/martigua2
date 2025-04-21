@@ -6,7 +6,7 @@ RSpec.describe 'Events' do
   let(:section) { create(:section) }
   let(:user) { create(:user, with_section: section) }
 
-  before { sign_in user }
+  before { sign_in user, scope: :user }
 
   describe 'GET /index' do
     it 'returns http success' do

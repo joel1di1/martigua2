@@ -8,7 +8,7 @@ describe MessagesController do
   let(:channel) { create(:channel, section:) }
 
   before do
-    sign_in user
+    sign_in user, scope: :user
   end
 
   describe 'POST mark_as_read' do

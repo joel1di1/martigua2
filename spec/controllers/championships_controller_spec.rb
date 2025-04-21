@@ -11,7 +11,7 @@ describe ChampionshipsController do
   describe 'GET new' do
     let(:do_request) { get :new, params: { section_id: section } }
 
-    before { sign_in user }
+    before { sign_in user, scope: :user }
 
     describe 'response' do
       before { do_request }
@@ -26,7 +26,7 @@ describe ChampionshipsController do
     let(:params) { { section_id: section.to_param, championship: championship_params } }
     let(:do_request) { post :create, params: }
 
-    before { sign_in user }
+    before { sign_in user, scope: :user }
 
     it { expect { do_request }.to(change(Championship, :count)) }
 
@@ -41,7 +41,7 @@ describe ChampionshipsController do
     let(:championship) { create(:championship) }
     let(:do_request) { get :edit, params: { section_id: section, id: championship.id } }
 
-    before { sign_in user }
+    before { sign_in user, scope: :user }
 
     describe 'response' do
       before { do_request }
@@ -57,7 +57,7 @@ describe ChampionshipsController do
     let(:params) { { section_id: section.to_param, id: championship.id, championship: new_championship_params } }
     let(:do_request) { post :update, params: }
 
-    before { sign_in user }
+    before { sign_in user, scope: :user }
 
     describe 'response' do
       before { do_request }

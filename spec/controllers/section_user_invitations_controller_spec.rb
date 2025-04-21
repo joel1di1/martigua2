@@ -21,7 +21,7 @@ describe SectionUserInvitationsController do
 
         before do
           section.add_coach!(user)
-          sign_in user
+          sign_in user, scope: :user
         end
 
         it { expect { subject }.to change(SectionUserInvitation, :count).by(1) }

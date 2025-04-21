@@ -31,7 +31,7 @@ RSpec.describe 'Sections', type: :request do
         get new_club_section_path(club)
       end
 
-      it { expect(response).to have_http_status(302) }
+      it { expect(response).to have_http_status(:found) }
     end
 
     context 'when user is authenticated but not authorized for this club' do
@@ -57,14 +57,14 @@ RSpec.describe 'Sections', type: :request do
 
     it { expect(response).to have_http_status(:created) }
 
-    it "makes the user a coach of the section" do
+    it 'makes the user a coach of the section' do
       expect(user).to be_coach_of(Section.where(club:, name: section_attributes[:name]))
     end
   end
 
   describe 'GET /sections/:id' do
     before do
-      sign_in user
+      sign_in user, scope: :user
       get section_path(section)
     end
 
@@ -73,7 +73,7 @@ RSpec.describe 'Sections', type: :request do
     # We could test specific content if needed
   end
 
-  # Note: The #suggested_user_stat method test is a private method test that doesn't translate directly
+  # NOTE: The #suggested_user_stat method test is a private method test that doesn't translate directly
   # to a request spec. These types of tests are typically handled differently:
   # 1. Test the observable behaviors through public endpoints
   # 2. Extract the method to a service object that can be tested directly

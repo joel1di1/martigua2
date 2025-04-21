@@ -7,7 +7,7 @@ describe MatchesController do
   let(:user) { create(:user, with_section: section) }
   let(:championship) { create(:championship) }
 
-  before { sign_in user }
+  before { sign_in user, scope: :user }
 
   describe 'GET new' do
     let(:do_request) { get :new, params: { section_id: section, championship_id: championship } }

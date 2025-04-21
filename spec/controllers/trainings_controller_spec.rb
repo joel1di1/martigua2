@@ -22,7 +22,7 @@ describe TrainingsController do
         let!(:training_not_in_section) { create(:training, :futur) }
 
         before do
-          sign_in user
+          sign_in user, scope: :user
           [training1, training2, training_not_in_section]
           request
         end
@@ -55,7 +55,7 @@ describe TrainingsController do
       let(:training) { create(:training, with_section: section) }
       let(:request_params) { { section_id: section.to_param, id: training.to_param, training: training.attributes } }
 
-      before { sign_in user }
+      before { sign_in user, scope: :user }
 
       it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param)) }
     end
@@ -68,7 +68,7 @@ describe TrainingsController do
       let(:training_params) { { training: new_training.attributes.slice('start_datetime', 'end_datetime') } }
       let(:request_params) { training_params.merge(section_id: section.id) }
 
-      before { sign_in user }
+      before { sign_in user, scope: :user }
 
       describe 'effects' do
         let(:request) { post :create, params: request_params }
@@ -91,7 +91,7 @@ describe TrainingsController do
     let(:coach) { create(:user, with_section_as_coach: section) }
     let(:training) { create(:training, with_section: section) }
 
-    before { sign_in coach }
+    before { sign_in coach, scope: :user }
 
     it { expect(subject).to redirect_to(section_trainings_path(section_id: section.to_param)) }
   end
@@ -106,7 +106,7 @@ describe TrainingsController do
     let(:coach) { create(:user, with_section_as_coach: section) }
     let(:training) { create(:training, with_section: section) }
 
-    before { sign_in coach }
+    before { sign_in coach, scope: :user }
 
     it { expect(subject).to redirect_to(section_training_path(section_id: section.to_param, id: training.to_param)) }
     it { expect(subject && training.reload.cancelled?).to be_truthy }

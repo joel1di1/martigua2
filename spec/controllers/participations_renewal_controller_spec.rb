@@ -6,7 +6,7 @@ describe ParticipationsRenewalController do
   let(:section) { create(:section) }
   let(:coach) { create(:user, with_section_as_coach: section) }
 
-  before { sign_in coach }
+  before { sign_in coach, scope: :user }
 
   describe 'GET index' do
     let(:request_params) { { section_id: section.to_param } }

@@ -9,7 +9,7 @@ RSpec.describe DutyTasksController do
   let(:duty_task_attributes) { attributes_for(:duty_task).merge(user_id: user.id, club_id: section.club.id) }
 
   before do
-    sign_in user
+    sign_in user, scope: :user
   end
 
   describe 'GET #index' do

@@ -8,7 +8,7 @@ RSpec.describe 'Groups' do
   let(:group) { create(:group, section:) }
 
   before do
-    sign_in user
+    sign_in user, scope: :user
   end
 
   describe 'POST /sections/:section_id/groups/:group_id/add_users' do

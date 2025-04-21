@@ -701,7 +701,7 @@ DEPENDENCIES
   web-push
 
 RUBY VERSION
-   ruby 3.3.7p123
+   ruby 3.4.2p28
 
 BUNDLED WITH
    2.5.20

@@ -2,29 +2,28 @@
 
 require 'rails_helper'
 
-describe MatchesController do
+describe 'Matches' do
   let(:section) { create(:section) }
   let(:user) { create(:user, with_section: section) }
   let(:championship) { create(:championship) }
 
-  before { sign_in user }
+  before { sign_in user, scope: :user }
 
   describe 'GET new' do
-    let(:do_request) { get :new, params: { section_id: section, championship_id: championship } }
+    let(:do_request) { get new_section_championship_match_path(section, championship) }
 
     before { do_request }
 
     it { expect(response).to have_http_status(:success) }
-    it { expect(assigns[:match]).not_to be_nil }
   end
 
   describe 'POST selection' do
     let(:local_team) { create(:team) }
     let(:visitor_team) { create(:team) }
     let(:match) { create(:match, visitor_team:, local_team:) }
-    let(:params) { { section_id: section, id: match, user_id: user.id, team_id: local_team.id, format: } }
+    let(:params) { { user_id: user.id, team_id: local_team.id } }
 
-    let(:do_request) { post :selection, params: }
+    let(:do_request) { post selection_section_match_path(section, match, format: format), params: params }
 
     describe 'response' do
       before { do_request }

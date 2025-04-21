@@ -18,7 +18,7 @@ pin 'tom-select', to: 'https://ga.jspm.io/npm:tom-select@2.2.2/dist/js/tom-selec
 pin 'trix'
 pin '@rails/actiontext', to: 'actiontext.js'
 pin 'webpush', to: 'webpush.js'
-pin "@stimulus-components/auto-submit", to: "@stimulus-components--auto-submit.js" # @6.0.0
-pin "@stimulus-components/dropdown", to: "@stimulus-components--dropdown.js" # @3.0.0
-pin "stimulus-use" # @0.52.2
-pin "@stimulus-components/notification", to: "@stimulus-components--notification.js" # @3.0.0
+pin '@stimulus-components/auto-submit', to: '@stimulus-components--auto-submit.js' # @6.0.0
+pin '@stimulus-components/dropdown', to: '@stimulus-components--dropdown.js' # @3.0.0
+pin 'stimulus-use' # @0.52.2
+pin '@stimulus-components/notification', to: '@stimulus-components--notification.js' # @3.0.0

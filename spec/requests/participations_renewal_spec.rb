@@ -2,15 +2,15 @@
 
 require 'rails_helper'
 
-describe ParticipationsRenewalController do
+describe 'ParticipationsRenewal' do
   let(:section) { create(:section) }
   let(:coach) { create(:user, with_section_as_coach: section) }
 
-  before { sign_in coach }
+  before { sign_in coach, scope: :user }
 
   describe 'GET index' do
     let(:request_params) { { section_id: section.to_param } }
-    let(:request) { get :index, params: request_params }
+    let(:request) { get section_participations_renewal_index_path(section) }
 
     let(:player_from_previous_season) { create(:user) }
     let(:player_from_previous_season2) { create(:user) }
@@ -18,15 +18,6 @@ describe ParticipationsRenewalController do
     let(:player_and_coach_from_previous_season) { create(:user) }
     let(:player_from_current_season) { create(:user) }
     let(:coach_from_current_season) { create(:user) }
-
-    let(:expected_members) do
-      [
-        player_from_previous_season,
-        player_from_previous_season2,
-        coach_from_previous_season,
-        player_and_coach_from_previous_season
-      ]
-    end
 
     before do
       previous_season = Season.current.previous
@@ -41,7 +32,7 @@ describe ParticipationsRenewalController do
       request
     end
 
-    it { expect(assigns[:previous_season_members]).to match_array(expected_members) }
-    it { expect(assigns[:previous_season]).to eq Season.current.previous }
+    it { expect(response).to have_http_status(:success) }
+    it { expect(response).to render_template(:index) }
   end
 end

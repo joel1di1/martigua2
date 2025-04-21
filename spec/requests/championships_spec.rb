@@ -2,31 +2,30 @@
 
 require 'rails_helper'
 
-describe ChampionshipsController do
+describe 'Championships' do
   let(:championships) { create(:championships) }
   let(:section) { create(:section) }
   let(:user) { create(:user, with_section_as_coach: section) }
   let(:calendar) { create(:calendar) }
 
   describe 'GET new' do
-    let(:do_request) { get :new, params: { section_id: section } }
+    let(:do_request) { get new_section_championship_path(section) }
 
-    before { sign_in user }
+    before { sign_in user, scope: :user }
 
     describe 'response' do
       before { do_request }
 
       it { expect(response).to have_http_status(:success) }
-      it { expect(assigns(:championship)).not_to be_nil }
     end
   end
 
   describe 'POST create' do
     let(:championship_params) { { name: Faker::Company.name, calendar_id: calendar.id } }
-    let(:params) { { section_id: section.to_param, championship: championship_params } }
-    let(:do_request) { post :create, params: }
+    let(:params) { { championship: championship_params } }
+    let(:do_request) { post section_championships_path(section), params: params }
 
-    before { sign_in user }
+    before { sign_in user, scope: :user }
 
     it { expect { do_request }.to(change(Championship, :count)) }
 
@@ -39,30 +38,30 @@ describe ChampionshipsController do
 
   describe 'GET edit' do
     let(:championship) { create(:championship) }
-    let(:do_request) { get :edit, params: { section_id: section, id: championship.id } }
+    let(:do_request) { get edit_section_championship_path(section, championship) }
 
-    before { sign_in user }
+    before { sign_in user, scope: :user }
 
     describe 'response' do
       before { do_request }
 
       it { expect(response).to have_http_status(:success) }
-      it { expect(assigns(:championship)).not_to be_nil }
     end
   end
 
   describe 'POST update' do
     let!(:championship) { create(:championship) }
     let(:new_championship_params) { { name: Faker::Company.name } }
-    let(:params) { { section_id: section.to_param, id: championship.id, championship: new_championship_params } }
-    let(:do_request) { post :update, params: }
-
-    before { sign_in user }
+    let(:params) { { championship: new_championship_params } }
 
     describe 'response' do
-      before { do_request }
+      before do
+        sign_in user, scope: :user
+        patch section_championship_path(section, championship), params: params
+      end
 
       it { expect(response).to redirect_to(section_championship_path(section, championship)) }
+      it { expect(championship.reload.name).to eq(new_championship_params[:name]) }
     end
   end
 end

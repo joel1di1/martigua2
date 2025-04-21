@@ -2,22 +2,21 @@
 
 require 'rails_helper'
 
-describe VisitorsController do
-  describe 'GET index' do
-    context 'not signed in' do
-      before { get :index }
+RSpec.describe 'Visitors' do
+  describe 'GET /' do
+    context 'when not signed in' do
+      before { get '/' }
 
       it { expect(response).to have_http_status(:ok) }
       it { expect(response).to render_template('index') }
     end
 
-    context 'sign as user with only one section' do
+    context 'when sign as user with only one section' do
       let(:user) { create(:one_section_player) }
 
       before do
-        sign_in user
-
-        get :index
+        sign_in user, scope: :user
+        get '/'
       end
 
       it { expect(response).to redirect_to(section_path(user.sections.first)) }

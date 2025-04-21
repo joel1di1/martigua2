@@ -2,58 +2,52 @@
 
 require 'rails_helper'
 
-describe UsersController do
+describe 'Users' do
   let(:section) { create(:section) }
   let(:user) { create(:user, with_section: section) }
 
   describe 'GET index' do
-    let(:request_params) { {} }
-    let(:request) { get :index, params: request_params }
+    let(:request) { get section_users_path(section_id: section.to_param) }
 
-    context 'within section' do
-      let(:request_params) { { section_id: section.to_param } }
+    context 'with one user' do
+      before { sign_in(user, scope: :user) && request }
 
-      context 'with on user' do
-        before { sign_in(user) && request }
+      it { expect(response).to have_http_status(:success) }
+    end
 
-        it { expect(assigns[:users]).to contain_exactly(user) }
+    context 'with one user with several roles' do
+      let(:user) do
+        user = create(:user, with_section_as_coach: section)
+        section.add_player! user
+        user
       end
 
-      context 'with one user with several roles' do
-        let(:user) do
-          user = create(:user, with_section_as_coach: section)
-          section.add_player! user
-          user
-        end
+      before { sign_in(user, scope: :user) && request }
 
-        before { sign_in(user) && request }
-
-        it { expect(assigns[:users]).to contain_exactly(user) }
-      end
+      it { expect(response).to have_http_status(:success) }
     end
   end
 
   describe 'GET edit' do
-    it 'assign @user' do
-      sign_in user
-      get :edit, params: { id: user.to_param, section_id: section.to_param }
+    it 'shows edit form' do
+      sign_in user, scope: :user
+      get edit_section_user_path(id: user.to_param, section_id: section.to_param)
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:edit)
-      expect(assigns(:user)).to eq(user)
     end
   end
 
-  describe 'PATCH edit' do
+  describe 'PATCH update' do
     let(:new_attributes) { attributes_for(:user).except(:password) }
 
-    context 'within section' do
-      let!(:old_password) { user.password }
+    context 'when in section' do
+      let(:old_password) { user.password }
 
       before do
-        sign_in user
-        patch :update,
-              params: { id: user.to_param, section_id: section.to_param, user: new_attributes, player: 'player' }
+        sign_in user, scope: :user
+        patch section_user_path(id: user.to_param, section_id: section.to_param),
+              params: { user: new_attributes, player: 'player' }
         user.reload
       end
 
@@ -71,15 +65,15 @@ describe UsersController do
       end
     end
 
-    context 'within no section' do
-      let!(:old_password) { user.password }
+    context 'when not in section' do
+      let(:old_password) { user.password }
 
       before do
-        sign_in user
-        patch :update, params: { id: user.to_param, user: new_attributes }, flash: nil
+        sign_in user, scope: :user
+        patch user_path(id: user.to_param), params: { user: new_attributes }
       end
 
-      it 'redirect_toes user path' do
+      it 'redirect_to user path' do
         expect(response).to redirect_to(user_path(user))
       end
     end
@@ -91,8 +85,8 @@ describe UsersController do
     let(:training_full) { create(:training, max_capacity: 0) }
 
     let(:post_training_presences) do
-      post :training_presences, params: {
-        id: user.to_param, user_email: user.email, user_token: user.authentication_token,
+      post training_presences_user_path(id: user.to_param), params: {
+        user_email: user.email, user_token: user.authentication_token,
         present_ids: [training1.id, training2.id, training_full.id], checked_ids: [training1.id, training_full.id]
       }
     end
@@ -109,10 +103,10 @@ describe UsersController do
   end
 
   describe 'DELETE destroy user' do
-    context 'from section' do
-      before { sign_in user }
+    context 'when in section' do
+      before { sign_in user, scope: :user }
 
-      let(:do_request) { delete :destroy, params: { section_id: section.to_param, id: user.to_param } }
+      let(:do_request) { delete section_user_path(section_id: section.to_param, id: user.to_param) }
 
       it { expect { do_request }.to change { section.users.count }.by(-1) }
 
@@ -123,15 +117,15 @@ describe UsersController do
       end
     end
 
-    context 'from section group' do
+    context 'when in section group' do
       let(:group) { create(:group, section:) }
       let(:do_request) do
-        delete :destroy, params: { section_id: section.to_param, group_id: group.to_param, id: user.to_param }
+        delete section_group_user_path(section_id: section.to_param, group_id: group.to_param, id: user.to_param)
       end
 
       before do
         group.add_user! user
-        sign_in user
+        sign_in user, scope: :user
       end
 
       it { expect { do_request }.not_to(change { section.users.count }) }

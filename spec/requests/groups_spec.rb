@@ -17,7 +17,7 @@ RSpec.describe 'Groups' do
     end
 
     it 'adds a user to the group' do
-      expect { do_request }.to change { group.users.count }.by(1)
+      expect { do_request }.to change { group.reload.users.count }.by(1)
     end
 
     it 'redirects to the group page' do

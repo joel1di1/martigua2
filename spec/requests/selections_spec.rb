@@ -6,7 +6,6 @@ describe 'Selections' do
   let(:section) { create(:section) }
   let(:coach) { create(:user, with_section_as_coach: section) }
   let(:day) { create(:day) }
-  let(:team_with_matches) { double }
 
   before { sign_in coach, scope: :user }
 
@@ -15,9 +14,6 @@ describe 'Selections' do
 
     describe 'response' do
       before do
-        # debugger
-        # allow(Team).to receive(:team_with_match_on).with(day, section).and_return(team_with_matches)
-        # allow(team_with_matches).to receive(:map).and_return([])
         request
       end
 

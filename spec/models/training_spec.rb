@@ -12,7 +12,8 @@ RSpec.describe Training do
   let(:section)  { create(:section) }
   let!(:nb_users) { [1, 2, 3, 4].sample }
 
-  it { is_expected.to have_and_belong_to_many :sections }
+  it { is_expected.to have_many :section_trainings }
+  it { is_expected.to have_many(:sections).through(:section_trainings) }
   it { is_expected.to have_many :group_trainings }
   it { is_expected.to have_many(:groups).through(:group_trainings) }
   it { is_expected.to have_many :training_presences }

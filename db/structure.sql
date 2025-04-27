@@ -687,6 +687,38 @@ ALTER SEQUENCE public.enrolled_team_championships_id_seq OWNED BY public.enrolle
 
 
 --
+-- Name: group_memberships; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.group_memberships (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    group_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: group_memberships_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.group_memberships_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: group_memberships_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.group_memberships_id_seq OWNED BY public.group_memberships.id;
+
+
+--
 -- Name: groups; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1177,7 +1209,8 @@ CREATE TABLE public.math_trainer_problems (
     number_2 integer,
     hole_position integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    config jsonb
 );
 
 
@@ -2541,6 +2574,13 @@ ALTER TABLE ONLY public.enrolled_team_championships ALTER COLUMN id SET DEFAULT 
 
 
 --
+-- Name: group_memberships id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.group_memberships ALTER COLUMN id SET DEFAULT nextval('public.group_memberships_id_seq'::regclass);
+
+
+--
 -- Name: groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3027,6 +3067,14 @@ ALTER TABLE ONLY public.duty_tasks
 
 ALTER TABLE ONLY public.enrolled_team_championships
     ADD CONSTRAINT enrolled_team_championships_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: group_memberships group_memberships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.group_memberships
+    ADD CONSTRAINT group_memberships_pkey PRIMARY KEY (id);
 
 
 --
@@ -3624,6 +3672,27 @@ CREATE INDEX index_enrolled_team_championships_on_championship_id ON public.enro
 --
 
 CREATE INDEX index_enrolled_team_championships_on_team_id ON public.enrolled_team_championships USING btree (team_id);
+
+
+--
+-- Name: index_group_memberships_on_group_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_group_memberships_on_group_id ON public.group_memberships USING btree (group_id);
+
+
+--
+-- Name: index_group_memberships_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_group_memberships_on_user_id ON public.group_memberships USING btree (user_id);
+
+
+--
+-- Name: index_group_memberships_on_user_id_and_group_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_group_memberships_on_user_id_and_group_id ON public.group_memberships USING btree (user_id, group_id);
 
 
 --
@@ -4249,6 +4318,14 @@ ALTER TABLE ONLY public.resajaaf_identities
 
 
 --
+-- Name: group_memberships fk_rails_14271168a1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.group_memberships
+    ADD CONSTRAINT fk_rails_14271168a1 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: math_trainer_card_session_problems fk_rails_1a68b9ce67; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4537,6 +4614,14 @@ ALTER TABLE ONLY public.user_championship_stats
 
 
 --
+-- Name: group_memberships fk_rails_d05778f88b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.group_memberships
+    ADD CONSTRAINT fk_rails_d05778f88b FOREIGN KEY (group_id) REFERENCES public.groups(id);
+
+
+--
 -- Name: math_trainer_answers fk_rails_d05e8d6f1c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4591,6 +4676,7 @@ ALTER TABLE ONLY public.channels
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250427000000'),
 ('20241001230918'),
 ('20240919161108'),
 ('20240911191722'),

@@ -1934,6 +1934,38 @@ ALTER SEQUENCE public.seasons_id_seq OWNED BY public.seasons.id;
 
 
 --
+-- Name: section_trainings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.section_trainings (
+    id bigint NOT NULL,
+    section_id bigint NOT NULL,
+    training_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: section_trainings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.section_trainings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: section_trainings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.section_trainings_id_seq OWNED BY public.section_trainings.id;
+
+
+--
 -- Name: section_user_invitations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2844,6 +2876,13 @@ ALTER TABLE ONLY public.seasons ALTER COLUMN id SET DEFAULT nextval('public.seas
 
 
 --
+-- Name: section_trainings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.section_trainings ALTER COLUMN id SET DEFAULT nextval('public.section_trainings_id_seq'::regclass);
+
+
+--
 -- Name: section_user_invitations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3410,6 +3449,14 @@ ALTER TABLE ONLY public.scrapped_rankings
 
 ALTER TABLE ONLY public.seasons
     ADD CONSTRAINT seasons_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: section_trainings section_trainings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.section_trainings
+    ADD CONSTRAINT section_trainings_pkey PRIMARY KEY (id);
 
 
 --
@@ -4149,6 +4196,27 @@ CREATE INDEX index_resajaaf_webpush_subscriptions_on_user_id ON public.resajaaf_
 
 
 --
+-- Name: index_section_trainings_on_section_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_section_trainings_on_section_id ON public.section_trainings USING btree (section_id);
+
+
+--
+-- Name: index_section_trainings_on_section_id_and_training_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_section_trainings_on_section_id_and_training_id ON public.section_trainings USING btree (section_id, training_id);
+
+
+--
+-- Name: index_section_trainings_on_training_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_section_trainings_on_training_id ON public.section_trainings USING btree (training_id);
+
+
+--
 -- Name: index_section_user_invitations_on_section_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4399,6 +4467,14 @@ ALTER TABLE ONLY public.group_memberships
 
 ALTER TABLE ONLY public.math_trainer_card_session_problems
     ADD CONSTRAINT fk_rails_1a68b9ce67 FOREIGN KEY (card_session_id) REFERENCES public.math_trainer_card_sessions(id);
+
+
+--
+-- Name: section_trainings fk_rails_1a883ef79e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.section_trainings
+    ADD CONSTRAINT fk_rails_1a883ef79e FOREIGN KEY (training_id) REFERENCES public.trainings(id);
 
 
 --
@@ -4754,12 +4830,21 @@ ALTER TABLE ONLY public.channels
 
 
 --
+-- Name: section_trainings fk_rails_fb378323a1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.section_trainings
+    ADD CONSTRAINT fk_rails_fb378323a1 FOREIGN KEY (section_id) REFERENCES public.sections(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250427000002'),
 ('20250427000001'),
 ('20250427000000'),
 ('20241001230918'),

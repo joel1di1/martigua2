@@ -11,7 +11,8 @@ class Section < ApplicationRecord
   has_many :users, -> { distinct }, through: :participations, inverse_of: :sections
 
   has_many :section_user_invitations, inverse_of: :section, dependent: :destroy
-  has_and_belongs_to_many :trainings, inverse_of: :sections
+  has_many :section_trainings, dependent: :destroy
+  has_many :trainings, through: :section_trainings
 
   has_many :groups, inverse_of: :section, dependent: :destroy
 

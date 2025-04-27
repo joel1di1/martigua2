@@ -10,7 +10,8 @@ RSpec.describe Section do
   it { is_expected.to have_many :teams }
   it { is_expected.to have_many :participations }
   it { is_expected.to have_many :users }
-  it { is_expected.to have_and_belong_to_many :trainings }
+  it { is_expected.to have_many :section_trainings }
+  it { is_expected.to have_many(:trainings).through(:section_trainings) }
   it { is_expected.to have_many :groups }
   it { is_expected.to have_many :channels }
 

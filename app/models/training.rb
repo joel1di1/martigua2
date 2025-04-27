@@ -3,7 +3,8 @@
 class Training < ApplicationRecord
   belongs_to :location, optional: true
 
-  has_and_belongs_to_many :sections, inverse_of: :trainings
+  has_many :section_trainings, dependent: :destroy
+  has_many :sections, through: :section_trainings
   has_many :group_trainings, dependent: :destroy
   has_many :groups, through: :group_trainings
 

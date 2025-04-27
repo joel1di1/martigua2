@@ -11,7 +11,7 @@
 # Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods, IgnoreNotImplementedMethods.
 Lint/UnusedMethodArgument:
   Exclude:
-    - 'app/services/ffhb_service.rb'
+    - "app/services/ffhb_service.rb"
 
 # Offense count: 21
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
@@ -52,7 +52,7 @@ Metrics/PerceivedComplexity:
 # Offense count: 1
 Naming/AccessorMethodName:
   Exclude:
-    - 'app/models/user.rb'
+    - "app/models/user.rb"
 
 # Offense count: 4
 # Configuration parameters: NamePrefix, ForbiddenPrefixes, AllowedMethods, MethodDefinitionMacros.
@@ -62,27 +62,27 @@ Naming/AccessorMethodName:
 # MethodDefinitionMacros: define_method, define_singleton_method
 Naming/PredicateName:
   Exclude:
-    - 'app/models/section.rb'
-    - 'app/models/user.rb'
+    - "app/models/section.rb"
+    - "app/models/user.rb"
 
 # Offense count: 2
 RSpec/Be:
   Exclude:
-    - 'spec/controllers/sections_controller_spec.rb'
-    - 'spec/models/training_spec.rb'
+    - "spec/controllers/sections_controller_spec.rb"
+    - "spec/models/training_spec.rb"
 
 # Offense count: 27
 # Configuration parameters: Prefixes, AllowedPatterns.
 # Prefixes: when, with, without
 RSpec/ContextWording:
   Exclude:
-    - 'spec/controllers/section_user_invitations_controller_spec.rb'
-    - 'spec/controllers/trainings_controller_spec.rb'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/controllers/visitors_controller_spec.rb'
-    - 'spec/models/day_spec.rb'
-    - 'spec/models/section_spec.rb'
-    - 'spec/models/user_spec.rb'
+    - "spec/controllers/section_user_invitations_controller_spec.rb"
+    - "spec/controllers/trainings_controller_spec.rb"
+    - "spec/controllers/users_controller_spec.rb"
+    - "spec/controllers/visitors_controller_spec.rb"
+    - "spec/models/day_spec.rb"
+    - "spec/models/section_spec.rb"
+    - "spec/models/user_spec.rb"
 
 # Offense count: 29
 # Configuration parameters: CountAsOne.
@@ -92,13 +92,13 @@ RSpec/ExampleLength:
 # Offense count: 21
 RSpec/LetSetup:
   Exclude:
-    - 'spec/controllers/trainings_controller_spec.rb'
-    - 'spec/controllers/users_controller_spec.rb'
-    - 'spec/models/season_spec.rb'
-    - 'spec/models/section_spec.rb'
-    - 'spec/models/sms_notification_spec.rb'
-    - 'spec/models/training_invitation_spec.rb'
-    - 'spec/models/user_spec.rb'
+    - "spec/controllers/trainings_controller_spec.rb"
+    - "spec/controllers/users_controller_spec.rb"
+    - "spec/models/season_spec.rb"
+    - "spec/models/section_spec.rb"
+    - "spec/models/sms_notification_spec.rb"
+    - "spec/models/training_invitation_spec.rb"
+    - "spec/models/user_spec.rb"
 
 # Offense count: 2
 # Configuration parameters: .
@@ -120,12 +120,12 @@ RSpec/MultipleMemoizedHelpers:
 # SupportedStyles: always, named_only
 RSpec/NamedSubject:
   Exclude:
-    - 'spec/controllers/section_user_invitations_controller_spec.rb'
-    - 'spec/controllers/selections_controller_spec.rb'
-    - 'spec/controllers/trainings_controller_spec.rb'
-    - 'spec/models/championship_spec.rb'
-    - 'spec/models/season_spec.rb'
-    - 'spec/models/section_spec.rb'
+    - "spec/controllers/section_user_invitations_controller_spec.rb"
+    - "spec/controllers/selections_controller_spec.rb"
+    - "spec/controllers/trainings_controller_spec.rb"
+    - "spec/models/championship_spec.rb"
+    - "spec/models/season_spec.rb"
+    - "spec/models/section_spec.rb"
 
 # Offense count: 38
 # Configuration parameters: AllowedGroups.
@@ -137,7 +137,7 @@ RSpec/NestedGroups:
 # AllowedPatterns: ^expect_, ^assert_
 RSpec/NoExpectationExample:
   Exclude:
-    - 'spec/features/club_admins/manage_club_admins_spec.rb'
+    - "spec/features/club_admins/manage_club_admins_spec.rb"
 
 # Offense count: 2
 # Configuration parameters: Database, Include.
@@ -145,25 +145,18 @@ RSpec/NoExpectationExample:
 # Include: db/**/*.rb
 Rails/BulkChangeTable:
   Exclude:
-    - 'db/migrate/20140711215459_add_attributes_to_user.rb'
-    - 'db/migrate/20140827075827_add_system_and_role_to_groups.rb'
+    - "db/migrate/20140711215459_add_attributes_to_user.rb"
+    - "db/migrate/20140827075827_add_system_and_role_to_groups.rb"
 
 # Offense count: 6
 # Configuration parameters: Include.
 # Include: app/models/**/*.rb
 Rails/HasAndBelongsToMany:
   Exclude:
-    - 'app/models/group.rb'
-    - 'app/models/section.rb'
-    - 'app/models/training.rb'
-    - 'app/models/user.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Style/IfUnlessModifier:
-  Exclude:
-    - 'app/controllers/championships_controller.rb'
-    - 'app/models/match.rb'
+    - "app/models/group.rb"
+    - "app/models/section.rb"
+    - "app/models/training.rb"
+    - "app/models/user.rb"
 
 # Offense count: 32
 # This cop supports safe autocorrection (--autocorrect).

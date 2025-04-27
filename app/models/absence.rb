@@ -22,7 +22,9 @@ class Absence < ApplicationRecord
     user_teams = Team.joins(:sections).where(sections: user.sections)
     section_matchs = Match.where(local_team: user_teams).or(Match.where(visitor_team: user_teams))
     matchs = section_matchs.with_start_between(start_at, end_at)
-    other_matchs = section_matchs.where(start_datetime: nil).includes(:day).where(day: { period_start_date: start_at..end_at, period_end_date: start_at..end_at })
+    other_matchs = section_matchs.where(start_datetime: nil).includes(:day).where(day: {
+                                                                                    period_start_date: start_at..end_at, period_end_date: start_at..end_at
+                                                                                  })
 
     user.not_available_for!(matchs + other_matchs)
   end

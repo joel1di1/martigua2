@@ -14,7 +14,8 @@ class SelectionsController < ApplicationController
     matches = @teams_with_matches.map(&:second)
 
     @availabilities_by_user_and_match = availabilities_by_user_and_match(@players, matches)
-    @available_players, @non_available_players = prepare_availabilities(matches, @availabilities_by_user_and_match, players_by_id)
+    @available_players, @non_available_players = prepare_availabilities(matches, @availabilities_by_user_and_match,
+                                                                        players_by_id)
 
     # absence overrides availability
     @players.each do |player|

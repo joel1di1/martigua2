@@ -3,7 +3,8 @@
 class MatchesController < ApplicationController
   def index
     @section = Section.find params[:section_id]
-    @next_matches = @section.next_matches(end_date: 1.year.from_now).includes(:local_team, :visitor_team, :day, :location)
+    @next_matches = @section.next_matches(end_date: 1.year.from_now).includes(:local_team, :visitor_team, :day,
+                                                                              :location)
   end
 
   def show

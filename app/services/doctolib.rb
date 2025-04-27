@@ -8,7 +8,8 @@ class Doctolib
       { visit_motive_ids: 7_609_339, agenda_ids: 37_298, practice_ids: 385_902, name: 'Dr. Olivier Mesland' },
       { visit_motive_ids: 507_096, agenda_ids: 84_194, practice_ids: 131_653, name: 'Dr. Loic Chimot' },
       { visit_motive_ids: 2_901_110, agenda_ids: 111_316, practice_ids: 192_130, name: 'Dr. Brice Bellemans' },
-      { visit_motive_ids: 1_727_740, agenda_ids: '223553-223556-223559-226725', practice_ids: 89_279, name: 'AIM Atlantique Imagerie Médicale' }
+      { visit_motive_ids: 1_727_740, agenda_ids: '223553-223556-223559-226725', practice_ids: 89_279,
+        name: 'AIM Atlantique Imagerie Médicale' }
     ]
 
     first_availabilities = doc_to_check.map do |doc|
@@ -41,8 +42,10 @@ class Doctolib
       req.headers['sec-fetch-mode'] = 'cors'
       req.headers['sec-fetch-site'] = 'same-origin'
       req.headers['sec-gpc'] = '1'
-      req.headers['user-agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1'
-      req.headers['x-csrf-token'] = '7OnD59Ep9DQyA1I0BHM1fZNYn03LNqDIWTDz0Lh_72I-xUctcDi-YpgEvIr556yjc0xJz0L8eIQOC99mbVAsUg'
+      req.headers['user-agent'] =
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1'
+      req.headers['x-csrf-token'] =
+        '7OnD59Ep9DQyA1I0BHM1fZNYn03LNqDIWTDz0Lh_72I-xUctcDi-YpgEvIr556yjc0xJz0L8eIQOC99mbVAsUg'
     end
 
     json_response = Oj.load(response.body)

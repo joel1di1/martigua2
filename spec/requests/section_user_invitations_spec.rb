@@ -4,7 +4,9 @@ require 'rails_helper'
 
 describe 'Section User Invitations' do
   describe 'POST create' do
-    subject(:do_post) { post section_section_user_invitations_path(section_id: section.to_param), params: invitation_params }
+    subject(:do_post) do
+      post section_section_user_invitations_path(section_id: section.to_param), params: invitation_params
+    end
 
     let(:invited_user) { build(:user) }
     let(:invitation_params) do

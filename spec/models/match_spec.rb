@@ -143,8 +143,14 @@ RSpec.describe Match do
   end
 
   describe '#ffhb_sync! with several days on same period' do
-    let(:day1) { create(:day, period_start_date: '2023-09-11', period_end_date: '2023-09-17', calendar: match.championship.calendar) }
-    let(:day2) { create(:day, period_start_date: '2023-09-11', period_end_date: '2023-09-17', calendar: match.championship.calendar) }
+    let(:day1) do
+      create(:day, period_start_date: '2023-09-11', period_end_date: '2023-09-17',
+                   calendar: match.championship.calendar)
+    end
+    let(:day2) do
+      create(:day, period_start_date: '2023-09-11', period_end_date: '2023-09-17',
+                   calendar: match.championship.calendar)
+    end
 
     let(:match) do
       create(:match,
@@ -178,7 +184,8 @@ RSpec.describe Match do
       before do
         create(:match_availability, user: player, match:, available: true)
         create(:match_availability, user: player_sick, match:, available: true)
-        create(:absence, user: player_sick, start_at: match.start_datetime - 1.day, end_at: match.start_datetime + 2.days)
+        create(:absence, user: player_sick, start_at: match.start_datetime - 1.day,
+                         end_at: match.start_datetime + 2.days)
         [player, player_sick]
       end
 

@@ -36,7 +36,9 @@ class AbsencesController < ApplicationController
   def update
     respond_to do |format|
       if @absence.update(absence_params)
-        format.html { redirect_to section_user_path(current_section, @user), notice: 'Absence was successfully updated.' }
+        format.html do
+          redirect_to section_user_path(current_section, @user), notice: 'Absence was successfully updated.'
+        end
         format.json { render :show, status: :ok, location: @absence }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -50,7 +52,9 @@ class AbsencesController < ApplicationController
     @absence.destroy!
 
     respond_to do |format|
-      format.html { redirect_with fallback: section_user_path(current_section, @user), notice: 'Absence was successfully destroyed.' }
+      format.html do
+        redirect_with fallback: section_user_path(current_section, @user), notice: 'Absence was successfully destroyed.'
+      end
       format.json { head :no_content }
     end
   end

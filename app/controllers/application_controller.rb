@@ -42,7 +42,9 @@ class ApplicationController < ActionController::Base
   end
 
   def log_error(exception)
-    Rails.logger.info("#{request_string}--RESP--;5xx;#{exception.message};#{exception.backtrace}") unless Rails.env.test?
+    return if Rails.env.test?
+
+    Rails.logger.info("#{request_string}--RESP--;5xx;#{exception.message};#{exception.backtrace}")
   end
 
   def request_string

@@ -27,8 +27,18 @@ module Interceptors
       wildcard_blocked_domains = wildcard_blocked_addresses.pluck(1..)
 
       # remove all blocked addresses matching the wildcard blocked domains
-      message.to = message.to.select { |address| wildcard_blocked_domains.none? { |domain| address.ends_with?(domain) } }
-      message.cc = message.cc.select { |address| wildcard_blocked_domains.none? { |domain| address.ends_with?(domain) } } if message.cc.present?
+      message.to = message.to.select do |address|
+        wildcard_blocked_domains.none? do |domain|
+          address.ends_with?(domain)
+        end
+      end
+      return if message.cc.blank?
+
+      message.cc = message.cc.select do |address|
+        wildcard_blocked_domains.none? do |domain|
+          address.ends_with?(domain)
+        end
+      end
     end
   end
 end

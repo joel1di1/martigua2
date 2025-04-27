@@ -38,7 +38,8 @@ RSpec.describe 'Sections' do
       let(:another_user) { create(:user) }
 
       before do
-        get new_club_section_path(club), params: { user_email: another_user.email, user_token: another_user.authentication_token }
+        get new_club_section_path(club),
+            params: { user_email: another_user.email, user_token: another_user.authentication_token }
       end
 
       it { expect(response).to have_http_status(:redirect) }

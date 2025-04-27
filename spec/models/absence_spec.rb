@@ -30,7 +30,8 @@ RSpec.describe Absence do
       describe 'on update' do
         it 'updates the training presences' do
           expect(user.present_for?(training)).to be_nil
-          absence = create(:absence, user:, start_at: training.start_datetime - 10.days, end_at: training.start_datetime - 2.days)
+          absence = create(:absence, user:, start_at: training.start_datetime - 10.days,
+                                     end_at: training.start_datetime - 2.days)
           expect(user.present_for?(training)).to be_nil
           absence.update(end_at: training.start_datetime + 2.days)
           expect(user.present_for?(training)).to be false
@@ -55,7 +56,8 @@ RSpec.describe Absence do
       describe 'on update' do
         it 'updates the training presences' do
           expect(user.present_for?(training)).to be true
-          absence = create(:absence, user:, start_at: training.start_datetime - 10.days, end_at: training.start_datetime - 2.days)
+          absence = create(:absence, user:, start_at: training.start_datetime - 10.days,
+                                     end_at: training.start_datetime - 2.days)
           expect(user.present_for?(training)).to be true
           absence.update(end_at: training.start_datetime + 2.days)
           expect(user.present_for?(training)).to be false
@@ -82,7 +84,8 @@ RSpec.describe Absence do
       describe 'on update' do
         it 'updates the match availabilities' do
           expect(user.is_available_for?(match)).to be_nil
-          absence = create(:absence, user:, start_at: match.start_datetime - 10.days, end_at: match.start_datetime - 2.days)
+          absence = create(:absence, user:, start_at: match.start_datetime - 10.days,
+                                     end_at: match.start_datetime - 2.days)
           expect(user.reload.is_available_for?(match)).to be_nil
           absence.update(end_at: match.start_datetime + 2.days)
           expect(user.reload.is_available_for?(match)).to be false
@@ -107,7 +110,8 @@ RSpec.describe Absence do
       describe 'on update' do
         it 'updates the match availabilities' do
           expect(user.is_available_for?(match)).to be true
-          absence = create(:absence, user:, start_at: match.start_datetime - 10.days, end_at: match.start_datetime - 2.days)
+          absence = create(:absence, user:, start_at: match.start_datetime - 10.days,
+                                     end_at: match.start_datetime - 2.days)
           expect(user.reload.is_available_for?(match)).to be true
           absence.update(end_at: match.start_datetime + 2.days)
           expect(user.reload.is_available_for?(match)).to be false

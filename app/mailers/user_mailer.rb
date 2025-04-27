@@ -33,7 +33,8 @@ class UserMailer < ApplicationMailer
     @user = user
     @inviter = inviter
     @section = section
-    mail to: user.email, subject: "#{inviter.full_name} t'a ajouté dans la section #{section.name} de #{section.club.name}"
+    mail to: user.email,
+         subject: "#{inviter.full_name} t'a ajouté dans la section #{section.name} de #{section.club.name}"
   end
 
   # TODO: factorize method missing with ApplicationRecord

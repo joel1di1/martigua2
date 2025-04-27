@@ -22,7 +22,9 @@ describe 'Selections' do
   end
 
   describe 'DELETE destroy' do
-    subject(:do_delete) { delete section_selection_path(section_id: section.to_param, match_id: match.id, id: selection.id) }
+    subject(:do_delete) do
+      delete section_selection_path(section_id: section.to_param, match_id: match.id, id: selection.id)
+    end
 
     let(:match) { create(:match, day:) }
     let(:selection) { create(:selection, match:) }

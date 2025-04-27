@@ -54,7 +54,8 @@ describe 'Active Admin', :devise do
       expect(page.all('#page-title', text: model_plural.titleize).size).to eq 1
 
       click_on "Création #{model_name.downcase}"
-      expect(page.all('h1.main-content__page-title', text: "Création #{model_plural.titleize}").size).to eq(1), model_class
+      expect(page.all('h1.main-content__page-title', text: "Création #{model_plural.titleize}").size).to eq(1),
+                                                                                                         model_class
     end
   end
 end

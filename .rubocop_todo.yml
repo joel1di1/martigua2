@@ -56,11 +56,6 @@ Naming/PredicateName:
     - "app/models/section.rb"
     - "app/models/user.rb"
 
-# Offense count: 1
-RSpec/Be:
-  Exclude:
-    - "spec/models/training_spec.rb"
-
 # Offense count: 15
 # Configuration parameters: Prefixes, AllowedPatterns.
 # Prefixes: when, with, without

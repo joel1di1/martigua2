@@ -719,6 +719,38 @@ ALTER SEQUENCE public.group_memberships_id_seq OWNED BY public.group_memberships
 
 
 --
+-- Name: group_trainings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.group_trainings (
+    id bigint NOT NULL,
+    group_id bigint NOT NULL,
+    training_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: group_trainings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.group_trainings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: group_trainings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.group_trainings_id_seq OWNED BY public.group_trainings.id;
+
+
+--
 -- Name: groups; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2581,6 +2613,13 @@ ALTER TABLE ONLY public.group_memberships ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: group_trainings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.group_trainings ALTER COLUMN id SET DEFAULT nextval('public.group_trainings_id_seq'::regclass);
+
+
+--
 -- Name: groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3075,6 +3114,14 @@ ALTER TABLE ONLY public.enrolled_team_championships
 
 ALTER TABLE ONLY public.group_memberships
     ADD CONSTRAINT group_memberships_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: group_trainings group_trainings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.group_trainings
+    ADD CONSTRAINT group_trainings_pkey PRIMARY KEY (id);
 
 
 --
@@ -3693,6 +3740,27 @@ CREATE INDEX index_group_memberships_on_user_id ON public.group_memberships USIN
 --
 
 CREATE UNIQUE INDEX index_group_memberships_on_user_id_and_group_id ON public.group_memberships USING btree (user_id, group_id);
+
+
+--
+-- Name: index_group_trainings_on_group_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_group_trainings_on_group_id ON public.group_trainings USING btree (group_id);
+
+
+--
+-- Name: index_group_trainings_on_group_id_and_training_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_group_trainings_on_group_id_and_training_id ON public.group_trainings USING btree (group_id, training_id);
+
+
+--
+-- Name: index_group_trainings_on_training_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_group_trainings_on_training_id ON public.group_trainings USING btree (training_id);
 
 
 --
@@ -4606,6 +4674,22 @@ ALTER TABLE ONLY public.math_trainer_answers_sessions
 
 
 --
+-- Name: group_trainings fk_rails_cbe56c6a68; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.group_trainings
+    ADD CONSTRAINT fk_rails_cbe56c6a68 FOREIGN KEY (training_id) REFERENCES public.trainings(id);
+
+
+--
+-- Name: group_trainings fk_rails_cca466091e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.group_trainings
+    ADD CONSTRAINT fk_rails_cca466091e FOREIGN KEY (group_id) REFERENCES public.groups(id);
+
+
+--
 -- Name: user_championship_stats fk_rails_cd04ba13f5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4676,6 +4760,7 @@ ALTER TABLE ONLY public.channels
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250427000001'),
 ('20250427000000'),
 ('20241001230918'),
 ('20240919161108'),

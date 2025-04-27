@@ -11,7 +11,8 @@ RSpec.describe Group do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to have_many :group_memberships }
   it { is_expected.to have_many(:users).through(:group_memberships) }
-  it { is_expected.to have_and_belong_to_many :trainings }
+  it { is_expected.to have_many(:group_trainings) }
+  it { is_expected.to have_many(:trainings).through(:group_trainings) }
 
   describe 'add_user!' do
     context 'with new user' do

@@ -6,7 +6,8 @@ class Group < ApplicationRecord
 
   has_many :group_memberships, dependent: :destroy
   has_many :users, through: :group_memberships
-  has_and_belongs_to_many :trainings, inverse_of: :groups
+  has_many :group_trainings, dependent: :destroy
+  has_many :trainings, through: :group_trainings
 
   validates :name, presence: true
 

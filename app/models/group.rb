@@ -4,7 +4,8 @@ class Group < ApplicationRecord
   belongs_to :section
   belongs_to :season
 
-  has_and_belongs_to_many :users, inverse_of: :groups
+  has_many :group_memberships, dependent: :destroy
+  has_many :users, through: :group_memberships
   has_and_belongs_to_many :trainings, inverse_of: :groups
 
   validates :name, presence: true

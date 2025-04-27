@@ -4,7 +4,8 @@ class Training < ApplicationRecord
   belongs_to :location, optional: true
 
   has_and_belongs_to_many :sections, inverse_of: :trainings
-  has_and_belongs_to_many :groups, inverse_of: :trainings
+  has_many :group_trainings, dependent: :destroy
+  has_many :groups, through: :group_trainings
 
   has_many :invitations, class_name: 'TrainingInvitation', dependent: :destroy
   has_many :training_presences, inverse_of: :training, dependent: :destroy

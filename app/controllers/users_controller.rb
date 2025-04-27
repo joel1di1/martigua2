@@ -7,7 +7,7 @@ class UsersController < ApplicationController
 
   def index
     if current_section
-      @users = current_section.members.with_attached_avatar.includes(:participations, :groups_users, :groups)
+      @users = current_section.members.with_attached_avatar.includes(:participations, :groups)
       @last_trainings, @presences_by_user_and_training = prepare_training_presences(current_section, @users)
     else
       @users = User.all

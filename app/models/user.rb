@@ -23,7 +23,8 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_many :user_channel_messages, inverse_of: :user, dependent: :destroy
   has_many :absences, inverse_of: :user, dependent: :destroy
 
-  has_and_belongs_to_many :groups, inverse_of: :users
+  has_many :group_memberships, dependent: :destroy
+  has_many :groups, through: :group_memberships
 
   validates :authentication_token, presence: true
 

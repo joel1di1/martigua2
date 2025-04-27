@@ -148,16 +148,6 @@ Rails/BulkChangeTable:
     - "db/migrate/20140711215459_add_attributes_to_user.rb"
     - "db/migrate/20140827075827_add_system_and_role_to_groups.rb"
 
-# Offense count: 6
-# Configuration parameters: Include.
-# Include: app/models/**/*.rb
-Rails/HasAndBelongsToMany:
-  Exclude:
-    - "app/models/group.rb"
-    - "app/models/section.rb"
-    - "app/models/training.rb"
-    - "app/models/user.rb"
-
 # Offense count: 32
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, AllowedPatterns.

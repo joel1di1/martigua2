@@ -15,7 +15,8 @@ describe User do
   it { is_expected.to have_many :training_presences }
   it { is_expected.to have_many :duty_tasks }
   it { is_expected.to have_many :burns }
-  it { is_expected.to have_and_belong_to_many :groups }
+  it { is_expected.to have_many :group_memberships }
+  it { is_expected.to have_many :groups }
 
   describe 'authentication token should be generated' do
     subject { create(:user, authentication_token: nil) }

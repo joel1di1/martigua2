@@ -38,6 +38,31 @@ class DutyTasksController < ApplicationController
     @players_with_tasks = section_players_with_tasks
   end
 
+  def compute_leaderboard
+    @players_with_tasks = section_players_with_tasks
+
+    # compute median, average, and total weight
+    @total_weight = @players_with_tasks.sum { |_, _, weight| weight }
+    @average_weight = @total_weight / @players_with_tasks.size.to_f
+    @median_weight = if @players_with_tasks.size.odd?
+                       @players_with_tasks[@players_with_tasks.size / 2][2]
+                     else
+                       mid_index = @players_with_tasks.size / 2
+                       (@players_with_tasks[mid_index - 1][2] + @players_with_tasks[mid_index][2]) / 2.0
+                     end
+    @players_with_tasks = @players_with_tasks.map do |player, tasks, weight|
+      {
+        player: player,
+        tasks: tasks,
+        weight: weight,
+        above_average: weight > @average_weight,
+        above_median: weight > @median_weight
+      }
+    end
+
+    render :leaderboard
+  end
+
   private
 
   def duty_task_params

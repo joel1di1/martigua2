@@ -19,7 +19,7 @@
 }
 
 .group:focus .group-focus\:flex {
-    display: flex;
+  display: flex;
 }
 
 .max-w-xs {
@@ -32,7 +32,7 @@
 
 .message.unread {
   background-color: rgb(233, 234, 236);
-/*  background-color: red;*/
+  /*  background-color: red;*/
 }
 
 .messages a:hover {
@@ -44,6 +44,6 @@
   min-height: 2em;
 }
 
-trix-toolbar .trix-button-group.trix-button-group--history-tools{
+trix-toolbar .trix-button-group.trix-button-group--history-tools {
   display: none;
 }

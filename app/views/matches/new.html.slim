@@ -23,14 +23,14 @@
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
     = label_tag :section_team_id, 'Quelle équipe ?', class: 'block my-5 text-lg'
     = select_tag :section_team_id, options_for_select(current_section.teams.pluck(:name, :id)), class: 'block my-5 text-lg'
-    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
 
 - elsif params[:match].blank? || params[:match][:championship_id].blank?
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
     = hidden_field_tag :section_team_id, params[:section_team_id]
     = label_tag 'match[championship_id]', 'Quelle compétition ?', class: 'block my-5 text-lg'
     = select_tag 'match[championship_id]', options_for_select(@section_team.championships.of_current_season.pluck(:name, :id)), class: 'block my-5 text-lg'
-    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
 
   div data-controller="dropdown"
     a href="#new-championship-collapse" data-action="dropdown#toggle:stop" aria-expanded="false" class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
@@ -44,7 +44,7 @@
     = hidden_field_tag 'match[championship_id]', params[:match][:championship_id]
     = label_tag 'match[day_id]', 'Quel jour ?', class: 'block my-5 text-lg'
     = select_tag 'match[day_id]', options_for_select(@championship.calendar.days.pluck(:name, :id)), class: 'block my-5 text-lg'
-    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
 
   div data-controller='dropdown'
     a href="#new-day-collapse" data-toggle="collapse" data-action='dropdown#toggle' class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
@@ -60,7 +60,7 @@
           = f.input :name, input_html: { 'data-default-name' => @new_day.name }
           = f.hidden_field :calendar_id
         .form-actions
-          = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+          = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
 
 - elsif params[:match].blank? || params[:match][:location_id].blank?
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
@@ -69,7 +69,7 @@
     = hidden_field_tag 'match[day_id]', params[:match][:day_id]
     = label_tag 'match[location_id]', 'Quel lieu ?', class: 'block my-5 text-lg'
     = select_tag 'match[location_id]', options_for_select(Location.all.pluck(:name, :id)), class: 'block my-5 text-lg'
-    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
 
   div data-controller='dropdown'
     a href="#new-location-collapse" data-toggle="collapse" data-action='dropdown#toggle:stop' class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
@@ -84,7 +84,7 @@
           = f.input :name
           = f.input :address
         .form-actions
-          = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+          = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
 
 - elsif params[:adversary_team_id].blank?
   = simple_form_for new_section_match_path(current_section), method: :get do |f|
@@ -93,8 +93,8 @@
     = hidden_field_tag 'match[day_id]', params[:match][:day_id]
     = hidden_field_tag 'match[location_id]', params[:match][:location_id]
     = label_tag :adversary_team_id, 'Equipe adverse ?', class: 'block my-5 text-lg'
-    = select_tag :adversary_team_id, options_for_select([[nil,nil]].concat(Team.all.order('name').pluck(:name, :id))), class: 'block w-full rounded-sm cursor-pointer focus:outline-none', data: { controller: 'ts--select' }
-    = f.submit 'Next', class: 'mt-2 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+    = select_tag :adversary_team_id, options_for_select([[nil,nil]].concat(Team.all.order('name').pluck(:name, :id))), class: 'block w-full rounded-xs cursor-pointer focus:outline-hidden', data: { controller: 'ts--select' }
+    = f.submit 'Next', class: 'mt-2 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
 
   div data-controller='dropdown'
     a href="#new-location-collapse" data-toggle="collapse" data-action='dropdown#toggle:stop' class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
@@ -109,5 +109,5 @@
           = hidden_field_tag :_redirect_url, request.original_url
           = f.input :name
         .form-actions
-          = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+          = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
 

@@ -18,7 +18,7 @@ div class="sm:flex sm:items-center mb-5"
         'Pour envoyer les mails, c'est ici...
 
       - all_mails = current_section.members.map(&:email).join(',')
-      .hidden.absolute.right-0.z-10.mt-2.p-3.origin-top-right.rounded-md.bg-white.shadow-2xl.ring-1.ring-black.ring-opacity-5.focus:outline-none data-dropdown-target="menu"
+      .hidden.absolute.right-0.z-10.mt-2.p-3.origin-top-right.rounded-md.bg-white.shadow-2xl.ring-1.ring-black.ring-opacity-5.focus:outline-hidden data-dropdown-target="menu"
 
         div
           '1) Copie le texte qui s'affiche en dessous
@@ -51,7 +51,7 @@ div class="sm:flex sm:items-center mb-5"
         p
           '2) Click sur le boutton "Lancer un mail" (y'a tous les emails de tout le monde et le sujet déjà renseigné)
           br
-          a class='inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2' target='_blank' href="mailto:#{all_mails}?subject=Compositions de la journée du #{@day.name}"
+          a class='inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2' target='_blank' href="mailto:#{all_mails}?subject=Compositions de la journée du #{@day.name}"
             'Lancer un mail
 
 - if !current_user.coach_of?(current_section) && @day.selection_hidden?
@@ -64,21 +64,21 @@ div class="sm:flex sm:items-center mb-5"
   .grid class="grid-cols-1 md:grid-cols-#{grid_col_number} gap-4" data-controller="drag-item" data-action="dragstart->drag-item#dragstart dragover->drag-item#dragover dragenter->drag-item#dragenter drop->drag-item#drop dragend->drag-item#dragend"
     div
       .grid.grid-cols-1.gap-4
-        .overflow-hidden.shadow.shadow-green-200.ring-1.ring-black.ring-opacity-5.rounded-sm data-controller="dropdown" data-dropdown-open-value=(params['showAvailables'] || "true") data-dropdown-url-param-value="showAvailables"
+        .overflow-hidden.shadow-sm.shadow-green-200.ring-1.ring-black.ring-opacity-5.rounded-xs data-controller="dropdown" data-dropdown-open-value=(params['showAvailables'] || "true") data-dropdown-url-param-value="showAvailables"
           .bg-green-200.p-1 aria-expanded="true"
             button.w-full data-action="dropdown#toggle"
               = "#{@available_players.count} dispos"
           ul#available_players.divide-y.divide-green-200 data-dropdown-target="menu" class=(params['showAvailables']=='false' && 'hidden')
             - @available_players.each do |player|
               = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
-        .overflow-hidden.shadow.shadow-yellow-200.ring-1.ring-black.ring-opacity-5.rounded-sm data-controller="dropdown" data-dropdown-open-value=(params['showNoAnswer'] || "false") data-dropdown-url-param-value="showNoAnswer"
+        .overflow-hidden.shadow-sm.shadow-yellow-200.ring-1.ring-black.ring-opacity-5.rounded-xs data-controller="dropdown" data-dropdown-open-value=(params['showNoAnswer'] || "false") data-dropdown-url-param-value="showNoAnswer"
           .bg-yellow-200.p-1 aria-expanded="true"
             button.w-full data-action="dropdown#toggle"
               = "#{@no_response_players.count} sans réponses"
           ul#no_response_players.divide-y.divide-yellow-200 data-dropdown-target="menu" class=(params['showNoAnswer']!='true' && 'hidden')
             - @no_response_players.each do |player|
               = render partial: 'player', object: player, locals: {teams_with_matches: @teams_with_matches, selection: nil, display_teams: true}
-        .overflow-hidden.shadow.shadow-red-200.ring-1.ring-black.ring-opacity-5.rounded-sm data-controller="dropdown" data-dropdown-open-value=(params['showNotAvailable'] || "false") data-dropdown-url-param-value="showNotAvailable"
+        .overflow-hidden.shadow-sm.shadow-red-200.ring-1.ring-black.ring-opacity-5.rounded-xs data-controller="dropdown" data-dropdown-open-value=(params['showNotAvailable'] || "false") data-dropdown-url-param-value="showNotAvailable"
           .bg-red-200.p-1 aria-expanded="true"
             button.w-full data-action="dropdown#toggle"
               = "#{@non_available_players.count} non dispos"
@@ -89,7 +89,7 @@ div class="sm:flex sm:items-center mb-5"
     - @teams_with_matches.each do |team, match|
       - selections = match.selections(team).includes(:match).includes(:team).includes(user: [:match_availabilities, :user_championship_stats]).sort{|a, b| a.user.short_name <=> b.user.short_name}
       div
-        .overflow-hidden.shadow.shadow-sky-600.ring-1.ring-black.ring-opacity-5.rounded-sm data-match_id=match.id data-team_id=team.id
+        .overflow-hidden.shadow-sm.shadow-sky-600.ring-1.ring-black.ring-opacity-5.rounded-xs data-match_id=match.id data-team_id=team.id
           .bg-sky-600.p-1.text-white.text-center
             strong= team.name
             = " (#{selections.count})"

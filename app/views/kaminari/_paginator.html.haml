@@ -1,6 +1,6 @@
 = paginator.render do
   .border-t.border-gray-200.bg-white.px-4.py-3.text-center
-    %nav.isolate.inline-flex.-space-x-px.rounded-md.shadow-sm{'aria-label': "Pagination"}
+    %nav.isolate.inline-flex.-space-x-px.rounded-md.shadow-xs{'aria-label': "Pagination"}
       = first_page_tag unless current_page.first?
       = prev_page_tag unless current_page.first?
       - each_page do |page|

@@ -12,5 +12,5 @@ div class="flex flex-col space-y-8"
     = form_tag repeat_section_training_path(current_section, @training) do
       = label_tag 'Répéter j\'usqu\'au'
       div class="inline-flex space-x-1 ml-2"
-        = date_field_tag :repeat_until, nil, required: :required, class: 'flex w-auto w-auto shadow appearance-none border border-gray-300 rounded w-full bg-white focus:outline-none focus:border-blue-500 text-gray-900 leading-4 transition-colors duration-200 ease-in-out datetime required'
+        = date_field_tag :repeat_until, nil, required: :required, class: 'flex w-auto w-auto shadow-sm appearance-none border border-gray-300 rounded-sm w-full bg-white focus:outline-hidden focus:border-blue-500 text-gray-900 leading-4 transition-colors duration-200 ease-in-out datetime required'
         = submit_tag 'Répéter', class: 'btn btn-primary'

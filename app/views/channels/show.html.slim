@@ -19,7 +19,7 @@ div class="flex flex-col h-screen overflow-hidden"
         div class="fixed bottom-0 pt-2 bg-white w-full"
           div class="px-4 pb-4 w-fit"
             = form_with(model: [current_section, @channel, @message], data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |form|
-              div class="flex items-center border-2 border-gray-300 rounded-sm p-1 min-w-fit"
+              div class="flex items-center border-2 border-gray-300 rounded-xs p-1 min-w-fit"
                 div
                   = form.rich_text_area :content
                 button class="flex items-center justify-center h-14 w-14 rounded-full hover:bg-gray-200 bg-green-300 m-2"

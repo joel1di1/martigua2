@@ -3,7 +3,7 @@
 # Use this setup block to configure all options available in SimpleForm.
 SimpleForm.setup do |config|
   # Default class for buttons
-  config.button_class = 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;'
+  config.button_class = 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2;'
 
   # Define the default class of the input wrapper of the boolean input.
   config.boolean_label_class = ''
@@ -22,7 +22,7 @@ SimpleForm.setup do |config|
   config.include_default_input_wrapper_class = false
 
   # CSS class to add for error notification helper.
-  config.error_notification_class = 'text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-400'
+  config.error_notification_class = 'text-white px-6 py-4 border-0 rounded-sm relative mb-4 bg-red-400'
 
   # Method used to tidy up errors. Specify any Rails Array method.
   # :first lists the first message for each field.
@@ -47,7 +47,7 @@ SimpleForm.setup do |config|
     b.optional :readonly
     b.use :label, class: 'block', error_class: 'text-red-500'
     b.use :input,
-          class: 'shadow appearance-none border border-gray-300 rounded rounded-md w-full py-2 px-3 bg-white focus:outline-none focus:ring-0 focus:border-blue-500 text-gray-900 leading-6 transition-colors duration-200 ease-in-out', error_class: 'border-red-500', valid_class: 'border-green-400'
+          class: 'shadow appearance-none border border-gray-300 rounded-sm rounded-md w-full py-2 px-3 bg-white focus:outline-hidden focus:ring-0 focus:border-blue-500 text-gray-900 leading-6 transition-colors duration-200 ease-in-out', error_class: 'border-red-500', valid_class: 'border-green-400'
     b.use :full_error, wrap_with: { tag: 'p', class: 'mt-2 text-red-500 text-xs italic' }
     b.use :hint, wrap_with: { tag: 'p', class: 'mt-2 text-grey-700 text-xs italic' }
   end
@@ -58,7 +58,7 @@ SimpleForm.setup do |config|
     b.optional :readonly
     b.wrapper tag: 'div', class: 'flex items-center h-5' do |ba|
       ba.use :input,
-             class: 'focus:ring-2 focus:ring-indigo-500:focus ring-offset-2 h-4 w-4 text-indigo-600 border-gray-300 rounded'
+             class: 'focus:ring-3 focus:ring-indigo-500:focus ring-offset-2 h-4 w-4 text-indigo-600 border-gray-300 rounded-sm'
     end
     b.wrapper tag: 'div', class: 'ml-3 text-sm' do |bb|
       bb.use :label, class: 'block', error_class: 'text-red-500'
@@ -76,7 +76,7 @@ SimpleForm.setup do |config|
                            error_class: 'text-red-500' do |ba|
       ba.use :label_text
     end
-    b.use :input, class: 'focus:ring-2 focus:ring-indigo-500 ring-offset-2 h-4 w-4 text-indigo-600 border-gray-300 rounded', error_class: 'text-red-500',
+    b.use :input, class: 'focus:ring-3 focus:ring-indigo-500 ring-offset-2 h-4 w-4 text-indigo-600 border-gray-300 rounded-sm', error_class: 'text-red-500',
                   valid_class: 'text-green-400'
     b.use :full_error, wrap_with: { tag: 'p', class: 'block mt-2 text-red-500 text-xs italic' }
     b.use :hint, wrap_with: { tag: 'p', class: 'mt-2 text-grey-700 text-xs italic' }
@@ -90,7 +90,7 @@ SimpleForm.setup do |config|
     b.optional :minlength
     b.optional :readonly
     b.use :label, class: 'text-sm font-medium text-gray-600 block', error_class: 'text-red-500'
-    b.use :input, class: 'w-full text-gray-500 px-3 py-2 border rounded', error_class: 'text-red-500 border-red-500',
+    b.use :input, class: 'w-full text-gray-500 px-3 py-2 border rounded-sm', error_class: 'text-red-500 border-red-500',
                   valid_class: 'text-green-400'
     b.use :full_error, wrap_with: { tag: 'p', class: 'mt-2 text-red-500 text-xs italic' }
     b.use :hint, wrap_with: { tag: 'p', class: 'mt-2 text-grey-700 text-xs italic' }
@@ -107,7 +107,7 @@ SimpleForm.setup do |config|
     b.wrapper tag: 'div', class: 'inline-flex space-x-1' do |ba|
       # ba.use :input, class: 'flex w-auto w-auto text-gray-500 text-sm border-gray-300 rounded p-2', error_class: 'text-red-500', valid_class: 'text-green-400'
       ba.use :input,
-             class: 'flex w-auto w-auto shadow appearance-none border border-gray-300 rounded w-full bg-white focus:outline-none focus:border-blue-500 text-gray-900 leading-4 transition-colors duration-200 ease-in-out'
+             class: 'flex w-auto w-auto shadow appearance-none border border-gray-300 rounded-sm w-full bg-white focus:outline-hidden focus:border-blue-500 text-gray-900 leading-4 transition-colors duration-200 ease-in-out'
     end
     b.use :full_error, wrap_with: { tag: 'p', class: 'mt-2 text-red-500 text-xs italic' }
     b.use :hint, wrap_with: { tag: 'p', class: 'mt-2 text-grey-700 text-xs italic' }

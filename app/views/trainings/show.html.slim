@@ -27,7 +27,7 @@ p.flex
   div
     .flex.flex-col.border.border-green-200
       - training_presents = @training.presents
-      .text-md.text-gray-900.shadow.shadow-green-200.ring-1.ring-black.ring-opacity-5.rounded-sm.bg-green-200.p-1= "#{training_presents.size} présents"
+      .text-md.text-gray-900.shadow-sm.shadow-green-200.ring-1.ring-black.ring-opacity-5.rounded-xs.bg-green-200.p-1= "#{training_presents.size} présents"
       ul.flex.flex-col.text-sm.divide-y.divide-green-200
         - training_presents.sort_by(&:full_name).each do |user|
           li.p-1= user.full_name
@@ -35,7 +35,7 @@ p.flex
   div
     .flex.flex-col.border.border-yellow-200
       - training_presence_not_set = @training.presence_not_set
-      .text-md.text-gray-900.shadow.shadow-yellow-200.ring-1.ring-black.ring-opacity-5.rounded-sm.bg-yellow-200.p-1= "#{training_presence_not_set.size} n'ont pas répondu"
+      .text-md.text-gray-900.shadow-sm.shadow-yellow-200.ring-1.ring-black.ring-opacity-5.rounded-xs.bg-yellow-200.p-1= "#{training_presence_not_set.size} n'ont pas répondu"
       ul.flex.flex-col.text-sm.divide-y.divide-yellow-200
         - training_presence_not_set.sort_by(&:full_name).each do |user|
           li.p-1= user.full_name
@@ -43,7 +43,7 @@ p.flex
   div
     .flex.flex-col.border.border-red-200
       - training_not_presents = @training.not_presents
-      .text-md.text-gray-900.shadow.shadow-red-200.ring-1.ring-black.ring-opacity-5.rounded-sm.bg-red-200.p-1= "#{training_not_presents.size} absents"
+      .text-md.text-gray-900.shadow-sm.shadow-red-200.ring-1.ring-black.ring-opacity-5.rounded-xs.bg-red-200.p-1= "#{training_not_presents.size} absents"
       ul.flex.flex-col.text-sm.divide-y.divide-red-200
         - training_not_presents.sort_by(&:full_name).each do |user|
           li.p-1= user.full_name

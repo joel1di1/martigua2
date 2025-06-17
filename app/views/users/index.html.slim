@@ -4,9 +4,9 @@
 
   - if current_section && (current_user.coach_of?(current_section) || current_user.admin_of?(current_section.club))
     .mt-4.sm:mt-0.sm:ml-16.sm:flex-none
-      = link_to 'Renouveller de l\'année précédente', section_participations_renewal_index_path(current_section), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-300 px-4 py-2 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+      = link_to 'Renouveller de l\'année précédente', section_participations_renewal_index_path(current_section), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-300 px-4 py-2 text-xs font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2"
 
     .mt-4.sm:mt-0.sm:ml-16.sm:flex-none
-      = link_to 'Ajouter un joueur', new_section_section_user_invitation_path(current_section), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+      = link_to 'Ajouter un joueur', new_section_section_user_invitation_path(current_section), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2"
 
 = render partial: 'users/users', object: @users

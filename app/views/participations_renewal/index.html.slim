@@ -2,7 +2,7 @@ h1 Renouvellement des membres
 
 = form_tag do
   div class="text-center"
-    button.btn.btn-primary type="submit"
+    button class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2" type="submit"
       | Renouveller tous les membres sélectionnés
   div class="table-responsive"
     table.table.table-striped.table-bordered.table-hover
@@ -25,5 +25,5 @@ h1 Renouvellement des membres
                 label
                   input type="checkbox" name="coachs_ids[]" value=previous_member.id checked=previous_member.coach_of?(current_section, season: @previous_season)
   div class="text-center"
-    button#submit_btn.btn.btn-primary type="submit"
+    button#submit_btn class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2" type="submit"
       | Renouveller tous les membres sélectionnés

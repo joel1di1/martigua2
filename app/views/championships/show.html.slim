@@ -22,7 +22,7 @@
   = simple_form_for [current_section, @championship, @championship.burns.new] do |f|
     .flex.flex-row.items-center
       = f.input :user, collection: (current_section.players - @championship.burned_players), label: 'Brûler un nouveau joueur', label_html: {class: 'whitespace-nowrap'}, wrapper_html: { class: 'flex flex-row items-center'}, input_html: { data: { controller: 'ts--select'}, class: 'px-0 py-0 w-72' }
-      = f.submit 'Brûler !', class: 'btn btn-primary h-10'
+      = f.submit 'Brûler !', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2 h-10'
 
 
 - if @championship.teams.empty?
@@ -32,7 +32,7 @@
     p
       '1ère chose à faire : modifier les équipes et y inscrire une équipe du club.
     p
-      = link_to 'Modifier les équipes de cette compétition', section_championship_enrolled_team_championships_path(current_section, @championship), class: 'btn btn-primary'
+      = link_to 'Modifier les équipes de cette compétition', section_championship_enrolled_team_championships_path(current_section, @championship), class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
 
 .flex.flex-col
   .flex.flex-col

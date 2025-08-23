@@ -26,9 +26,9 @@
 
             td
               - if @associations[player].present?
-                = button_tag 'Dissocier', type: 'button', class: 'btn btn-danger', data: { action: 'ffhb-player-dissociation#dissociate', 'ffhb-player-dissociation-user-id-param' => player.id, 'ffhb-player-dissociation-ffhb-player-id-param' => @associations[player].id }
+                = button_tag 'Dissocier', type: 'button', class: 'inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-red-700 focus:outline-hidden focus:ring-3 focus:ring-red-500 focus:ring-offset-2', data: { action: 'ffhb-player-dissociation#dissociate', 'ffhb-player-dissociation-user-id-param' => player.id, 'ffhb-player-dissociation-ffhb-player-id-param' => @associations[player].id }
     .flex.flex-col.items-center
-      = f.submit 'Valider les associations', class: 'btn btn-primary'
+      = f.submit 'Valider les associations', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
 
   = form_for @section, url: section_dissociate_player_path(@section), method: :delete, data: { 'ffhb-player-dissociation-target' => 'form' } do |f|
     = hidden_field_tag :player_id, nil, data: { 'ffhb-player-dissociation-target' => 'ffhbPlayerId' }

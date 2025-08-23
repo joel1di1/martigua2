@@ -17,7 +17,7 @@ class MoveAllPreviousDaysToDefaultCalendar < ActiveRecord::Migration[5.1]
 
   def up
     Season.find_each do |season|
-      next if season.calendars.count.positive?
+      next if season.calendars.any?
 
       calendar = Calendar.create! season:, name: DEFAULT_NAME
       season.championships.update_all(calendar_id: calendar.id)

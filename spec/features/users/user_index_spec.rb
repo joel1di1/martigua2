@@ -6,6 +6,7 @@
 #   So I can see who has registered
 describe 'User index page', :devise do
   include Warden::Test::Helpers
+
   Warden.test_mode!
 
   after do

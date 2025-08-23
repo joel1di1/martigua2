@@ -12,7 +12,7 @@ class UsersController < ApplicationController
     else
       @users = User.all
     end
-    @users = @users.order('first_name, last_name')
+    @users = @users.order(:first_name, :last_name)
   end
 
   def show

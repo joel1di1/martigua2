@@ -4,7 +4,7 @@ class GroupsController < ApplicationController
   before_action :find_group
 
   def index
-    @groups = current_section.groups.where(season: Season.current).order('system ASC, name ASC')
+    @groups = current_section.groups.where(season: Season.current).order(:system, :name)
   end
 
   def show

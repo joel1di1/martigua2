@@ -33,7 +33,7 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   scope :active_this_season, -> { includes(:participations).where(participations: { season: Season.current }) }
 
   def has_only_one_section?
-    sections.count == 1
+    sections.one?
   end
 
   def member_of?(section, season: nil)
@@ -152,7 +152,7 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def last_time_duty(task_key)
-    duty_tasks.where(name: task_key).order('name DESC').first&.realised_at
+    duty_tasks.where(name: task_key).order(name: :desc).first&.realised_at
   end
 
   def was_present?(training, presences_by_user_and_training = nil)
@@ -220,6 +220,6 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   def is_member_of?(section, role, season: nil)
     season ||= Season.current
     @membership_cache ||= {}
-    @membership_cache[{ section:, role:, season: }] ||= participations.where(section:, role:, season:).count.positive?
+    @membership_cache[{ section:, role:, season: }] ||= participations.where(section:, role:, season:).any?
   end
 end

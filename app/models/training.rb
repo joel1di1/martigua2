@@ -24,7 +24,7 @@ class Training < ApplicationRecord
                              }
   scope :with_start_on, ->(days) { where('DATE(start_datetime) in (?)', days) }
 
-  default_scope { order 'start_datetime, location_id' }
+  default_scope { order :start_datetime, :location_id }
 
   paginates_per 10
 
@@ -61,7 +61,7 @@ class Training < ApplicationRecord
   end
 
   def group_names
-    groups.order('name').map(&:name).join(', ')
+    groups.order(:name).map(&:name).join(', ')
   end
 
   def users
@@ -111,7 +111,7 @@ class Training < ApplicationRecord
         COALESCE(SUM(duty_tasks.weight), -1) AS sum_duty_tasks_weight
       SQL
       .group('users.id')
-      .order('sum_duty_tasks_weight, last_duty_date ASC, authentication_token ASC')
+      .order(:sum_duty_tasks_weight, :last_duty_date, :authentication_token)
       .limit(limit)
   end
 

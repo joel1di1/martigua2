@@ -114,7 +114,7 @@ class Section < ApplicationRecord
          .where(participations: { season_id: Season.current.id })
          .select("users.id, users.*, coalesce(max(duty_tasks.realised_at), '1900-01-01') as last_realised_at")
          .group('users.id')
-         .order('last_realised_at ASC, authentication_token')
+         .order(:last_realised_at, :authentication_token)
          .limit(3)
   end
 

@@ -6,6 +6,7 @@
 #   So I can see my personal account data
 describe 'User profile page', :devise do
   include Warden::Test::Helpers
+
   Warden.test_mode!
 
   after do

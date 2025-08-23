@@ -6,6 +6,7 @@
 #   So I can change my email address
 describe 'User edit', :devise do
   include Warden::Test::Helpers
+
   Warden.test_mode!
 
   after do

@@ -9,7 +9,7 @@ class Season < ApplicationRecord
   has_many :calendars, inverse_of: :season, dependent: :destroy
 
   def self._current
-    current = Season.order('end_date DESC').limit(1).first
+    current = Season.order(end_date: :desc).limit(1).first
     current ||= create_default_season
     current = create_next_season(current) while current.end_date < Time.zone.today
     current
@@ -26,7 +26,7 @@ class Season < ApplicationRecord
   end
 
   def previous
-    Season.find(id - 1)
+    Season.where(id: ...id).order(id: :desc).first
   end
 
   def self.create_default_season

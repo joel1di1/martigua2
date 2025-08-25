@@ -62,14 +62,14 @@ class Section < ApplicationRecord
 
   def next_trainings(start_date: nil, end_date: nil)
     start_date ||= 1.day.ago
-    end_date ||= (start_date + 2.days).end_of_week + 1.week
+    end_date ||= (start_date + 2.days).end_of_week + 3.weeks
     trainings.where('start_datetime > ? AND start_datetime < ?', start_date, end_date)
   end
 
   def next_matches(start_date: nil, end_date: nil)
     now = start_date || DateTime.now.at_beginning_of_week
 
-    end_date ||= now.at_end_of_week + 2.weeks + 2.days
+    end_date ||= now.at_end_of_week + 3.weeks + 2.days
 
     Match.join_day.where('COALESCE(start_datetime, days.period_start_date) >= ? AND COALESCE(start_datetime, days.period_start_date) <= ?',
                          now, end_date).date_ordered.where('local_team_id IN (?) OR visitor_team_id IN (?)', teams.map(&:id), teams.map(&:id))

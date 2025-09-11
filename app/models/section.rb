@@ -62,7 +62,7 @@ class Section < ApplicationRecord
 
   def next_trainings(start_date: nil, end_date: nil)
     start_date ||= 1.day.ago
-    end_date ||= (start_date + 2.days).end_of_week + 3.weeks
+    end_date ||= start_date + 2.weeks
     trainings.where('start_datetime > ? AND start_datetime < ?', start_date, end_date)
   end
 

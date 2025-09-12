@@ -84,5 +84,6 @@ jobs:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/martigua2_test
 
-      - name: Publish coverage data to Code Climate
-        uses: paambaati/codeclimate-action@v9.0.0
+      # does not work on 2025-09-12
+      # - name: Publish coverage data to Code Climate
+      #   uses: paambaati/codeclimate-action@v9.0.0

@@ -193,9 +193,7 @@ RSpec.describe Match do
           extra: hash_including(
             match_id: match.id,
             match_ffhb_key: match.ffhb_key,
-            championship_id: match.championship_id,
-            local_team_id: match.local_team_id,
-            visitor_team_id: match.visitor_team_id
+            championship_id: match.championship_id
           )
         )
       )

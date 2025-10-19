@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class Match < ApplicationRecord
   belongs_to :championship
   belongs_to :location, optional: true
   belongs_to :day
@@ -151,16 +151,8 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
         match_id: id,
         match_ffhb_key: ffhb_key,
         championship_id: championship_id,
-        championship_name: championship.name,
         championship_ffhb_key: championship.ffhb_key,
-        season_id: championship.season_id,
-        season_name: championship.season.name,
-        local_team_id: local_team_id,
-        local_team_name: local_team.name,
-        visitor_team_id: visitor_team_id,
-        visitor_team_name: visitor_team.name,
-        day_id: day_id,
-        day_name: day&.name
+        season_id: championship.season_id
       }
     )
     logger.warn "FFHB sync failed for match #{id}: #{e.message}"

@@ -16,9 +16,17 @@ class FfhbService # rubocop:disable Metrics/ClassLength
     response = http_get_with_cache(url)
     doc = Nokogiri::HTML(response)
     smartfire_component = doc.at_xpath("//smartfire-component[@name='#{attribute_name}']")
+
+    raise FfhbServiceError, "Smartfire component '#{attribute_name}' not found at URL: #{url}" if smartfire_component.nil?
+
     attributes_content = smartfire_component['attributes']
+
+    raise FfhbServiceError, "Attributes not found for component '#{attribute_name}' at URL: #{url}" if attributes_content.nil?
+
     attributes_content_decoded = CGI.unescapeHTML(attributes_content)
     Oj.load(attributes_content_decoded)
+  rescue FfhbServiceError
+    raise
   rescue StandardError => e
     raise FfhbServiceError, e.message
   end

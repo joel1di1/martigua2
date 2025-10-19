@@ -173,6 +173,44 @@ RSpec.describe Match do
     end
   end
 
+  describe '#ffhb_sync! when match is deleted (team banished)' do
+    let(:match) do
+      create(:match,
+             ffhb_key: '16-ans-m-2-eme-division-territoriale-94-75-23229 128335 1891863',
+             start_datetime: nil)
+    end
+
+    before do
+      allow(FfhbService.instance).to receive(:fetch_match_details)
+        .and_raise(FfhbServiceError, "Smartfire component 'competitions---rematch' not found at URL: https://example.com")
+    end
+
+    it 'captures warning to Sentry with context' do
+      expect(Sentry).to receive(:capture_message).with(
+        'FFHB sync failed for match - possibly deleted match (team banished?)',
+        hash_including(
+          level: :warning,
+          extra: hash_including(
+            match_id: match.id,
+            match_ffhb_key: match.ffhb_key,
+            championship_id: match.championship_id,
+            local_team_id: match.local_team_id,
+            visitor_team_id: match.visitor_team_id
+          )
+        )
+      )
+
+      expect { match.ffhb_sync! }.not_to raise_error
+    end
+
+    it 'logs warning' do
+      allow(Sentry).to receive(:capture_message)
+      expect(Rails.logger).to receive(:warn).with(/FFHB sync failed for match/)
+
+      match.ffhb_sync!
+    end
+  end
+
   describe '#aways' do
     context 'with a player sick' do
       let(:section) { create(:section) }

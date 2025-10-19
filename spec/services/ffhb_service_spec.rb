@@ -3,6 +3,36 @@
 RSpec.describe FfhbService do
   let(:ffhb_instance) { FfhbService.instance }
 
+  describe '#fetch_smartfire_attributes' do
+    let(:url) { 'https://example.com/test' }
+    let(:attribute_name) { 'test-component' }
+
+    context 'when smartfire component is not found' do
+      before do
+        allow(ffhb_instance).to receive(:http_get_with_cache).and_return('<html><body>No component here</body></html>')
+      end
+
+      it 'raises FfhbServiceError with descriptive message' do
+        expect do
+          ffhb_instance.fetch_smartfire_attributes(url, attribute_name)
+        end.to raise_error(FfhbServiceError, /Smartfire component 'test-component' not found/)
+      end
+    end
+
+    context 'when smartfire component exists but has no attributes' do
+      before do
+        html = '<html><body><smartfire-component name="test-component"></smartfire-component></body></html>'
+        allow(ffhb_instance).to receive(:http_get_with_cache).and_return(html)
+      end
+
+      it 'raises FfhbServiceError with descriptive message' do
+        expect do
+          ffhb_instance.fetch_smartfire_attributes(url, attribute_name)
+        end.to raise_error(FfhbServiceError, /Attributes not found for component/)
+      end
+    end
+  end
+
   describe 'real calls to ffhb' do
     describe '#fetch_comite_details' do
       subject(:comite_details) { ffhb_instance.fetch_comite_details(comite_id) }

@@ -127,8 +127,8 @@ RSpec.describe Match do
       match.reload
     end
 
-    it { expect(match.start_datetime).to eq Time.zone.local(2023, 9, 16, 18, 30) }
-    it { expect(match.meeting_datetime).to eq Time.zone.local(2023, 9, 16, 17, 30) }
+    it { expect(match.start_datetime).to eq Time.zone.local(2023, 9, 16, 20, 30) }
+    it { expect(match.meeting_datetime).to eq Time.zone.local(2023, 9, 16, 19, 30) }
     it { expect(match.local_score).to eq 25 }
     it { expect(match.visitor_score).to eq 30 }
 

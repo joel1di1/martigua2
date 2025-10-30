@@ -13,7 +13,7 @@ development:
 
 test:
   <<: *default
-  database: martigua2_test
+  database: martigua2_test<%= ENV['TEST_ENV_NUMBER'] %>
 
 production:
   url: <%= ENV['DATABASE_URL'] %>

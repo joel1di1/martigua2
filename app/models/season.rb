@@ -47,17 +47,23 @@ class Season < ApplicationRecord
     prev_season = previous
     return unless prev_season
 
-    # Get all coach participations from the previous season
-    coach_participations = Participation.where(season: prev_season, role: Participation::COACH)
+    # Get all participations from the previous season
+    previous_participations = Participation.where(season: prev_season)
 
-    # Create new participations for coaches in the new season, avoiding duplicates
-    coach_participations.find_each do |participation|
-      Participation.find_or_create_by!(
-        user: participation.user,
-        section: participation.section,
-        role: Participation::COACH,
-        season: self
-      )
+    # Group participations by user and section to handle users with multiple roles
+    previous_participations.group_by { |p| [p.user, p.section] }.each do |(user, section), participations|
+      roles = participations.map(&:role).uniq
+
+      # Renew each role the user had in the previous season
+      # Coaches are automatically renewed, and players who are also coaches are renewed too
+      roles.each do |role|
+        if role == Participation::COACH
+          section.add_coach!(user, season: self)
+        elsif role == Participation::PLAYER
+          # Only renew players if they were also coaches
+          section.add_player!(user, season: self) if roles.include?(Participation::COACH)
+        end
+      end
     end
   end
 end

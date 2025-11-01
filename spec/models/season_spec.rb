@@ -71,6 +71,13 @@ RSpec.describe Season do
   end
 
   describe 'coach renewal on season creation' do
+    # Freeze time to ensure consistent test behavior
+    around do |example|
+      Timecop.freeze(Date.new(2024, 9, 15)) do
+        example.run
+      end
+    end
+
     let(:old_season) { create(:season, start_date: Date.new(2023, 9, 1), end_date: Date.new(2024, 8, 31)) }
     let(:section) { create(:section) }
     let(:other_section) { create(:section) }
@@ -119,6 +126,20 @@ RSpec.describe Season do
         expect(new_season.participations.where(user: multi_section_coach, role: Participation::COACH).count).to eq(2)
         expect(section.coachs(season: new_season)).to include(multi_section_coach)
         expect(other_section.coachs(season: new_season)).to include(multi_section_coach)
+      end
+
+      it 'renews both coach and player roles when a user has both' do
+        # Add a user who is both coach and player in the new season's previous season
+        coach_player = create(:user)
+        create(:participation, user: coach_player, section:, season: new_season.previous, role: Participation::COACH)
+        create(:participation, user: coach_player, section:, season: new_season.previous, role: Participation::PLAYER)
+
+        # Trigger renewal again to pick up the coach-player we just added
+        new_season.send(:renew_coaches_from_previous_season)
+
+        # Both coach and player roles should be renewed
+        expect(new_season.participations.where(user: coach_player, role: Participation::COACH).count).to eq(1)
+        expect(new_season.participations.where(user: coach_player, role: Participation::PLAYER).count).to eq(1)
       end
 
       it 'does not create duplicate coach participations when renewal is triggered multiple times' do

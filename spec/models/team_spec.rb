@@ -9,7 +9,7 @@ RSpec.describe Team do
   it { is_expected.to have_many :championships }
 
   describe '.team_with_match_on' do
-    subject { described_class.team_with_match_on(day, section) }
+    subject { Team.team_with_match_on(day, section) }
 
     let(:section) { create(:section) }
     let(:home_team1) { create(:team, sections: [section]) }

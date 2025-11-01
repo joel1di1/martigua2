@@ -62,7 +62,7 @@ RSpec.describe Match do
   end
 
   describe '#date_ordered' do
-    subject { described_class.date_ordered }
+    subject { Match.date_ordered }
 
     before do
       create(:match)

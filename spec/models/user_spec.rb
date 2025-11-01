@@ -300,7 +300,7 @@ describe User do
   end
 
   describe '.active_this_season' do
-    subject(:active_users) { described_class.active_this_season }
+    subject(:active_users) { User.active_this_season }
 
     context 'with an active user' do
       before { section.add_player! user }

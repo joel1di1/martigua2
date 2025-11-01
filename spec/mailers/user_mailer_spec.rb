@@ -8,7 +8,7 @@ RSpec.describe UserMailer do
     let(:training1) { create(:training) }
     let(:training2) { create(:training) }
 
-    let(:mail) { described_class.send_training_invitation(trainings, user) }
+    let(:mail) { UserMailer.send_training_invitation(trainings, user) }
 
     context 'with 1 training' do
       let(:trainings) { training1 }

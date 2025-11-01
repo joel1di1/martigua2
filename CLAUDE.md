@@ -61,3 +61,6 @@ Before commits, run rubocop.
 6. **Write tests** for new functionality using RSpec and FactoryBot patterns
 7. **Prefer editing existing files** over creating new ones when possible
 8. **Use Slim template syntax** with `div class="..."` for easy Tailwind integration
+
+### Specific coding style
+- avoid unless? prefer if. For exemple, `return unless prev_season` should be replaced by `return if prev_season.blank?`

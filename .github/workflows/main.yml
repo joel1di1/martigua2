@@ -9,6 +9,7 @@ jobs:
   rubocop:
     name: RuboCop
     runs-on: ubuntu-latest
+    timeout-minutes: 5  # Fail after 5 minutes to prevent indefinite hanging
 
     steps:
       - name: Checkout code
@@ -21,7 +22,9 @@ jobs:
           bundler-cache: true
 
       - name: Run RuboCop
-        run: bin/rubocop --parallel
+        run: bin/rubocop --format progress
+        env:
+          RUBOCOP_DISABLE_SERVER: "true"  # Disable RuboCop server in CI to prevent hanging
 
   brakeman:
     name: Brakeman Security Scan

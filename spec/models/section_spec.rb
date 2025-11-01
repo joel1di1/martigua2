@@ -136,7 +136,7 @@ RSpec.describe Section do
     let!(:training_3_week_from_now) { create(:training, with_section: section, start_datetime: 3.weeks.from_now) }
     let!(:training_1_week_from_now) { create(:training, with_section: section, start_datetime: 1.week.from_now) }
 
-    it { expect(section.next_trainings).to match_array [training_1_week_from_now, training_3_week_from_now] }
+    it { expect(section.next_trainings).to contain_exactly(training_1_week_from_now, training_3_week_from_now) }
   end
 
   describe '.create' do

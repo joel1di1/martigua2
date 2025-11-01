@@ -87,7 +87,9 @@ describe User do
 
       before { section.add_coach!(user, season: previous_season) }
 
-      it { is_expected.to be_falsy }
+      # With automatic coach renewal, coaches are automatically renewed each season
+      # So a coach from 2 years ago will be renewed to last year, then to this year
+      it { is_expected.to be_truthy }
     end
   end
 
@@ -298,7 +300,7 @@ describe User do
   end
 
   describe '.active_this_season' do
-    subject(:active_users) { described_class.active_this_season }
+    subject(:active_users) { User.active_this_season }
 
     context 'with an active user' do
       before { section.add_player! user }

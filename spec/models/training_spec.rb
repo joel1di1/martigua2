@@ -56,7 +56,7 @@ RSpec.describe Training do
       it {
         Sidekiq::Testing.inline! do
           expect do
-            described_class.send_presence_mail_for_next_week
+            Training.send_presence_mail_for_next_week
           end.to change(ActionMailer::Base.deliveries, :count).by(nb_users)
         end
       }
@@ -67,7 +67,7 @@ RSpec.describe Training do
 
       it {
         expect do
-          described_class.send_presence_mail_for_next_week
+          Training.send_presence_mail_for_next_week
         end.not_to change(ActionMailer::Base.deliveries, :count)
       }
     end
@@ -90,7 +90,7 @@ RSpec.describe Training do
 
     let(:days) { [now + 6.days, now + 7.days, now + 12.days] }
 
-    it { expect(described_class.with_start_on(days)).to eq trainings[2..4] }
+    it { expect(Training.with_start_on(days)).to eq trainings[2..4] }
   end
 
   describe 'users' do
@@ -134,7 +134,7 @@ RSpec.describe Training do
     let(:nb_weeks) { rand(2..6) }
     let(:end_date) { nb_weeks.weeks.from_now }
 
-    it { expect { training.repeat_until!(end_date) }.to change(described_class, :count).by(nb_weeks - 1) }
+    it { expect { training.repeat_until!(end_date) }.to change(Training, :count).by(nb_weeks - 1) }
   end
 
   describe 'cancel uncancel' do
@@ -174,7 +174,7 @@ RSpec.describe Training do
     it 'sends mail' do
       Sidekiq::Testing.inline! do
         expect do
-          described_class.send_tig_mail_for_next_training
+          Training.send_tig_mail_for_next_training
         end.to change(ActionMailer::Base.deliveries, :count).by(1)
       end
     end

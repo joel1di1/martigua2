@@ -17,7 +17,8 @@ Style/Documentation:
   Enabled: false
 
 RSpec/DescribedClass:
-  Enabled: false
+  Enabled: true
+  EnforcedStyle: explicit
 
 Rails/I18nLocaleTexts:
   Enabled: false

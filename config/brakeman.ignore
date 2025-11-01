@@ -1,0 +1,97 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "06022f089dec9194f9d9b0ed569e628b715cd1d4f7ac19ae3a2a0d9173f105be",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/section.rb",
+      "line": 113,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "users.joins(\"#{\"LEFT OUTER JOIN \\\"duty_tasks\\\" ON \\\"duty_tasks\\\".\\\"user_id\\\" = \\\"users\\\".\\\"id\\\" AND \\\"duty_tasks\\\".\\\"key\\\" =\"} '#{Arel.sql(task_key.to_s)}'\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Section",
+        "method": "next_duties_for"
+      },
+      "user_input": "Arel.sql(task_key.to_s)",
+      "confidence": "Weak",
+      "cwe_id": [
+        89
+      ],
+      "note": "Actually not user input"
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 70,
+      "fingerprint": "0a2c7caae528481eaf8be647957987ad1c6eada59cd160eac47dd65b04d5605b",
+      "check_name": "MassAssignment",
+      "message": "Specify exact keys allowed for mass assignment instead of using `permit!` which allows any keys",
+      "file": "app/controllers/sections_controller.rb",
+      "line": 43,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params[:section].permit!",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "SectionsController",
+        "method": "player_ffhb_association"
+      },
+      "user_input": null,
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "Accept mass assignements because it's dinamic with FFHB inputs"
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 70,
+      "fingerprint": "249e92f6bfd743bb6c66d8043ffbf6dbdc9bd7c972ac10b800a0273d845d69fc",
+      "check_name": "MassAssignment",
+      "message": "Specify exact keys allowed for mass assignment instead of using `permit!` which allows any keys",
+      "file": "app/controllers/championships_controller.rb",
+      "line": 64,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params[:team_links].permit!",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ChampionshipsController",
+        "method": "create"
+      },
+      "user_input": null,
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "e6d7efe61a8b35daf9063eb5527f7527b26f88ef5adbdf535517e777a4737305",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/training.rb",
+      "line": 104,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "present_players.where(\"email NOT LIKE '%@example.com'\").joins(\"        LEFT OUTER JOIN duty_tasks\\n        ON duty_tasks.user_id = users.id\\n        AND duty_tasks.realised_at BETWEEN '#{Season.current.start_date}' AND '#{Season.current.end_date}'\\n        AND duty_tasks.club_id IN (#{sections.map(&:club_id).join(\",\")})\\n\".squish)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Training",
+        "method": "next_duties"
+      },
+      "user_input": "Season.current.start_date",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    }
+  ],
+  "brakeman_version": "7.1.0"
+}

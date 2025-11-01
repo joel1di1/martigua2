@@ -69,4 +69,62 @@ RSpec.describe Season do
       end
     end
   end
+
+  describe 'coach renewal on season creation' do
+    let(:old_season) { create(:season, start_date: Date.new(2023, 9, 1), end_date: Date.new(2024, 8, 31)) }
+    let(:section) { create(:section) }
+    let(:coach1) { create(:user) }
+    let(:coach2) { create(:user) }
+    let(:player) { create(:user) }
+
+    before do
+      # Create participations in the old season
+      create(:participation, user: coach1, section:, season: old_season, role: Participation::COACH)
+      create(:participation, user: coach2, section:, season: old_season, role: Participation::COACH)
+      create(:participation, user: player, section:, season: old_season, role: Participation::PLAYER)
+    end
+
+    context 'when a new season is created' do
+      let!(:new_season) do
+        described_class.create!(
+          start_date: Date.new(2024, 9, 1),
+          end_date: Date.new(2025, 8, 31),
+          name: '2024-2025'
+        )
+      end
+
+      it 'automatically renews coach participations from previous season' do
+        expect(new_season.participations.where(role: Participation::COACH).count).to eq(2)
+      end
+
+      it 'renews correct coaches' do
+        coach_users = new_season.participations.where(role: Participation::COACH).map(&:user)
+        expect(coach_users).to contain_exactly(coach1, coach2)
+      end
+
+      it 'does not automatically renew player participations' do
+        expect(new_season.participations.where(role: Participation::PLAYER).count).to eq(0)
+      end
+
+      it 'coaches can access their section in new season' do
+        expect(section.coachs(season: new_season)).to contain_exactly(coach1, coach2)
+      end
+    end
+
+    context 'when there is no previous season' do
+      before { described_class.destroy_all }
+
+      let!(:first_season) do
+        described_class.create!(
+          start_date: Date.new(2024, 9, 1),
+          end_date: Date.new(2025, 8, 31),
+          name: '2024-2025'
+        )
+      end
+
+      it 'does not create any participations' do
+        expect(first_season.participations.count).to eq(0)
+      end
+    end
+  end
 end

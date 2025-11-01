@@ -87,7 +87,9 @@ describe User do
 
       before { section.add_coach!(user, season: previous_season) }
 
-      it { is_expected.to be_falsy }
+      # With automatic coach renewal, coaches are automatically renewed each season
+      # So a coach from 2 years ago will be renewed to last year, then to this year
+      it { is_expected.to be_truthy }
     end
   end
 

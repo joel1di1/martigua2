@@ -21,6 +21,6 @@ pin '@stimulus-components/auto-submit', to: '@stimulus-components--auto-submit.j
 pin '@stimulus-components/dropdown', to: '@stimulus-components--dropdown.js' # @3.0.0
 pin 'stimulus-use' # @0.52.3
 pin '@stimulus-components/notification', to: '@stimulus-components--notification.js' # @3.0.0
-pin "tom-select", to: "https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/esm/tom-select.js" # @2.4.3 base version without plugins
-pin "@orchidjs/sifter", to: "@orchidjs--sifter.js" # @1.1.0
-pin "@orchidjs/unicode-variants", to: "@orchidjs--unicode-variants.js" # @1.1.2
+pin 'tom-select', to: 'https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/esm/tom-select.js' # @2.4.3 base version without plugins
+pin '@orchidjs/sifter', to: '@orchidjs--sifter.js' # @1.1.0
+pin '@orchidjs/unicode-variants', to: '@orchidjs--unicode-variants.js' # @1.1.2

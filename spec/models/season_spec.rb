@@ -14,10 +14,10 @@ RSpec.describe Season do
   it { is_expected.to validate_presence_of :end_date }
 
   describe '.current' do
-    before { described_class.destroy_all }
+    before { Season.destroy_all }
 
     context 'with only one season' do
-      subject { described_class.current }
+      subject { Season.current }
 
       let!(:only_season) { create(:season, start_date: Time.zone.today - 1.month) }
 
@@ -28,12 +28,12 @@ RSpec.describe Season do
       let(:today) { Time.zone.today }
       let!(:first_season) { create(:season, start_date: Date.new(2001, 9, 1)) }
 
-      it { expect(described_class.current.start_date).to be < today }
-      it { expect(described_class.current.end_date).to be >= today }
+      it { expect(Season.current.start_date).to be < today }
+      it { expect(Season.current.end_date).to be >= today }
     end
 
     context 'with no season' do
-      subject { described_class.current }
+      subject { Season.current }
 
       it { is_expected.not_to be_nil }
     end
@@ -44,13 +44,13 @@ RSpec.describe Season do
   end
 
   describe '#previous' do
-    subject { described_class.current.previous }
+    subject { Season.current.previous }
 
-    it { expect(subject.start_date).to eq(described_class.current.start_date - 1.year) }
+    it { expect(subject.start_date).to eq(Season.current.start_date - 1.year) }
 
     context 'with gaps in IDs' do
       before do
-        described_class.destroy_all
+        Season.destroy_all
         middle_season = create(:season, start_date: Date.new(2021, 9, 1), end_date: Date.new(2022, 8, 31))
         middle_season.destroy
       end
@@ -98,7 +98,7 @@ RSpec.describe Season do
 
     context 'when a new season is created' do
       let!(:new_season) do
-        described_class.create!(
+        Season.create!(
           start_date: Date.new(2024, 9, 1),
           end_date: Date.new(2025, 8, 31),
           name: '2024-2025'
@@ -157,10 +157,10 @@ RSpec.describe Season do
     end
 
     context 'when there is no previous season' do
-      before { described_class.destroy_all }
+      before { Season.destroy_all }
 
       let!(:first_season) do
-        described_class.create!(
+        Season.create!(
           start_date: Date.new(2024, 9, 1),
           end_date: Date.new(2025, 8, 31),
           name: '2024-2025'

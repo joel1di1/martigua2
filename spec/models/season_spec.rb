@@ -73,14 +73,19 @@ RSpec.describe Season do
   describe 'coach renewal on season creation' do
     let(:old_season) { create(:season, start_date: Date.new(2023, 9, 1), end_date: Date.new(2024, 8, 31)) }
     let(:section) { create(:section) }
+    let(:other_section) { create(:section) }
     let(:coach1) { create(:user) }
     let(:coach2) { create(:user) }
+    let(:multi_section_coach) { create(:user) }
     let(:player) { create(:user) }
 
     before do
       # Create participations in the old season
       create(:participation, user: coach1, section:, season: old_season, role: Participation::COACH)
       create(:participation, user: coach2, section:, season: old_season, role: Participation::COACH)
+      create(:participation, user: multi_section_coach, section:, season: old_season, role: Participation::COACH)
+      create(:participation, user: multi_section_coach, section: other_section, season: old_season,
+                             role: Participation::COACH)
       create(:participation, user: player, section:, season: old_season, role: Participation::PLAYER)
     end
 
@@ -94,12 +99,12 @@ RSpec.describe Season do
       end
 
       it 'automatically renews coach participations from previous season' do
-        expect(new_season.participations.where(role: Participation::COACH).count).to eq(2)
+        expect(new_season.participations.where(role: Participation::COACH).count).to eq(4)
       end
 
       it 'renews correct coaches' do
-        coach_users = new_season.participations.where(role: Participation::COACH).map(&:user)
-        expect(coach_users).to contain_exactly(coach1, coach2)
+        coach_users = new_season.participations.where(role: Participation::COACH).map(&:user).uniq
+        expect(coach_users).to contain_exactly(coach1, coach2, multi_section_coach)
       end
 
       it 'does not automatically renew player participations' do
@@ -107,7 +112,26 @@ RSpec.describe Season do
       end
 
       it 'coaches can access their section in new season' do
-        expect(section.coachs(season: new_season)).to contain_exactly(coach1, coach2)
+        expect(section.coachs(season: new_season)).to contain_exactly(coach1, coach2, multi_section_coach)
+      end
+
+      it 'renews multi-section coaches for all their sections' do
+        expect(new_season.participations.where(user: multi_section_coach, role: Participation::COACH).count).to eq(2)
+        expect(section.coachs(season: new_season)).to include(multi_section_coach)
+        expect(other_section.coachs(season: new_season)).to include(multi_section_coach)
+      end
+
+      it 'does not create duplicate coach participations when renewal is triggered multiple times' do
+        # Count existing participations for coach1
+        initial_count = new_season.participations.where(role: Participation::COACH, user: coach1).count
+        expect(initial_count).to eq(1)
+
+        # Trigger renewal again by calling the private method directly
+        new_season.send(:renew_coaches_from_previous_season)
+
+        # Should still have only one participation for coach1 in the new season
+        final_count = new_season.participations.where(role: Participation::COACH, user: coach1).count
+        expect(final_count).to eq(1)
       end
     end
 

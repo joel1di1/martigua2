@@ -8,7 +8,7 @@ class Season < ApplicationRecord
   has_many :championships, inverse_of: :season, dependent: :destroy
   has_many :calendars, inverse_of: :season, dependent: :destroy
 
-  after_create :renew_coaches_from_previous_season
+  after_commit :renew_coaches_from_previous_season, on: :create
 
   def self._current
     current = Season.order(end_date: :desc).limit(1).first
@@ -50,9 +50,9 @@ class Season < ApplicationRecord
     # Get all coach participations from the previous season
     coach_participations = Participation.where(season: prev_season, role: Participation::COACH)
 
-    # Create new participations for coaches in the new season
+    # Create new participations for coaches in the new season, avoiding duplicates
     coach_participations.find_each do |participation|
-      Participation.create!(
+      Participation.find_or_create_by!(
         user: participation.user,
         section: participation.section,
         role: Participation::COACH,

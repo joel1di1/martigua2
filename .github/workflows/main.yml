@@ -6,22 +6,43 @@ on:
       - '**'
 
 jobs:
-  # scan_ruby:
-  #   runs-on: ubuntu-latest
-  #   continue-on-error: true
+  rubocop:
+    name: RuboCop
+    runs-on: ubuntu-latest
+    timeout-minutes: 5  # Fail after 5 minutes to prevent indefinite hanging
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
 
-  #     - name: Set up Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: .ruby-version
-  #         bundler-cache: true
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
 
-  #     - name: Scan for common Rails security vulnerabilities using static analysis
-  #       run: bin/brakeman --no-pager
+      - name: Run RuboCop
+        run: bin/rubocop --format progress
+        env:
+          RUBOCOP_DISABLE_SERVER: "true"  # Disable RuboCop server in CI to prevent hanging
+
+  brakeman:
+    name: Brakeman Security Scan
+    runs-on: ubuntu-latest
+    continue-on-error: true  # Don't fail CI on security warnings (informational only)
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Scan for security vulnerabilities with Brakeman
+        run: bin/brakeman --no-pager
 
   scan_js:
     runs-on: ubuntu-latest

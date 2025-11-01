@@ -36,7 +36,14 @@ When developping a feature, write the tests first.
 For user facing feature, use system test to test nominal cases.
 Add unit tests for new methods created on model or services layers.
 Don't test trivial methods.
-Before commits, run rubocop.
+
+### Pre-Commit Workflow
+**ALWAYS run these commands before committing:**
+1. `bin/rspec` - Run tests to ensure functionality works
+2. `bin/rubocop -A` - Auto-fix all RuboCop style issues
+3. Commit changes only after both pass successfully
+
+This ensures code quality and style compliance before creating PRs.
 
 ## Key Models & Relationships
 - **Club** → has many Sections

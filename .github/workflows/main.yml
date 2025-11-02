@@ -6,22 +6,9 @@ on:
       - '**'
 
 jobs:
-  # scan_ruby:
-  #   runs-on: ubuntu-latest
-  #   continue-on-error: true
-
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v5
-
-  #     - name: Set up Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: .ruby-version
-  #         bundler-cache: true
-
-  #     - name: Scan for common Rails security vulnerabilities using static analysis
-  #       run: bin/brakeman --no-pager
+  # RuboCop is disabled in CI due to hanging issues specific to GitHub Actions environment
+  # RuboCop is enforced locally via pre-commit workflow (see CLAUDE.md)
+  # To reproduce/debug: use ./test-ci-locally.sh with Docker (see CI-DEBUG-README.md)
 
   brakeman:
     name: Brakeman Security Scan

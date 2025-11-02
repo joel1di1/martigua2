@@ -34,10 +34,7 @@ const subscribeToPushManager = async (serviceWorkerRegistration) => {
     console.log('Subscribed to pushManager');
     return subscription;
   } catch (error) {
-    // Push notifications may not work in development or if not properly configured
-    // This is expected and not critical for app functionality
-    console.log('Push notifications not available:', error.name);
-    return null;
+    console.error('Error subscribing to push manager:', error);
   }
 };
 

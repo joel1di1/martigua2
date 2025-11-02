@@ -49,8 +49,9 @@ Before commits, run rubocop.
 
 ## Important Commands
 - **Tests**: `bin/rspec`
-- **Linting**: `bin/rubocop`
+- **Linting**: `bin/rubocop` or `bin/rubocop -A` (auto-fix)
 - **Database**: Standard Rails migration commands using `bin/rails`
+- **Setup Git Hooks**: `bin/setup-hooks` (run once after cloning)
 
 ## Development Guidelines
 1. **Follow latest Rails guidelines** - use current Rails conventions and best practices
@@ -64,3 +65,27 @@ Before commits, run rubocop.
 
 ### Specific coding style
 - avoid unless? prefer if. For exemple, `return unless prev_season` should be replaced by `return if prev_season.blank?`
+
+## Git Workflow
+
+### Initial Setup
+After cloning the repository, run:
+```bash
+bin/setup-hooks
+```
+
+This installs a pre-push hook that automatically runs RuboCop before each push to ensure code quality.
+
+### Pre-Push Hook
+The pre-push hook runs automatically before each `git push` and:
+1. Runs `bin/rubocop` to check for code style issues
+2. Blocks the push if offenses are found
+3. Prompts you to fix issues with `bin/rubocop -A`
+
+To skip the hook (not recommended):
+```bash
+git push --no-verify
+```
+
+### Code Quality Enforcement
+RuboCop is enforced locally through the pre-push hook. There is no RuboCop check in CI due to GitHub Actions-specific hanging issues. Code quality relies on developers running the hook before pushing.

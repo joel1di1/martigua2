@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Setup Git hooks for the project
+# Run this script after cloning the repository: bin/setup-hooks
+
+set -e
+
+echo "Setting up Git hooks..."
+
+# Create pre-push hook
+cat > .git/hooks/pre-push << 'EOF'
+#!/bin/bash
+
+# Pre-push hook to run RuboCop
+# This ensures code quality checks pass before pushing to remote
+
+echo "Running RuboCop before push..."
+
+# Run RuboCop
+bin/rubocop
+
+# Check exit code
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ RuboCop found offenses!"
+  echo ""
+  echo "Fix them with: bin/rubocop -A"
+  echo ""
+  echo "Or skip this hook with: git push --no-verify"
+  exit 1
+fi
+
+echo "✅ RuboCop passed!"
+exit 0
+EOF
+
+# Make it executable
+chmod +x .git/hooks/pre-push
+
+echo "✅ Pre-push hook installed successfully!"
+echo ""
+echo "The hook will run RuboCop before every push to ensure code quality."
+echo "To skip the hook (not recommended), use: git push --no-verify"

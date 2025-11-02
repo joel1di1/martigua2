@@ -1,11 +1,377 @@
-// @orchidjs/unicode-variants@1.1.2 downloaded from https://ga.jspm.io/npm:@orchidjs/unicode-variants@1.1.2/dist/esm/index.js
+// @orchidjs/unicode-variants@1.1.2 downloaded from https://cdn.jsdelivr.net/npm/@orchidjs/unicode-variants@1.1.2/dist/esm/index.js
 
-import{setToPattern as t,escape_regex as e,arrayToPattern as s,sequencePattern as n}from"./regex.js";import{allSubstrings as r}from"./strings.js";const o=[[0,65535]];const l="[̀-ͯ·ʾʼ]";let a;let u;const h=3;const c={};const i={"/":"⁄∕",0:"߀",a:"ⱥɐɑ",aa:"ꜳ",ae:"æǽǣ",ao:"ꜵ",au:"ꜷ",av:"ꜹꜻ",ay:"ꜽ",b:"ƀɓƃ",c:"ꜿƈȼↄ",d:"đɗɖᴅƌꮷԁɦ",e:"ɛǝᴇɇ",f:"ꝼƒ",g:"ǥɠꞡᵹꝿɢ",h:"ħⱨⱶɥ",i:"ɨı",j:"ɉȷ",k:"ƙⱪꝁꝃꝅꞣ",l:"łƚɫⱡꝉꝇꞁɭ",m:"ɱɯϻ",n:"ꞥƞɲꞑᴎлԉ",o:"øǿɔɵꝋꝍᴑ",oe:"œ",oi:"ƣ",oo:"ꝏ",ou:"ȣ",p:"ƥᵽꝑꝓꝕρ",q:"ꝗꝙɋ",r:"ɍɽꝛꞧꞃ",s:"ßȿꞩꞅʂ",t:"ŧƭʈⱦꞇ",th:"þ",tz:"ꜩ",u:"ʉ",v:"ʋꝟʌ",vy:"ꝡ",w:"ⱳ",y:"ƴɏỿ",z:"ƶȥɀⱬꝣ",hv:"ƕ"};for(let t in i){let e=i[t]||"";for(let s=0;s<e.length;s++){let n=e.substring(s,s+1);c[n]=t}}const d=new RegExp(Object.keys(c).join("|")+"|"+l,"gu");const initialize=t=>{a===void 0&&(a=generateMap(t||o))};const normalize=(t,e="NFKD")=>t.normalize(e);const asciifold=t=>Array.from(t).reduce((
+import { setToPattern, arrayToPattern, escape_regex, sequencePattern } from "./regex.js";
+import { allSubstrings } from "./strings.js";
+export const code_points = [[0, 65535]];
+const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}\u{2bc}]';
+export let unicode_map;
+let multi_char_reg;
+const max_char_length = 3;
+const latin_convert = {};
+const latin_condensed = {
+    '/': '⁄∕',
+    '0': '߀',
+    "a": "ⱥɐɑ",
+    "aa": "ꜳ",
+    "ae": "æǽǣ",
+    "ao": "ꜵ",
+    "au": "ꜷ",
+    "av": "ꜹꜻ",
+    "ay": "ꜽ",
+    "b": "ƀɓƃ",
+    "c": "ꜿƈȼↄ",
+    "d": "đɗɖᴅƌꮷԁɦ",
+    "e": "ɛǝᴇɇ",
+    "f": "ꝼƒ",
+    "g": "ǥɠꞡᵹꝿɢ",
+    "h": "ħⱨⱶɥ",
+    "i": "ɨı",
+    "j": "ɉȷ",
+    "k": "ƙⱪꝁꝃꝅꞣ",
+    "l": "łƚɫⱡꝉꝇꞁɭ",
+    "m": "ɱɯϻ",
+    "n": "ꞥƞɲꞑᴎлԉ",
+    "o": "øǿɔɵꝋꝍᴑ",
+    "oe": "œ",
+    "oi": "ƣ",
+    "oo": "ꝏ",
+    "ou": "ȣ",
+    "p": "ƥᵽꝑꝓꝕρ",
+    "q": "ꝗꝙɋ",
+    "r": "ɍɽꝛꞧꞃ",
+    "s": "ßȿꞩꞅʂ",
+    "t": "ŧƭʈⱦꞇ",
+    "th": "þ",
+    "tz": "ꜩ",
+    "u": "ʉ",
+    "v": "ʋꝟʌ",
+    "vy": "ꝡ",
+    "w": "ⱳ",
+    "y": "ƴɏỿ",
+    "z": "ƶȥɀⱬꝣ",
+    "hv": "ƕ"
+};
+for (let latin in latin_condensed) {
+    let unicode = latin_condensed[latin] || '';
+    for (let i = 0; i < unicode.length; i++) {
+        let char = unicode.substring(i, i + 1);
+        latin_convert[char] = latin;
+    }
+}
+const convert_pat = new RegExp(Object.keys(latin_convert).join('|') + '|' + accent_pat, 'gu');
 /**
+ * Initialize the unicode_map from the give code point ranges
+ */
+export const initialize = (_code_points) => {
+    if (unicode_map !== undefined)
+        return;
+    unicode_map = generateMap(_code_points || code_points);
+};
+/**
+ * Helper method for normalize a string
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize
+ */
+export const normalize = (str, form = 'NFKD') => str.normalize(form);
+/**
+ * Remove accents without reordering string
+ * calling str.normalize('NFKD') on \u{594}\u{595}\u{596} becomes \u{596}\u{594}\u{595}
+ * via https://github.com/krisk/Fuse/issues/133#issuecomment-318692703
+ */
+export const asciifold = (str) => {
+    return Array.from(str).reduce(
+    /**
      * @param {string} result
      * @param {string} char
      */
-(t,e)=>t+_asciifold(e)),"");const _asciifold=t=>{t=normalize(t).toLowerCase().replace(d,(/** @type {string} */t=>c[t]||""));return normalize(t,"NFC")};function*generator(t){for(const[e,s]of t)for(let t=e;t<=s;t++){let e=String.fromCharCode(t);let s=asciifold(e);s!=e.toLowerCase()&&(s.length>h||s.length!=0&&(yield{folded:s,composed:e,code_point:t}))}}const generateSets=s=>{const n={};const addMatching=(s,r)=>{
-/** @type {Set<string>} */
-const o=n[s]||new Set;const l=new RegExp("^"+t(o)+"$","iu");if(!r.match(l)){o.add(e(r));n[s]=o}};for(let t of generator(s)){addMatching(t.folded,t.folded);addMatching(t.folded,t.composed)}return n};const generateMap=n=>{const r=generateSets(n);const o={};let l=[];for(let s in r){let n=r[s];n&&(o[s]=t(n));s.length>1&&l.push(e(s))}l.sort(((t,e)=>e.length-t.length));const a=s(l);u=new RegExp("^"+a,"u");return o};const mapSequence=(t,e=1)=>{let s=0;t=t.map((t=>{a[t]&&(s+=t.length);return a[t]||t}));return s>=e?n(t):""};const substringsToPattern=(t,e=1)=>{e=Math.max(e,t.length-1);return s(r(t).map((t=>mapSequence(t,e))))};const sequencesToPattern=(t,e=true)=>{let r=t.length>1?1:0;return s(t.map((t=>{let s=[];const o=e?t.length():t.length()-1;for(let e=0;e<o;e++)s.push(substringsToPattern(t.substrs[e]||"",r));return n(s)})))};const inSequences=(t,e)=>{for(const s of e){if(s.start!=t.start||s.end!=t.end)continue;if(s.substrs.join("")!==t.substrs.join(""))continue;let e=t.parts;const filter=t=>{for(const s of e){if(s.start===t.start&&s.substr===t.substr)return false;if(t.length!=1&&s.length!=1){if(t.start<s.start&&t.end>s.start)return true;if(s.start<t.start&&s.end>t.start)return true}}return false};let n=s.parts.filter(filter);if(!(n.length>0))return true}return false};class Sequence{parts;substrs;start;end;constructor(){this.parts=[];this.substrs=[];this.start=0;this.end=0}add(t){if(t){this.parts.push(t);this.substrs.push(t.substr);this.start=Math.min(t.start,this.start);this.end=Math.max(t.end,this.end)}}last(){return this.parts[this.parts.length-1]}length(){return this.parts.length}clone(t,e){let s=new Sequence;let n=JSON.parse(JSON.stringify(this.parts));let r=n.pop();for(const t of n)s.add(t);let o=e.substr.substring(0,t-r.start);let l=o.length;s.add({start:r.start,end:r.start+l,length:l,substr:o});return s}}const getPattern=t=>{initialize();t=asciifold(t);let e="";let s=[new Sequence];for(let n=0;n<t.length;n++){let r=t.substring(n);let o=r.match(u);const l=t.substring(n,n+1);const a=o?o[0]:null;let h=[];let c=new Set;for(const t of s){const e=t.last();if(!e||e.length==1||e.end<=n)if(a){const e=a.length;t.add({start:n,end:n+e,length:e,substr:a});c.add("1")}else{t.add({start:n,end:n+1,length:1,substr:l});c.add("2")}else if(a){let s=t.clone(n,e);const r=a.length;s.add({start:n,end:n+r,length:r,substr:a});h.push(s)}else c.add("3")}if(h.length>0){h=h.sort(((t,e)=>t.length()-e.length()));for(let t of h)inSequences(t,s)||s.push(t)}else if(n>0&&c.size==1&&!c.has("3")){e+=sequencesToPattern(s,false);let t=new Sequence;const n=s[0];n&&t.add(n.last());s=[t]}}e+=sequencesToPattern(s,true);return e};export{_asciifold,asciifold,o as code_points,e as escape_regex,generateMap,generateSets,generator,getPattern,initialize,mapSequence,normalize,substringsToPattern,a as unicode_map};
-
+    (result, char) => {
+        return result + _asciifold(char);
+    }, '');
+};
+export const _asciifold = (str) => {
+    str = normalize(str)
+        .toLowerCase()
+        .replace(convert_pat, (/** @type {string} */ char) => {
+        return latin_convert[char] || '';
+    });
+    //return str;
+    return normalize(str, 'NFC');
+};
+/**
+ * Generate a list of unicode variants from the list of code points
+ */
+export function* generator(code_points) {
+    for (const [code_point_min, code_point_max] of code_points) {
+        for (let i = code_point_min; i <= code_point_max; i++) {
+            let composed = String.fromCharCode(i);
+            let folded = asciifold(composed);
+            if (folded == composed.toLowerCase()) {
+                continue;
+            }
+            // skip when folded is a string longer than 3 characters long
+            // bc the resulting regex patterns will be long
+            // eg:
+            // folded صلى الله عليه وسلم length 18 code point 65018
+            // folded جل جلاله length 8 code point 65019
+            if (folded.length > max_char_length) {
+                continue;
+            }
+            if (folded.length == 0) {
+                continue;
+            }
+            yield { folded: folded, composed: composed, code_point: i };
+        }
+    }
+}
+/**
+ * Generate a unicode map from the list of code points
+ */
+export const generateSets = (code_points) => {
+    const unicode_sets = {};
+    const addMatching = (folded, to_add) => {
+        /** @type {Set<string>} */
+        const folded_set = unicode_sets[folded] || new Set();
+        const patt = new RegExp('^' + setToPattern(folded_set) + '$', 'iu');
+        if (to_add.match(patt)) {
+            return;
+        }
+        folded_set.add(escape_regex(to_add));
+        unicode_sets[folded] = folded_set;
+    };
+    for (let value of generator(code_points)) {
+        addMatching(value.folded, value.folded);
+        addMatching(value.folded, value.composed);
+    }
+    return unicode_sets;
+};
+/**
+ * Generate a unicode map from the list of code points
+ * ae => (?:(?:ae|Æ|Ǽ|Ǣ)|(?:A|Ⓐ|Ａ...)(?:E|ɛ|Ⓔ...))
+ */
+export const generateMap = (code_points) => {
+    const unicode_sets = generateSets(code_points);
+    const unicode_map = {};
+    let multi_char = [];
+    for (let folded in unicode_sets) {
+        let set = unicode_sets[folded];
+        if (set) {
+            unicode_map[folded] = setToPattern(set);
+        }
+        if (folded.length > 1) {
+            multi_char.push(escape_regex(folded));
+        }
+    }
+    multi_char.sort((a, b) => b.length - a.length);
+    const multi_char_patt = arrayToPattern(multi_char);
+    multi_char_reg = new RegExp('^' + multi_char_patt, 'u');
+    return unicode_map;
+};
+/**
+ * Map each element of an array from its folded value to all possible unicode matches
+ */
+export const mapSequence = (strings, min_replacement = 1) => {
+    let chars_replaced = 0;
+    strings = strings.map((str) => {
+        if (unicode_map[str]) {
+            chars_replaced += str.length;
+        }
+        return unicode_map[str] || str;
+    });
+    if (chars_replaced >= min_replacement) {
+        return sequencePattern(strings);
+    }
+    return '';
+};
+/**
+ * Convert a short string and split it into all possible patterns
+ * Keep a pattern only if min_replacement is met
+ *
+ * 'abc'
+ * 		=> [['abc'],['ab','c'],['a','bc'],['a','b','c']]
+ *		=> ['abc-pattern','ab-c-pattern'...]
+ */
+export const substringsToPattern = (str, min_replacement = 1) => {
+    min_replacement = Math.max(min_replacement, str.length - 1);
+    return arrayToPattern(allSubstrings(str).map((sub_pat) => {
+        return mapSequence(sub_pat, min_replacement);
+    }));
+};
+/**
+ * Convert an array of sequences into a pattern
+ * [{start:0,end:3,length:3,substr:'iii'}...] => (?:iii...)
+ */
+const sequencesToPattern = (sequences, all = true) => {
+    let min_replacement = sequences.length > 1 ? 1 : 0;
+    return arrayToPattern(sequences.map((sequence) => {
+        let seq = [];
+        const len = all ? sequence.length() : sequence.length() - 1;
+        for (let j = 0; j < len; j++) {
+            seq.push(substringsToPattern(sequence.substrs[j] || '', min_replacement));
+        }
+        return sequencePattern(seq);
+    }));
+};
+/**
+ * Return true if the sequence is already in the sequences
+ */
+const inSequences = (needle_seq, sequences) => {
+    for (const seq of sequences) {
+        if (seq.start != needle_seq.start || seq.end != needle_seq.end) {
+            continue;
+        }
+        if (seq.substrs.join('') !== needle_seq.substrs.join('')) {
+            continue;
+        }
+        let needle_parts = needle_seq.parts;
+        const filter = (part) => {
+            for (const needle_part of needle_parts) {
+                if (needle_part.start === part.start && needle_part.substr === part.substr) {
+                    return false;
+                }
+                if (part.length == 1 || needle_part.length == 1) {
+                    continue;
+                }
+                // check for overlapping parts
+                // a = ['::=','==']
+                // b = ['::','===']
+                // a = ['r','sm']
+                // b = ['rs','m']
+                if (part.start < needle_part.start && part.end > needle_part.start) {
+                    return true;
+                }
+                if (needle_part.start < part.start && needle_part.end > part.start) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        let filtered = seq.parts.filter(filter);
+        if (filtered.length > 0) {
+            continue;
+        }
+        return true;
+    }
+    return false;
+};
+class Sequence {
+    parts;
+    substrs;
+    start;
+    end;
+    constructor() {
+        this.parts = [];
+        this.substrs = [];
+        this.start = 0;
+        this.end = 0;
+    }
+    add(part) {
+        if (part) {
+            this.parts.push(part);
+            this.substrs.push(part.substr);
+            this.start = Math.min(part.start, this.start);
+            this.end = Math.max(part.end, this.end);
+        }
+    }
+    last() {
+        return this.parts[this.parts.length - 1];
+    }
+    length() {
+        return this.parts.length;
+    }
+    clone(position, last_piece) {
+        let clone = new Sequence();
+        let parts = JSON.parse(JSON.stringify(this.parts));
+        let last_part = parts.pop();
+        for (const part of parts) {
+            clone.add(part);
+        }
+        let last_substr = last_piece.substr.substring(0, position - last_part.start);
+        let clone_last_len = last_substr.length;
+        clone.add({ start: last_part.start, end: last_part.start + clone_last_len, length: clone_last_len, substr: last_substr });
+        return clone;
+    }
+}
+/**
+ * Expand a regular expression pattern to include unicode variants
+ * 	eg /a/ becomes /aⓐａẚàáâầấẫẩãāăằắẵẳȧǡäǟảåǻǎȁȃạậặḁąⱥɐɑAⒶＡÀÁÂẦẤẪẨÃĀĂẰẮẴẲȦǠÄǞẢÅǺǍȀȂẠẬẶḀĄȺⱯ/
+ *
+ * Issue:
+ *  ﺊﺋ [ 'ﺊ = \\u{fe8a}', 'ﺋ = \\u{fe8b}' ]
+ *	becomes:	ئئ [ 'ي = \\u{64a}', 'ٔ = \\u{654}', 'ي = \\u{64a}', 'ٔ = \\u{654}' ]
+ *
+ *	İĲ = IIJ = ⅡJ
+ *
+ * 	1/2/4
+ */
+export const getPattern = (str) => {
+    initialize();
+    str = asciifold(str);
+    let pattern = '';
+    let sequences = [new Sequence()];
+    for (let i = 0; i < str.length; i++) {
+        let substr = str.substring(i);
+        let match = substr.match(multi_char_reg);
+        const char = str.substring(i, i + 1);
+        const match_str = match ? match[0] : null;
+        // loop through sequences
+        // add either the char or multi_match
+        let overlapping = [];
+        let added_types = new Set();
+        for (const sequence of sequences) {
+            const last_piece = sequence.last();
+            if (!last_piece || last_piece.length == 1 || last_piece.end <= i) {
+                // if we have a multi match
+                if (match_str) {
+                    const len = match_str.length;
+                    sequence.add({ start: i, end: i + len, length: len, substr: match_str });
+                    added_types.add('1');
+                }
+                else {
+                    sequence.add({ start: i, end: i + 1, length: 1, substr: char });
+                    added_types.add('2');
+                }
+            }
+            else if (match_str) {
+                let clone = sequence.clone(i, last_piece);
+                const len = match_str.length;
+                clone.add({ start: i, end: i + len, length: len, substr: match_str });
+                overlapping.push(clone);
+            }
+            else {
+                // don't add char
+                // adding would create invalid patterns: 234 => [2,34,4]
+                added_types.add('3');
+            }
+        }
+        // if we have overlapping
+        if (overlapping.length > 0) {
+            // ['ii','iii'] before ['i','i','iii']
+            overlapping = overlapping.sort((a, b) => {
+                return a.length() - b.length();
+            });
+            for (let clone of overlapping) {
+                // don't add if we already have an equivalent sequence
+                if (inSequences(clone, sequences)) {
+                    continue;
+                }
+                sequences.push(clone);
+            }
+            continue;
+        }
+        // if we haven't done anything unique
+        // clean up the patterns
+        // helps keep patterns smaller
+        // if str = 'r₨㎧aarss', pattern will be 446 instead of 655
+        if (i > 0 && added_types.size == 1 && !added_types.has('3')) {
+            pattern += sequencesToPattern(sequences, false);
+            let new_seq = new Sequence();
+            const old_seq = sequences[0];
+            if (old_seq) {
+                new_seq.add(old_seq.last());
+            }
+            sequences = [new_seq];
+        }
+    }
+    pattern += sequencesToPattern(sequences, true);
+    return pattern;
+};
+export { escape_regex };

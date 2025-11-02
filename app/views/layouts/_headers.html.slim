@@ -2,6 +2,7 @@ title Martigua
 meta name="viewport" content="width=device-width,initial-scale=1"
 = csrf_meta_tags
 = csp_meta_tag
+meta name="vapid-public-key" content=ENV.fetch('VAPID_PUBLIC_KEY', 'BHgdMBM2bvdF6k4lkgInRs4QgeBzXohkaO6nOWMdQQji1PLggxT4hDCT02ZJqB6BG-lwUvnkqLZoL2OBnGCZZ6Q=')
 
 = stylesheet_link_tag "application", "tailwind", "data-turbo-track": "reload"
 

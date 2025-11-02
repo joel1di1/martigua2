@@ -13,7 +13,18 @@ function urlB64ToUint8Array(base64String) {
 
 const SERVICE_WORKER_PATH = '/serviceworker.js';
 const WEB_PUSH_SUBSCRIPTIONS_PATH = '/webpush_subscriptions';
-const APPLICATION_SERVER_KEY = "BHgdMBM2bvdF6k4lkgInRs4QgeBzXohkaO6nOWMdQQji1PLggxT4hDCT02ZJqB6BG-lwUvnkqLZoL2OBnGCZZ6Q=";
+
+// Get VAPID public key from meta tag (set from ENV['VAPID_PUBLIC_KEY'])
+const getApplicationServerKey = () => {
+  const metaTag = document.querySelector('meta[name="vapid-public-key"]');
+  if (!metaTag || !metaTag.content) {
+    console.error('VAPID public key meta tag not found');
+    return null;
+  }
+  return metaTag.content;
+};
+
+const APPLICATION_SERVER_KEY = getApplicationServerKey();
 
 const registerServiceWorker = async () => {
   try {
@@ -70,6 +81,11 @@ document.addEventListener('turbo:load', async () => {
   }
 
   if (!window.location.pathname.startsWith('/sections')) {
+    return;
+  }
+
+  if (!APPLICATION_SERVER_KEY) {
+    console.error('Cannot setup push notifications: VAPID public key is missing');
     return;
   }
 

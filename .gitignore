@@ -44,3 +44,8 @@ coverage
 
 # ignore all .env files
 .env*
+
+# CI debugging tools (optional)
+Dockerfile.ci-*
+test-ci-locally.sh
+CI-DEBUG-README.md

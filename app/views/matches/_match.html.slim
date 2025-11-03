@@ -37,14 +37,20 @@ li.p-1.md:p-2.block.hover:bg-gray-100.odd:bg-gray-50
             </svg>
       .flex.flex-col
           .flex.flex-row-reverse
-            = render partial: 'matches/presences', locals: {link_url: match_link_url, nb_presents: match.nb_availables, nb_not_presents: match.nb_not_availables, nb_no_response: match.nb_availability_not_set}
-          - if current_user.player_of?(current_section) && match.users.include?(current_user)
+            - if defined?(@match_availability_counts) && @match_availability_counts
+              - counts = @match_availability_counts[match.id] || {available: 0, not_available: 0, no_response: 0}
+              = render partial: 'matches/presences', locals: {link_url: match_link_url, nb_presents: counts[:available], nb_not_presents: counts[:not_available], nb_no_response: counts[:no_response]}
+            - else
+              = render partial: 'matches/presences', locals: {link_url: match_link_url, nb_presents: match.nb_availables, nb_not_presents: match.nb_not_availables, nb_no_response: match.nb_availability_not_set}
+          - user_is_player = defined?(@current_user_is_player) ? @current_user_is_player : (current_user.player_of?(current_section) && match.users.include?(current_user))
+          - if user_is_player
+            - availability = defined?(@current_user_availabilities) ? @current_user_availabilities[match.id]&.available : current_user.is_available_for?(match)
             .flex.flex-row-reverse.mt-2
                 .flex.flex-nowrap
-                  - if current_user.is_available_for?(match).nil?
+                  - if availability.nil?
                     = button_to 'Dispo', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: [match.id]), method: :post, class: 'inline-flex items-center rounded-sm border border-transparent bg-indigo-100 px-1.5 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2 ml-1'
                     = button_to 'Non dispo', match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: []), method: :post, class: 'inline-flex items-center rounded-sm border border-transparent bg-indigo-100 px-1.5 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2 ml-1'
-                  - elsif current_user.is_available_for?(match) == true
+                  - elsif availability == true
                     .inline-flex.items-center.rounded-full.bg-green-100.px-2.5.py-0.5.text-xs.font-medium.text-green-800 Dispo
                     = button_to "m'indiquer non dispo", match_availabilities_user_path(current_user, present_ids: [match.id], checked_ids: []), method: :post, class: 'inline-flex items-center px-1 py-0.5 text-xs text-indigo-700 hover:bg-indigo-200 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2 underline ml-1', title: 'Change sa présence en "disponible"'
                   - else

@@ -36,10 +36,15 @@ class Match < ApplicationRecord
   end
 
   def users
+    section_ids = Team.joins(:team_sections)
+                      .where(id: [local_team_id, visitor_team_id])
+                      .pluck('team_sections.section_id')
+                      .uniq
+
     User.joins(:participations).where(participations: {
                                         season: Season.current,
                                         role: Participation::PLAYER,
-                                        section: teams.includes(:sections).map(&:sections).flatten
+                                        section_id: section_ids
                                       })
   end
 

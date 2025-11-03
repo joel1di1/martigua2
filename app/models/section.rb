@@ -71,8 +71,10 @@ class Section < ApplicationRecord
 
     end_date ||= now.at_end_of_week + 3.weeks + 2.days
 
+    team_ids = teams.pluck(:id)
+
     Match.join_day.where('COALESCE(start_datetime, days.period_start_date) >= ? AND COALESCE(start_datetime, days.period_start_date) <= ?',
-                         now, end_date).date_ordered.where('local_team_id IN (?) OR visitor_team_id IN (?)', teams.map(&:id), teams.map(&:id))
+                         now, end_date).date_ordered.where('local_team_id IN (?) OR visitor_team_id IN (?)', team_ids, team_ids)
   end
 
   def group_everybody(season: nil)

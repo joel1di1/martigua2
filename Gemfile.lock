@@ -506,6 +506,14 @@ GEM
       ffi (~> 1.12)
       logger
     rubyzip (3.2.1)
+    sassc (2.4.0)
+      ffi (~> 1.9)
+    sassc-rails (2.1.2)
+      railties (>= 4.0.0)
+      sassc (>= 2.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     scout_apm (5.8.0)
       parser
     securerandom (0.4.1)
@@ -671,6 +679,7 @@ DEPENDENCIES
   rubocop-rspec_rails
   ruby-lsp
   ruby-lsp-rspec
+  sassc-rails
   scout_apm
   sentry-rails
   sentry-ruby

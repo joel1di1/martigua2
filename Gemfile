@@ -33,6 +33,7 @@ gem 'rack-attack'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rails_ping'
 gem 'redis'
+gem 'sassc-rails' # Required by Administrate for Sass stylesheets
 gem 'scout_apm'
 gem 'sentry-rails'
 gem 'sentry-ruby'

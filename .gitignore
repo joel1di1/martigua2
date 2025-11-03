@@ -42,8 +42,10 @@ spec/failures.txt
 .vscode/launch.json
 coverage
 
-# ignore all .env files
-.env*
+# ignore all local .env files
+.envrc
+.env.*.local
+.env.local
 
 # CI debugging tools (optional)
 Dockerfile.ci-*

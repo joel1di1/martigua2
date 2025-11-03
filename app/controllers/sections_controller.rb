@@ -3,13 +3,22 @@
 class SectionsController < ApplicationController
   before_action :set_section, only: %i[show destroy edit update]
   include PrefetchTrainingData
+  include PrefetchMatchData
 
   def show
     @next_trainings = @section.next_trainings.includes(:groups, :location)
-    @next_matches = @section.next_matches.includes(:local_team, :visitor_team, :day, :location)
+    @next_matches = @section.next_matches.includes(
+      :local_team,
+      :visitor_team,
+      :day,
+      :location,
+      :championship,
+      match_availabilities: :user
+    )
     @teams = @section.teams
 
     add_training_prefetch_data(@next_trainings)
+    preload_match_data
   end
 
   def new

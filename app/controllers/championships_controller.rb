@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ChampionshipsController < ApplicationController
+  include PrefetchMatchData
+
   before_action :find_championship_by_id, except: %i[index new create]
 
   TYPE_COMPETITION = [
@@ -13,7 +15,18 @@ class ChampionshipsController < ApplicationController
     @championships = scope.where(season: Season.current).order(created_at: :desc)
   end
 
-  def show; end
+  def show
+    @section = current_section
+    @next_matches = @championship.matches.join_day.date_ordered.includes(
+      :local_team,
+      :visitor_team,
+      :day,
+      :location,
+      :championship,
+      match_availabilities: :user
+    )
+    preload_match_data
+  end
 
   def new
     @championship = Championship.new championship_params
@@ -62,7 +75,9 @@ class ChampionshipsController < ApplicationController
       else
         permitted_params = params.permit(all_params).to_h.except(:ffhb).symbolize_keys
         permitted_params[:team_links] = params[:team_links].permit!.to_h
-        linked_calendar = Calendar.find(params[:championship][:calendar]) if params[:championship] && params[:championship][:calendar].present?
+        if params[:championship] && params[:championship][:calendar].present?
+          linked_calendar = Calendar.find(params[:championship][:calendar])
+        end
         @championship = Championship.create_from_ffhb!(**permitted_params, linked_calendar:)
         redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
                       fallback: section_championship_path(current_section, @championship),

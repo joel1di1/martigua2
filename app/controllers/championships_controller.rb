@@ -95,7 +95,7 @@ class ChampionshipsController < ApplicationController
                       use_referrer: false,
                       notice: 'Compétition créée'
       else
-        render :new, status: :unprocessable_entity
+        render :new, status: :unprocessable_content
       end
     end
   end
@@ -104,7 +104,7 @@ class ChampionshipsController < ApplicationController
     if @championship.update(championship_params)
       redirect_to section_championship_path(current_section, @championship), notice: 'Compétition sauvegardée'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

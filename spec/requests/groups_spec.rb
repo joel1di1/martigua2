@@ -53,7 +53,7 @@ RSpec.describe 'Groups' do
 
       it 'returns unprocessable entity status' do
         post section_groups_path(section), params: { group: new_group_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end

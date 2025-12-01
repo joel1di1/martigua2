@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
         format.turbo_stream
         format.js
       else
-        format.js { render json: { errors: @message.errors }, status: :unprocessable_entity }
+        format.js { render json: { errors: @message.errors }, status: :unprocessable_content }
       end
     end
   end

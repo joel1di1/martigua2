@@ -27,8 +27,8 @@ class AbsencesController < ApplicationController
         format.html { redirect_to section_user_path(current_section, @user), notice: 'Blessure créée' }
         format.json { render :show, status: :created, location: @absence }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @absence.errors, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: @absence.errors, status: :unprocessable_content }
       end
     end
   end
@@ -41,8 +41,8 @@ class AbsencesController < ApplicationController
         end
         format.json { render :show, status: :ok, location: @absence }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @absence.errors, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
+        format.json { render json: @absence.errors, status: :unprocessable_content }
       end
     end
   end

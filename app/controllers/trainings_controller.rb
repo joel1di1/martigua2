@@ -47,7 +47,7 @@ class TrainingsController < ApplicationController
     if @training.save
       redirect_with(fallback: section_training_path(current_section, @training), notice: 'Entrainement modifié')
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

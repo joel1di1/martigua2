@@ -7,7 +7,7 @@ class WebpushSubscriptionsController < ApplicationController
     if webpush_subscription.save
       render json: { success: true }, status: :created
     else
-      render json: { errors: webpush_subscription.errors }, status: :unprocessable_entity
+      render json: { errors: webpush_subscription.errors }, status: :unprocessable_content
     end
   end
 

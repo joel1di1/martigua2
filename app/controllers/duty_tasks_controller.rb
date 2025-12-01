@@ -21,7 +21,7 @@ class DutyTasksController < ApplicationController
     if @duty_task.save
       redirect_to section_duty_tasks_path(current_section), notice: 'TIG créée'
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -30,7 +30,7 @@ class DutyTasksController < ApplicationController
     if @duty_task.update(duty_task_params)
       redirect_to section_duty_tasks_path(current_section), notice: 'TIG modifiée'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

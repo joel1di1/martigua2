@@ -23,7 +23,7 @@ class CalendarsController < ApplicationController
       redirect_to edit_section_calendar_path(current_section, @calendar), notice: 'Calendrier mis à jour'
     else
       flash.now[:error] = 'Erreur lors de la mise à jour'
-      render 'edit', status: :unprocessable_entity
+      render 'edit', status: :unprocessable_content
     end
   end
 

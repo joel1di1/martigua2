@@ -88,7 +88,7 @@ class SectionsController < ApplicationController
       redirect_with(fallback: section_path(@section),
                     notice: "Section #{@section.name} modifée")
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

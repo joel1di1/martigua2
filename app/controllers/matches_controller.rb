@@ -51,7 +51,7 @@ class MatchesController < ApplicationController
     if @match.save
       redirect_to section_championship_path(current_section, @championship), notice: 'Match créé'
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -61,7 +61,7 @@ class MatchesController < ApplicationController
     if @match.update match_params
       redirect_to section_championship_path(current_section, @championship)
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

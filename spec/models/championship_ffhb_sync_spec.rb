@@ -13,7 +13,8 @@ RSpec.describe Championship do
     let(:code_pool) { '128335' }
     let(:linked_calendar) { nil }
 
-    let(:my_team) { create(:team) }
+    let(:section) { create(:section) }
+    let(:my_team) { create(:team, with_section: section) }
     let(:team_links) { { '1589702' => my_team.id } }
 
     let(:championship) do
@@ -27,6 +28,40 @@ RSpec.describe Championship do
       expect(championship.matches).to all(receive(:ffhb_sync!))
 
       championship.ffhb_sync!
+    end
+
+    context 'when new matches are added to the championship' do
+      it 'creates new matches during sync' do
+        # Create championship with only one match initially
+        championship.matches.destroy_all
+        championship.matches.create!(
+          local_team: my_team,
+          visitor_team: create(:team),
+          day: championship.calendar.days.first,
+          ffhb_key: '16-ans-m-2-eme-division-territoriale-94-75-23229 128335 1891863'
+        )
+        championship.reload
+        expect(championship.matches.size).to eq(1)
+
+        # Sync should detect and add the 21 missing matches
+        championship.ffhb_sync!
+
+        championship.reload
+        expect(championship.matches.size).to eq(22)
+      end
+
+      it 'does not create duplicate matches' do
+        expect(championship.matches.size).to eq(22)
+
+        # Run sync twice - should not create duplicates
+        championship.ffhb_sync!
+        championship.reload
+        expect(championship.matches.size).to eq(22)
+
+        championship.ffhb_sync!
+        championship.reload
+        expect(championship.matches.size).to eq(22)
+      end
     end
   end
 

@@ -100,6 +100,48 @@ RSpec.describe PrefetchMatchData do
         expect(counts[match1.id][:available]).to eq(0)
         expect(counts[match1.id][:not_available]).to be >= 1
       end
+
+      it 'does not subtract absences from available count for players not marked available' do
+        # Setup: 3 players total
+        # - player1: marked available=true, not absent
+        # - absent_player: has absence, marked available=false (or no response)
+        # - player2: marked available=true, not absent
+        create(:match_availability, user: player1, match: match1, available: true)
+        create(:match_availability, user: player2, match: match1, available: true)
+        # absent_player has no MatchAvailability (no response) but has an absence
+
+        get :index, params: { section_id: section.id }
+
+        counts = assigns(:match_availability_counts)
+        # Should show 2 available (player1 and player2)
+        # The absent_player's absence should NOT be subtracted from the available count
+        # because they were never marked as available=true
+        expect(counts[match1.id][:available]).to eq(2)
+      end
+
+      it 'correctly handles mix of absent available and absent unavailable players' do
+        # Setup:
+        # - player1: available=true, has absence -> should reduce available count
+        # - player2: available=true, no absence -> should be in available count
+        # - absent_player: available=false, has absence -> should NOT reduce available count
+        absent_available_player = create(:user, with_section: section)
+        create(:absence,
+               user: absent_available_player,
+               start_at: 5.days.from_now,
+               end_at: 10.days.from_now)
+
+        create(:match_availability, user: absent_available_player, match: match1, available: true)
+        create(:match_availability, user: player2, match: match1, available: true)
+        create(:match_availability, user: absent_player, match: match1, available: false)
+
+        get :index, params: { section_id: section.id }
+
+        counts = assigns(:match_availability_counts)
+        # Only player2 should be counted as available (player1 is absent but was available=true, so subtracted)
+        # absent_player is not_available with absence, should NOT double-count
+        expect(counts[match1.id][:available]).to eq(1)
+        expect(counts[match1.id][:not_available]).to be >= 2
+      end
     end
 
     context 'with no availabilities set' do

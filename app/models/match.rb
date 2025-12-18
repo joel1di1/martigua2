@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Match < ApplicationRecord
+class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
   belongs_to :championship
   belongs_to :location, optional: true
   belongs_to :day

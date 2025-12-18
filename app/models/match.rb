@@ -49,7 +49,8 @@ class Match < ApplicationRecord
   end
 
   def _availables
-    match_availabilities.includes(:user).where(available: true) - aways
+    away_user_ids = aways.pluck(:id)
+    match_availabilities.includes(:user).where(available: true).where.not(user_id: away_user_ids)
   end
 
   def availables
@@ -70,7 +71,7 @@ class Match < ApplicationRecord
 
   def aways
     users.joins(:absences)
-         .where('absences.start_at < ? AND absences.end_at > ?', start_datetime || day.period_start_date, start_datetime || day.period_end_date)
+         .where('absences.start_at <= ? AND absences.end_at >= ?', start_datetime || day.period_start_date, end_datetime || day.period_end_date)
   end
 
   def nb_aways

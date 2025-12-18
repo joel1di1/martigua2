@@ -231,6 +231,53 @@ RSpec.describe Match do
       it { expect(match.nb_not_availables).to eq 1 }
       it { expect(match.not_availables).to contain_exactly(player_sick) }
     end
+
+    context 'with absence matching exact match boundaries using end_datetime' do
+      let(:section) { create(:section) }
+      let(:team) { create(:team, with_section: section) }
+      let(:day) { create(:day, period_start_date: 1.week.from_now, period_end_date: 1.week.from_now + 2.hours) }
+      let(:match) do
+        create(:match, local_team: team, day:, start_datetime: 1.week.from_now,
+                       end_datetime: 1.week.from_now + 2.hours)
+      end
+      let(:player) { create(:user, with_section: section) }
+      let(:player_absent) { create(:user, with_section: section) }
+
+      before do
+        create(:match_availability, user: player, match:, available: true)
+        create(:match_availability, user: player_absent, match:, available: true)
+        # Absence that covers match period using end_datetime (not start_datetime)
+        create(:absence, user: player_absent, start_at: match.start_datetime - 1.hour,
+                         end_at: match.end_datetime + 1.hour)
+        [player, player_absent]
+      end
+
+      it 'includes player with absence covering match period' do
+        expect(match.aways).to contain_exactly(player_absent)
+      end
+    end
+
+    context 'with match using day period when start_datetime is nil' do
+      let(:section) { create(:section) }
+      let(:team) { create(:team, with_section: section) }
+      let(:day) { create(:day, period_start_date: 1.week.from_now, period_end_date: 1.week.from_now + 2.hours) }
+      let(:match) { create(:match, local_team: team, day:, start_datetime: nil, end_datetime: nil) }
+      let(:player) { create(:user, with_section: section) }
+      let(:player_absent) { create(:user, with_section: section) }
+
+      before do
+        create(:match_availability, user: player, match:, available: true)
+        create(:match_availability, user: player_absent, match:, available: true)
+        # Absence covering the day period
+        create(:absence, user: player_absent, start_at: day.period_start_date - 1.hour,
+                         end_at: day.period_end_date + 1.hour)
+        [player, player_absent]
+      end
+
+      it 'uses day period for absence checking' do
+        expect(match.aways).to contain_exactly(player_absent)
+      end
+    end
   end
 
   describe '#calculated_start_datetime' do

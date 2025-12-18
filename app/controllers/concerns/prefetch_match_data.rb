@@ -55,18 +55,18 @@ module PrefetchMatchData
     Participation
       .joins(user: :absences)
       .where(section: @section, season: Season.current, role: Participation::PLAYER)
-      .where('absences.start_at < ? AND absences.end_at > ?', max_match_time, min_match_time)
+      .where('absences.start_at <= ? AND absences.end_at >= ?', max_match_time, min_match_time)
       .select('DISTINCT participations.user_id, absences.start_at, absences.end_at')
   end
 
   def match_absences_to_matches(absences, absences_by_match)
     @next_matches.each do |match|
       start_time = match.start_datetime || match.day&.period_start_date
-      end_time = match.start_datetime || match.day&.period_end_date
+      end_time = match.end_datetime || match.day&.period_end_date
       next if start_time.blank? || end_time.blank?
 
       absences_by_match[match.id] = absences.count do |absence|
-        absence.start_at < start_time && absence.end_at > end_time
+        absence.start_at <= start_time && absence.end_at >= end_time
       end
     end
   end
@@ -78,7 +78,17 @@ module PrefetchMatchData
       not_available_count = availability_counts[[match.id, false]] || 0
       away_count = absences_by_match[match.id] || 0
 
-      actual_available = [available_count - away_count, 0].max
+      # Only subtract absences from available count if they were marked available
+      # The away players who are already marked not_available or have no response shouldn't be double-counted
+      available_away_ids = match.match_availabilities.where(available: true).pluck(:user_id)
+
+      actual_away_from_available = if away_count.positive?
+                                     match.aways.where(id: available_away_ids).count
+                                   else
+                                     0
+                                   end
+
+      actual_available = [available_count - actual_away_from_available, 0].max
       actual_not_available = not_available_count + away_count
       no_response_count = total_players - available_count - not_available_count
 

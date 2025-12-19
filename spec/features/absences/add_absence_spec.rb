@@ -12,6 +12,9 @@ describe 'Add Absence', :devise do
       # connect on the player profile
       visit section_user_path(section, player)
 
+      # Wait for page to fully load by checking for user name
+      expect(page).to have_text player.first_name
+      expect(page).to have_text player.last_name
       expect(page).to have_text '0 absences'
 
       # click on the add absence button

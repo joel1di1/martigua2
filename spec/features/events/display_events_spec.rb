@@ -6,7 +6,6 @@ describe 'display_events', :devise do
   #   When I go to events
   #   Then I can see every events of the next 7 days
   it 'member sees next 7 days events' do
-    skip 'This test is flaky and needs to be fixed'
     section = create(:section)
     team = create(:team, with_section: section)
     user = create(:user, with_section: section)
@@ -17,7 +16,12 @@ describe 'display_events', :devise do
 
     visit section_events_path(section)
 
+    # Wait for turbo frame to load (lazy loading)
+    expect(page).not_to have_text 'loading events...', wait: 10
+
     assert_text I18n.l(next_training.start_datetime, format: '%a %d %b %R')
-    assert_text "#{next_match.local_team.name} - #{next_match.visitor_team.name}"
+    assert_text next_match.local_team.name
+    assert_text 'vs'
+    assert_text next_match.visitor_team.name
   end
 end

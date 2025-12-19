@@ -16,9 +16,13 @@ describe 'display_events', :devise do
 
     visit section_events_path(section)
 
+    # Wait for page to load first
+    expect(page).to have_link 'Prochains événements'
+
     # Wait for turbo frame to complete lazy loading
     # The turbo stream removes the placeholder div when loading completes
-    expect(page).not_to have_css('#events_placeholder', wait: 20)
+    # Long wait time needed for parallel test execution under heavy load
+    expect(page).to have_no_css('#events_placeholder', wait: 30)
 
     assert_text I18n.l(next_training.start_datetime, format: '%a %d %b %R')
     assert_text next_match.local_team.name

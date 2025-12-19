@@ -2,8 +2,7 @@
 
 describe 'create championship' do
   describe 'manually' do
-    # Skipped: Requires external FFHB API sync and specific championship data
-    skip 'creates a new championship' do
+    it 'creates a new championship', skip: 'Requires external FFHB API sync and specific championship data' do
       section = create(:section)
       coach = create(:user, with_section_as_coach: section)
       championship = create(:championship, ffhb_key: '110562', season: Season.current)

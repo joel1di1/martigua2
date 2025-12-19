@@ -2,7 +2,8 @@
 
 describe 'create championship' do
   describe 'manually' do
-    skip 'creates a new championship' do # rubocop:disable RSpec/PendingWithoutReason
+    # Skipped: Requires external FFHB API sync and specific championship data
+    skip 'creates a new championship' do
       section = create(:section)
       coach = create(:user, with_section_as_coach: section)
       championship = create(:championship, ffhb_key: '110562', season: Season.current)

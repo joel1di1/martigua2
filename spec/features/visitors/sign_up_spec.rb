@@ -14,15 +14,6 @@ describe 'Sign Up', :devise do
     expect(page).to have_content 'Bienvenue ! Vous vous êtes bien enregistré(e).'
   end
 
-  # Scenario: Visitor cannot sign up with invalid email address
-  #   Given I am not signed in
-  #   When I sign up with an invalid email address
-  #   Then I see an invalid email message
-  it 'visitor cannot sign up with invalid email address' do
-    sign_up_with('bogus', 'please123', 'please123')
-    expect(page).to have_content "Email n'est pas valide"
-  end
-
   # Scenario: Visitor cannot sign up without password
   #   Given I am not signed in
   #   When I sign up without a password

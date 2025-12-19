@@ -5,6 +5,31 @@ describe User do
   let(:user) { create(:user) }
 
   it { is_expected.to validate_presence_of :email }
+
+  describe 'email validation' do
+    it 'accepts valid email addresses' do
+      valid_emails = %w[user@example.com USER@foo.COM A_US-ER@foo.bar.org first.last@foo.jp alice+bob@baz.cn]
+      valid_emails.each do |valid_email|
+        user.email = valid_email
+        expect(user).to be_valid, "#{valid_email.inspect} should be valid"
+      end
+    end
+
+    it 'rejects invalid email addresses' do
+      invalid_emails = ['user_at_foo.org', 'foo bar@example.com', '@example.com']
+      invalid_emails.each do |invalid_email|
+        user.email = invalid_email
+        expect(user).not_to be_valid, "#{invalid_email.inspect} should be invalid"
+      end
+    end
+
+    it 'rejects blank email' do
+      user.email = ''
+      expect(user).not_to be_valid
+      expect(user.errors[:email]).to include('doit être rempli(e)')
+    end
+  end
+
   it { is_expected.to have_db_column :first_name }
   it { is_expected.to have_db_column :last_name }
   it { is_expected.to have_db_column :nickname }

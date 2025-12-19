@@ -22,7 +22,6 @@ RSpec.describe 'channels', :js do
   end
 
   it 'last read message and first read message should be displayed' do
-    skip 'skipping test for now, flaky test'
     general = section.general_channel
 
     messages = (0...100).map do

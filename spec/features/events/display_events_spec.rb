@@ -16,10 +16,10 @@ describe 'display_events', :devise do
 
     visit section_events_path(section)
 
-    # Wait for turbo frame to load (lazy loading)
-    expect(page).not_to have_text 'loading events...', wait: 10
+    # Wait for turbo frame to load by checking for actual content
+    # (waiting for loading to disappear can be unreliable)
+    expect(page).to have_text I18n.l(next_training.start_datetime, format: '%a %d %b %R'), wait: 15
 
-    assert_text I18n.l(next_training.start_datetime, format: '%a %d %b %R')
     assert_text next_match.local_team.name
     assert_text 'vs'
     assert_text next_match.visitor_team.name

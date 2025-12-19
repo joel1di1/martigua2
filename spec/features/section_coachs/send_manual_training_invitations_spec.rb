@@ -10,7 +10,6 @@ describe 'send training invitation', :devise, :js do
   #   When I go to trainings page
   #   Then I can create new training
   it 'coach send training invitation' do
-    skip 'This test is flaky and needs to be fixed'
     section = create(:section)
     coach = create(:user, with_section_as_coach: section)
     training = create(:training, :futur, with_section: section)

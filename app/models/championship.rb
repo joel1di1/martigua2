@@ -101,6 +101,54 @@ class Championship < ApplicationRecord # rubocop:disable Metrics/ClassLength
     championship_groups.map { |championship_group| championship_group.freeze!(user, championship: self) }
   end
 
+  def merge_calendar_from(other_championship)
+    # Validations
+    return { success: false, error: 'Cannot merge a championship with itself' } if self == other_championship
+    return { success: false, error: 'Championships already share the same calendar' } if calendar_id == other_championship.calendar_id
+    return { success: false, error: 'Cannot merge calendars from different seasons' } if season_id != other_championship.season_id
+
+    source_calendar = other_championship.calendar
+    target_calendar = calendar
+
+    ApplicationRecord.transaction do
+      # For each day in source calendar
+      source_calendar.days.each do |source_day|
+        # Normalize period dates to week boundaries
+        normalized_start = source_day.period_start_date.beginning_of_week
+        normalized_end = source_day.period_end_date.end_of_week
+
+        # Try to find matching day in target calendar
+        target_day = target_calendar.days.find do |day|
+          day.period_start_date.beginning_of_week == normalized_start &&
+            day.period_end_date.end_of_week == normalized_end
+        end
+
+        # If no matching day exists, create one
+        if target_day.nil?
+          target_day = target_calendar.days.create!(
+            name: source_day.name,
+            period_start_date: normalized_start,
+            period_end_date: normalized_end
+          )
+        end
+
+        # Reassign all matches from source day to target day
+        source_day.matches.update_all(day_id: target_day.id) # rubocop:disable Rails/SkipsModelValidations
+      end
+
+      # Update the other championship to use our calendar
+      other_championship.update!(calendar: target_calendar)
+
+      # Delete the source calendar if no other championships reference it
+      source_calendar.reload
+      source_calendar.destroy! if Championship.where(calendar: source_calendar).none?
+    end
+
+    { success: true }
+  rescue ActiveRecord::RecordInvalid => e
+    { success: false, error: e.message }
+  end
+
   delegate :find_or_create_day_for, to: :calendar
 
   private

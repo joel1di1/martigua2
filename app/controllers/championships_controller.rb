@@ -108,6 +108,37 @@ class ChampionshipsController < ApplicationController
     end
   end
 
+  def merge_calendar_form
+    section_championship_ids = current_section.championships.pluck(:id)
+
+    @available_championships = Championship
+                               .where(id: section_championship_ids)
+                               .where(season: @championship.season)
+                               .where.not(id: @championship.id)
+                               .order(:name)
+  end
+
+  def merge_calendar
+    other_championship = Championship.find(params[:other_championship_id])
+
+    # Verify both championships belong to current section
+    section_championship_ids = current_section.championships.pluck(:id)
+    if section_championship_ids.include?(@championship.id) && section_championship_ids.include?(other_championship.id)
+      result = @championship.merge_calendar_from(other_championship)
+
+      if result[:success]
+        redirect_to section_championship_path(current_section, @championship),
+                    notice: "Calendrier fusionné avec succès depuis #{other_championship.name}"
+      else
+        redirect_to section_championship_path(current_section, @championship),
+                    alert: "Échec de la fusion du calendrier : #{result[:error]}"
+      end
+    else
+      redirect_to section_championship_path(current_section, @championship),
+                  alert: 'Vous ne pouvez fusionner que des calendriers de championnats de votre section'
+    end
+  end
+
   protected
 
   def championship_params

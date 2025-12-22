@@ -81,6 +81,10 @@ Rails.application.routes.draw do
       end
     end
     resources :championships do
+      member do
+        get :merge_calendar_form
+        post :merge_calendar
+      end
       resources :matches
       resources :enrolled_team_championships, only: %i[index create destroy]
       resources :burns, only: %i[index create destroy]

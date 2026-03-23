@@ -15,7 +15,7 @@ class CreateGroupTrainings < ActiveRecord::Migration[6.1]
     # Copy data from groups_trainings to group_trainings
     reversible do |dir|
       dir.up do
-        execute <<-SQL.squish
+        execute <<~SQL.squish
           INSERT INTO group_trainings (group_id, training_id, created_at, updated_at)
           SELECT group_id, training_id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM groups_trainings
         SQL

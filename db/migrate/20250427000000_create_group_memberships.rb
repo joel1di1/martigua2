@@ -15,7 +15,7 @@ class CreateGroupMemberships < ActiveRecord::Migration[6.1]
     # Copy data from groups_users to group_memberships
     reversible do |dir|
       dir.up do
-        execute <<-SQL.squish
+        execute <<~SQL.squish
           INSERT INTO group_memberships (user_id, group_id, created_at, updated_at)
           SELECT user_id, group_id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM groups_users
         SQL

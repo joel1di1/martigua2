@@ -15,7 +15,7 @@ class CreateSectionTrainings < ActiveRecord::Migration[6.1]
     # Copy data from sections_trainings to section_trainings
     reversible do |dir|
       dir.up do
-        execute <<-SQL.squish
+        execute <<~SQL.squish
           INSERT INTO section_trainings (section_id, training_id, created_at, updated_at)
           SELECT section_id, training_id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM sections_trainings
         SQL

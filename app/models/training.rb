@@ -98,14 +98,14 @@ class Training < ApplicationRecord
 
     present_players
       .where("email NOT LIKE '%@example.com'")
-      .joins(<<-SQL.squish)
+      .joins(<<~SQL.squish)
         LEFT OUTER JOIN duty_tasks
         ON duty_tasks.user_id = users.id
         AND duty_tasks.realised_at BETWEEN '#{current_season_start}' AND '#{current_season_end}'
         AND duty_tasks.club_id IN (#{sections.map(&:club_id).join(',')})
       SQL
       .distinct
-      .select(<<-SQL.squish)
+      .select(<<~SQL.squish)
         users.*,
         MAX(duty_tasks.realised_at) AS last_duty_date,
         COALESCE(SUM(duty_tasks.weight), -1) AS sum_duty_tasks_weight

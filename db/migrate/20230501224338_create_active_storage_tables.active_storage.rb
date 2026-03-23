@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 # This migration comes from active_storage (originally 20170806125915)
-# rubocop:disable Metrics/MethodLength
-# rubocop:disable Rails/CreateTableWithTimestamps
 class CreateActiveStorageTables < ActiveRecord::Migration[5.2]
   def change
     # Use Active Record's configured type for primary and foreign keys
@@ -60,5 +58,3 @@ class CreateActiveStorageTables < ActiveRecord::Migration[5.2]
     [primary_key_type, foreign_key_type]
   end
 end
-# rubocop:enable Metrics/MethodLength
-# rubocop:enable Rails/CreateTableWithTimestamps

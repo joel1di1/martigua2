@@ -104,8 +104,15 @@ class Championship < ApplicationRecord # rubocop:disable Metrics/ClassLength
   def merge_calendar_from(other_championship)
     # Validations
     return { success: false, error: 'Cannot merge a championship with itself' } if self == other_championship
-    return { success: false, error: 'Championships already share the same calendar' } if calendar_id == other_championship.calendar_id
-    return { success: false, error: 'Cannot merge calendars from different seasons' } if season_id != other_championship.season_id
+
+    if calendar_id == other_championship.calendar_id
+      return { success: false,
+               error: 'Championships already share the same calendar' }
+    end
+    if season_id != other_championship.season_id
+      return { success: false,
+               error: 'Cannot merge calendars from different seasons' }
+    end
 
     source_calendar = other_championship.calendar
     target_calendar = calendar

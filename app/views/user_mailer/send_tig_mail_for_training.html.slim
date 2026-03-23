@@ -1,0 +1,17 @@
+= "Salut #{@user.first_name},"
+
+p
+  | Tu es désigné pour laver les chasubles après l'entrainement du
+  = @training.start_datetime.strftime("%A %-d %HH%M")
+p
+  | Si tu ne peux pas cet entrainement, trouve un remplaçant, et tu le feras la prochaine fois.
+  br
+  | Les prochains sur la liste sont, dans l'ordre :
+  = @next_training_duties[1..-1].map(&:full_name).join(', ')
+  br
+  | Ils sont en copie du mail.
+
+p
+  | Une fois les chasubles lavés, pour ne pas être re-désigner, pensez à le renseigner ici : https://www.martigua.org/sections/1-Homme%20+16/duty_tasks
+
+| Bon entrainement

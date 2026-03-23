@@ -1,0 +1,32 @@
+= "Bonjour #{@user.first_name},"
+
+p
+  | Merci d'indiquer ta présence aux entrainements suivants :
+
+form(action=training_presences_user_url(@user.to_param) method="post")
+  input(type="hidden" name="user_email" value=@user.email)
+  input(type="hidden" name="user_token" value=@user.authentication_token)
+  table(style="width: 600px;border-collapse: collapse;")
+    tr(style="text-align: left;")
+      th(style="border: 1px grey solid;") Horaire
+      th(style="border: 1px grey solid;") Lieu
+      th(style="border: 1px grey solid;") Présent ?
+    - @trainings.each do |training|
+      tr
+        td(style="border: 1px grey solid;") = training.start_datetime.strftime("%A %-d %HH%M")
+        td(style="border: 1px grey solid;") = training.location ? training.location.name : ''
+        td(style="border: 1px grey solid;text-align: center;")
+          - if training.cancelled?
+            | ENTRAINEMENT ANNULÉ :
+            = training.cancel_reason
+          - else
+            input(type="hidden" name="present_ids[]" value=training.id)
+            input(type="checkbox" name="checked_ids[]" value=training.id checked=@user.present_for?(training))
+    tr
+      td(colspan="3")
+        a(style="float: left; text-decoration: none; background:#5cb85c;display:inline-block;padding:10px;font-size:14px;margin:10px 10px 0 0;color:white;" href=training_presences_user_url(@user.to_param, present_ids: @trainings.map(&:id), checked_ids: @trainings.map(&:id), user_email: @user.email, user_token: @user.authentication_token)) Présent à tous !!
+        a(style="float: left; text-decoration: none; background:#d9534f;display:inline-block;padding:10px;font-size:14px;margin:10px 10px 0 10px;color:white;" href=training_presences_user_url(@user.to_param, present_ids: @trainings.map(&:id), checked_ids: [], user_email: @user.email, user_token: @user.authentication_token)) Présent à aucun :(
+        button(type="submit" style="float: right; background:#428bca;display:inline-block;padding:10px;font-size:14px;margin:10px 0 0 10px;color:white; border: none;") Valider mes présences
+
+p
+  | Bonne journée.

@@ -103,7 +103,28 @@ class SectionsController < ApplicationController
   def dissociate_player
     user = current_section.users.find(params[:user_id])
     UserChampionshipStat.joins(:championship).where(championship: { season: Season.current }, user:).update_all(user_id: nil) # rubocop:disable Rails/SkipsModelValidations
-    redirect_to edit_club_section_path(current_section.club, current_section), notice: 'Joueur dissocié'
+
+    respond_to do |format|
+      format.turbo_stream do
+        user_stats = UserChampionshipStat
+                     .where(championship: current_section.championships.where(season: Season.current))
+                     .index_by(&:player_id).values
+        render turbo_stream: turbo_stream.replace(
+          "player_#{user.id}",
+          partial: 'sections/player_row',
+          locals: {
+            player: user,
+            section: current_section,
+            association: nil,
+            user_stats: user_stats,
+            suggested_association: suggested_user_stat(user, user_stats)
+          }
+        )
+      end
+      format.html do
+        redirect_to edit_club_section_path(current_section.club, current_section), notice: 'Joueur dissocié'
+      end
+    end
   end
 
   def dissociate_all_players

@@ -6,16 +6,15 @@
 
 .flex.flex-col.items-center
   = form_for(@section, url: section_player_ffhb_association_path(@section)) do |f|
-    table class="min-w-full divide-y divide-gray-300"
-      thead class="bg-gray-50"
-        tr
-          th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8" Nom du joueur
-          th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" Joueur FFHB
-          th
-      tbody class="divide-y divide-gray-200 bg-white"
+    div class="min-w-full divide-y divide-gray-300"
+      div class="bg-gray-50 flex items-center"
+        div class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8 w-48" Nom du joueur
+        div class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 flex-1" Joueur FFHB
+        div class="w-32"
+      div class="divide-y divide-gray-200 bg-white"
         - @players.each do |player|
           = render 'player_row', player: player, section: @section, association: @associations[player], user_stats: @user_stats, suggested_association: @suggested_associations[player]
-    .flex.flex-col.items-center
+    .flex.flex-col.items-center.mt-4
       = f.submit 'Valider les associations', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
 
   .mt-4

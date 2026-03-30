@@ -103,6 +103,7 @@ Rails.application.routes.draw do
 
     patch 'player_ffhb_association'
     delete 'dissociate_player'
+    delete 'dissociate_all_players'
   end
 
   resources :club_admin_roles, only: %i[index show]

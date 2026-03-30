@@ -106,6 +106,15 @@ class SectionsController < ApplicationController
     redirect_to edit_club_section_path(current_section.club, current_section), notice: 'Joueur dissocié'
   end
 
+  def dissociate_all_players
+    UserChampionshipStat
+      .joins(:championship)
+      .where(championship: { season: Season.current }, user: current_section.users)
+      .update_all(user_id: nil) # rubocop:disable Rails/SkipsModelValidations
+    redirect_to edit_club_section_path(current_section.club, current_section),
+                notice: 'Tous les joueurs ont été dissociés'
+  end
+
   private
 
   def section_params

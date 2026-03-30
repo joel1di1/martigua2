@@ -96,14 +96,16 @@ class Training < ApplicationRecord
     current_season_start = Season.current.start_date
     current_season_end = Season.current.end_date
 
+    club_ids = sections.map(&:club_id)
+    join_sql = self.class.send(:sanitize_sql_array, [<<~SQL.squish, current_season_start, current_season_end, club_ids])
+      LEFT OUTER JOIN duty_tasks
+      ON duty_tasks.user_id = users.id
+      AND duty_tasks.realised_at BETWEEN ? AND ?
+      AND duty_tasks.club_id IN (?)
+    SQL
     present_players
       .where("email NOT LIKE '%@example.com'")
-      .joins(<<~SQL.squish)
-        LEFT OUTER JOIN duty_tasks
-        ON duty_tasks.user_id = users.id
-        AND duty_tasks.realised_at BETWEEN '#{current_season_start}' AND '#{current_season_end}'
-        AND duty_tasks.club_id IN (#{sections.map(&:club_id).join(',')})
-      SQL
+      .joins(join_sql)
       .distinct
       .select(<<~SQL.squish)
         users.*,

@@ -68,29 +68,6 @@
         915
       ],
       "note": ""
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "e6d7efe61a8b35daf9063eb5527f7527b26f88ef5adbdf535517e777a4737305",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/training.rb",
-      "line": 104,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "present_players.where(\"email NOT LIKE '%@example.com'\").joins(\"        LEFT OUTER JOIN duty_tasks\\n        ON duty_tasks.user_id = users.id\\n        AND duty_tasks.realised_at BETWEEN '#{Season.current.start_date}' AND '#{Season.current.end_date}'\\n        AND duty_tasks.club_id IN (#{sections.map(&:club_id).join(\",\")})\\n\".squish)",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Training",
-        "method": "next_duties"
-      },
-      "user_input": "Season.current.start_date",
-      "confidence": "Medium",
-      "cwe_id": [
-        89
-      ],
-      "note": ""
     }
   ],
   "brakeman_version": "7.1.0"

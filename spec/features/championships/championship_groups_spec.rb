@@ -69,7 +69,7 @@ describe 'championship groups management', :devise do
     it 'renames the group' do
       visit_groups_path
       click_on 'Modifier'
-      fill_in 'Nom du groupe', with: 'Nouveau nom'
+      fill_in 'Nom', with: 'Nouveau nom'
       click_on 'Renommer'
       expect(page).to have_text('Groupe modifié')
       expect(page).to have_text('Nouveau nom')

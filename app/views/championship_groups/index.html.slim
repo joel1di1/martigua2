@@ -1,24 +1,33 @@
-.flex.items-center.mb-5
-  h1.text-xl.font-semibold.text-gray-900.flex-1 Groupes de compétitions
+div class="sm:flex sm:items-center"
+  div class="sm:flex-auto"
+    h1 class="text-base/7 font-semibold text-gray-900" Groupes de compétitions
+    p class="mt-2 text-sm/6 text-gray-700" Gérez les groupes pour définir les règles de brûlure entre niveaux (équipe 1, équipe 2, etc.).
   - if current_user.coach_of?(current_section)
-    = link_to 'Nouveau groupe', new_section_championship_group_path(current_section), class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700'
+    div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none"
+      = link_to 'Nouveau groupe', new_section_championship_group_path(current_section), class: 'block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
 
 - if @championship_groups.empty?
-  p.text-gray-500.text-sm Aucun groupe de compétitions pour cette section.
+  p.mt-8.text-sm.text-gray-500 Aucun groupe de compétitions pour cette section.
 - else
-  div class="min-w-full divide-y divide-gray-300"
-    div class="bg-gray-50 grid grid-cols-[2fr_3fr_6rem] items-center"
-      div class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900" Groupe
-      div class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" Compétitions
-      div
-    div class="divide-y divide-gray-200 bg-white"
-      - @championship_groups.each do |group|
-        div class="grid grid-cols-[2fr_3fr_6rem] items-center"
-          div class="p-3 text-sm font-medium text-gray-900"
-            = link_to group.name, edit_section_championship_group_path(current_section, group), class: 'text-indigo-600 hover:underline'
-          div class="p-3 text-sm text-gray-500"
-            = group.championship_group_championships.includes(:championship).order(:index).map { |cgc| "#{cgc.championship.name} (#{cgc.index})" }.join(', ')
-          div class="p-3 flex gap-2"
-            - if current_user.coach_of?(current_section)
-              = link_to 'Modifier', edit_section_championship_group_path(current_section, group), class: 'text-indigo-600 hover:underline text-sm'
-              = button_to 'Supprimer', section_championship_group_path(current_section, group), method: :delete, class: 'text-red-600 hover:underline text-sm bg-transparent border-0 p-0 cursor-pointer', data: { turbo_confirm: "Supprimer le groupe #{group.name} ?" }
+  div class="mt-8 flow-root"
+    div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
+      div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
+        table class="min-w-full divide-y divide-gray-300"
+          thead
+            tr
+              th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0" Groupe
+              th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" Compétitions
+              th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0"
+                span.sr-only Actions
+          tbody class="divide-y divide-gray-200"
+            - @championship_groups.each do |group|
+              tr
+                td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
+                  = link_to group.name, edit_section_championship_group_path(current_section, group), class: 'text-indigo-600 hover:text-indigo-500'
+                td class="px-3 py-4 text-sm text-gray-500"
+                  = group.championship_group_championships.includes(:championship).order(:index).map { |cgc| "#{cgc.championship.name} (niveau #{cgc.index})" }.join(', ')
+                td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
+                  div class="flex justify-end gap-4"
+                    - if current_user.coach_of?(current_section)
+                      = link_to 'Modifier', edit_section_championship_group_path(current_section, group), class: 'text-indigo-600 hover:text-indigo-500'
+                      = button_to 'Supprimer', section_championship_group_path(current_section, group), method: :delete, class: 'text-red-600 hover:text-red-500 bg-transparent border-0 p-0 cursor-pointer font-medium', data: { turbo_confirm: "Supprimer le groupe #{group.name} ?" }

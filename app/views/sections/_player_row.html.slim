@@ -1,4 +1,4 @@
-= turbo_frame_tag "player_#{player.id}" class="flex items-center divide-x divide-gray-200"
+= turbo_frame_tag "player_#{player.id}", class: "flex items-center divide-x divide-gray-200"
   div class="whitespace-nowrap p-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8 w-48"
     = player.full_name
   div class="whitespace-nowrap p-3 text-sm text-gray-500 flex-1"
@@ -9,4 +9,4 @@
         options_for_select(user_stats.map { |us| ["#{us.first_name} #{us.last_name}", us.player_id] }, suggested_association&.player_id), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72'
   div class="whitespace-nowrap p-3 w-32"
     - if association.present?
-      = button_to 'Dissocier', section_dissociate_player_path(section), method: :delete, params: { user_id: player.id }, class: 'inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-red-700 focus:outline-hidden focus:ring-3 focus:ring-red-500 focus:ring-offset-2'
+      = link_to 'Dissocier', section_dissociate_player_path(section, user_id: player.id), data: { turbo_method: :delete }, class: 'inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-red-700 focus:outline-hidden focus:ring-3 focus:ring-red-500 focus:ring-offset-2'

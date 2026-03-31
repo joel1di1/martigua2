@@ -35,7 +35,7 @@
       - if current_group
         span.text-sm.text-gray-500
           = "#{current_group.championship_group.name} (index: #{current_group.index})"
-        = link_to current_group.championship_group.name, section_championship_group_path(current_section, current_group.championship_group), class: 'text-indigo-600 hover:underline text-xs'
+        = link_to current_group.championship_group.name, edit_section_championship_group_path(current_section, current_group.championship_group), class: 'text-indigo-600 hover:underline text-xs'
       - else
         span.text-sm.text-gray-400 Aucun groupe
 

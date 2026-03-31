@@ -8,15 +8,17 @@ class ChampionshipGroupsController < ApplicationController
   end
 
   def show
-    @section_championships = current_section.championships.where(season: Season.current).order(:name)
-    @memberships = @championship_group.championship_group_championships.includes(:championship).order(:index)
+    redirect_to edit_section_championship_group_path(current_section, @championship_group)
   end
 
   def new
     @championship_group = ChampionshipGroup.new
   end
 
-  def edit; end
+  def edit
+    @section_championships = current_section.championships.where(season: Season.current).order(:name)
+    @memberships = @championship_group.championship_group_championships.includes(:championship).order(:index)
+  end
 
   def create
     @championship_group = ChampionshipGroup.new(championship_group_params)
@@ -45,13 +47,13 @@ class ChampionshipGroupsController < ApplicationController
     index = params[:index].to_i
     championship.championship_group_championships.where(championship_group: @championship_group).destroy_all
     @championship_group.add_championship(championship, index:)
-    redirect_to section_championship_group_path(current_section, @championship_group), notice: 'Compétition ajoutée au groupe'
+    redirect_to edit_section_championship_group_path(current_section, @championship_group), notice: 'Compétition ajoutée au groupe'
   end
 
   def remove_championship
     championship = current_section.championships.find(params[:championship_id])
     championship.championship_group_championships.where(championship_group: @championship_group).destroy_all
-    redirect_to section_championship_group_path(current_section, @championship_group), notice: 'Compétition retirée du groupe'
+    redirect_to edit_section_championship_group_path(current_section, @championship_group), notice: 'Compétition retirée du groupe'
   end
 
   private

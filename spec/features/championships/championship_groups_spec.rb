@@ -70,7 +70,7 @@ describe 'championship groups management', :devise do
       visit_groups_path
       click_on 'Modifier'
       fill_in 'Nom du groupe', with: 'Nouveau nom'
-      click_on 'Modifier'
+      click_on 'Renommer'
       expect(page).to have_text('Groupe modifié')
       expect(page).to have_text('Nouveau nom')
     end
@@ -94,7 +94,7 @@ describe 'championship groups management', :devise do
     let!(:group) { create(:championship_group, name: 'Groupe complet') }
 
     it 'adds a championship to the group', :js do
-      visit section_championship_group_path(section, group)
+      visit edit_section_championship_group_path(section, group)
 
       select championship1.name, from: 'championship_id'
       fill_in 'index', with: '1'
@@ -108,13 +108,13 @@ describe 'championship groups management', :devise do
       before { group.add_championship(championship1, index: 0) }
 
       it 'shows the championship with its index' do
-        visit section_championship_group_path(section, group)
+        visit edit_section_championship_group_path(section, group)
         expect(page).to have_text(championship1.name)
         expect(page).to have_text('0')
       end
 
       it 'removes a championship from the group' do
-        visit section_championship_group_path(section, group)
+        visit edit_section_championship_group_path(section, group)
         expect do
           click_on 'Retirer'
           expect(page).to have_text('Compétition retirée du groupe')

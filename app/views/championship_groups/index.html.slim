@@ -15,7 +15,7 @@
       - @championship_groups.each do |group|
         div class="grid grid-cols-[2fr_3fr_6rem] items-center"
           div class="p-3 text-sm font-medium text-gray-900"
-            = link_to group.name, section_championship_group_path(current_section, group), class: 'text-indigo-600 hover:underline'
+            = link_to group.name, edit_section_championship_group_path(current_section, group), class: 'text-indigo-600 hover:underline'
           div class="p-3 text-sm text-gray-500"
             = group.championship_group_championships.includes(:championship).order(:index).map { |cgc| "#{cgc.championship.name} (#{cgc.index})" }.join(', ')
           div class="p-3 flex gap-2"

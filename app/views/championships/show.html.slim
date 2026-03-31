@@ -27,6 +27,28 @@
       = f.submit 'Brûler !', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2 h-10'
 
 
+- if current_section && current_user.coach_of?(current_section)
+  .mb-5
+    .flex.items-center.gap-3.mb-2
+      h2.text-base.font-semibold.text-gray-900 Groupe de compétitions
+      - current_group = @championship.championship_group_championships.includes(:championship_group).first
+      - if current_group
+        span.text-sm.text-gray-500
+          = "#{current_group.championship_group.name} (index: #{current_group.index})"
+        = link_to current_group.championship_group.name, section_championship_group_path(current_section, current_group.championship_group), class: 'text-indigo-600 hover:underline text-xs'
+      - else
+        span.text-sm.text-gray-400 Aucun groupe
+
+    = form_with url: update_group_section_championship_path(current_section, @championship), method: :patch, class: 'flex gap-3 items-end' do |f|
+      div
+        = label_tag :championship_group_id, 'Groupe', class: 'block text-xs font-medium text-gray-700 mb-1'
+        - groups = ChampionshipGroup.joins(championships: { teams: :team_sections }).where(team_sections: { section_id: current_section.id }).distinct.order(:name)
+        = select_tag :championship_group_id, options_for_select(groups.map { |g| [g.name, g.id] }, current_group&.championship_group_id), include_blank: '— Aucun —', class: 'rounded-md border-gray-300 shadow-xs text-sm', data: { controller: 'ts--select' }
+      div
+        = label_tag :index, 'Index', class: 'block text-xs font-medium text-gray-700 mb-1'
+        = number_field_tag :index, current_group&.index || 0, min: 0, class: 'w-20 rounded-md border-gray-300 shadow-xs text-sm'
+      = f.submit 'Enregistrer', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-xs font-medium text-white shadow-xs hover:bg-indigo-700'
+
 - if @championship.teams.empty?
   .bg-red-200.text-center.p-4.mb-5
     p

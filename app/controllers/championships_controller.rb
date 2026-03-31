@@ -108,6 +108,14 @@ class ChampionshipsController < ApplicationController
     end
   end
 
+  def update_group
+    @championship.championship_group_championships.destroy_all
+    if params[:championship_group_id].present?
+      ChampionshipGroup.find(params[:championship_group_id]).add_championship(@championship, index: params[:index].to_i)
+    end
+    redirect_to section_championship_path(current_section, @championship), notice: 'Groupe mis à jour'
+  end
+
   def merge_calendar_form
     section_championship_ids = current_section.championships.pluck(:id)
 

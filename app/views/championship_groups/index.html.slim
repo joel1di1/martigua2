@@ -1,0 +1,24 @@
+.flex.items-center.mb-5
+  h1.text-xl.font-semibold.text-gray-900.flex-1 Groupes de compétitions
+  - if current_user.coach_of?(current_section)
+    = link_to 'Nouveau groupe', new_section_championship_group_path(current_section), class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700'
+
+- if @championship_groups.empty?
+  p.text-gray-500.text-sm Aucun groupe de compétitions pour cette section.
+- else
+  div class="min-w-full divide-y divide-gray-300"
+    div class="bg-gray-50 grid grid-cols-[2fr_3fr_6rem] items-center"
+      div class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900" Groupe
+      div class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" Compétitions
+      div
+    div class="divide-y divide-gray-200 bg-white"
+      - @championship_groups.each do |group|
+        div class="grid grid-cols-[2fr_3fr_6rem] items-center"
+          div class="p-3 text-sm font-medium text-gray-900"
+            = link_to group.name, section_championship_group_path(current_section, group), class: 'text-indigo-600 hover:underline'
+          div class="p-3 text-sm text-gray-500"
+            = group.championship_group_championships.includes(:championship).order(:index).map { |cgc| "#{cgc.championship.name} (#{cgc.index})" }.join(', ')
+          div class="p-3 flex gap-2"
+            - if current_user.coach_of?(current_section)
+              = link_to 'Modifier', edit_section_championship_group_path(current_section, group), class: 'text-indigo-600 hover:underline text-sm'
+              = button_to 'Supprimer', section_championship_group_path(current_section, group), method: :delete, class: 'text-red-600 hover:underline text-sm bg-transparent border-0 p-0 cursor-pointer', data: { turbo_confirm: "Supprimer le groupe #{group.name} ?" }

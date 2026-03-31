@@ -17,6 +17,7 @@ class Championship < ApplicationRecord # rubocop:disable Metrics/ClassLength
   scope :of_current_season, -> { where(season: Season.current) }
 
   after_initialize :init
+  before_save :extract_competition_key
 
   def self.create_from_ffhb!(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:, team_links:, linked_calendar: nil) # rubocop:disable Metrics/ParameterLists
     championship =
@@ -156,9 +157,20 @@ class Championship < ApplicationRecord # rubocop:disable Metrics/ClassLength
     { success: false, error: e.message }
   end
 
+  def sibling_championship_ids
+    return [id] if competition_key.blank?
+
+    Championship.where(season:, competition_key:).pluck(:id)
+  end
+
   delegate :find_or_create_day_for, to: :calendar
 
   private
+
+  def extract_competition_key
+    parts = ffhb_key.to_s.split
+    self.competition_key = parts[2] if parts.size >= 3
+  end
 
   def sync_new_matches! # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     _, _, competition_key, _phase_id, pool_id = ffhb_key.split

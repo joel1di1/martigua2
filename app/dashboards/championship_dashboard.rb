@@ -17,6 +17,8 @@ class ChampionshipDashboard < Administrate::BaseDashboard
     matches: Field::HasMany,
     id: Field::Number,
     name: Field::String,
+    ffhb_key: Field::String,
+    competition_key: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime
   }.freeze
@@ -43,6 +45,8 @@ class ChampionshipDashboard < Administrate::BaseDashboard
     matches
     id
     name
+    ffhb_key
+    competition_key
     created_at
     updated_at
   ].freeze

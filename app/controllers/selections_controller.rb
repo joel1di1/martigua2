@@ -33,6 +33,10 @@ class SelectionsController < ApplicationController
     @no_response_players = (@players - @available_players - @non_available_players - @users_already_selected).to_a.sort_by(&:short_name)
 
     @last_trainings, @presences_by_user_and_training = prepare_training_presences(current_section, @players)
+
+    @sibling_ids_by_match = @teams_with_matches.to_h do |_, match|
+      [match.id, match.championship.sibling_championship_ids]
+    end
   end
 
   def prepare_availabilities(matches, availabilities_by_user_and_match, players_by_id)

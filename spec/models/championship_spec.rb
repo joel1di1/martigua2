@@ -58,6 +58,41 @@ RSpec.describe Championship do
     it { expect(championship.burned_players).to contain_exactly(player1, player3) }
   end
 
+  describe '#sibling_championship_ids' do
+    context 'with no competition_key' do
+      it 'returns only its own id' do
+        expect(championship.sibling_championship_ids).to eq([championship.id])
+      end
+    end
+
+    context 'with a competition_key' do
+      let(:competition_key) { '16-ans-masculins-division-2-28786' }
+      let(:season) { Season.current }
+      let!(:phase1) { create(:championship, season:, ffhb_key: "2025-2026-21 departemental #{competition_key} 70491 111") }
+      let!(:playoffs) { create(:championship, season:, ffhb_key: "2025-2026-21 departemental #{competition_key} 83158 222") }
+      let!(:other_competition) { create(:championship, season:, ffhb_key: '2025-2026-21 departemental other-competition-99 70000 333') }
+
+      it 'returns ids of all championships sharing the same competition_key and season' do
+        expect(phase1.sibling_championship_ids).to contain_exactly(phase1.id, playoffs.id)
+      end
+
+      it 'does not include championships from a different competition' do
+        expect(phase1.sibling_championship_ids).not_to include(other_competition.id)
+      end
+
+      context 'with a championship in a different season' do
+        let(:other_season) { create(:season) }
+        let!(:other_season_champ) do
+          create(:championship, season: other_season, ffhb_key: "2024-2025-21 departemental #{competition_key} 60000 444")
+        end
+
+        it 'does not include championships from a different season' do
+          expect(phase1.sibling_championship_ids).not_to include(other_season_champ.id)
+        end
+      end
+    end
+  end
+
   describe '#find_or_create_day_for' do
     context 'with no existing day' do
       it 'creates a new day' do

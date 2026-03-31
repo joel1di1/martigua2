@@ -12,7 +12,7 @@ h2.text-base.font-semibold.text-gray-900.mb-3 Compétitions dans ce groupe
   div class="min-w-full divide-y divide-gray-300 mb-6"
     div class="bg-gray-50 grid grid-cols-[3fr_6rem_6rem] items-center"
       div class="py-3 pl-4 text-left text-sm font-semibold text-gray-900" Compétition
-      div class="px-3 py-3 text-left text-sm font-semibold text-gray-900" Index
+      div class="px-3 py-3 text-left text-sm font-semibold text-gray-900" title="0 = niveau le plus haut. Un joueur brûle les championnats d'index supérieur." Index ↑ niveau
       div
     div class="divide-y divide-gray-200 bg-white"
       - @memberships.each do |cgc|
@@ -32,8 +32,10 @@ h2.text-base.font-semibold.text-gray-900.mb-3 Compétitions dans ce groupe
       = label_tag :championship_id, 'Compétition', class: 'block text-sm font-medium text-gray-700 mb-1'
       = select_tag :championship_id, options_for_select(@section_championships.map { |c| [c.name, c.id] }), include_blank: true, class: 'rounded-md border-gray-300 shadow-xs text-sm', data: { controller: 'ts--select' }
     div
-      = label_tag :index, 'Index (0 = même niveau)', class: 'block text-sm font-medium text-gray-700 mb-1'
+      = label_tag :index, 'Index', class: 'block text-sm font-medium text-gray-700 mb-1'
       = number_field_tag :index, 0, min: 0, class: 'w-24 rounded-md border-gray-300 shadow-xs text-sm'
+      p.text-xs.text-gray-500.mt-1
+        | 0 = niveau le plus haut (équipe 1). Un joueur ayant joué assez de matchs dans un championnat d'index N sera brûlé pour tous les championnats d'index supérieur (niveaux inférieurs).
     = f.submit 'Ajouter', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700'
 
 .mt-6

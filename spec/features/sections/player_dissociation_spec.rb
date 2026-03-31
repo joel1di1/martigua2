@@ -2,16 +2,18 @@
 
 describe 'player FFHB dissociation', :devise do
   let(:section) { create(:section) }
-  let(:coach) { create(:user, with_section_as_coach: section) }
-  let(:championship) { create(:championship, season: Season.current) }
-  let!(:team) { create(:team, with_section: section, enrolled_in: championship) }
   let(:player) { create(:user, with_section: section) }
   let!(:stat) do
     create(:user_championship_stat, user: player, championship:,
                                     player_id: 'ffhb_123', first_name: 'John', last_name: 'Doe', match_played: 5)
   end
+  let(:coach) { create(:user, with_section_as_coach: section) }
+  let(:championship) { create(:championship, season: Season.current) }
 
-  before { signin coach.email, coach.password, close_notice: true }
+  before do
+    create(:team, with_section: section, enrolled_in: championship)
+    signin coach.email, coach.password, close_notice: true
+  end
 
   def visit_edit_page
     visit edit_club_section_path(section.club, section)
@@ -32,7 +34,7 @@ describe 'player FFHB dissociation', :devise do
     within("turbo-frame#player_#{player.id}") do
       click_link 'Dissocier'
       expect(page).to have_select("section[player_#{player.id}]")
-      expect(page).not_to have_button('Dissocier')
+      expect(page).to have_no_button('Dissocier')
     end
 
     expect(stat.reload.user_id).to be_nil

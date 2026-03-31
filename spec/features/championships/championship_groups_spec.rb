@@ -97,7 +97,7 @@ describe 'championship groups management', :devise do
       visit section_championship_group_path(section, group)
 
       select championship1.name, from: 'championship_id'
-      fill_in 'index', with: '0'
+      fill_in 'index', with: '1'
       click_on 'Ajouter'
 
       expect(page).to have_text('Compétition ajoutée au groupe')
@@ -130,7 +130,7 @@ describe 'championship groups management', :devise do
       visit section_championship_path(section, championship1)
 
       select 'Groupe A', from: 'championship_group_id'
-      fill_in 'index', with: '0'
+      fill_in 'index', with: '1'
       click_on 'Enregistrer'
 
       expect(page).to have_text('Groupe mis à jour')

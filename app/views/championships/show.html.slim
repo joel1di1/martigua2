@@ -45,10 +45,10 @@
         - groups = ChampionshipGroup.order(:name)
         = select_tag :championship_group_id, options_for_select(groups.map { |g| [g.name, g.id] }, current_group&.championship_group_id), include_blank: '— Aucun —', class: 'rounded-md border-gray-300 shadow-xs text-sm', data: { controller: 'ts--select' }
       div
-        = label_tag :index, 'Index', class: 'block text-xs font-medium text-gray-700 mb-1'
-        = number_field_tag :index, current_group&.index || 0, min: 0, class: 'w-20 rounded-md border-gray-300 shadow-xs text-sm'
+        = label_tag :index, 'Niveau', class: 'block text-xs font-medium text-gray-700 mb-1'
+        = number_field_tag :index, current_group&.index || 1, min: 1, class: 'w-20 rounded-md border-gray-300 shadow-xs text-sm'
         p.text-xs.text-gray-400.mt-1
-          | 0 = niveau le plus haut. Index élevé = niveau inférieur (se fait brûler depuis un index plus bas).
+          | 1 = équipe 1, 2 = équipe 2. Un joueur brûle depuis les niveaux inférieurs (numéro plus grand).
       = f.submit 'Enregistrer', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-xs font-medium text-white shadow-xs hover:bg-indigo-700'
 
 - if @championship.teams.empty?

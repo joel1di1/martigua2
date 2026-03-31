@@ -15,6 +15,8 @@ class ChampionshipDashboard < Administrate::BaseDashboard
     enrolled_team_championships: Field::HasMany,
     teams: Field::HasMany,
     matches: Field::HasMany,
+    championship_group_championships: Field::HasMany,
+    championship_groups: Field::HasMany,
     id: Field::Number,
     name: Field::String,
     ffhb_key: Field::String,
@@ -43,6 +45,8 @@ class ChampionshipDashboard < Administrate::BaseDashboard
     enrolled_team_championships
     teams
     matches
+    championship_group_championships
+    championship_groups
     id
     name
     ffhb_key

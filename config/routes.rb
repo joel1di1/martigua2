@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     resources :blocked_addresses
     resources :calendars
     resources :championships
+    resources :championship_groups
+    resources :championship_group_championships
     resources :clubs
     resources :club_admin_roles
     resources :days

@@ -17,9 +17,9 @@ describe 'create championship' do
       end
       click_on 'Ajouter une compétition manuellement'
 
-      fill_in('Name', with: championship_name)
-      select(calendar.name, from: 'Calendar')
-      select(team.name, from: 'Teams')
+      fill_in('Nom', with: championship_name)
+      select(calendar.name, from: 'Calendrier')
+      select(team.name, from: 'Équipes')
 
       expect do
         click_on 'Créer un(e) Compétition'

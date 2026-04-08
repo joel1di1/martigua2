@@ -1,8 +1,27 @@
-div class="flex items-center justify-between mb-6"
-  h1.text-xl.font-semibold.text-gray-900 = @championship_group.name
-  = button_to 'Supprimer', section_championship_group_path(current_section, @championship_group), method: :delete, class: 'text-sm font-semibold text-red-600 hover:text-red-500 bg-transparent border-0 p-0 cursor-pointer', data: { turbo_confirm: "Supprimer ce groupe ?" }
+div
+  div
+    nav aria-label="Back" class="sm:hidden"
+      = link_to section_championship_groups_path(current_section), class: 'flex items-center text-sm font-medium text-gray-500 hover:text-gray-700'
+        svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="mr-1 -ml-1 size-5 shrink-0 text-gray-400"
+          path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd"
+        | Retour
+    nav aria-label="Breadcrumb" class="hidden sm:flex"
+      ol role="list" class="flex items-center space-x-4"
+        li
+          div class="flex"
+            = link_to 'Groupes', section_championship_groups_path(current_section), class: 'text-sm font-medium text-gray-500 hover:text-gray-700'
+        li
+          div class="flex items-center"
+            svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5 shrink-0 text-gray-400"
+              path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd"
+            span aria-current="page" class="ml-4 text-sm font-medium text-gray-500" = @championship_group.name
+  div class="mt-2 md:flex md:items-center md:justify-between"
+    div class="min-w-0 flex-1"
+      h2 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" = @championship_group.name
+    div class="mt-4 flex shrink-0 md:mt-0 md:ml-4"
+      = button_to 'Supprimer', section_championship_group_path(current_section, @championship_group), method: :delete, class: 'inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-red-600 shadow-xs inset-ring inset-ring-red-300 hover:bg-red-50', data: { turbo_confirm: "Supprimer ce groupe ?" }
 
-div class="space-y-12"
+div class="mt-10 space-y-12"
 
   div class="border-b border-gray-900/10 pb-12"
     h2 class="text-base/7 font-semibold text-gray-900" Nom du groupe
@@ -11,16 +30,15 @@ div class="space-y-12"
     = form_with model: [current_section, @championship_group], class: 'mt-6' do |f|
       - if @championship_group.errors.any?
         div class="rounded-md bg-red-50 p-4 mb-4"
-          ul.list-disc.list-inside.text-sm.text-red-700
+          ul class="list-disc list-inside text-sm text-red-700"
             - @championship_group.errors.full_messages.each do |msg|
               li = msg
-      div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
-        div class="sm:col-span-4"
-          = f.label :name, 'Nom', class: 'block text-sm/6 font-medium text-gray-900'
-          div class="mt-2"
-            = f.text_field :name, class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
+      div class="space-y-8 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:border-t-gray-900/10"
+        div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6"
+          = f.label :name, 'Nom', class: 'block text-sm/6 font-medium text-gray-900 sm:pt-1.5'
+          div class="mt-2 sm:col-span-2 sm:mt-0"
+            = f.text_field :name, class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:max-w-sm sm:text-sm/6'
       div class="mt-6 flex items-center justify-end gap-x-6"
-        = link_to 'Annuler', section_championship_groups_path(current_section), class: 'text-sm/6 font-semibold text-gray-900'
         = f.submit 'Renommer', class: 'rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
 
   div class="border-b border-gray-900/10 pb-12"
@@ -28,7 +46,7 @@ div class="space-y-12"
     p class="mt-1 text-sm/6 text-gray-600" Les compétitions de ce groupe partagent les mêmes règles de brûlure.
 
     - if @memberships.empty?
-      p.mt-6.text-sm.text-gray-500 Aucune compétition dans ce groupe.
+      p class="mt-6 text-sm text-gray-500" Aucune compétition dans ce groupe.
     - else
       div class="mt-6 flow-root"
         div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
@@ -39,7 +57,7 @@ div class="space-y-12"
                   th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0" Compétition
                   th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" title="1 = équipe 1 (niveau le plus haut), 2 = équipe 2, etc." Niveau
                   th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0"
-                    span.sr-only Actions
+                    span class="sr-only" Actions
               tbody class="divide-y divide-gray-200"
                 - @memberships.each do |cgc|
                   tr
@@ -55,18 +73,16 @@ div class="space-y-12"
       | Associez une compétition à ce groupe en définissant son niveau (1 = équipe 1, 2 = équipe 2, etc.).
 
     = form_with url: add_championship_section_championship_group_path(current_section, @championship_group), method: :post, class: 'mt-6' do |f|
-      div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
-        div class="sm:col-span-4"
-          = label_tag :championship_id, 'Compétition', class: 'block text-sm/6 font-medium text-gray-900'
-          div class="mt-2"
-            = select_tag :championship_id, options_for_select(@section_championships.map { |c| [c.name, c.id] }), include_blank: true, class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6', data: { controller: 'ts--select' }
-        div class="sm:col-span-2"
-          = label_tag :index, 'Niveau', class: 'block text-sm/6 font-medium text-gray-900'
-          div class="mt-2"
-            = number_field_tag :index, 1, min: 1, class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
-          p class="mt-2 text-sm/6 text-gray-600"
-            | 1 = équipe 1 (niveau le plus haut). Un joueur brûle tous les niveaux supérieurs.
+      div class="space-y-8 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:border-t-gray-900/10"
+        div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6"
+          = label_tag :championship_id, 'Compétition', class: 'block text-sm/6 font-medium text-gray-900 sm:pt-1.5'
+          div class="mt-2 sm:col-span-2 sm:mt-0"
+            = select_tag :championship_id, options_for_select(@section_championships.map { |c| [c.name, c.id] }), include_blank: true, class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:max-w-sm sm:text-sm/6', data: { controller: 'ts--select' }
+        div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6"
+          = label_tag :index, 'Niveau', class: 'block text-sm/6 font-medium text-gray-900 sm:pt-1.5'
+          div class="mt-2 sm:col-span-2 sm:mt-0"
+            = number_field_tag :index, 1, min: 1, class: 'block rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:max-w-xs sm:text-sm/6'
+            p class="mt-2 text-sm/6 text-gray-500"
+              | 1 = équipe 1 (niveau le plus haut). Un joueur brûle tous les niveaux supérieurs.
       div class="mt-6 flex items-center justify-end gap-x-6"
         = f.submit 'Ajouter', class: 'rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-
-= link_to '← Retour aux groupes', section_championship_groups_path(current_section), class: 'mt-8 inline-block text-sm/6 text-indigo-600 hover:text-indigo-500'

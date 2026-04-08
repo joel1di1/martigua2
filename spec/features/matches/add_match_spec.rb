@@ -25,7 +25,7 @@ describe 'Add Match', :devise do
       click_on 'Ajouter une compétition'
       fill_in 'championship[name]', with: championship_name
 
-      select calendar.name, from: 'Calendar'
+      select calendar.name, from: 'Calendrier'
 
       expect do
         click_on 'Créer un(e) Compétition'

@@ -1,13 +1,14 @@
-h2.text-2xl.font-semibold.text-gray-900= @club.name
-
-.sm:flex.sm:items-center
-  .sm:flex-auto
-    h2.text-xl.font-semibold.text-gray-900= "#{@club.sections.count} sections"
-
+div class="md:flex md:items-center md:justify-between"
+  div class="min-w-0 flex-1"
+    h2 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" = @club.name
   - if current_user.admin_of?(@club)
-    .mt-4.sm:mt-0.sm:ml-16.sm:flex-none
-      = link_to 'Ajouter une section', new_club_section_path(@club), class: 'btn btn-primary'
+    div class="mt-4 flex md:mt-0 md:ml-4"
+      = link_to 'Ajouter une section', new_club_section_path(@club), class: 'block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
 
-table
-  tbody
-    = render @club.sections
+div class="mt-8"
+  h2 class="text-base font-semibold text-gray-900" = t('views.counts.section', count: @club.sections.count)
+  - if @club.sections.empty?
+    p class="mt-4 text-sm text-gray-500" Aucune section pour ce club.
+  - else
+    ul role="list" class="mt-4 divide-y divide-gray-100"
+      = render @club.sections

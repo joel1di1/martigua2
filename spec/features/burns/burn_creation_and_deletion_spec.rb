@@ -17,6 +17,7 @@ describe 'burns', :devise do
     assert_text championship.name
 
     click_on championship.name
+
     assert_text '0 brûlés'
 
     select(player.full_name, from: 'burn[user]')

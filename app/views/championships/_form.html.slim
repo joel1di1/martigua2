@@ -2,10 +2,26 @@
   = f.error_notification
   = hidden_field_tag :_redirect_url, request.original_url
   = hidden_field_tag :default_team_id, params[:section_team_id]
-  = f.input :name
-  = f.association :calendar, collection: @championship.season.calendars
-  = link_to "Calendriers (si le calendrier voulu n'apparaît pas dans la liste)", section_calendars_path(section: current_section), class: 'text-indigo-400 hover:text-indigo-700 underline'
-  = f.association :teams, label_method: :full_name, input_html: { size: 10 }, collection: Team.includes(:club).sort_by(&:full_name)
-  '(Sélectionnez obligatoirement au moins une équipe du club)
-  .mt-5
-    = f.button :submit, class: 'btn btn-primary'
+
+  div class="mt-6 space-y-8 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:border-t-gray-900/10"
+
+    div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6"
+      = f.label :name, 'Nom', class: 'block text-sm/6 font-medium text-gray-900 sm:pt-1.5'
+      div class="mt-2 sm:col-span-2 sm:mt-0"
+        = f.input_field :name, class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:max-w-md sm:text-sm/6'
+
+    div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6"
+      = label_tag :championship_calendar_id, 'Calendrier', class: 'block text-sm/6 font-medium text-gray-900 sm:pt-1.5'
+      div class="mt-2 sm:col-span-2 sm:mt-0"
+        = f.collection_select :calendar_id, @championship.season.calendars, :id, :name, { include_blank: true }, { class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:max-w-sm sm:text-sm/6' }
+        = link_to "Calendriers (si le calendrier voulu n'apparaît pas dans la liste)", section_calendars_path(section: current_section), class: 'mt-1 block text-xs text-indigo-600 hover:text-indigo-500'
+
+    div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6"
+      = label_tag :championship_team_ids, 'Équipes', class: 'block text-sm/6 font-medium text-gray-900 sm:pt-1.5'
+      div class="mt-2 sm:col-span-2 sm:mt-0"
+        = f.collection_select :team_ids, Team.includes(:club).sort_by(&:full_name), :id, :full_name, { include_blank: false }, { multiple: true, size: 10, class: 'block rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:max-w-sm sm:text-sm/6' }
+        p class="mt-1 text-xs text-gray-500" Sélectionnez au moins une équipe du club.
+
+  div class="mt-6 flex items-center justify-end gap-x-6"
+    = link_to 'Annuler', section_championships_path(current_section), class: 'text-sm/6 font-semibold text-gray-900'
+    = f.button :submit, class: 'inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'

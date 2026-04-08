@@ -1,44 +1,75 @@
-.flex.items-center
-  .flex
-    h1.text-xl.font-semibold.text-gray-900.mr-2.mb-5
-      = @championship.name
+/ Header
+div
+  div
+    nav aria-label="Back" class="sm:hidden"
+      = link_to section_championships_path(current_section), class: 'flex items-center text-sm font-medium text-gray-500 hover:text-gray-700'
+        svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="mr-1 -ml-1 size-5 shrink-0 text-gray-400"
+          path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd"
+        | Retour
+    nav aria-label="Breadcrumb" class="hidden sm:flex"
+      ol role="list" class="flex items-center space-x-4"
+        li
+          div class="flex"
+            = link_to 'Compétitions', section_championships_path(current_section), class: 'text-sm font-medium text-gray-500 hover:text-gray-700'
+        li
+          div class="flex items-center"
+            svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5 shrink-0 text-gray-400"
+              path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd"
+            span aria-current="page" class="ml-4 text-sm font-medium text-gray-500" = @championship.name
+  div class="mt-2 md:flex md:items-center md:justify-between"
+    div class="min-w-0 flex-1"
+      h2 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" = @championship.name
     - if current_section && current_user.coach_of?(current_section)
-      = link_to edit_section_championship_path(current_section, @championship), class: 'mr-2', title: 'Modifier le championnat' do
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
-      = link_to merge_calendar_form_section_championship_path(current_section, @championship), title: 'Fusionner les calendriers' do
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" /></svg>
+      div class="mt-4 flex shrink-0 gap-3 md:mt-0 md:ml-4"
+        = link_to edit_section_championship_path(current_section, @championship), class: 'inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50'
+          | Modifier
+        = link_to merge_calendar_form_section_championship_path(current_section, @championship), class: 'inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50'
+          | Fusionner calendriers
 
-.mb-5
-  h1.text-xl.font-semibold.text-gray-900= "#{@championship.burns.size} brûlés"
-  table#burned-players
-    tbody.divide-y.divide-gray-200.border
-      - @championship.burns.each do |burn|
-        tr
-          td= burn.user.full_name
-          td
-            = button_to section_championship_burn_path(current_section, @championship, burn), method: :delete, id: "unburn-#{burn.user.id}"  do
-              svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"
-                path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+/ Warning: no teams
+- if @championship.teams.empty?
+  div class="mt-6 rounded-md bg-yellow-50 p-4"
+    div class="flex"
+      div class="ml-3"
+        h3 class="text-sm font-medium text-yellow-800" Aucune équipe inscrite
+        div class="mt-2 text-sm text-yellow-700"
+          p Cette compétition ne sera visible que si une équipe du club y est inscrite.
+        div class="mt-3"
+          = link_to 'Inscrire une équipe', section_championship_enrolled_team_championships_path(current_section, @championship), class: 'rounded-md bg-yellow-800 px-3 py-2 text-sm font-semibold text-white hover:bg-yellow-700'
 
+/ Brûlés
+div class="mt-8"
+  div class="sm:flex sm:items-center"
+    div class="sm:flex-auto"
+      h2 class="text-base font-semibold text-gray-900" = t('views.counts.burn', count: @burns.size)
+  div class="mt-4 flow-root"
+    div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
+      div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
+        table id="burned-players" class="min-w-full divide-y divide-gray-300"
+          tbody class="divide-y divide-gray-200 bg-white"
+            - @burns.each do |burn|
+              tr
+                td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0" = burn.user.full_name
+                td class="py-4 pl-3 pr-4 text-right text-sm sm:pr-0"
+                  = button_to section_championship_burn_path(current_section, @championship, burn), method: :delete, id: "unburn-#{burn.user.id}", class: 'text-red-600 hover:text-red-500 bg-transparent border-0 cursor-pointer', title: 'Retirer le brûlage' do
+                    svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"
+                      path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+  = simple_form_for [current_section, @championship, @new_burn] do |f|
+    div class="mt-4 flex flex-row items-center gap-3"
+      = f.input :user, collection: (current_section.players - @championship.burned_players), label: 'Brûler un nouveau joueur', label_html: {class: 'whitespace-nowrap'}, wrapper_html: { class: 'flex flex-row items-center gap-2'}, input_html: { data: { controller: 'ts--select'}, class: 'px-0 py-0 w-72' }
+      = f.submit 'Brûler !', class: 'inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 h-10'
 
-  = simple_form_for [current_section, @championship, @championship.burns.new] do |f|
-    .flex.flex-row.items-center
-      = f.input :user, collection: (current_section.players - @championship.burned_players), label: 'Brûler un nouveau joueur', label_html: {class: 'whitespace-nowrap'}, wrapper_html: { class: 'flex flex-row items-center'}, input_html: { data: { controller: 'ts--select'}, class: 'px-0 py-0 w-72' }
-      = f.submit 'Brûler !', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2 h-10'
-
-
+/ Groupe de compétitions
 - if current_section && current_user.coach_of?(current_section)
-  .mb-5
-    .flex.items-center.gap-3.mb-2
-      h2.text-base.font-semibold.text-gray-900 Groupe de compétitions
+  div class="mt-8 border-t border-gray-200 pt-8"
+    div class="flex items-center gap-3 mb-4"
+      h2 class="text-base font-semibold text-gray-900" Groupe de compétitions
       - current_group = @championship.championship_group_championships.includes(:championship_group).first
       - if current_group
-        span.text-sm.text-gray-500
-          = "#{current_group.championship_group.name} (index: #{current_group.index})"
-        = link_to current_group.championship_group.name, edit_section_championship_group_path(current_section, current_group.championship_group), class: 'text-indigo-600 hover:underline text-xs'
+        span class="text-sm text-gray-500" = current_group.championship_group.name
+        = link_to "(modifier le groupe)", edit_section_championship_group_path(current_section, current_group.championship_group), class: 'text-indigo-600 hover:text-indigo-500 text-xs'
       - else
-        span.text-sm.text-gray-400 Aucun groupe
-
+        span class="text-sm text-gray-400" Aucun groupe
     = form_with url: update_group_section_championship_path(current_section, @championship), method: :patch, class: 'flex gap-3 items-end' do |f|
       div
         = label_tag :championship_group_id, 'Groupe', class: 'block text-xs font-medium text-gray-700 mb-1'
@@ -47,37 +78,28 @@
       div
         = label_tag :index, 'Niveau', class: 'block text-xs font-medium text-gray-700 mb-1'
         = number_field_tag :index, current_group&.index || 1, min: 1, class: 'w-20 rounded-md border-gray-300 shadow-xs text-sm'
-        p.text-xs.text-gray-400.mt-1
+        p class="text-xs text-gray-400 mt-1"
           | 1 = équipe 1, 2 = équipe 2. Un joueur brûle depuis les niveaux inférieurs (numéro plus grand).
-      = f.submit 'Enregistrer', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-xs font-medium text-white shadow-xs hover:bg-indigo-700'
+      = f.submit 'Enregistrer', class: 'inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500'
 
-- if @championship.teams.empty?
-  .bg-red-200.text-center.p-4.mb-5
-    p
-      'Attention, cette compétition ne sera visible uniquement si une équipe du club est engagée dedans.
-    p
-      '1ère chose à faire : modifier les équipes et y inscrire une équipe du club.
-    p
-      = link_to 'Modifier les équipes de cette compétition', section_championship_enrolled_team_championships_path(current_section, @championship), class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
-
-.flex.flex-col
-  .flex.flex-col
-    .flex.justify-between
-      h1.text-xl.font-semibold.text-gray-900= "#{@championship.matches.count} matchs"
-      - if current_user.coach_of?(current_section)
-        .mt-4.mt-0.ml-16
-          = link_to 'Ajouter un match', new_section_match_path(section_id: current_section), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2"
-
+/ Matchs
+div class="mt-8 border-t border-gray-200 pt-8"
+  div class="sm:flex sm:items-center"
+    div class="sm:flex-auto"
+      h2 class="text-base font-semibold text-gray-900" = t('views.counts.match', count: @championship.matches.count)
+    - if current_user.coach_of?(current_section)
+      div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none"
+        = link_to 'Ajouter un match', new_section_match_path(section_id: current_section), class: 'block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+  div class="mt-4"
     = render partial: 'matches/matches', object: @championship.matches.join_day.date_ordered, locals: { championship: @championship }
 
-  .mt-5
-    .flex
-      h2.text-xl.font-semibold.text-gray-900.mr-2= "#{@championship.teams.size} équipes enregistrées"
-      - if current_section && current_user.coach_of?(current_section)
-        = link_to section_championship_enrolled_team_championships_path(current_section, @championship), class: 'btn', title: 'Modifier les équipes de cette compétition' do
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
-
-    ul.overflow-hidden.bg-white.shadow-sm.rounded-md
-      - @championship.teams.sort_by(&:name).each do |team|
-        li.hover:bg-gray-50= team.name
-
+/ Équipes
+div class="mt-8 border-t border-gray-200 pt-8"
+  div class="flex items-center gap-3 mb-4"
+    h2 class="text-base font-semibold text-gray-900" = "#{t('views.counts.team', count: @championship.teams.size)} enregistrée#{@championship.teams.size > 1 ? 's' : ''}"
+    - if current_section && current_user.coach_of?(current_section)
+      = link_to section_championship_enrolled_team_championships_path(current_section, @championship), class: 'text-sm font-medium text-indigo-600 hover:text-indigo-500', title: 'Modifier les équipes'
+        | Modifier
+  ul class="divide-y divide-gray-100"
+    - @championship.teams.sort_by(&:name).each do |team|
+      li class="py-3 text-sm text-gray-900" = team.name

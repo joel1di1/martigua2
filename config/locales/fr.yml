@@ -10,6 +10,10 @@ fr:
           has_many: Vous ne pouvez pas supprimer l'enregistrement parce que les %{record}
             dépendants existent
     models:
+      burn:
+        zero: brûlé
+        one: brûlé
+        other: brûlés
       championship:
         one: Compétition
         other: Compétitions
@@ -19,6 +23,9 @@ fr:
       location:
         one: Lieu
         other: Lieux
+      section:
+        one: Section
+        other: Sections
       team:
         one: Équipe
         other: Équipes
@@ -171,6 +178,33 @@ fr:
       header:
         one: 'Impossible d''enregistrer ce(tte) %{model} : 1 erreur'
         other: 'Impossible d''enregistrer ce(tte) %{model} : %{count} erreurs'
+    attributes:
+      championship:
+        calendar: Calendrier
+        teams: Équipes
+        name: Nom
+  views:
+    counts:
+      burn:
+        zero: "%{count} brûlés"
+        one: "%{count} brûlé"
+        other: "%{count} brûlés"
+      championship:
+        zero: "%{count} compétitions"
+        one: "%{count} compétition"
+        other: "%{count} compétitions"
+      match:
+        zero: "%{count} matchs"
+        one: "%{count} match"
+        other: "%{count} matchs"
+      section:
+        zero: "%{count} sections"
+        one: "%{count} section"
+        other: "%{count} sections"
+      team:
+        zero: "%{count} équipes"
+        one: "%{count} équipe"
+        other: "%{count} équipes"
   helpers:
     select:
       prompt: Veuillez sélectionner

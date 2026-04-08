@@ -14,9 +14,9 @@ describe 'sections admin task', :devise do
       click_on admin.email
       click_on club.name
 
-      assert_text '1 sections'
+      assert_text '1 section'
       click_on 'Ajouter une section'
-      fill_in('Name', with: section_name)
+      fill_in('Nom', with: section_name)
 
       expect do
         click_on 'Créer un(e) Section'

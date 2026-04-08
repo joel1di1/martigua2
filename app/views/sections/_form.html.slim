@@ -1,3 +1,9 @@
 = simple_form_for([@section.club, @section]) do |f|
-  = f.input :name
-  = f.button :submit
+  div class="mt-6 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:border-t-gray-900/10"
+    div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6"
+      = f.label :name, 'Nom', class: 'block text-sm/6 font-medium text-gray-900 sm:pt-1.5'
+      div class="mt-2 sm:col-span-2 sm:mt-0"
+        = f.text_field :name, class: 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:max-w-xs sm:text-sm/6'
+  div class="mt-6 flex items-center justify-end gap-x-6"
+    = link_to 'Annuler', club_path(@section.club), class: 'text-sm/6 font-semibold text-gray-900'
+    = f.submit class: 'inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'

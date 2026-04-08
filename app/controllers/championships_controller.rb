@@ -17,6 +17,8 @@ class ChampionshipsController < ApplicationController
 
   def show
     @section = current_section
+    @burns = @championship.burns.to_a
+    @new_burn = @championship.burns.build
     @next_matches = @championship.matches.join_day.date_ordered.includes(
       :local_team,
       :visitor_team,

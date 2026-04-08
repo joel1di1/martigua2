@@ -1,13 +1,30 @@
-.flex.items-center
-  .sm:flex-auto
-    h1.text-xl.font-semibold.text-gray-900= "#{@championships.count} compétitions"
-
+div class="sm:flex sm:items-center"
+  div class="sm:flex-auto"
+    h1 class="text-base font-semibold text-gray-900" = t('views.counts.championship', count: @championships.count)
   - if current_section && current_user.coach_of?(current_section)
-    .mt-4.mt-0.ml-16.flex-none.flex.gap-3.items-center
-      - link_url = current_section ? new_section_championship_path(current_section) : new_championship_path
+    div class="mt-4 flex sm:mt-0 sm:ml-16 sm:flex-none gap-3 items-center"
       - link_ffhb_url = current_section ? new_section_championship_path(current_section, ffhb: true) : new_championship_path(ffhb: true)
-      = link_to 'Ajouter une compétition depuis la FFHB', link_ffhb_url, class: 'btn btn-primary'
-      = link_to 'Ajouter une compétition manuellement', link_url, class: 'text-indigo-600 hover:underline'
-      = link_to 'Groupes', section_championship_groups_path(current_section), class: 'text-indigo-600 hover:underline'
+      - link_url = current_section ? new_section_championship_path(current_section) : new_championship_path
+      = link_to 'Ajouter une compétition depuis la FFHB', link_ffhb_url, class: 'block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+      = link_to 'Ajouter une compétition manuellement', link_url, class: 'text-sm font-semibold text-indigo-600 hover:text-indigo-500'
+      = link_to 'Groupes', section_championship_groups_path(current_section), class: 'text-sm font-semibold text-gray-600 hover:text-gray-900'
 
-= render partial: 'championships/championships', object: @championships
+- if @championships.empty?
+  p class="mt-8 text-sm text-gray-500" Aucune compétition pour cette section.
+- else
+  ul role="list" class="mt-8 divide-y divide-gray-100"
+    - @championships.each do |championship|
+      - link_url = current_section ? section_championship_path(current_section, championship) : championship_path(championship)
+      li class="flex items-center justify-between gap-x-6 py-5"
+        div class="min-w-0"
+          p class="text-sm/6 font-semibold text-gray-900"
+            = link_to championship.name, link_url, class: 'hover:text-indigo-600'
+          div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500"
+            p class="whitespace-nowrap" = t('views.counts.match', count: championship.matches.count)
+            svg viewBox="0 0 2 2" class="size-0.5 fill-current"
+              circle r="1" cx="1" cy="1"
+            p class="truncate" = t('views.counts.team', count: championship.teams.count)
+        div class="flex flex-none items-center gap-x-4"
+          = link_to 'Voir', link_url, class: 'hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:block'
+          - if current_section && current_user.coach_of?(current_section)
+            = link_to 'Modifier', edit_section_championship_path(current_section, championship), class: 'text-sm font-medium text-indigo-600 hover:text-indigo-500'

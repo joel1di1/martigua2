@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ChampionshipsController < ApplicationController
+class ChampionshipsController < ApplicationController # rubocop:disable Metrics/ClassLength
   include PrefetchMatchData
 
   before_action :find_championship_by_id, except: %i[index new create]

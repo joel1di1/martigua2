@@ -9,6 +9,16 @@ production:
   - [default, 2]
   - low
 :schedule:
+  daily_mails:
+    cron: '30 11 * * *'
+    class: DailyMailsJob
+    queue: default
+    description: 'Envoi des mails quotidiens (convocations matchs, entraînements, TIG)'
+  ffhb_sync:
+    cron: '0 10,19,22 * * *'
+    class: FfhbSyncJob
+    queue: default
+    description: 'Synchronisation FFHB (10h, 19h, 22h UTC)'
   gueulesdebois_check:
     cron: '0 8,10,12,14,16,18,20,22 * * *'
     class: GueulesdeboisCheckJob

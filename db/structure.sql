@@ -1835,6 +1835,38 @@ CREATE TABLE public.groups_users (
 
 
 --
+-- Name: gueulesdebois_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.gueulesdebois_events (
+    id bigint NOT NULL,
+    title character varying NOT NULL,
+    event_url character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: gueulesdebois_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.gueulesdebois_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: gueulesdebois_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.gueulesdebois_events_id_seq OWNED BY public.gueulesdebois_events.id;
+
+
+--
 -- Name: locations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3896,6 +3928,13 @@ ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.group
 
 
 --
+-- Name: gueulesdebois_events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.gueulesdebois_events ALTER COLUMN id SET DEFAULT nextval('public.gueulesdebois_events_id_seq'::regclass);
+
+
+--
 -- Name: locations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4662,6 +4701,14 @@ ALTER TABLE ONLY public.group_trainings
 
 ALTER TABLE ONLY public.groups
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: gueulesdebois_events gueulesdebois_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.gueulesdebois_events
+    ADD CONSTRAINT gueulesdebois_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -5518,6 +5565,13 @@ CREATE INDEX index_groups_users_on_group_id ON public.groups_users USING btree (
 --
 
 CREATE INDEX index_groups_users_on_user_id ON public.groups_users USING btree (user_id);
+
+
+--
+-- Name: index_gueulesdebois_events_on_event_url; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_gueulesdebois_events_on_event_url ON public.gueulesdebois_events USING btree (event_url);
 
 
 --
@@ -6927,6 +6981,7 @@ ALTER TABLE ONLY public.section_trainings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260415202457'),
 ('20260331061048'),
 ('20250427000002'),
 ('20250427000001'),
@@ -7020,3 +7075,4 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20140711204336'),
 ('20140711200237'),
 ('20140711200234');
+

@@ -20,7 +20,7 @@ production:
     queue: default
     description: 'Synchronisation FFHB (10h, 19h, 22h UTC)'
   gueulesdebois_check:
-    cron: '25 * * * *'
+    cron: '45 * * * *'
     class: GueulesdeboisCheckJob
     queue: low
     description: 'Vérifie les nouveaux événements Amuse-Gueule sur gueulesdebois.fr'

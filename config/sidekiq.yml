@@ -8,3 +8,9 @@ production:
   - [critical, 5]
   - [default, 2]
   - low
+:schedule:
+  gueulesdebois_check:
+    cron: '0 8,10,12,14,16,18,20,22 * * *'
+    class: GueulesdeboisCheckJob
+    queue: low
+    description: 'Vérifie les nouveaux événements Amuse-Gueule sur gueulesdebois.fr'

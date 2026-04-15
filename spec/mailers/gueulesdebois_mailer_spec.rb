@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe GueulesdeboisMailer do
   describe '#notify_new_amuse_gueule' do
     let(:events) { create_list(:gueulesdebois_event, 2) }
-    let(:mail) { described_class.notify_new_amuse_gueule(events) }
+    let(:mail) { GueulesdeboisMailer.notify_new_amuse_gueule(events) }
 
     it 'envoie à joel1di1@gmail.com' do
       expect(mail.to).to eq(['joel1di1@gmail.com'])

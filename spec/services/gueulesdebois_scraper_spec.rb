@@ -20,19 +20,23 @@ RSpec.describe GueulesdeboisScraper do
       HTML
     end
 
+    let(:http_response) { instance_double(Net::HTTPOK, is_a?: true, body: html) }
+
     before do
-      allow_any_instance_of(described_class).to receive(:fetch_page).and_return(html)
+      allow(http_response).to receive(:is_a?).with(Net::HTTPRedirection).and_return(false)
+      allow(http_response).to receive(:is_a?).with(Net::HTTPSuccess).and_return(true)
+      allow(Net::HTTP).to receive(:get_response).and_return(http_response)
     end
 
     it 'retourne uniquement les événements amuse-gueule' do
-      result = described_class.call
+      result = GueulesdeboisScraper.call
 
       expect(result.size).to eq(2)
-      expect(result.map { |e| e[:title] }).to all(match(/amuse-gueule/i))
+      expect(result.pluck(:title)).to all(match(/amuse-gueule/i))
     end
 
-    it 'retourne le titre et l\'url de chaque événement' do
-      result = described_class.call
+    it "retourne le titre et l'url de chaque événement" do
+      result = GueulesdeboisScraper.call
 
       expect(result.first).to include(
         title: "AMUSE-GUEULE #3 : accueil et présentation de l'atelier partagé",
@@ -42,9 +46,9 @@ RSpec.describe GueulesdeboisScraper do
 
     it 'ignore les événements sans titre h5' do
       html_without_h5 = '<html><body><a href="/event/test/register"><span>pas de h5</span></a></body></html>'
-      allow_any_instance_of(described_class).to receive(:fetch_page).and_return(html_without_h5)
+      allow(http_response).to receive(:body).and_return(html_without_h5)
 
-      expect(described_class.call).to be_empty
+      expect(GueulesdeboisScraper.call).to be_empty
     end
   end
 end

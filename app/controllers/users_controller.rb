@@ -102,7 +102,7 @@ class UsersController < ApplicationController
 
   def find_user_by_id
     user_key = params[:user_id] ? :user_id : :id
-    @user = User.find params[user_key]
+    @user = User.find params.expect(user_key)
   rescue ActiveRecord::RecordNotFound
     catch404
   end

@@ -22,6 +22,6 @@ describe 'User index page', :devise do
     user = create(:user, with_section: section)
     login_as(user, scope: :user)
     visit section_users_path(section_id: section.to_param)
-    expect(page).to have_content user.email
+    expect(page).to have_text user.email
   end
 end

@@ -4,7 +4,7 @@ class MatchesController < ApplicationController
   include PrefetchMatchData
 
   def index
-    @section = Section.find params[:section_id]
+    @section = Section.find params.expect(:section_id)
     @next_matches = @section.next_matches(end_date: 1.year.from_now).includes(
       :local_team,
       :visitor_team,
@@ -20,7 +20,7 @@ class MatchesController < ApplicationController
   end
 
   def show
-    @match = Match.find params[:id]
+    @match = Match.find params.expect(:id)
     day = @match.day
     return if day.blank?
 
@@ -41,12 +41,12 @@ class MatchesController < ApplicationController
   end
 
   def edit
-    @championship = Championship.find(params[:championship_id])
-    @match = Match.find params[:id]
+    @championship = Championship.find(params.expect(:championship_id))
+    @match = Match.find params.expect(:id)
   end
 
   def create
-    @championship = Championship.find(params[:match][:championship_id])
+    @championship = Championship.find(params.expect(:match)[:championship_id])
     @match = Match.new match_params
     if @match.save
       redirect_to section_championship_path(current_section, @championship), notice: 'Match créé'
@@ -56,8 +56,8 @@ class MatchesController < ApplicationController
   end
 
   def update
-    @championship = Championship.find(params[:championship_id])
-    @match = Match.find params[:id]
+    @championship = Championship.find(params.expect(:championship_id))
+    @match = Match.find params.expect(:id)
     if @match.update match_params
       redirect_to section_championship_path(current_section, @championship)
     else
@@ -66,9 +66,9 @@ class MatchesController < ApplicationController
   end
 
   def selection
-    @user = User.find(params[:user_id])
-    team = Team.find(params[:team_id])
-    @match = Match.find(params[:id])
+    @user = User.find(params.expect(:user_id))
+    team = Team.find(params.expect(:team_id))
+    @match = Match.find(params.expect(:id))
 
     @selection = Selection.create! user: @user, team:, match: @match
 
@@ -99,13 +99,13 @@ class MatchesController < ApplicationController
   end
 
   def destroy
-    @match = Match.find params[:id]
+    @match = Match.find params.expect(:id)
     @match.destroy!
     redirect_with(fallback: root_path)
   end
 
   def invitations
-    @match = Match.find params[:id]
+    @match = Match.find params.expect(:id)
 
     MatchInvitation.create!(match: @match, user: current_user)
     redirect_to section_path(current_section), notice: 'Relance envoyée !'

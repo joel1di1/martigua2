@@ -16,7 +16,7 @@ describe 'See group detail' do
       within '#links' do
         click_on 'Groupes'
       end
-      expect(page).to have_content section.group_everybody.name
+      expect(page).to have_text section.group_everybody.name
     end
 
     it 'visit the group page with 2 groups' do
@@ -28,12 +28,12 @@ describe 'See group detail' do
         click_on 'Groupes'
       end
 
-      expect(page).to have_content group1.name
-      expect(page).to have_content group2.name
-      expect(page).to have_content section.group_everybody.name
+      expect(page).to have_text group1.name
+      expect(page).to have_text group2.name
+      expect(page).to have_text section.group_everybody.name
 
       click_on group1.name
-      expect(page).to have_content group1.name
+      expect(page).to have_text group1.name
     end
   end
 

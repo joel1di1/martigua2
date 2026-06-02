@@ -13,10 +13,10 @@ describe 'Sign out', :devise do
     section = create(:section)
     user = create(:user, with_section: section)
     signin(user.email, user.password)
-    expect(page).to have_content 'Connecté(e).'
+    expect(page).to have_text 'Connecté(e).'
     click_on 'Close'
     click_on user.email
     click_on 'Déconnexion'
-    expect(page).to have_content 'Déconnecté(e).'
+    expect(page).to have_text 'Déconnecté(e).'
   end
 end

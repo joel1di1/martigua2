@@ -17,7 +17,7 @@ class DaysController < ApplicationController
   end
 
   def update
-    @day = Day.find(params[:id])
+    @day = Day.find(params.expect(:id))
     @day.update!(selection_hidden: params[:selection_hidden])
 
     redirect_to section_day_selections_path(current_section, @day)

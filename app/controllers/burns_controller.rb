@@ -8,7 +8,7 @@ class BurnsController < ApplicationController
   end
 
   def create
-    @user = current_section.users.find(params[:burn][:user])
+    @user = current_section.users.find(params.expect(:burn)[:user])
 
     @championship.burn!(@user)
 
@@ -17,7 +17,7 @@ class BurnsController < ApplicationController
   end
 
   def destroy
-    burn = @championship.burns.find(params[:id])
+    burn = @championship.burns.find(params.expect(:id))
     user = burn.user
 
     burn.delete
@@ -29,6 +29,6 @@ class BurnsController < ApplicationController
   protected
 
   def set_championship
-    @championship = Championship.find(params[:championship_id])
+    @championship = Championship.find(params.expect(:championship_id))
   end
 end

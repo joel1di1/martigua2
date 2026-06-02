@@ -2,6 +2,6 @@
 
 class ClubsController < ApplicationController
   def show
-    @club = Club.find(params[:id])
+    @club = Club.find(params.expect(:id))
   end
 end

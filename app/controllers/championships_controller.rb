@@ -76,9 +76,9 @@ class ChampionshipsController < ApplicationController # rubocop:disable Metrics/
         redirect_to new_section_championship_path(current_section, params: params.permit(all_params))
       else
         permitted_params = params.permit(all_params).to_h.except(:ffhb).symbolize_keys
-        permitted_params[:team_links] = params[:team_links].permit!.to_h
+        permitted_params[:team_links] = params.expect(:team_links).permit!.to_h
         if params[:championship] && params[:championship][:calendar].present?
-          linked_calendar = Calendar.find(params[:championship][:calendar])
+          linked_calendar = Calendar.find(params.expect(:championship)[:calendar])
         end
         @championship = Championship.create_from_ffhb!(**permitted_params, linked_calendar:)
         redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
@@ -113,7 +113,7 @@ class ChampionshipsController < ApplicationController # rubocop:disable Metrics/
   def update_group
     @championship.championship_group_championships.destroy_all
     if params[:championship_group_id].present?
-      ChampionshipGroup.find(params[:championship_group_id]).add_championship(@championship, index: params[:index].to_i)
+      ChampionshipGroup.find(params.expect(:championship_group_id)).add_championship(@championship, index: params[:index].to_i)
     end
     redirect_to section_championship_path(current_section, @championship), notice: 'Groupe mis à jour'
   end
@@ -129,7 +129,7 @@ class ChampionshipsController < ApplicationController # rubocop:disable Metrics/
   end
 
   def merge_calendar
-    other_championship = Championship.find(params[:other_championship_id])
+    other_championship = Championship.find(params.expect(:other_championship_id))
 
     # Verify both championships belong to current section
     section_championship_ids = current_section.championships.pluck(:id)
@@ -160,7 +160,7 @@ class ChampionshipsController < ApplicationController # rubocop:disable Metrics/
   end
 
   def find_championship_by_id
-    @championship = Championship.find params[:id]
+    @championship = Championship.find params.expect(:id)
   rescue ActiveRecord::RecordNotFound
     catch404
   end

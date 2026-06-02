@@ -19,7 +19,7 @@ class MessagesController < ApplicationController
   end
 
   def destroy
-    @message = @channel.messages.find(params[:id])
+    @message = @channel.messages.find(params.expect(:id))
     @message.destroy
 
     respond_to do |format|
@@ -41,7 +41,7 @@ class MessagesController < ApplicationController
   private
 
   def set_channel
-    @channel = Channel.find(params[:channel_id])
+    @channel = Channel.find(params.expect(:channel_id))
   end
 
   def message_params

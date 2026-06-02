@@ -63,11 +63,11 @@ class AbsencesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_absence
-    @absence = Absence.find(params[:id])
+    @absence = Absence.find(params.expect(:id))
   end
 
   def set_user
-    @user = User.find(params[:user_id]) if params[:user_id]
+    @user = User.find(params.expect(:user_id)) if params[:user_id]
   end
 
   # Only allow a list of trusted parameters through.

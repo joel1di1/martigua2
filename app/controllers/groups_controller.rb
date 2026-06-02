@@ -36,7 +36,7 @@ class GroupsController < ApplicationController
   end
 
   def add_users
-    user = User.find params[:user_id]
+    user = User.find params.expect(:user_id)
     @group.add_user! user
     redirect_to section_group_path(current_section, @group), notice: 'Joueur ajouté au groupe'
   end

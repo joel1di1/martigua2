@@ -11,7 +11,7 @@ class TeamsController < ApplicationController
     @team.save!
 
     if params[:championship_id].present?
-      championship = Championship.find(params[:championship_id])
+      championship = Championship.find(params.expect(:championship_id))
       championship.enroll_team! @team
     end
 

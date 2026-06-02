@@ -27,7 +27,7 @@ describe 'Renew Participations', :devise do
       click_on 'Membres'
     end
     expect(page).to have_current_path section_users_path(section), ignore_query: true
-    expect(page).to have_no_content previous_player.email
+    expect(page).to have_no_text previous_player.email
     expect(page).to have_link renouveller
     click_on renouveller
 
@@ -37,6 +37,6 @@ describe 'Renew Participations', :devise do
     click_on 'submit_btn'
 
     expect(page).to have_current_path section_users_path(section), ignore_query: true
-    expect(page).to have_content previous_player.email
+    expect(page).to have_text previous_player.email
   end
 end

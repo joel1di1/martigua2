@@ -23,7 +23,7 @@ describe 'User profile page', :devise do
     user = create(:user, with_section: section)
     login_as(user, scope: :user)
     visit section_user_path(section, user)
-    expect(page).to have_content user.email
+    expect(page).to have_text user.email
   end
 
   # Scenario: if member of the same section, user can see another user's profile
@@ -38,13 +38,13 @@ describe 'User profile page', :devise do
     create(:participation, user: other, section:)
     login_as(me, scope: :user)
     visit section_user_path(other, section_id: section.to_param)
-    expect(page).to have_content other.email
+    expect(page).to have_text other.email
 
     visit section_users_path(section_id: section.to_param)
 
     # full_name  capitalize all words
     click_on other.full_name.split.map(&:capitalize).join(' ')
-    expect(page).to have_content other.phone_number
+    expect(page).to have_text other.phone_number
     expect(page).to have_current_path(section_user_path(other, section_id: section.to_param))
   end
 
@@ -58,6 +58,6 @@ describe 'User profile page', :devise do
     create(:participation, user: me, section:)
     login_as(me, scope: :user)
     visit section_user_path(me, section_id: section.to_param)
-    expect(page).to have_content me.email
+    expect(page).to have_text me.email
   end
 end

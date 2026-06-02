@@ -43,7 +43,7 @@ describe 'Active Admin', :devise do
     signin admin.email, admin.password
     visit '/admin'
 
-    expect(page).to have_content 'Users'
+    expect(page).to have_text 'Users'
 
     models.each do |model_class|
       model_class = model_class.to_s.underscore

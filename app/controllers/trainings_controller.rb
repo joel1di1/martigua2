@@ -52,7 +52,7 @@ class TrainingsController < ApplicationController
   end
 
   def repeat
-    date = params['repeat_until'].to_date
+    date = params.expect('repeat_until').to_date
     @training.repeat_until!(date)
 
     redirect_to section_training_path(section_id: current_section.to_param, id: @training.to_param),

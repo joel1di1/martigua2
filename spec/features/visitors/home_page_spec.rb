@@ -11,6 +11,6 @@ describe 'Home page' do
   #   Then I see "Welcome"
   it 'visit the home page' do
     visit root_path
-    expect(page).to have_content "C'est bon"
+    expect(page).to have_text "C'est bon"
   end
 end

@@ -22,7 +22,7 @@ class SectionsController < ApplicationController
   end
 
   def new
-    club = Club.find(params[:club_id])
+    club = Club.find(params.expect(:club_id))
 
     unless current_user.admin_of?(club)
       redirect_with(fallback: club_path(club), notice: 'Vous n\'êtes pas admin de ce club')
@@ -47,7 +47,7 @@ class SectionsController < ApplicationController
   end
 
   def player_ffhb_association
-    players_params = params[:section].permit!
+    players_params = params.expect(:section).permit!
     players_params.each do |key, ffhb_key|
       next unless key.start_with?('player_')
 
@@ -62,7 +62,7 @@ class SectionsController < ApplicationController
 
   def create
     @section = Section.new section_params
-    club = Club.find(params[:club_id])
+    club = Club.find(params.expect(:club_id))
     @section.club = club
 
     if @section.save
@@ -99,7 +99,7 @@ class SectionsController < ApplicationController
   end
 
   def dissociate_player
-    user = current_section.users.find(params[:user_id])
+    user = current_section.users.find(params.expect(:user_id))
     UserChampionshipStat.joins(:championship).where(championship: { season: Season.current }, user:).update_all(user_id: nil) # rubocop:disable Rails/SkipsModelValidations
     redirect_to edit_club_section_path(current_section.club, current_section), notice: 'Joueur dissocié'
   end
@@ -119,7 +119,7 @@ class SectionsController < ApplicationController
   end
 
   def set_section
-    @section = Section.find(params[:id])
+    @section = Section.find(params.expect(:id))
   end
 
   def suggested_user_stat(player, user_stats)

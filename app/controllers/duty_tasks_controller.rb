@@ -13,7 +13,7 @@ class DutyTasksController < ApplicationController
   end
 
   def edit
-    @duty_task = current_section.club.duty_tasks.find(params[:id])
+    @duty_task = current_section.club.duty_tasks.find(params.expect(:id))
   end
 
   def create
@@ -26,7 +26,7 @@ class DutyTasksController < ApplicationController
   end
 
   def update
-    @duty_task = current_section.club.duty_tasks.find(params[:id])
+    @duty_task = current_section.club.duty_tasks.find(params.expect(:id))
     if @duty_task.update(duty_task_params)
       redirect_to section_duty_tasks_path(current_section), notice: 'TIG modifiée'
     else

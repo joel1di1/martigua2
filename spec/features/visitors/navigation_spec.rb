@@ -11,7 +11,7 @@ describe 'Navigation links', :devise do
   #   Then I see "home," "sign in," and "sign up"
   it 'view navigation links' do
     visit root_path
-    expect(page).to have_content "C'est bon"
+    expect(page).to have_text "C'est bon"
     # expect(page).to have_content 'Sign up'
   end
 end

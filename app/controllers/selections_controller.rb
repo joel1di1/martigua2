@@ -2,7 +2,7 @@
 
 class SelectionsController < ApplicationController
   def index
-    @day = Day.find(params[:day_id])
+    @day = Day.find(params.expect(:day_id))
     @teams_with_matches = Team.team_with_match_on(@day, current_section)
 
     @players = current_section.players.includes(:user_championship_stats, :absences)
@@ -69,7 +69,7 @@ class SelectionsController < ApplicationController
   end
 
   def destroy
-    selection = Selection.find(params[:id])
+    selection = Selection.find(params.expect(:id))
     selection.destroy!
 
     respond_to do |format|

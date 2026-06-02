@@ -38,7 +38,7 @@ class CalendarsController < ApplicationController
   end
 
   def find_calendar_by_id
-    @calendar = Calendar.find params[:id]
+    @calendar = Calendar.find params.expect(:id)
   rescue ActiveRecord::RecordNotFound
     catch404
   end

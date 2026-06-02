@@ -43,7 +43,7 @@ class ChampionshipGroupsController < ApplicationController
   end
 
   def add_championship
-    championship = current_section.championships.find(params[:championship_id])
+    championship = current_section.championships.find(params.expect(:championship_id))
     index = params[:index].to_i
     championship.championship_group_championships.where(championship_group: @championship_group).destroy_all
     @championship_group.add_championship(championship, index:)
@@ -51,7 +51,7 @@ class ChampionshipGroupsController < ApplicationController
   end
 
   def remove_championship
-    championship = current_section.championships.find(params[:championship_id])
+    championship = current_section.championships.find(params.expect(:championship_id))
     championship.championship_group_championships.where(championship_group: @championship_group).destroy_all
     redirect_to edit_section_championship_group_path(current_section, @championship_group), notice: 'Compétition retirée du groupe'
   end
@@ -59,7 +59,7 @@ class ChampionshipGroupsController < ApplicationController
   private
 
   def set_championship_group
-    @championship_group = ChampionshipGroup.find(params[:id])
+    @championship_group = ChampionshipGroup.find(params.expect(:id))
   end
 
   def championship_group_params

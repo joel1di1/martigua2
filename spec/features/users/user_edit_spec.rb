@@ -27,7 +27,7 @@ describe 'User edit', :devise do
     fill_in 'Nouveau mot de passe', with: new_password
     fill_in 'Confimation du nouveau mot de passe', with: new_password
     click_on 'Mettre à jour'
-    expect(page).to have_content 'Votre compte a bien été modifié.'
+    expect(page).to have_text 'Votre compte a bien été modifié.'
   end
 
   # Scenario: Change member role
@@ -44,7 +44,7 @@ describe 'User edit', :devise do
     uncheck 'Player'
     click_on 'Modifier ce(tte) Utilisateur'
 
-    expect(page).to have_content 'Prochains matchs'
+    expect(page).to have_text 'Prochains matchs'
     user.reload
     expect(user).to be_coach_of(section, season: nil)
     expect(user).not_to be_player_of(section, season: nil)
@@ -62,6 +62,6 @@ describe 'User edit', :devise do
     other = create(:user, email: other_email)
     login_as(me, scope: :user)
     visit edit_user_registration_path(other)
-    expect(page).to have_content 'Modifier son mot de passe'
+    expect(page).to have_text 'Modifier son mot de passe'
   end
 end

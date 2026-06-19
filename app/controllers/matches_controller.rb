@@ -46,7 +46,7 @@ class MatchesController < ApplicationController
   end
 
   def create
-    @championship = Championship.find(params.require(:match).permit(:championship_id)[:championship_id])
+    @championship = Championship.find(params.expect(match: [:championship_id])[:championship_id])
     @match = Match.new match_params
     if @match.save
       redirect_to section_championship_path(current_section, @championship), notice: 'Match créé'

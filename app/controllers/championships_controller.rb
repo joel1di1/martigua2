@@ -78,7 +78,7 @@ class ChampionshipsController < ApplicationController # rubocop:disable Metrics/
         permitted_params = params.permit(all_params).to_h.except(:ffhb).symbolize_keys
         permitted_params[:team_links] = params.require(:team_links).permit!.to_h
         if params[:championship] && params[:championship][:calendar].present?
-          linked_calendar = Calendar.find(params.require(:championship).permit(:calendar)[:calendar])
+          linked_calendar = Calendar.find(params.expect(championship: [:calendar])[:calendar])
         end
         @championship = Championship.create_from_ffhb!(**permitted_params, linked_calendar:)
         redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },

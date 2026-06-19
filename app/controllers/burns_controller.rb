@@ -8,7 +8,7 @@ class BurnsController < ApplicationController
   end
 
   def create
-    @user = current_section.users.find(params.require(:burn).permit(:user)[:user])
+    @user = current_section.users.find(params.expect(burn: [:user])[:user])
 
     @championship.burn!(@user)
 

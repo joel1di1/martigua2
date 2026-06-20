@@ -1,0 +1,3 @@
+= turbo_frame_tag dom_id(participation, :position) do
+  = form_with model: participation, url: section_participation_path(current_section, participation), method: :patch, data: { controller: 'auto-submit', auto_submit_delay_value: 0 } do |f|
+    = f.select :main_position, Participation::POSITIONS.map { |p| [t("positions.#{p}"), p] }, { include_blank: '-' }, class: 'rounded-md border-gray-300 text-xs py-0.5 px-1 focus:border-indigo-500 focus:ring-indigo-500', data: { action: 'auto-submit#submit' }

@@ -2020,7 +2020,8 @@ CREATE TABLE public.matches (
     day_id integer,
     shared_calendar_id character varying,
     shared_calendar_url character varying,
-    ffhb_key character varying
+    ffhb_key character varying,
+    fdm_code character varying
 );
 
 
@@ -2456,7 +2457,8 @@ CREATE TABLE public.participations (
     season_id integer NOT NULL,
     role character varying(255) NOT NULL,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    main_position character varying
 );
 
 
@@ -2516,6 +2518,50 @@ CREATE SEQUENCE public.passeport_availability_checks_id_seq
 --
 
 ALTER SEQUENCE public.passeport_availability_checks_id_seq OWNED BY public.passeport_availability_checks.id;
+
+
+--
+-- Name: player_match_stats; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.player_match_stats (
+    id bigint NOT NULL,
+    match_id bigint NOT NULL,
+    user_id bigint,
+    player_id character varying,
+    first_name character varying,
+    last_name character varying,
+    jersey_number integer,
+    captain boolean DEFAULT false NOT NULL,
+    goals integer DEFAULT 0,
+    seven_meters integer DEFAULT 0,
+    shots integer DEFAULT 0,
+    saves integer DEFAULT 0,
+    warnings integer DEFAULT 0,
+    two_minutes integer DEFAULT 0,
+    disqualifications integer DEFAULT 0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: player_match_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.player_match_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: player_match_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.player_match_stats_id_seq OWNED BY public.player_match_stats.id;
 
 
 --
@@ -4061,6 +4107,13 @@ ALTER TABLE ONLY public.passeport_availability_checks ALTER COLUMN id SET DEFAUL
 
 
 --
+-- Name: player_match_stats id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.player_match_stats ALTER COLUMN id SET DEFAULT nextval('public.player_match_stats_id_seq'::regclass);
+
+
+--
 -- Name: resajaaf_action_text_rich_texts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4869,6 +4922,14 @@ ALTER TABLE ONLY public.participations
 
 ALTER TABLE ONLY public.passeport_availability_checks
     ADD CONSTRAINT passeport_availability_checks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: player_match_stats player_match_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.player_match_stats
+    ADD CONSTRAINT player_match_stats_pkey PRIMARY KEY (id);
 
 
 --
@@ -5806,6 +5867,27 @@ CREATE INDEX index_participations_on_user_id ON public.participations USING btre
 
 
 --
+-- Name: index_player_match_stats_on_match_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_player_match_stats_on_match_id ON public.player_match_stats USING btree (match_id);
+
+
+--
+-- Name: index_player_match_stats_on_match_id_and_player_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_player_match_stats_on_match_id_and_player_id ON public.player_match_stats USING btree (match_id, player_id);
+
+
+--
+-- Name: index_player_match_stats_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_player_match_stats_on_user_id ON public.player_match_stats USING btree (user_id);
+
+
+--
 -- Name: index_resajaaf_action_text_rich_texts_uniqueness; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6383,6 +6465,14 @@ ALTER TABLE ONLY public.user_channel_messages
 
 
 --
+-- Name: player_match_stats fk_rails_0dd8597d69; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.player_match_stats
+    ADD CONSTRAINT fk_rails_0dd8597d69 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: eatatjoes_menu_shopping_list_items fk_rails_0e17285622; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6572,6 +6662,14 @@ ALTER TABLE ONLY public.championship_group_championships
 
 ALTER TABLE ONLY public.duty_tasks
     ADD CONSTRAINT fk_rails_63d1d5e703 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: player_match_stats fk_rails_652e460fb5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.player_match_stats
+    ADD CONSTRAINT fk_rails_652e460fb5 FOREIGN KEY (match_id) REFERENCES public.matches(id);
 
 
 --
@@ -6981,6 +7079,9 @@ ALTER TABLE ONLY public.section_trainings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260619094233'),
+('20260619094232'),
+('20260619094226'),
 ('20260415202457'),
 ('20260331061048'),
 ('20250427000002'),

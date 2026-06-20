@@ -19,6 +19,7 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_many :duty_tasks, inverse_of: :user, dependent: :destroy
   has_many :match_availabilities, inverse_of: :user, dependent: :destroy
   has_many :user_championship_stats, inverse_of: :user, dependent: :destroy
+  has_many :player_match_stats, dependent: :destroy
   has_many :webpush_subscriptions, inverse_of: :user, dependent: :destroy
   has_many :user_channel_messages, inverse_of: :user, dependent: :destroy
   has_many :absences, inverse_of: :user, dependent: :destroy

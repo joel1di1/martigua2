@@ -12,6 +12,7 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_many :selections, inverse_of: :match, dependent: :destroy
   has_many :match_availabilities, inverse_of: :match, dependent: :destroy
   has_many :match_invitations, inverse_of: :match, dependent: :destroy
+  has_many :player_match_stats, dependent: :destroy
 
   scope :join_day, -> { joins('LEFT OUTER JOIN days ON days.id = matches.day_id') }
   scope :date_ordered, -> { order(Arel.sql('LEAST(days.period_end_date, start_datetime) ASC')) }
@@ -129,6 +130,7 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
     self.local_score = match_details['rencontre']['equipe1Score']&.to_i
     self.visitor_score = match_details['rencontre']['equipe2Score']&.to_i
+    self.fdm_code = match_details['rencontre']['fdmCode']
 
     ffhb_id = match_details['rencontre']['equipementId']
     if ffhb_id.present?
@@ -164,7 +166,56 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
     logger.warn "FFHB sync failed for match #{id}: #{e.message}"
   end
 
+  def sync_player_stats!
+    return if fdm_code.blank?
+    return if local_score.blank?
+
+    stats = FdmParserService.new(fdm_code).parse
+    return if stats.blank?
+
+    records = stats.map do |stat|
+      {
+        match_id: id,
+        player_id: stat[:player_id],
+        first_name: stat[:first_name],
+        last_name: stat[:last_name],
+        jersey_number: stat[:jersey_number],
+        captain: stat[:captain],
+        goals: stat[:goals],
+        seven_meters: stat[:seven_meters],
+        shots: stat[:shots],
+        saves: stat[:saves],
+        warnings: stat[:warnings],
+        two_minutes: stat[:two_minutes],
+        disqualifications: stat[:disqualifications],
+        created_at: Time.zone.now,
+        updated_at: Time.zone.now
+      }
+    end
+
+    PlayerMatchStat.upsert_all(records, unique_by: %i[match_id player_id]) # rubocop:disable Rails/SkipsModelValidations
+
+    link_player_match_stats_to_users(records)
+  end
+
   def calculated_start_datetime
     start_datetime || day&.period_start_date
+  end
+
+  private
+
+  def link_player_match_stats_to_users(_records)
+    linked_ucs = UserChampionshipStat.where(championship: championship).where.not(user_id: nil)
+    ucs_by_name = linked_ucs.index_by { |ucs| normalize_name(ucs.last_name, ucs.first_name) }
+
+    PlayerMatchStat.where(match_id: id, user_id: nil).find_each do |pms|
+      key = normalize_name(pms.last_name, pms.first_name)
+      ucs = ucs_by_name[key]
+      pms.update_column(:user_id, ucs.user_id) if ucs # rubocop:disable Rails/SkipsModelValidations
+    end
+  end
+
+  def normalize_name(last_name, first_name)
+    "#{last_name&.strip&.upcase} #{first_name&.strip&.downcase}"
   end
 end

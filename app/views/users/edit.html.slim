@@ -18,6 +18,14 @@
     .form-group.optional
       = check_box_tag :coach, 'coach', @user.coach_of?(current_section)
       = label_tag(:coach, 'Coach')
+    - if @user.player_of?(current_section)
+      div class="mt-3"
+        label class="block text-sm font-medium text-gray-700" Poste principal
+        - participation = @user.participations.find_by(section: current_section, season: Season.current, role: Participation::PLAYER)
+        select name="main_position" class="mt-1 rounded-md border-gray-300 shadow-xs text-sm"
+          option value="" -- Aucun --
+          - Participation::POSITIONS.each do |pos|
+            option value=pos selected=(participation&.main_position == pos) = t("positions.#{pos}")
   - if current_user == @user || current_user.coach_of?(current_section)
     =  f.button :submit
 

@@ -183,6 +183,14 @@ fr:
         calendar: Calendrier
         teams: Équipes
         name: Nom
+  positions:
+    goalkeeper: Gardien
+    left_wing: Ailier gauche
+    right_wing: Ailier droit
+    left_back: Arrière gauche
+    right_back: Arrière droit
+    center_back: Demi-centre
+    pivot: Pivot
   views:
     counts:
       burn:

@@ -44,6 +44,13 @@ class Championship < ApplicationRecord # rubocop:disable Metrics/ClassLength
       Rails.logger.debug { "Error while syncing match #{match.id}: #{e.message}" }
     end
 
+    matches.select { |m| m.local_score.present? && m.fdm_code.present? }.each do |match|
+      match.sync_player_stats!
+    rescue StandardError => e
+      Sentry.capture_exception(e)
+      Rails.logger.debug { "Error syncing player stats for match #{match.id}: #{e.message}" }
+    end
+
     _, _, championship_id, phase_id, pool_id = ffhb_key.split
     stats_sync!(championship_id, phase_id, pool_id)
   end

@@ -54,6 +54,13 @@ class SectionsController < ApplicationController
       user_id = key.split('_')[1]
       user = current_section.users.find(user_id)
       UserChampionshipStat.where(player_id: ffhb_key).update_all(user_id: user.id) # rubocop:disable Rails/SkipsModelValidations
+      ucs = UserChampionshipStat.find_by(player_id: ffhb_key)
+      next unless ucs
+
+      PlayerMatchStat.where(user_id: nil)
+                     .where('UPPER(TRIM(last_name)) = ? AND LOWER(TRIM(first_name)) = ?',
+                            ucs.last_name&.strip&.upcase, ucs.first_name&.strip&.downcase)
+                     .update_all(user_id: user.id) # rubocop:disable Rails/SkipsModelValidations
     end
 
     redirect_to edit_club_section_path(current_section.club, current_section),

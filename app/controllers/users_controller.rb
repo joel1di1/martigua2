@@ -44,6 +44,14 @@ class UsersController < ApplicationController
     if current_section.present?
       roles = [params[:coach], params[:player]].compact
       current_section.update_roles!(@user, roles)
+
+      if params[:main_position].present?
+        participation = @user.participations.find_by(section: current_section, season: Season.current, role: Participation::PLAYER)
+        participation&.update!(main_position: params[:main_position])
+      elsif params.key?(:main_position)
+        participation = @user.participations.find_by(section: current_section, season: Season.current, role: Participation::PLAYER)
+        participation&.update!(main_position: nil)
+      end
     end
 
     if params[:return_to]

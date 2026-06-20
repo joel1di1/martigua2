@@ -1,0 +1,6 @@
+= turbo_frame_tag dom_id(participation, :position) do
+  - if participation.main_position
+    span class="inline-flex items-center rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700"
+      = t("positions.#{participation.main_position}")
+  - else
+    span class="text-gray-400 text-xs" -

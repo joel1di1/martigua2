@@ -18,9 +18,13 @@ class DaysController < ApplicationController
 
   def update
     @day = Day.find(params.expect(:id))
+    verify_day_ownership!(@day)
+
     @day.update!(selection_hidden: params[:selection_hidden])
 
     redirect_to section_day_selections_path(current_section, @day)
+  rescue ActiveRecord::RecordNotFound
+    catch404
   end
 
   protected

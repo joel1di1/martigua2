@@ -62,8 +62,8 @@ class MatchesController < ApplicationController
   end
 
   def selection
-    @user = User.find(params.expect(:user_id))
-    team = Team.find(params.expect(:team_id))
+    @user = current_section.users.find(params.expect(:user_id))
+    team = @match.teams.find(params.expect(:team_id))
 
     @selection = Selection.create! user: @user, team:, match: @match
 
@@ -91,6 +91,8 @@ class MatchesController < ApplicationController
       format.html { redirect_with(fallback: section_match_path(current_section, @match)) }
       format.json { render json: {}, status: :created }
     end
+  rescue ActiveRecord::RecordNotFound
+    catch404
   end
 
   def destroy

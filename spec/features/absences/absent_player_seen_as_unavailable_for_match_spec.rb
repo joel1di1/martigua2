@@ -8,7 +8,7 @@ describe 'Absent player seen as unavailable for match' do
 
   before do
     signin_user coach
-    match
+    match.championship.enroll_team!(match.local_team)
     create(:absence, user: player, start_at: match.start_datetime - 2.days, end_at: match.start_datetime + 10.days)
   end
 

@@ -125,6 +125,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Raises 404 (via catch404) when a record loaded by id does not belong to
+  # current_section, even though the user is a member of current_section.
+  # Callers pass whether the record is `in_section` (nil-safe via `&.`).
+  def verify_section_ownership!(in_section)
+    raise ActiveRecord::RecordNotFound if current_section.present? && !in_section
+  end
+
   private
 
   def set_sentry_context

@@ -3,6 +3,9 @@
 class MatchesController < ApplicationController
   include PrefetchMatchData
 
+  before_action :find_championship_for_match, only: %i[edit create update]
+  before_action :find_match_by_id, only: %i[show edit update destroy selection invitations]
+
   def index
     @section = Section.find params.expect(:section_id)
     @next_matches = @section.next_matches(end_date: 1.year.from_now).includes(
@@ -20,7 +23,6 @@ class MatchesController < ApplicationController
   end
 
   def show
-    @match = Match.find params.expect(:id)
     day = @match.day
     return if day.blank?
 
@@ -40,14 +42,10 @@ class MatchesController < ApplicationController
     @championship.enroll_team! Team.find_by(id: params[:adversary_team_id])
   end
 
-  def edit
-    @championship = Championship.find(params.expect(:championship_id))
-    @match = Match.find params.expect(:id)
-  end
+  def edit; end
 
   def create
-    @championship = Championship.find(params.expect(match: [:championship_id])[:championship_id])
-    @match = Match.new match_params
+    @match = @championship.matches.new(match_params.except(:championship_id))
     if @match.save
       redirect_to section_championship_path(current_section, @championship), notice: 'Match créé'
     else
@@ -56,9 +54,7 @@ class MatchesController < ApplicationController
   end
 
   def update
-    @championship = Championship.find(params.expect(:championship_id))
-    @match = Match.find params.expect(:id)
-    if @match.update match_params
+    if @match.update(match_params.except(:championship_id))
       redirect_to section_championship_path(current_section, @championship)
     else
       render :edit, status: :unprocessable_content
@@ -68,7 +64,6 @@ class MatchesController < ApplicationController
   def selection
     @user = User.find(params.expect(:user_id))
     team = Team.find(params.expect(:team_id))
-    @match = Match.find(params.expect(:id))
 
     @selection = Selection.create! user: @user, team:, match: @match
 
@@ -99,14 +94,11 @@ class MatchesController < ApplicationController
   end
 
   def destroy
-    @match = Match.find params.expect(:id)
     @match.destroy!
     redirect_with(fallback: root_path)
   end
 
   def invitations
-    @match = Match.find params.expect(:id)
-
     MatchInvitation.create!(match: @match, user: current_user)
     redirect_to section_path(current_section), notice: 'Relance envoyée !'
   end
@@ -121,5 +113,20 @@ class MatchesController < ApplicationController
     else
       {}
     end
+  end
+
+  def find_championship_for_match
+    championship_id = params[:championship_id] || params.expect(match: [:championship_id])[:championship_id]
+    @championship = Championship.find(championship_id)
+    verify_section_ownership!(current_section&.championships&.exists?(@championship.id))
+  rescue ActiveRecord::RecordNotFound
+    catch404
+  end
+
+  def find_match_by_id
+    @match = Match.find params.expect(:id)
+    verify_section_ownership!(current_section&.championships&.exists?(@match.championship_id))
+  rescue ActiveRecord::RecordNotFound
+    catch404
   end
 end

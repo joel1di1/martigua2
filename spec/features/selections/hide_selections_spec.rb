@@ -4,8 +4,9 @@ describe 'Hide selections', :devise do
   let(:section) { create(:section) }
   let(:coach) { create(:user, with_section_as_coach: section) }
   let(:player) { create(:user, with_section: section) }
-  let(:team) { create(:team, with_section: section) }
-  let(:match) { create(:match, local_team: team) }
+  let(:championship) { create(:championship) }
+  let(:team) { create(:team, with_section: section, enrolled_in: championship) }
+  let(:match) { create(:match, championship:, local_team: team) }
   let(:day) { match.day }
 
   describe 'Coach hide selection for players' do

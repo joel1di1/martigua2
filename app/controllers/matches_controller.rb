@@ -118,14 +118,14 @@ class MatchesController < ApplicationController
   def find_championship_for_match
     championship_id = params[:championship_id] || params.expect(match: [:championship_id])[:championship_id]
     @championship = Championship.find(championship_id)
-    verify_section_ownership!(current_section&.championships&.exists?(@championship.id))
+    verify_section_ownership!(:championships, id: @championship.id)
   rescue ActiveRecord::RecordNotFound
     catch404
   end
 
   def find_match_by_id
     @match = Match.find params.expect(:id)
-    verify_section_ownership!(current_section&.championships&.exists?(@match.championship_id))
+    verify_section_ownership!(:championships, id: @match.championship_id)
   rescue ActiveRecord::RecordNotFound
     catch404
   end

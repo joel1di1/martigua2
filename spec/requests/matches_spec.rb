@@ -9,6 +9,63 @@ describe 'Matches' do
 
   before { sign_in user, scope: :user }
 
+  describe 'ownership scoping' do
+    before { create(:team, with_section: section, enrolled_in: championship) }
+
+    let(:match) { create(:match, championship:) }
+    let(:other_championship) { create(:championship) }
+    let(:other_match) { create(:match, championship: other_championship) }
+
+    describe 'GET show' do
+      it 'succeeds for a match belonging to the current section' do
+        get section_match_path(section, match)
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'returns not_found for a match belonging to another section' do
+        get section_match_path(section, other_match)
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    describe 'GET edit' do
+      it 'succeeds for a match belonging to the current section' do
+        get edit_section_championship_match_path(section, championship, match)
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'returns not_found for a match whose championship belongs to another section' do
+        get edit_section_championship_match_path(section, other_championship, other_match)
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    describe 'PATCH update' do
+      let(:params) { { match: { meeting_location: 'New location' } } }
+
+      it 'updates a match belonging to the current section' do
+        patch section_championship_match_path(section, championship, match), params: params
+        expect(match.reload.meeting_location).to eq('New location')
+      end
+
+      it 'returns not_found for a match whose championship belongs to another section' do
+        patch section_championship_match_path(section, other_championship, other_match), params: params
+        expect(response).to have_http_status(:not_found)
+        expect(other_match.reload.meeting_location).not_to eq('New location')
+      end
+    end
+
+    describe 'DELETE destroy' do
+      it 'returns not_found for a match belonging to another section' do
+        other_match
+        expect do
+          delete section_match_path(section, other_match)
+        end.not_to change(Match, :count)
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
   describe 'GET new' do
     let(:do_request) { get new_section_championship_match_path(section, championship) }
 
@@ -22,9 +79,11 @@ describe 'Matches' do
   end
 
   describe 'POST selection' do
+    before { create(:team, with_section: section, enrolled_in: championship) }
+
     let(:local_team) { create(:team) }
     let(:visitor_team) { create(:team) }
-    let(:match) { create(:match, visitor_team:, local_team:) }
+    let(:match) { create(:match, championship:, visitor_team:, local_team:) }
     let(:params) { { user_id: user.id, team_id: local_team.id } }
 
     let(:do_request) { post selection_section_match_path(section, match, format: format), params: params }

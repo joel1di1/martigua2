@@ -161,6 +161,7 @@ class ChampionshipsController < ApplicationController # rubocop:disable Metrics/
 
   def find_championship_by_id
     @championship = Championship.find params.expect(:id)
+    verify_section_ownership!(:championships, id: @championship.id)
   rescue ActiveRecord::RecordNotFound
     catch404
   end

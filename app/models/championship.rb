@@ -15,6 +15,9 @@ class Championship < ApplicationRecord # rubocop:disable Metrics/ClassLength
   validates :name, presence: true
 
   scope :of_current_season, -> { where(season: Season.current) }
+  scope :of_sections, lambda { |sections|
+    joins(teams: :team_sections).where(team_sections: { section_id: sections }).distinct
+  }
 
   after_initialize :init
   before_save :extract_competition_key

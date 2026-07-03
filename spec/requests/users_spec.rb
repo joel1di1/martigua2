@@ -110,9 +110,9 @@ describe 'Users' do
   end
 
   describe 'POST training_presences' do
-    let(:training1) { create(:training) }
-    let(:training2) { create(:training) }
-    let(:training_full) { create(:training, max_capacity: 0) }
+    let(:training1) { create(:training, with_section: section) }
+    let(:training2) { create(:training, with_section: section) }
+    let(:training_full) { create(:training, with_section: section, max_capacity: 0) }
 
     let(:post_training_presences) do
       post training_presences_user_path(id: user.to_param), params: {
@@ -130,6 +130,55 @@ describe 'Users' do
     end
 
     it { expect(response).to redirect_to(root_path) }
+
+    context 'when the training belongs to another section' do
+      let(:other_training) { create(:training, with_section: create(:section)) }
+
+      let(:post_training_presences) do
+        post training_presences_user_path(id: user.to_param), params: {
+          user_email: user.email, user_token: user.authentication_token,
+          present_ids: [other_training.id], checked_ids: [other_training.id]
+        }
+      end
+
+      it 'does not set presence for the training' do
+        expect(user.reload).not_to be_present_for(other_training)
+      end
+    end
+  end
+
+  describe 'POST match_availabilities' do
+    let(:championship) { create(:championship) }
+    let(:match) { create(:match, championship:) }
+    let(:post_match_availabilities) do
+      post match_availabilities_user_path(id: user.to_param), params: {
+        user_email: user.email, user_token: user.authentication_token,
+        present_ids: [match.id], checked_ids: [match.id]
+      }
+    end
+
+    before { create(:team, with_section: section, enrolled_in: championship) }
+
+    it 'sets availability for a match belonging to a section the user is a member of' do
+      post_match_availabilities
+      expect(user.reload.is_available_for?(match)).to be(true)
+    end
+
+    context 'when the match belongs to a championship the user has no section in' do
+      let(:other_championship) { create(:championship) }
+      let(:other_match) { create(:match, championship: other_championship) }
+
+      let(:post_match_availabilities) do
+        post match_availabilities_user_path(id: user.to_param), params: {
+          user_email: user.email, user_token: user.authentication_token,
+          present_ids: [other_match.id], checked_ids: [other_match.id]
+        }
+      end
+
+      it 'does not create a match availability' do
+        expect { post_match_availabilities }.not_to change(MatchAvailability, :count)
+      end
+    end
   end
 
   describe 'DELETE destroy user' do

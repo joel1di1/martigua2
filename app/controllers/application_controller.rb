@@ -3,8 +3,6 @@
 class ApplicationController < ActionController::Base
   extend ActiveSupport::Concern
 
-  include Pundit::Authorization
-
   around_action :log_requests
 
   before_action :set_sentry_context

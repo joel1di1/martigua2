@@ -18,6 +18,7 @@ class Training < ApplicationRecord
   validates :start_datetime, presence: true
 
   scope :of_section, ->(section) { joins(:sections).where(sections: { id: section.id }) }
+  scope :of_sections, ->(sections) { joins(:sections).where(sections: { id: sections }).distinct }
   scope :not_cancelled, -> { where.not('cancelled') }
   scope :with_start_between, lambda { |start_period, end_period|
                                where(start_datetime: start_period..end_period)

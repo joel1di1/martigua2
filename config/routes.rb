@@ -34,9 +34,6 @@ Rails.application.routes.draw do
 
     root to: 'users#index'
   end
-  resources :days
-
-  resources :championships
 
   resources :sections, only: %i[show] do
     resources :duty_tasks do

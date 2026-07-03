@@ -105,5 +105,27 @@ describe 'Matches' do
 
       it { expect { do_request }.to change(Selection, :count).by(1) }
     end
+
+    context 'when user_id belongs to a user from another section' do
+      let(:format) { :json }
+      let(:other_user) { create(:user, with_section: create(:section)) }
+      let(:params) { { user_id: other_user.id, team_id: local_team.id } }
+
+      it 'returns not_found and does not create a selection' do
+        expect { do_request }.not_to change(Selection, :count)
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'when team_id does not belong to the match' do
+      let(:format) { :json }
+      let(:other_team) { create(:team) }
+      let(:params) { { user_id: user.id, team_id: other_team.id } }
+
+      it 'returns not_found and does not create a selection' do
+        expect { do_request }.not_to change(Selection, :count)
+        expect(response).to have_http_status(:not_found)
+      end
+    end
   end
 end

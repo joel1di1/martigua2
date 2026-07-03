@@ -23,6 +23,8 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { render file: Rails.public_path.join('404.html'), layout: false, status: :not_found }
       format.xml  { head :not_found }
+      format.json { head :not_found }
+      format.js   { head :not_found }
     end
   rescue ActionController::UnknownFormat
     render file: Rails.public_path.join('404'), layout: false, status: :not_found
@@ -130,6 +132,15 @@ class ApplicationController < ActionController::Base
   def verify_section_ownership!(association, id:)
     return if current_section.blank?
     return if current_section.public_send(association).exists?(id)
+
+    raise ActiveRecord::RecordNotFound
+  end
+
+  # Days aren't owned by a single section (they belong to a season-wide calendar), so
+  # ownership is derived from having at least one match in current_section's championships.
+  def verify_day_ownership!(day)
+    return if current_section.blank?
+    return if day.matches.exists?(championship: current_section.championships)
 
     raise ActiveRecord::RecordNotFound
   end

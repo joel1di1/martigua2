@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
 class SelectionsController < ApplicationController
+  before_action :find_day, only: :index
+  before_action :find_selection, only: :destroy
+
   def index
-    @day = Day.find(params.expect(:day_id))
     @teams_with_matches = Team.team_with_match_on(@day, current_section)
 
     @players = current_section.players.includes(:user_championship_stats, :absences)
     players_by_id = @players.index_by(&:id)
 
-    @day_selections = Selection.joins(match: :day).where(matches: { day_id: @day.id })
+    @day_selections = Selection.joins(match: :day)
+                               .where(matches: { day_id: @day.id, championship_id: current_section.championships })
     @users_already_selected = @day_selections.map(&:user_id).uniq.map { |id| players_by_id[id] }
 
     matches = @teams_with_matches.map(&:second)
@@ -69,11 +72,26 @@ class SelectionsController < ApplicationController
   end
 
   def destroy
-    selection = Selection.find(params.expect(:id))
-    selection.destroy!
+    @selection.destroy!
 
     respond_to do |format|
       format.html { redirect_with(fallback: root_path) }
     end
+  end
+
+  private
+
+  def find_day
+    @day = Day.find(params.expect(:day_id))
+    verify_day_ownership!(@day)
+  rescue ActiveRecord::RecordNotFound
+    catch404
+  end
+
+  def find_selection
+    @selection = Selection.find(params.expect(:id))
+    verify_section_ownership!(:championships, id: @selection.match.championship_id)
+  rescue ActiveRecord::RecordNotFound
+    catch404
   end
 end

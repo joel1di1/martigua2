@@ -13,6 +13,8 @@ describe 'Championships' do
 
     before { sign_in user, scope: :user }
 
+    it_behaves_like 'an endpoint denied to non-members of the section'
+
     describe 'response' do
       before { do_request }
 
@@ -26,6 +28,8 @@ describe 'Championships' do
     let(:do_request) { post section_championships_path(section), params: params }
 
     before { sign_in user, scope: :user }
+
+    it_behaves_like 'an endpoint denied to non-members of the section'
 
     it { expect { do_request }.to(change(Championship, :count)) }
 
@@ -41,6 +45,8 @@ describe 'Championships' do
     let(:do_request) { get edit_section_championship_path(section, championship) }
 
     before { sign_in user, scope: :user }
+
+    it_behaves_like 'an endpoint denied to non-members of the section'
 
     describe 'response' do
       before { do_request }

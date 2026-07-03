@@ -108,6 +108,8 @@ describe 'Users' do
 
       let(:do_request) { delete section_user_path(section_id: section.to_param, id: user.to_param) }
 
+      it_behaves_like 'an endpoint denied to non-members of the section'
+
       it { expect { do_request }.to change { section.users.count }.by(-1) }
 
       describe 'response' do

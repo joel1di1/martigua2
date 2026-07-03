@@ -16,6 +16,8 @@ RSpec.describe 'Groups' do
       post section_group_add_users_path(section, group), params: { user_id: user.id }
     end
 
+    it_behaves_like 'an endpoint denied to non-members of the section'
+
     it 'adds a user to the group' do
       expect { do_request }.to change { group.reload.users.count }.by(1)
     end

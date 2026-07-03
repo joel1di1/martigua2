@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
-  before_action :verify_user_member_of_section
-
   def index
     start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : Time.zone.today
     end_date = start_date + 1.month

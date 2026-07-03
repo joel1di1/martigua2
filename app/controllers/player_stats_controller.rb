@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class PlayerStatsController < ApplicationController
-  before_action :verify_user_member_of_section
-
   SORTABLE_COLUMNS = %w[
     first_name matches_played total_goals total_seven_meters total_shots
     total_saves total_warnings total_two_minutes total_disqualifications goal_percentage

@@ -12,9 +12,13 @@ describe 'Matches' do
   describe 'GET new' do
     let(:do_request) { get new_section_championship_match_path(section, championship) }
 
-    before { do_request }
+    it_behaves_like 'an endpoint denied to non-members of the section'
 
-    it { expect(response).to have_http_status(:success) }
+    describe 'response' do
+      before { do_request }
+
+      it { expect(response).to have_http_status(:success) }
+    end
   end
 
   describe 'POST selection' do
@@ -37,6 +41,8 @@ describe 'Matches' do
 
     context 'with json' do
       let(:format) { :json }
+
+      it_behaves_like 'an endpoint denied to non-members of the section'
 
       it { expect { do_request }.to change(Selection, :count).by(1) }
     end

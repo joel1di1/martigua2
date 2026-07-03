@@ -56,5 +56,38 @@ describe 'Messages' do
         expect(response).to redirect_to(section_channel_path(section, channel))
       end
     end
+
+    context 'when the channel belongs to another section' do
+      let(:other_channel) { create(:channel, section: create(:section)) }
+
+      it 'returns not_found and does not create a message' do
+        expect do
+          post section_channel_messages_path(section, other_channel), params: { message: attributes_for(:message) }
+        end.not_to change(Message, :count)
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
+  describe 'DELETE destroy' do
+    let!(:message) { create(:message, channel:, user:) }
+
+    it 'destroys a message belonging to the current section channel' do
+      expect do
+        delete section_channel_message_path(section, channel, message)
+      end.to change(Message, :count).by(-1)
+    end
+
+    context 'when the channel belongs to another section' do
+      let(:other_channel) { create(:channel, section: create(:section)) }
+      let!(:other_message) { create(:message, channel: other_channel) }
+
+      it 'returns not_found and does not destroy the message' do
+        expect do
+          delete section_channel_message_path(section, other_channel, other_message)
+        end.not_to change(Message, :count)
+        expect(response).to have_http_status(:not_found)
+      end
+    end
   end
 end

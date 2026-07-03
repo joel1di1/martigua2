@@ -96,20 +96,23 @@ class UsersController < ApplicationController
   def destroy
     group_id = params[:group_id]
     if group_id
-      group = Group.find group_id
+      group = current_section.groups.find(group_id)
       group.remove_user!(@user)
       redirect_to section_group_path(current_section, group)
     else
       current_section.remove_member!(@user)
       redirect_to section_users_path(current_section)
     end
+  rescue ActiveRecord::RecordNotFound
+    catch404
   end
 
   protected
 
   def find_user_by_id
     user_key = params[:user_id] ? :user_id : :id
-    @user = User.find params.expect(user_key)
+    id = params.expect(user_key)
+    @user = current_section.present? ? current_section.users.find(id) : User.find(id)
   rescue ActiveRecord::RecordNotFound
     catch404
   end

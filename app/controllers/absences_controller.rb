@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class AbsencesController < ApplicationController
-  before_action :set_absence, only: %i[edit update destroy]
   before_action :set_user
+  before_action :set_absence, only: %i[edit update destroy]
 
   # GET /absences or /absences.json
   def index
@@ -63,11 +63,15 @@ class AbsencesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_absence
-    @absence = Absence.find(params.expect(:id))
+    @absence = @user.absences.find(params.expect(:id))
+  rescue ActiveRecord::RecordNotFound
+    catch404
   end
 
   def set_user
-    @user = User.find(params.expect(:user_id)) if params[:user_id]
+    @user = current_section.users.find(params.expect(:user_id)) if params[:user_id]
+  rescue ActiveRecord::RecordNotFound
+    catch404
   end
 
   # Only allow a list of trusted parameters through.

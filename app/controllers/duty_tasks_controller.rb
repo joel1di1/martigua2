@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class DutyTasksController < ApplicationController
-  before_action :verify_user_member_of_section
-
   def index
     @duty_tasks = task_scope.order(realised_at: :desc).page(params[:page])
     @players_with_tasks = section_players_with_tasks

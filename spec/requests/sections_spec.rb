@@ -65,6 +65,7 @@ RSpec.describe 'Sections' do
 
   describe 'GET /sections/:id' do
     before do
+      section.add_player!(user)
       sign_in user, scope: :user
       get section_path(section)
     end

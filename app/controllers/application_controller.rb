@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   before_action :set_current_section_in_current
   before_action :authenticate_user_from_token!, except: :catch404
   before_action :authenticate_user!, except: :catch404
+  before_action :verify_user_member_of_section, except: :catch404
 
   helper_method :current_section, :origin_path_or
 
@@ -111,7 +112,10 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_user_member_of_section
-    return unless current_section && !current_user.member_of?(current_section)
+    return if current_section.blank?
+    return if current_user&.member_of?(current_section)
+    return if current_user&.admin_of?(current_section.club)
+    return if current_user&.super_admin?
 
     respond_to do |format|
       format.html { render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false) }

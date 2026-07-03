@@ -177,6 +177,7 @@ RSpec.describe PrefetchMatchData do
   describe '#precompute_match_availability_counts' do
     it 'handles empty section gracefully' do
       empty_section = create(:section, club:)
+      empty_section.add_player!(user)
       get :index, params: { section_id: empty_section.id }
       expect(assigns(:match_availability_counts)).to be_a(Hash)
     end

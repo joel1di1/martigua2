@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ParticipationsController < ApplicationController
-  before_action :verify_user_member_of_section
-
   def update
     participation = Participation.find(params.expect(:id))
 

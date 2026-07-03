@@ -18,10 +18,14 @@ RSpec.describe PlayerMatchStat do
     let(:club) { create(:club) }
     let(:team1) { create(:team, club: club) }
     let(:team2) { create(:team, club: club) }
-    let(:day) { create(:day, calendar: calendar) }
-    let(:other_day) { create(:day, calendar: other_calendar) }
-    let(:match) { create(:match, championship: championship, local_team: team1, visitor_team: team2, day: day, start_datetime: 1.week.ago) }
-    let(:other_match) { create(:match, championship: other_championship, local_team: team1, visitor_team: team2, day: other_day, start_datetime: 1.year.ago) }
+    let(:match) do
+      create(:match, championship: championship, local_team: team1, visitor_team: team2,
+                     day: create(:day, calendar: calendar), start_datetime: 1.week.ago)
+    end
+    let(:other_match) do
+      create(:match, championship: other_championship, local_team: team1, visitor_team: team2,
+                     day: create(:day, calendar: other_calendar), start_datetime: 1.year.ago)
+    end
     let!(:stat) { create(:player_match_stat, match: match) }
     let!(:other_stat) { create(:player_match_stat, match: other_match) }
 

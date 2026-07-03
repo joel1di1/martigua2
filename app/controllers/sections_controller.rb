@@ -47,7 +47,7 @@ class SectionsController < ApplicationController
   end
 
   def player_ffhb_association
-    players_params = params.expect(:section).permit!
+    players_params = params.expect(section: {})
     players_params.each do |key, ffhb_key|
       next unless key.start_with?('player_')
 

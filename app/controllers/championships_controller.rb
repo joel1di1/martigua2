@@ -76,7 +76,7 @@ class ChampionshipsController < ApplicationController # rubocop:disable Metrics/
         redirect_to new_section_championship_path(current_section, params: params.permit(all_params))
       else
         permitted_params = params.permit(all_params).to_h.except(:ffhb).symbolize_keys
-        permitted_params[:team_links] = params.require(:team_links).permit!.to_h
+        permitted_params[:team_links] = params.expect(team_links: {}).to_h
         if params[:championship] && params[:championship][:calendar].present?
           linked_calendar = Calendar.find(params.expect(championship: [:calendar])[:calendar])
         end

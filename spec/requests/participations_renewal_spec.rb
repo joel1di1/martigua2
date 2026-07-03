@@ -35,4 +35,26 @@ describe 'ParticipationsRenewal' do
     it { expect(response).to have_http_status(:success) }
     it { expect(response).to render_template(:index) }
   end
+
+  describe 'POST create' do
+    let(:previous_season) { Season.current.previous }
+    let(:player_from_previous_season) { create(:user) }
+
+    before { section.add_player!(player_from_previous_season, season: previous_season) }
+
+    it 'renews a player who was a member of the section in the previous season' do
+      post section_participations_renewal_index_path(section), params: { players_ids: [player_from_previous_season.id] }
+      expect(section.players.exists?(player_from_previous_season.id)).to be(true)
+    end
+
+    context 'when the user was never a member of the section' do
+      let(:other_user) { create(:user) }
+
+      it 'does not add the user to the section and redirects with an error' do
+        post section_participations_renewal_index_path(section), params: { players_ids: [other_user.id] }
+        expect(section.reload.players.exists?(other_user.id)).to be(false)
+        expect(response).to redirect_to(section_participations_renewal_index_path(section))
+      end
+    end
+  end
 end

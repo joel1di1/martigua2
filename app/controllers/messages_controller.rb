@@ -41,7 +41,9 @@ class MessagesController < ApplicationController
   private
 
   def set_channel
-    @channel = Channel.find(params.expect(:channel_id))
+    @channel = current_section.channels.find(params.expect(:channel_id))
+  rescue ActiveRecord::RecordNotFound
+    catch404
   end
 
   def message_params

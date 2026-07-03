@@ -28,6 +28,23 @@ describe 'Users' do
     end
   end
 
+  describe 'GET show' do
+    let(:coach) { create(:user, with_section_as_coach: section) }
+
+    before { sign_in coach, scope: :user }
+
+    it 'succeeds for a user belonging to the current section' do
+      get section_user_path(id: user.to_param, section_id: section.to_param)
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'returns not_found for a user belonging to another section' do
+      other_user = create(:user, with_section: create(:section))
+      get section_user_path(id: other_user.to_param, section_id: section.to_param)
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
   describe 'GET edit' do
     it 'shows edit form' do
       sign_in user, scope: :user
@@ -75,6 +92,19 @@ describe 'Users' do
 
       it 'redirect_to user path' do
         expect(response).to redirect_to(user_path(user))
+      end
+    end
+
+    context 'when the target user belongs to another section' do
+      let(:coach) { create(:user, with_section_as_coach: section) }
+      let(:other_user) { create(:user, with_section: create(:section)) }
+
+      it 'returns not_found and does not update the user' do
+        sign_in coach, scope: :user
+        patch section_user_path(id: other_user.to_param, section_id: section.to_param),
+              params: { user: new_attributes }
+        expect(response).to have_http_status(:not_found)
+        expect(other_user.reload.first_name).not_to eq(new_attributes[:first_name])
       end
     end
   end
@@ -137,6 +167,24 @@ describe 'Users' do
         before { do_request }
 
         it { expect(response).to redirect_to(section_group_path(section, group)) }
+      end
+    end
+
+    context 'when the group belongs to another section' do
+      let(:other_group) { create(:group, section: create(:section)) }
+      let(:do_request) do
+        delete section_group_user_path(section_id: section.to_param, group_id: other_group.to_param, id: user.to_param)
+      end
+
+      before do
+        other_group.add_user! user
+        sign_in user, scope: :user
+      end
+
+      it 'returns not_found and does not remove the user from the group' do
+        do_request
+        expect(response).to have_http_status(:not_found)
+        expect(other_group.users.count).to eq(1)
       end
     end
   end

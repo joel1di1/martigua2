@@ -17,13 +17,17 @@ class ParticipationsRenewalController < ApplicationController
 
   private
 
+  def previous_season_members
+    current_section.members(season: Season.current.previous)
+  end
+
   def renew_players
-    players = params[:players_ids] ? User.find(params.expect(players_ids: [])) : []
+    players = params[:players_ids] ? previous_season_members.find(params.expect(players_ids: [])) : []
     players.each { |player| current_section.add_player!(player) }
   end
 
   def renew_coachs
-    coachs = params[:coachs_ids] ? User.find(params.expect(coachs_ids: [])) : []
+    coachs = params[:coachs_ids] ? previous_season_members.find(params.expect(coachs_ids: [])) : []
     coachs.each { |coach| current_section.add_coach!(coach) }
   end
 end

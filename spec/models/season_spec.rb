@@ -39,6 +39,59 @@ RSpec.describe Season do
     end
   end
 
+  describe '.current caching behavior' do
+    around do |example|
+      original_cache = Rails.cache
+      Rails.cache = ActiveSupport::Cache::MemoryStore.new
+      example.run
+      Rails.cache = original_cache
+    end
+
+    before do
+      allow(Rails.env).to receive(:local?).and_return(false)
+      Season.destroy_all
+    end
+
+    it 'memoizes the current season for the rest of the day' do
+      Timecop.freeze(Date.new(2024, 9, 15)) do
+        create(:season, start_date: Date.new(2024, 9, 1), end_date: Date.new(2025, 8, 31))
+        first_result = Season.current
+
+        create(:season, start_date: Date.new(2025, 9, 1), end_date: Date.new(2026, 8, 31))
+
+        expect(Season.current).to eq(first_result)
+      end
+    end
+
+    it 'recomputes the current season when the day rolls over, without a process restart' do
+      Timecop.freeze(Date.new(2024, 7, 31)) do
+        create(:season, start_date: Date.new(2023, 8, 1), end_date: Date.new(2024, 7, 31))
+        Season.current
+      end
+
+      Timecop.freeze(Date.new(2024, 8, 1)) do
+        expect(Season.current.start_date).to eq(Date.new(2024, 8, 1))
+        expect(Season.current.end_date).to eq(Date.new(2025, 7, 31))
+      end
+    end
+
+    it 'triggers coach renewal on the rollover day even though the previous day was cached' do
+      section = create(:section)
+      coach = create(:user)
+
+      Timecop.freeze(Date.new(2024, 7, 31)) do
+        old_season = create(:season, start_date: Date.new(2023, 8, 1), end_date: Date.new(2024, 7, 31))
+        create(:participation, user: coach, section:, season: old_season, role: Participation::COACH)
+        Season.current
+      end
+
+      Timecop.freeze(Date.new(2024, 8, 1)) do
+        new_season = Season.current
+        expect(new_season.participations.where(role: Participation::COACH, user: coach).count).to eq(1)
+      end
+    end
+  end
+
   describe '#to_s' do
     it { expect(season.to_s).to eq "#{season.start_date.year}-#{season.end_date.year}" }
   end

@@ -181,7 +181,7 @@ E.g. boundary handling of `day.period_start_date`/`period_end_date` differs betw
 
 ## P15 — Cleanup: small conventions fixes
 
-- **Status**: todo
+- **Status**: done — split across three PRs where the fixes naturally belonged. In this branch (`chore/p15-conventions-fixes`): removed the meaningless `extend ActiveSupport::Concern` from `ApplicationController`, and rewrote `Match#meeting_datetime` as `super || (start_datetime && start_datetime - 1.hour)`. Done earlier elsewhere: the duplicated `ChampionshipsController#create` `redirect_with` blocks collapsed when the FFHB flow moved to its own controller (P9, #1112); the `present_for!`/`not_present_for!`/`not_available_for!` "normalize arg to array" boilerplate became `Array.wrap` during the concern extraction (P11, #1114).
 - **Priority**: 15
 
 **Details**: Low-risk one-liners, can be a single PR:

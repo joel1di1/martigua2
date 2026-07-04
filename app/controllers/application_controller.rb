@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  extend ActiveSupport::Concern
-
   around_action :log_requests
 
   before_action :set_sentry_context

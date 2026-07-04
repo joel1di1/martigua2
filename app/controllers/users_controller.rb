@@ -66,7 +66,7 @@ class UsersController < ApplicationController
     present_ids = (params[:present_ids] || []).map(&:to_i)
     checked_ids = (params[:checked_ids] || []).map(&:to_i)
 
-    trainings = Training.where(id: present_ids)
+    trainings = Training.of_sections(current_user.sections).where(id: present_ids)
     trainings.each do |training|
       current_user._set_presence_for!(checked_ids.include?(training.id), training)
     end
@@ -85,7 +85,7 @@ class UsersController < ApplicationController
 
     MatchAvailability.where(match_id: present_ids, user_id: @user.id).delete_all
 
-    matches = Match.where(id: present_ids)
+    matches = Match.where(id: present_ids, championship: Championship.of_sections(@user.sections))
     matches.each do |match|
       MatchAvailability.create! user: @user, match:, available: checked_ids.include?(match.id)
     end

@@ -44,7 +44,7 @@ Statuses: `todo` | `in_progress` | `done` | `wont_do`
 
 ## P4 — Bug: `Match#selections(team)` shadows the `has_many :selections` association
 
-- **Status**: todo
+- **Status**: done — renamed to `selections_for(team)`, updated the three callers (`app/views/matches/show.html.slim`, `app/views/selections/index.html.slim` x2). Added specs proving `match.selections` now returns the association and `match.selections_for(team)` scopes correctly. Branch: `fix/match-selections-shadow-association`.
 - **Priority**: 4
 
 **Details**: `app/models/match.rb:111` defines `def selections(team)` while the model also declares `has_many :selections`. Any call to `match.selections` without an argument raises `ArgumentError`.

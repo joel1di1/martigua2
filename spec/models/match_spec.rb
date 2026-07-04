@@ -71,6 +71,32 @@ RSpec.describe Match do
     it { is_expected.not_to be_empty }
   end
 
+  describe '#selections' do
+    subject(:selections) { match.selections }
+
+    let(:match) { create(:match) }
+
+    it 'returns the has_many association, not the team-scoped method' do
+      selection = create(:selection, match:)
+
+      expect(selections).to contain_exactly(selection)
+    end
+  end
+
+  describe '#selections_for' do
+    subject(:selections_for) { match.selections_for(team) }
+
+    let(:team) { create(:team) }
+    let(:match) { create(:match) }
+
+    it 'returns only the selections for the given team' do
+      selection = create(:selection, match:, team:)
+      create(:selection, match:)
+
+      expect(selections_for).to contain_exactly(selection)
+    end
+  end
+
   describe '#meeting_datetime' do
     subject(:datetime) { Match.new(meeting_datetime:, start_datetime:).meeting_datetime }
 

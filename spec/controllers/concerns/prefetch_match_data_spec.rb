@@ -155,6 +155,37 @@ RSpec.describe PrefetchMatchData do
     end
   end
 
+  describe 'query count' do
+    let!(:more_matches) do
+      create_list(:match, 8, championship:, local_team: team1, visitor_team: team2, day:,
+                             start_datetime: 1.week.from_now)
+    end
+
+    before do
+      section.players.find_each do |player|
+        [match1, match2, *more_matches].each do |match|
+          create(:match_availability, user: player, match:, available: true)
+        end
+      end
+      create(:absence, user: player1, start_at: 5.days.from_now, end_at: 10.days.from_now)
+    end
+
+    it 'does not run per-match queries' do
+      queries = []
+      counter = lambda do |_name, _start, _finish, _id, payload|
+        queries << payload[:sql] if payload[:sql].match?(/\A\s*SELECT/i) && payload[:name] != 'SCHEMA'
+      end
+
+      ActiveSupport::Notifications.subscribed(counter, 'sql.active_record') do
+        get :index, params: { section_id: section.id }
+      end
+
+      availability_queries = queries.grep(/match_availabilities/)
+      # one for the current user's availabilities, one grouped fetch for all section players
+      expect(availability_queries.size).to be <= 3
+    end
+  end
+
   describe '#preload_current_user_availabilities' do
     it 'returns empty hash when no matches' do
       Match.destroy_all

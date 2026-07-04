@@ -149,11 +149,11 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def realised_task!(task_key, realised_at, club)
-    duty_tasks << DutyTask.create!(key: task_key, realised_at:, user: self, club:)
+    duty_tasks.create!(key: task_key, realised_at:, club:)
   end
 
   def last_time_duty(task_key)
-    duty_tasks.where(name: task_key).order(name: :desc).first&.realised_at
+    duty_tasks.where(key: task_key).order(realised_at: :desc).first&.realised_at
   end
 
   def was_present?(training, presences_by_user_and_training = nil)

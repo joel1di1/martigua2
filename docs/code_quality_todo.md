@@ -33,7 +33,7 @@ Statuses: `todo` | `in_progress` | `done` | `wont_do`
 
 ## P3 — Bug: `User#last_time_duty` always returns nil
 
-- **Status**: todo
+- **Status**: done — fixed the finder to `duty_tasks.where(key: task_key).order(realised_at: :desc).first&.realised_at`; `last_time_duty` had no callers in `app/`, so no compensating logic existed elsewhere. Also simplified `realised_task!` to `duty_tasks.create!(...)` (the `duty_tasks << DutyTask.create!(...)` was redundant since `create!` on the association already sets `user`). Added specs for both the never-realised (nil) and most-recent-wins cases. Branch: `fix/user-last-time-duty-nil`.
 - **Priority**: 3
 
 **Details**: `app/models/user.rb:155` — `duty_tasks.where(name: task_key).order(name: :desc)`. Tasks are created with `key: task_key` (`realised_task!`); the `name` column holds the French label (see `DutyTask::TASKS`), so the `where` never matches. Ordering by `name: :desc` is also wrong — should be `realised_at: :desc`. If this feeds duty-rotation fairness, it silently returns nil for everyone.

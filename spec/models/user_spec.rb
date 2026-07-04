@@ -368,6 +368,26 @@ describe User do
     end
   end
 
+  describe '#last_time_duty' do
+    let(:task) { DutyTask::TASKS.keys.sample }
+
+    context 'when the user never realised the task' do
+      it { expect(user.last_time_duty(task)).to be_nil }
+    end
+
+    context 'when the user realised the task multiple times' do
+      before do
+        user.realised_task!(task, 3.days.ago, section.club)
+        user.realised_task!(task, 1.day.ago, section.club)
+        user.realised_task!(task, 2.days.ago, section.club)
+      end
+
+      it 'returns the most recent realised_at' do
+        expect(user.last_time_duty(task)).to be_within(1.second).of(1.day.ago)
+      end
+    end
+  end
+
   describe 'validates presence on trainings' do
     subject(:was_present) { user.was_present?(training) }
 

@@ -47,10 +47,11 @@ class SectionsController < ApplicationController
   end
 
   def player_ffhb_association
-    players_params = params.expect(section: {})
+    # Keys are dynamic (player_<user_id> => ffhb player id), so restrict values to scalar strings.
+    players_params = params.expect(section: {}).to_h.select do |key, ffhb_key|
+      key.start_with?('player_') && ffhb_key.is_a?(String)
+    end
     players_params.each do |key, ffhb_key|
-      next unless key.start_with?('player_')
-
       user_id = key.split('_')[1]
       user = current_section.users.find(user_id)
       UserChampionshipStat.where(player_id: ffhb_key).update_all(user_id: user.id) # rubocop:disable Rails/SkipsModelValidations

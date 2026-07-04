@@ -77,7 +77,7 @@ Statuses: `todo` | `in_progress` | `done` | `wont_do`
 
 ## P7 — Security: replace the two `permit!` calls (Brakeman warnings)
 
-- **Status**: todo
+- **Status**: done — the raw `permit!` calls had already been replaced by `params.expect(...: {})`, which silenced Brakeman but still permitted arbitrary hash contents. Tightened both: `ChampionshipsController#create` now builds `team_links` via `team_links_params`, which keeps only scalar string values and drops any team id that doesn't belong to `current_section.teams` (previously any signed-in user could link another club's team into their championship via `Team.find`); `SectionsController#player_ffhb_association` now filters to `player_*` keys with scalar string values. Removed the two obsolete Mass Assignment entries from `config/brakeman.ignore` (only the reviewed Section SQL note remains); Brakeman reports 0 warnings and was already wired into CI (`.github/workflows/main.yml` `brakeman` job). Added request specs asserting a section team gets linked and a foreign club's team is ignored. Branch: `security/p7-tighten-dynamic-params`.
 - **Priority**: 7
 
 **Details**: Brakeman flags Mass Assignment at `app/controllers/sections_controller.rb:50` and `app/controllers/championships_controller.rb:79` (`params.require(:team_links).permit!`). `permit!` allows arbitrary keys.

@@ -22,7 +22,7 @@ Statuses: `todo` | `in_progress` | `done` | `wont_do`
 
 ## P2 — Bug: `Season.current` cached forever per Puma thread
 
-- **Status**: todo
+- **Status**: done — replaced `Thread.current[:current_season] ||= _current` with `Rails.cache.fetch("season/current/#{Date.current}", expires_in: 1.day) { _current }`. The date-scoped key guarantees a cache miss (and thus recomputation, including the coach-renewal side effect) on the first request of a new day, with no reliance on TTL timing or process restarts; `Rails.cache` is Redis-backed in dev/production, so the fix also closes the cross-process staleness gap that `Thread.current` never addressed. `Rails.env.local?` bypass preserved unchanged. Branch: `fix/season-current-cache-staleness`.
 - **Priority**: 2
 
 **Details**: `app/models/season.rb:23` — `Thread.current[:current_season] ||= _current` is never invalidated. Puma threads live for weeks, so when the season rolls over (July 31), production keeps serving the old season until a restart. `Season.current` is used in 40+ places, including scopes and `Championship#after_initialize`.

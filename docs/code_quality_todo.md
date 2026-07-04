@@ -66,7 +66,7 @@ Statuses: `todo` | `in_progress` | `done` | `wont_do`
 
 ## P6 — Security: token auth via URL query params leaks tokens into logs
 
-- **Status**: todo
+- **Status**: done — `User` now uses Rails 8 `generates_token_for(:email_authentication, expires_in: 30.days) { authentication_token }`, so email links carry a single signed, expiring `user_token` instead of the permanent `authentication_token` plus a plaintext `user_email`. `ApplicationController#authenticate_user_from_token!` resolves via `User.find_by_token_for`; token is invalidated automatically if `authentication_token` is ever rotated, or after 30 days. Also fixed the actual log leak: `request_string` was interpolating raw `request.url`/`request.query_string` (bypassing the `filter_parameters` masking that only applied to the separately-logged `params` hash) — added `filtered_url`/`filtered_query_string` that run the query string through the same `ActiveSupport::ParameterFilter` before logging. Updated the two invitation mailer views and the request specs that exercised token auth directly. Branch: `security/expiring-email-auth-tokens`.
 - **Priority**: 6
 
 **Details**: `app/controllers/application_controller.rb:130` — `authenticate_user_from_token!` signs users in from `?user_email=...&user_token=...`. Tokens end up in server logs (our own `request_string` logs the full query string), browser history, and Referer headers. Tokens never expire and never rotate.

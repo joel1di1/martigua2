@@ -31,6 +31,10 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   before_validation :ensure_authentication_token
 
+  generates_token_for :email_authentication, expires_in: 30.days do
+    authentication_token
+  end
+
   scope :active_this_season, -> { includes(:participations).where(participations: { season: Season.current }) }
 
   def has_only_one_section?

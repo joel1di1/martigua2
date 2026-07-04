@@ -1,0 +1,55 @@
+.flex.items-center
+  .sm:flex-auto
+    h1.text-xl.font-semibold.text-gray-900 Nouvelle compétition depuis la FFHB
+
+= simple_form_for @championship, url: section_championship_ffhb_import_path(current_section) do |f|
+  .my-5
+    = label_tag 'type_competition', 'Choisissez le type de compétition'
+    = select_tag 'type_competition', options_for_select(Ffhb::ImportForm::TYPE_COMPETITION_OPTIONS, selected: @import_form.type_competition), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72', required: :required
+  - if @import_form.type_competition.present?
+    .my-5
+      = label_tag 'code_comite', 'Choisissez le comité (entrez le numéro de département)'
+      = select_tag 'code_comite', options_for_select(@import_form.comites_options, selected: @import_form.code_comite), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72', required: :required
+
+  - if @import_form.competitions_options.present?
+    .my-5
+      = label_tag 'code_competition', 'Choisissez la compétition', class: 'mt-5'
+      = select_tag 'code_competition', options_for_select(@import_form.competitions_options, selected: @import_form.code_competition), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72', required: :required
+
+  - if @import_form.phases_options.present?
+    .my-5
+      = label_tag 'phase_id', 'Choisissez la phase', class: 'mt-5'
+      = select_tag 'phase_id', options_for_select(@import_form.phases_options, selected: @import_form.phase_id), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72', required: :required
+
+  - if @import_form.pools_options.present?
+    .my-5
+      = label_tag 'code_pool', 'Choisissez la poule', class: 'mt-5'
+      = select_tag 'code_pool', options_for_select(@import_form.pools_options, selected: @import_form.code_pool), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72', required: :required
+
+  .my-5
+    = f.submit 'Valider', class: 'btn btn-primary'
+    = link_to 'Recommencer', new_section_championship_ffhb_import_path(current_section), class: 'ml-2 underline'
+
+- if @import_form.teams.present?
+  = simple_form_for @championship, url: section_championship_ffhb_import_path(current_section) do |f|
+    = hidden_field_tag :type_competition, @import_form.type_competition
+    = hidden_field_tag :code_pool, @import_form.code_pool
+    = hidden_field_tag :code_competition, @import_form.code_competition
+    = hidden_field_tag :code_comite, @import_form.code_comite
+    = hidden_field_tag :phase_id, @import_form.phase_id
+
+    = f.input :calendar, required: false, collection: @calendars, class: 'w-72 px-0 py-0', input_html: { data: { controller: 'ts--select' }, class: 'w-72 px-0 py-0' }
+
+    table.w-full.mt-10
+      thead
+        tr.text-lg.font-bold
+          td Equipes inscrites dans la compétition
+          td Lier une Equipe du club
+      tbody
+        - @import_form.teams.each do |team|
+          tr.even:bg-gray-100
+            td= team['libelle']
+            td= select_tag "team_links[#{team['ext_equipeId']}]", options_for_select( current_section.teams.map{|t| [t.name, t.id]}), include_blank: true, data: { controller: 'ts--select' }, class: 'w-72'
+
+    .flex.justify-center.mt-5
+      = f.submit 'Créer la compétition et lier les équipes', class: 'btn btn-primary mb-10'

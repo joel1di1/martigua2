@@ -1,14 +1,9 @@
 # frozen_string_literal: true
 
-class ChampionshipsController < ApplicationController # rubocop:disable Metrics/ClassLength
+class ChampionshipsController < ApplicationController
   include PrefetchMatchData
 
   before_action :find_championship_by_id, except: %i[index new create]
-
-  TYPE_COMPETITION = [
-    %w[Régions R].freeze,
-    %w[Départements D].freeze
-  ].freeze
 
   def index
     scope = current_section ? current_section.championships : Championship
@@ -32,73 +27,22 @@ class ChampionshipsController < ApplicationController # rubocop:disable Metrics/
 
   def new
     @championship = Championship.new championship_params
-
-    return if params['ffhb'].blank?
-
-    return if params['type_competition'].blank?
-
-    @comites_options = FfhbService.instance.list_comites_by_id.map do |dep_number, comite_hash|
-      ["#{dep_number} - #{comite_hash['libelle']}", dep_number]
-    end.sort_by(&:second)
-
-    return if params['code_comite'].blank?
-
-    @competitions_options = FfhbService.instance.list_competitions(params['code_comite'].to_i).map do |competition_hash|
-      [competition_hash['libelle'],
-       "#{competition_hash['libelle'].parameterize}-#{competition_hash['ext_competitionId']}"]
-    end.sort_by(&:first)
-
-    return if params['code_competition'].blank?
-
-    @competition_details = FfhbService.instance.fetch_competition_details(params['code_competition'])
-
-    @phases_options = @competition_details['phases'].map { |phase| [phase['libelle'], phase['id']] }
-
-    return if params['phase_id'].blank?
-
-    @pools_options = @competition_details['poules']
-                     .select { |poule| poule['phaseId'] == params['phase_id'] }
-                     .map { |poule| [poule['libelle'], poule['ext_pouleId']] }
-
-    return if params['code_pool'].blank?
-
-    @teams = FfhbService.instance.list_teams_for_pool(params['code_competition'], params['code_pool'])
-
-    @calendars = current_section.season_calendars
   end
 
   def edit; end
 
   def create
-    all_params = %w[type_competition code_comite code_competition phase_id code_pool ffhb team_links]
-    if params['ffhb'].present?
-      if all_params.any? { |param| params[param].blank? }
-        redirect_to new_section_championship_path(current_section, params: params.permit(all_params))
-      else
-        permitted_params = params.permit(all_params).to_h.except(:ffhb).symbolize_keys
-        permitted_params[:team_links] = team_links_params
-        if params[:championship] && params[:championship][:calendar].present?
-          linked_calendar = Calendar.find(params.expect(championship: [:calendar])[:calendar])
-        end
-        @championship = Championship.create_from_ffhb!(**permitted_params, linked_calendar:)
-        redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
-                      fallback: section_championship_path(current_section, @championship),
-                      use_referrer: false,
-                      notice: 'Compétition créée'
-      end
-    else
-      @championship = Championship.new championship_params
-      @championship.season = Season.current
-      if @championship.save
-        @championship.enroll_team! Team.find_by(id: params[:default_team_id]) if params[:default_team_id].present?
+    @championship = Championship.new championship_params
+    @championship.season = Season.current
+    if @championship.save
+      @championship.enroll_team! Team.find_by(id: params[:default_team_id]) if params[:default_team_id].present?
 
-        redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
-                      fallback: section_championship_path(current_section, @championship),
-                      use_referrer: false,
-                      notice: 'Compétition créée'
-      else
-        render :new, status: :unprocessable_content
-      end
+      redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
+                    fallback: section_championship_path(current_section, @championship),
+                    use_referrer: false,
+                    notice: 'Compétition créée'
+    else
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -157,15 +101,6 @@ class ChampionshipsController < ApplicationController # rubocop:disable Metrics/
     else
       {}
     end
-  end
-
-  # team_links maps FFHB team ids (dynamic keys) to local team ids.
-  # Keys can't be enumerated, so restrict values instead: scalar strings only,
-  # and any linked team must belong to the current section.
-  def team_links_params
-    links = params.expect(team_links: {}).to_h.select { |_ffhb_team_id, team_id| team_id.is_a?(String) }
-    allowed_team_ids = current_section.teams.where(id: links.values.compact_blank).ids.map(&:to_s)
-    links.select { |_ffhb_team_id, team_id| team_id.blank? || allowed_team_ids.include?(team_id) }
   end
 
   def find_championship_by_id

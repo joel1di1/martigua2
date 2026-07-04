@@ -1,6 +1,7 @@
 inherit_from: .rubocop_todo.yml
 
 plugins:
+  - rubocop-performance
   - rubocop-capybara
   - rubocop-factory_bot
   - rubocop-rspec
@@ -31,3 +32,7 @@ Rails/I18nLocaleTexts:
 
 RSpec/IndexedLet:
   Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - "config/environments/*.rb"

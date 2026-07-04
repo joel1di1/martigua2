@@ -46,7 +46,7 @@ module PrefetchMatchData
   def section_player_absences(section_player_ids)
     return [] if section_player_ids.empty?
 
-    min_match_time = @next_matches.map(&:calculated_start_datetime).compact.min
+    min_match_time = @next_matches.filter_map(&:calculated_start_datetime).min
     max_match_time = @next_matches.filter_map { |m| m.end_datetime || m.day&.period_end_date }.max
     return [] if min_match_time.blank? || max_match_time.blank?
 

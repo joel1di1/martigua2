@@ -75,7 +75,7 @@ class FdmParserService
   end
 
   def parse_player_line(line, positions)
-    licence_match = line.match(/(#{LICENCE_PATTERN})/)
+    licence_match = line.match(/(#{LICENCE_PATTERN})/o)
     return nil if licence_match.nil?
 
     licence = licence_match[1]

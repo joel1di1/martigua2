@@ -1,0 +1,8 @@
+= simple_form_for(@club) do |f|
+  = f.error_notification
+
+  div class="form-inputs"
+    = f.input :name
+
+  div class="form-actions"
+    = f.button :submit

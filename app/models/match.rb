@@ -108,7 +108,7 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
     Team.where(id: [local_team_id, visitor_team_id])
   end
 
-  def selections(team)
+  def selections_for(team)
     Selection.includes(:user).where(match: self, team:)
   end
 

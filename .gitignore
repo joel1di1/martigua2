@@ -51,3 +51,11 @@ coverage
 Dockerfile.ci-*
 test-ci-locally.sh
 CI-DEBUG-README.md
+
+# database dumps and personal/local files
+*.dump
+*.xmind
+/homeexchange_islande_2026.csv
+/vacances_islande_2026.md
+/CI-DEBUG-README.md
+/test-ci-locally.sh

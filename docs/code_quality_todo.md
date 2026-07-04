@@ -170,7 +170,7 @@ E.g. boundary handling of `day.period_start_date`/`period_end_date` differs betw
 
 ## P14 — Repo hygiene: remove personal/data files from the repository
 
-- **Status**: todo
+- **Status**: done — good news first: `latest.dump` was **never committed** (`git log --all -- latest.dump` is empty; `.gitignore` already had `latest.dump*`), so no PII sits in git history and no history rewrite is needed for it. `CI-DEBUG-README.md` and `test-ci-locally.sh` were also untracked local files. The three actually-tracked personal files — `homeexchange_islande_2026.csv`, `vacances_islande_2026.md`, `story_map.xmind` — were untracked with `git rm --cached` (local copies kept on disk) and `.gitignore` extended with `*.dump`, `*.xmind` and the specific filenames so none of them can come back. The two vacation files do remain in **past** git history; if that matters, a `git filter-repo` rewrite is the owner's call (left undone deliberately — destructive, and the content is the owner's own planning notes, not member PII). Branch: `chore/p14-repo-hygiene`.
 - **Priority**: 14
 
 **Details**: Repo root contains `latest.dump` (a DB dump — may hold real member PII; check git history), `homeexchange_islande_2026.csv`, `vacances_islande_2026.md`, `story_map.xmind`, `CI-DEBUG-README.md`.

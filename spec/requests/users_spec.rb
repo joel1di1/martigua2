@@ -161,7 +161,7 @@ describe 'Users' do
 
     it 'sets availability for a match belonging to a section the user is a member of' do
       post_match_availabilities
-      expect(user.reload.is_available_for?(match)).to be(true)
+      expect(user.reload.available_for?(match)).to be(true)
     end
 
     context 'when the match belongs to a championship the user has no section in' do

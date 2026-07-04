@@ -21,7 +21,11 @@ class TrainingPresencesController < ApplicationController
   end
 
   def confirm_presence
-    @player._confirm_presence!(@training, params[:present].present?)
+    if params[:present].present?
+      @player.confirm_presence!(@training)
+    else
+      @player.confirm_no_presence!(@training)
+    end
 
     respond_to do |format|
       format.turbo_stream do

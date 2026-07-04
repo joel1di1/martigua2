@@ -44,7 +44,7 @@ li.p-1.md:p-2.block.hover:bg-gray-100.odd:bg-gray-50
               = render partial: 'matches/presences', locals: {link_url: match_link_url, nb_presents: match.nb_availables, nb_not_presents: match.nb_not_availables, nb_no_response: match.nb_availability_not_set}
           - user_is_player = defined?(@current_user_is_player) ? @current_user_is_player : (current_user.player_of?(current_section) && match.users.include?(current_user))
           - if user_is_player
-            - availability = defined?(@current_user_availabilities) ? @current_user_availabilities[match.id]&.available : current_user.is_available_for?(match)
+            - availability = defined?(@current_user_availabilities) ? @current_user_availabilities[match.id]&.available : current_user.available_for?(match)
             .flex.flex-row-reverse.mt-2
                 .flex.flex-nowrap
                   - if availability.nil?

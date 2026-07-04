@@ -21,7 +21,7 @@
             %em Brûlé
           - else
             %input{ type: :hidden, name: 'present_ids[]', value: match.id }
-            %input{ type: :checkbox, name: 'checked_ids[]', value: match.id, checked: @user.is_available_for?(match) }
+            %input{ type: :checkbox, name: 'checked_ids[]', value: match.id, checked: @user.available_for?(match) }
     %tr
       %td{colspan: 3}
         - non_burned_matches = @matches.select{ |match| !match.burned?(@user) }

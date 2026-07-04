@@ -23,65 +23,53 @@ module PrefetchMatchData
     match_ids = @next_matches.map(&:id)
     section_player_ids = @section.players.pluck(:id)
 
-    availabilities_by_match = MatchAvailability
-                              .where(match_id: match_ids, user_id: section_player_ids)
-                              .pluck(:match_id, :user_id, :available)
-                              .group_by(&:first)
+    availability_rows_by_match = MatchAvailability
+                                 .where(match_id: match_ids, user_id: section_player_ids)
+                                 .pluck(:match_id, :user_id, :available)
+                                 .group_by(&:first)
 
     absences = section_player_absences(section_player_ids)
 
-    @match_availability_counts = build_availability_counts_hash(
-      availabilities_by_match,
-      absences,
-      section_player_ids.size
-    )
+    @match_availability_counts = {}
+    @next_matches.each do |match|
+      rows = (availability_rows_by_match[match.id] || []).map { |_match_id, user_id, available| [user_id, available] }
+      away_user_ids = absences_covering(absences, match).map(&:user_id)
+
+      @match_availability_counts[match.id] = MatchAvailabilitySummary.new(
+        player_ids: section_player_ids,
+        availability_rows: rows,
+        away_user_ids:
+      ).counts
+    end
   end
 
   def section_player_absences(section_player_ids)
     return [] if section_player_ids.empty?
 
-    min_match_time = @next_matches.map { |m| m.start_datetime || m.day&.period_start_date }.compact.min
-    max_match_time = @next_matches.map { |m| m.start_datetime || m.day&.period_end_date }.compact.max
+    min_match_time = @next_matches.map(&:calculated_start_datetime).compact.min
+    max_match_time = @next_matches.filter_map { |m| m.end_datetime || m.day&.period_end_date }.max
     return [] if min_match_time.blank? || max_match_time.blank?
 
-    fetch_absences_for_period(min_match_time, max_match_time).to_a
+    fetch_absences_overlapping(min_match_time, max_match_time)
   end
 
-  def fetch_absences_for_period(min_match_time, max_match_time)
-    Participation
-      .joins(user: :absences)
-      .where(section: @section, season: Season.current, role: Participation::PLAYER)
-      .where('absences.start_at <= ? AND absences.end_at >= ?', max_match_time, min_match_time)
-      .select('DISTINCT participations.user_id, absences.start_at, absences.end_at')
+  # All absences of the section's players that touch the [min, max] window;
+  # per-match covering is then checked in memory with Absence#covers?.
+  def fetch_absences_overlapping(min_match_time, max_match_time)
+    Absence
+      .joins(user: :participations)
+      .where(participations: { section_id: @section.id, season: Season.current, role: Participation::PLAYER })
+      .where(start_at: ..max_match_time)
+      .where(end_at: min_match_time..)
+      .select('DISTINCT absences.user_id, absences.start_at, absences.end_at')
+      .to_a
   end
 
   def absences_covering(absences, match)
-    start_time = match.start_datetime || match.day&.period_start_date
-    end_time = match.end_datetime || match.day&.period_end_date
+    start_time = match.calculated_start_datetime
+    end_time = match.calculated_end_datetime
     return [] if start_time.blank? || end_time.blank?
 
-    absences.select { |absence| absence.start_at <= start_time && absence.end_at >= end_time }
-  end
-
-  def build_availability_counts_hash(availabilities_by_match, absences, total_players)
-    counts_hash = {}
-    @next_matches.each do |match|
-      rows = availabilities_by_match[match.id] || []
-      available_user_ids = rows.filter_map { |_match_id, user_id, available| user_id if available }
-      not_available_count = rows.count { |_match_id, _user_id, available| available == false }
-
-      match_absences = absences_covering(absences, match)
-
-      # Only subtract absences from available count if they were marked available
-      # The away players who are already marked not_available or have no response shouldn't be double-counted
-      away_from_available = match_absences.count { |absence| available_user_ids.include?(absence.user_id) }
-
-      counts_hash[match.id] = {
-        available: [available_user_ids.size - away_from_available, 0].max,
-        not_available: not_available_count + match_absences.size,
-        no_response: total_players - available_user_ids.size - not_available_count
-      }
-    end
-    counts_hash
+    absences.select { |absence| absence.covers?(start_time, end_time) }
   end
 end

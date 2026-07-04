@@ -76,7 +76,7 @@ class ChampionshipsController < ApplicationController # rubocop:disable Metrics/
         redirect_to new_section_championship_path(current_section, params: params.permit(all_params))
       else
         permitted_params = params.permit(all_params).to_h.except(:ffhb).symbolize_keys
-        permitted_params[:team_links] = params.expect(team_links: {}).to_h
+        permitted_params[:team_links] = team_links_params
         if params[:championship] && params[:championship][:calendar].present?
           linked_calendar = Calendar.find(params.expect(championship: [:calendar])[:calendar])
         end
@@ -157,6 +157,15 @@ class ChampionshipsController < ApplicationController # rubocop:disable Metrics/
     else
       {}
     end
+  end
+
+  # team_links maps FFHB team ids (dynamic keys) to local team ids.
+  # Keys can't be enumerated, so restrict values instead: scalar strings only,
+  # and any linked team must belong to the current section.
+  def team_links_params
+    links = params.expect(team_links: {}).to_h.select { |_ffhb_team_id, team_id| team_id.is_a?(String) }
+    allowed_team_ids = current_section.teams.where(id: links.values.compact_blank).ids.map(&:to_s)
+    links.select { |_ffhb_team_id, team_id| team_id.blank? || allowed_team_ids.include?(team_id) }
   end
 
   def find_championship_by_id

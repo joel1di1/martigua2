@@ -76,4 +76,14 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  config.after_initialize do
+    Bullet.enable = true
+    # unused-eager-loading detection is too noisy (controllers preload for views/specs that do not always consume them)
+    Bullet.unused_eager_loading_enable = false
+    # counter-cache suggestions require schema changes; treat them as advisory only
+    Bullet.counter_cache_enable = false
+    Bullet.bullet_logger = true
+    Bullet.add_footer = true
+  end
 end

@@ -156,7 +156,7 @@ E.g. boundary handling of `day.period_start_date`/`period_end_date` differs betw
 
 ## P13 — Tooling: add bullet, rubocop-performance, strong_migrations
 
-- **Status**: todo
+- **Status**: done — added the three gems. `bullet`: enabled in dev (log + page footer) and test (`Bullet.raise = true`, wired into RSpec via `start_request`/`end_request` hooks in `rails_helper.rb`); `unused_eager_loading` and `counter_cache` detectors disabled in both envs (too noisy: controllers legitimately preload for views that specs don't always render, and counter-cache suggestions require schema changes). N+1 detection surfaced and fixed 5 real N+1s: `CalendarsController#index` missing `includes(:season)`; `channels/show` messages missing `includes(:user)` **and** ActionText `with_rich_text_content`; `championships/index` ran a COUNT per championship (now one grouped count in the controller); `Group` join models (`group_memberships`, `group_trainings` — both callback-free) switched from `dependent: :destroy` to `:delete_all`, removing per-group loads on section destroy. `rubocop-performance`: added to the plugins list; auto-corrected 15 offenses (mostly in `FfhbService`). `strong_migrations`: initializer sets `start_after` to the last pre-existing migration. Bullet runs in CI automatically since CI runs the test suite. Branch: `chore/p13-guardrail-gems` (stacked on P12). Note: since Bullet raises in test, any new N+1 fails the suite from now on.
 - **Priority**: 13
 
 **Details**: Three cheap guardrails missing from the Gemfile:

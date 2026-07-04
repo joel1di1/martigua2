@@ -49,13 +49,21 @@ class ApplicationController < ActionController::Base
   end
 
   def request_string
-    "--REQ--;#{Rails.env};#{current_user&.id};#{current_user&.email};#{request.method};#{request.url};#{request.host};#{request.query_string};#{filter_params(params)};"
+    "--REQ--;#{Rails.env};#{current_user&.id};#{current_user&.email};#{request.method};#{filtered_url};#{request.host};#{filtered_query_string};#{filter_params(params)};"
   end
 
   def filter_params(params)
     filters = Rails.application.config.filter_parameters
     f = ActiveSupport::ParameterFilter.new filters
     f.filter params
+  end
+
+  def filtered_query_string
+    filter_params(request.GET).to_query
+  end
+
+  def filtered_url
+    request.query_string.blank? ? request.url : "#{request.base_url}#{request.path}?#{filtered_query_string}"
   end
 
   def redirect_with(fallback: root_path, additionnal_params: {}, use_referrer: true, **options)
@@ -150,10 +158,10 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_user_from_token!
-    user_email = params[:user_email].presence
-    user       = user_email && User.find_by(email: user_email)
+    token = params[:user_token].presence
+    user  = token && User.find_by_token_for(:email_authentication, token)
 
-    sign_in user if user && Devise.secure_compare(user.authentication_token, params[:user_token])
+    sign_in user if user
   end
 
   def set_current_user_in_current

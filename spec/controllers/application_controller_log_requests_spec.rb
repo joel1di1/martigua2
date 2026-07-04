@@ -32,6 +32,16 @@ RSpec.describe ApplicationController do
 
         expect { get(:index, params: { error: true }) }.to raise_error(RuntimeError, 'TEST ERROR')
       end
+
+      it 'filters sensitive query string params out of the logged request' do
+        logged_line = nil
+        allow(Rails.logger).to receive(:info) { |msg| logged_line = msg if msg =~ /REQ/ }
+
+        get :index, params: { user_token: 'super-secret-token' }
+
+        expect(logged_line).not_to include('super-secret-token')
+        expect(logged_line).to include('[FILTERED]')
+      end
     end
 
     context 'when in test env' do

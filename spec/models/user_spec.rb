@@ -50,6 +50,27 @@ describe User do
     its(:id) { is_expected.not_to be_nil }
   end
 
+  describe 'email_authentication token' do
+    it 'resolves back to the user' do
+      token = user.generate_token_for(:email_authentication)
+      expect(User.find_by_token_for(:email_authentication, token)).to eq(user)
+    end
+
+    it 'expires after 30 days' do
+      token = user.generate_token_for(:email_authentication)
+      Timecop.travel 31.days.from_now
+      expect(User.find_by_token_for(:email_authentication, token)).to be_nil
+      Timecop.return
+    end
+
+    it 'is invalidated when the authentication_token changes' do
+      token = user.generate_token_for(:email_authentication)
+      user.update!(authentication_token: SecureRandom.urlsafe_base64(32))
+
+      expect(User.find_by_token_for(:email_authentication, token)).to be_nil
+    end
+  end
+
   describe '#short_name' do
     it 'returns nickname or full name' do
       user = create(:user, nickname: nil)

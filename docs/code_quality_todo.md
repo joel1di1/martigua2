@@ -55,7 +55,7 @@ Statuses: `todo` | `in_progress` | `done` | `wont_do`
 
 ## P5 — Bug: `Match.of_next_7_days` returns the current week, not the next 7 days
 
-- **Status**: todo
+- **Status**: done — `Match.of_next_7_days` had zero callers (the actual availability-mail logic uses `User#next_7_days_matches`, which already correctly computes a rolling 7-day window and is unaffected by this bug) and zero specs, so it was dead code rather than a live bug. Deleted the method instead of fixing it. Branch: `fix/match-of-next-7-days-dead-code`.
 - **Priority**: 5
 
 **Details**: `app/models/match.rb:101` — computes `date.at_beginning_of_week..end_of_week`, i.e. the *calendar week of `date`*, not `date..date + 7.days`. Called from availability-mail logic; a Sunday run would miss next weekend's matches.

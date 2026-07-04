@@ -98,12 +98,6 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def self.of_next_7_days(date: DateTime.now)
-    start_period = date.at_beginning_of_week
-    end_period = start_period.at_end_of_week
-    Match.with_start_between(start_period, end_period)
-  end
-
   def teams
     Team.where(id: [local_team_id, visitor_team_id])
   end

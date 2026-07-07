@@ -3,10 +3,8 @@ div class="sm:flex sm:items-center"
     h1 class="text-base font-semibold text-gray-900" = t('views.counts.championship', count: @championships.count)
   - if current_section && current_user.coach_of?(current_section)
     div class="mt-4 flex sm:mt-0 sm:ml-16 sm:flex-none gap-3 items-center"
-      - link_ffhb_url = current_section ? new_section_championship_path(current_section, ffhb: true) : new_championship_path(ffhb: true)
-      - link_url = current_section ? new_section_championship_path(current_section) : new_championship_path
-      = link_to 'Ajouter une compétition depuis la FFHB', link_ffhb_url, class: 'block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-      = link_to 'Ajouter une compétition manuellement', link_url, class: 'text-sm font-semibold text-indigo-600 hover:text-indigo-500'
+      = link_to 'Ajouter une compétition depuis la FFHB', new_section_championship_ffhb_import_path(current_section), class: 'block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+      = link_to 'Ajouter une compétition manuellement', new_section_championship_path(current_section), class: 'text-sm font-semibold text-indigo-600 hover:text-indigo-500'
       = link_to 'Groupes', section_championship_groups_path(current_section), class: 'text-sm font-semibold text-gray-600 hover:text-gray-900'
 
 - if @championships.empty?

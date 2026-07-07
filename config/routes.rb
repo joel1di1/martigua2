@@ -79,6 +79,7 @@ Rails.application.routes.draw do
         post 'invitations'
       end
     end
+    resource :championship_ffhb_import, only: %i[new create]
     resources :championships do
       member do
         get :merge_calendar_form

@@ -110,54 +110,8 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
     super || start_datetime&.send(:-, 1.hour)
   end
 
-  def ffhb_sync! # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    if ffhb_key.blank?
-      logger.warn "No ffhb_key for match #{id}"
-      return
-    end
-
-    match_details = FfhbService.instance.fetch_match_details(*ffhb_key.split)
-    if match_details['rencontre']['date'].present?
-      self.start_datetime = Time.find_zone('UTC').parse(match_details['rencontre']['date'])
-      self.day = championship.find_or_create_day_for(start_datetime)
-    end
-
-    self.local_score = match_details['rencontre']['equipe1Score']&.to_i
-    self.visitor_score = match_details['rencontre']['equipe2Score']&.to_i
-    self.fdm_code = match_details['rencontre']['fdmCode']
-
-    ffhb_id = match_details['rencontre']['equipementId']
-    if ffhb_id.present?
-      location = Location.find_by(ffhb_id:)
-      if location.blank?
-        rencontre_details = FfhbService.instance.fetch_rencontre_salle(*ffhb_key.split)
-        name = rencontre_details['equipement']['libelle']
-        address = <<~TEXT.chomp
-          #{rencontre_details['equipement']['libelle']}
-          #{rencontre_details['equipement']['rue']}
-          #{rencontre_details['equipement']['codePostal']} #{rencontre_details['equipement']['ville']}
-        TEXT
-
-        location = Location.create!(name:, address:, ffhb_id:)
-      end
-      self.location = location
-    end
-
-    save!
-  rescue FfhbServiceError => e
-    Sentry.capture_message(
-      'FFHB sync failed for match - possibly deleted match (team banished?)',
-      level: :warning,
-      extra: {
-        error_message: e.message,
-        match_id: id,
-        match_ffhb_key: ffhb_key,
-        championship_id: championship_id,
-        championship_ffhb_key: championship.ffhb_key,
-        season_id: championship.season_id
-      }
-    )
-    logger.warn "FFHB sync failed for match #{id}: #{e.message}"
+  def ffhb_sync!
+    Ffhb::MatchSync.new(self).call
   end
 
   def sync_player_stats!

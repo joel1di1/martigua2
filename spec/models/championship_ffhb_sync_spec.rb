@@ -65,8 +65,8 @@ RSpec.describe Championship do
     end
   end
 
-  describe '#stats_sync!' do
-    let(:championship) { create(:championship) }
+  describe 'Ffhb::ChampionshipSync#sync_championship_stats!' do
+    let(:championship) { create(:championship, ffhb_key: '2023-2024-19 departemental competition-1 1 1') }
     let(:ffhb_service) { instance_double(FfhbService) }
     let(:stats_json) do
       {
@@ -90,14 +90,14 @@ RSpec.describe Championship do
 
     it 'creates a new UserChampionshipStat record' do
       expect do
-        championship.stats_sync!(1, 1, 1)
+        Ffhb::ChampionshipSync.new(championship).sync_championship_stats!
       end.to change(UserChampionshipStat, :count).by(1)
     end
 
     it 'updates an existing UserChampionshipStat record' do
       user_stat = create(:user_championship_stat, championship:, player_id: 1)
 
-      championship.stats_sync!(1, 1, 1)
+      Ffhb::ChampionshipSync.new(championship).sync_championship_stats!
 
       user_stat.reload
       expect(user_stat.match_played).to eq(10)

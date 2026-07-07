@@ -88,7 +88,7 @@ Statuses: `todo` | `in_progress` | `done` | `wont_do`
 
 ## P8 — N+1: `PrefetchMatchData#build_availability_counts_hash` queries inside a loop
 
-- **Status**: todo
+- **Status**: done — replaced the per-match `match.match_availabilities.where(available: true).pluck(:user_id)` and `match.aways.where(...).count` with two upfront queries: a single `pluck(:match_id, :user_id, :available)` over all matches/section players (grouped in Ruby), and the existing single absence fetch, now kept as rows and intersected per match in memory (`absences_covering` reuses the same `start_at <= start && end_at >= end` predicate the old `match.aways` used). Side effect: the "away while marked available" subtraction is now consistently scoped to section players, matching the availability counts it is subtracted from. Added a regression spec that counts `sql.active_record` SELECTs on `match_availabilities` across 10 matches (≤3 allowed; verified it fails against the old implementation). Branch: `perf/p8-prefetch-match-data-n-plus-1`.
 - **Priority**: 8
 
 **Details**: `app/controllers/concerns/prefetch_match_data.rb:74` — for each match it runs `match.match_availabilities.where(available: true).pluck(:user_id)` and `match.aways.where(...).count` (which itself joins users/participations/absences). On a section dashboard with 20 upcooming matches that's ~40 extra queries, defeating the purpose of the "prefetch" concern.

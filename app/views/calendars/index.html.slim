@@ -1,0 +1,25 @@
+div class="panel panel-default"
+  div class="panel-heading"
+    h3 class="panel-title" Calendriers existants
+  div class="panel-body"
+    div class="table-responsive"
+      table class="table table-hover table-striped"
+        thead
+          tr
+            th Saison
+            th Nom
+        tbody
+          = render @calendars
+
+
+p
+  a href="#new-calendar-collapse" data-toggle="collapse"
+    | Créer un nouveau calendrier
+
+div id="new-calendar-collapse" class="row collapse"
+  div class="col-xs-12 col-sm-8 col-md-6"
+    div class="panel panel-default"
+      div class="panel-heading"
+        h3 class="panel-title" Nouveau Calendrier
+      div class="panel-body"
+        = render 'form'

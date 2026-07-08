@@ -49,30 +49,28 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
                                       })
   end
 
-  def _availables
-    away_user_ids = aways.pluck(:id)
-    match_availabilities.includes(:user).where(available: true).where.not(user_id: away_user_ids)
+  def availability_summary
+    @availability_summary ||= MatchAvailabilitySummary.new(
+      player_ids: users.distinct.ids,
+      availability_rows: match_availabilities.pluck(:user_id, :available),
+      away_user_ids: aways.distinct.ids
+    )
   end
 
   def availables
-    _availables.map(&:user)
+    User.where(id: availability_summary.available_user_ids).to_a
   end
 
   def nb_availables
-    _availables.count
-  end
-
-  def _not_availables
-    match_availabilities.includes(:user).where(available: false)
+    availability_summary.available_user_ids.size
   end
 
   def not_availables
-    (_not_availables.map(&:user) + aways).uniq
+    User.where(id: availability_summary.not_available_user_ids).to_a
   end
 
   def aways
-    users.joins(:absences)
-         .where('absences.start_at <= ? AND absences.end_at >= ?', start_datetime || day.period_start_date, end_datetime || day.period_end_date)
+    users.joins(:absences).merge(Absence.covering(calculated_start_datetime, calculated_end_datetime))
   end
 
   def nb_aways
@@ -80,15 +78,15 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def nb_not_availables
-    not_availables.count
+    availability_summary.not_available_user_ids.size
   end
 
   def nb_availability_not_set
-    availability_not_set.size
+    availability_summary.no_response_user_ids.size
   end
 
   def availability_not_set
-    users.uniq - availables - not_availables
+    User.where(id: availability_summary.no_response_user_ids).to_a
   end
 
   def self.send_availability_mail_for_next_weekend
@@ -148,6 +146,10 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   def calculated_start_datetime
     start_datetime || day&.period_start_date
+  end
+
+  def calculated_end_datetime
+    end_datetime || day&.period_end_date
   end
 
   private

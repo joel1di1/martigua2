@@ -12,6 +12,17 @@ class Absence < ApplicationRecord
 
   belongs_to :user
 
+  # Absences that span the whole period. start_at/end_at are date columns, so the
+  # comparison is date-granular: being absent through the day a match takes place
+  # counts as covering it, whatever the kick-off time.
+  scope :covering, lambda { |start_time, end_time|
+    where(start_at: ..start_time.to_date).where(end_at: end_time.to_date..)
+  }
+
+  def covers?(start_time, end_time)
+    start_at <= start_time.to_date && end_at >= end_time.to_date
+  end
+
   def update_training_presences
     # all training that start between start_at and end_at
     trainings = Training.with_start_between(start_at, end_at)

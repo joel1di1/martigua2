@@ -304,6 +304,43 @@ RSpec.describe Match do
         expect(match.aways).to contain_exactly(player_absent)
       end
     end
+
+    context 'with absence overlapping only the start of a multi-day match window' do
+      let(:section) { create(:section) }
+      let(:team) { create(:team, with_section: section) }
+      let(:day) { create(:day, period_start_date: 1.week.from_now, period_end_date: 1.week.from_now + 1.day) }
+      let(:match) { create(:match, local_team: team, day:, start_datetime: nil, end_datetime: nil) }
+      let(:player) { create(:user, with_section: section) }
+
+      before do
+        create(:match_availability, user: player, match:, available: true)
+        # covers the first day of the window only
+        create(:absence, user: player, start_at: day.period_start_date.to_date - 2.days,
+                         end_at: day.period_start_date.to_date)
+      end
+
+      it 'does not count a partial absence as away, consistently with User#absent_for?' do
+        expect(match.aways).to be_empty
+        expect(player.absent_for?(match)).to be false
+      end
+    end
+
+    context 'with absence ending on the day of the match' do
+      let(:section) { create(:section) }
+      let(:team) { create(:team, with_section: section) }
+      let(:match) { create(:match, local_team: team) }
+      let(:player) { create(:user, with_section: section) }
+
+      before do
+        create(:absence, user: player, start_at: match.start_datetime.to_date - 2.days,
+                         end_at: match.start_datetime.to_date)
+      end
+
+      it 'counts the player as away, consistently with User#absent_for?' do
+        expect(match.aways).to contain_exactly(player)
+        expect(player.absent_for?(match)).to be true
+      end
+    end
   end
 
   describe '#calculated_start_datetime' do

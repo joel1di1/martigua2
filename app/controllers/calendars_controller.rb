@@ -4,7 +4,7 @@ class CalendarsController < ApplicationController
   before_action :find_calendar_by_id, only: %i[edit update]
 
   def index
-    @calendars = Calendar.order(season_id: :DESC)
+    @calendars = Calendar.includes(:season).order(season_id: :DESC)
     @calendar = Calendar.new(season: Season.current)
   end
 

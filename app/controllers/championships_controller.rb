@@ -8,6 +8,7 @@ class ChampionshipsController < ApplicationController
   def index
     scope = current_section ? current_section.championships : Championship
     @championships = scope.where(season: Season.current).order(created_at: :desc)
+    @match_counts_by_championship_id = Match.where(championship_id: @championships.unscope(:order).ids).group(:championship_id).count
   end
 
   def show

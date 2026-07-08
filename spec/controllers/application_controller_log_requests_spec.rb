@@ -35,7 +35,7 @@ RSpec.describe ApplicationController do
 
       it 'filters sensitive query string params out of the logged request' do
         logged_line = nil
-        allow(Rails.logger).to receive(:info) { |msg| logged_line = msg if msg =~ /REQ/ }
+        allow(Rails.logger).to receive(:info) { |msg| logged_line = msg if msg.include?('REQ') }
 
         get :index, params: { user_token: 'super-secret-token' }
 

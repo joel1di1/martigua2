@@ -75,23 +75,23 @@ RSpec.describe Absence do
     context 'when user declared nothing' do
       describe 'on create' do
         it 'updates the match availabilities' do
-          expect(user.is_available_for?(match)).to be_nil
+          expect(user.available_for?(match)).to be_nil
           create(:absence, user:, start_at: match.start_datetime - 1.day, end_at: match.start_datetime + 2.days)
-          expect(user.reload.is_available_for?(match)).to be false
+          expect(user.reload.available_for?(match)).to be false
         end
       end
 
       describe 'on update' do
         it 'updates the match availabilities' do
-          expect(user.is_available_for?(match)).to be_nil
+          expect(user.available_for?(match)).to be_nil
           absence = create(:absence, user:, start_at: match.start_datetime - 10.days,
                                      end_at: match.start_datetime - 2.days)
-          expect(user.reload.is_available_for?(match)).to be_nil
+          expect(user.reload.available_for?(match)).to be_nil
           absence.update(end_at: match.start_datetime + 2.days)
-          expect(user.reload.is_available_for?(match)).to be false
+          expect(user.reload.available_for?(match)).to be false
 
           # absence.update(end_at: match.start_datetime - 2.days)
-          # expect(user.reload.is_available_for?(match)).to be_nil
+          # expect(user.reload.available_for?(match)).to be_nil
         end
       end
     end
@@ -101,23 +101,23 @@ RSpec.describe Absence do
 
       describe 'on create' do
         it 'updates the match availabilities' do
-          expect(user.is_available_for?(match)).to be true
+          expect(user.available_for?(match)).to be true
           create(:absence, user:, start_at: match.start_datetime - 1.day, end_at: match.start_datetime + 2.days)
-          expect(user.reload.is_available_for?(match)).to be false
+          expect(user.reload.available_for?(match)).to be false
         end
       end
 
       describe 'on update' do
         it 'updates the match availabilities' do
-          expect(user.is_available_for?(match)).to be true
+          expect(user.available_for?(match)).to be true
           absence = create(:absence, user:, start_at: match.start_datetime - 10.days,
                                      end_at: match.start_datetime - 2.days)
-          expect(user.reload.is_available_for?(match)).to be true
+          expect(user.reload.available_for?(match)).to be true
           absence.update(end_at: match.start_datetime + 2.days)
-          expect(user.reload.is_available_for?(match)).to be false
+          expect(user.reload.available_for?(match)).to be false
 
           # absence.update(end_at: match.start_datetime - 2.days)
-          # expect(user.reload.is_available_for?(match)).to be_nil
+          # expect(user.reload.available_for?(match)).to be_nil
         end
       end
     end

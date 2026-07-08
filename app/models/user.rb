@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  include Attendance
+  include Availability
 
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_fit: [32, 32]
@@ -15,14 +18,11 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_many :club_admin_roles, dependent: :destroy
   has_many :participations, dependent: :destroy
   has_many :sections, -> { distinct }, through: :participations, inverse_of: :users
-  has_many :training_presences, inverse_of: :user, dependent: :destroy
   has_many :duty_tasks, inverse_of: :user, dependent: :destroy
-  has_many :match_availabilities, inverse_of: :user, dependent: :destroy
   has_many :user_championship_stats, inverse_of: :user, dependent: :destroy
   has_many :player_match_stats, dependent: :destroy
   has_many :webpush_subscriptions, inverse_of: :user, dependent: :destroy
   has_many :user_channel_messages, inverse_of: :user, dependent: :destroy
-  has_many :absences, inverse_of: :user, dependent: :destroy
 
   has_many :group_memberships, dependent: :destroy
   has_many :groups, through: :group_memberships
@@ -65,45 +65,6 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     "#{participation.season} - #{participation.role} of #{participation.section.club.name} - #{participation.section.name}"
   end
 
-  def present_for!(training_or_array, *)
-    _set_presence_for!(true, training_or_array, *)
-  end
-
-  def not_present_for!(training_or_array, *)
-    _set_presence_for!(false, training_or_array, *)
-  end
-
-  def _set_presence_for!(present, training_or_array, *other_trainings)
-    trainings = training_or_array if training_or_array.is_a?(Array) || training_or_array.is_a?(ActiveRecord::Relation)
-    trainings ||= [training_or_array] + other_trainings
-
-    presences = {}
-    training_presences.each { |training_presence| presences[training_presence.training_id] = training_presence }
-
-    [*trainings].each do |training|
-      next if present && training.max_capacity_reached?
-
-      presence = presences[training.id]
-      if presence.nil?
-        training_presences << TrainingPresence.new(training:, user: self, is_present: present)
-      else
-        presence.update is_present: present
-      end
-    end
-  end
-
-  def present_for?(training)
-    training_presences.where(training:).first.try(:is_present)
-  end
-
-  def set_present_for?(training)
-    training_presences.where(training:).first.is_present != nil
-  end
-
-  def is_available_for?(match)
-    match_availabilities.find { |ma| ma.match_id == match.id }.try(:available)
-  end
-
   def admin_of?(club)
     return false if club.nil?
 
@@ -122,36 +83,6 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     nickname.presence || "#{first_name.capitalize} #{last_name.capitalize}"
   end
 
-  def next_week_trainings(date: DateTime.now)
-    start_date = date.next_week
-    end_date = start_date + 1.week
-    days_to_check = (start_date..end_date).to_a.map(&:to_date)
-
-    days_to_check.reject! { |d| absences.any? { |a| d.between?(a.start_at, a.end_at) } }
-
-    Training.with_start_on(days_to_check)
-            .includes(:groups)
-            .where(groups: { id: group_ids })
-  end
-
-  def next_7_days_matches
-    start_date = Time.zone.now.to_date
-    end_date = start_date + 7.days
-
-    # remove days where user is absent
-    current_absences = absences.where(start_at: start_date..end_date).or(absences.where(end_at: start_date..end_date))
-    days_to_check = (start_date..end_date).to_a.map(&:to_date)
-    days_to_check.reject! { |d| current_absences.any? { |a| d.between?(a.start_at, a.end_at) } }
-
-    next_matches = Match.on_days(days_to_check)
-                        .includes(local_team: :sections, visitor_team: :sections)
-    next_matches.reject do |match|
-      (match.local_team.sections + match.visitor_team.sections).flatten.none? do |s|
-        player_of?(s)
-      end
-    end
-  end
-
   def realised_task!(task_key, realised_at, club)
     duty_tasks.create!(key: task_key, realised_at:, club:)
   end
@@ -160,36 +91,8 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     duty_tasks.where(key: task_key).order(realised_at: :desc).first&.realised_at
   end
 
-  def was_present?(training, presences_by_user_and_training = nil)
-    training_presence = if presences_by_user_and_training.present?
-                          presences_by_user_and_training[[id, training.id]]
-                        else
-                          training_presences.where(training:).first
-                        end
-    return false unless training_presence
-
-    training_presence.presence_validated? || (training_presence.is_present? && training_presence.presence_validated.nil?)
-  end
-
-  def confirm_presence!(training)
-    _confirm_presence!(training, true)
-  end
-
-  def confirm_no_presence!(training)
-    _confirm_presence!(training, false)
-  end
-
-  def _confirm_presence!(training, presence)
-    training_presence = training_presences.find_or_create_by(training:)
-    training_presence.update!(presence_validated: presence)
-  end
-
-  def super_admin?
-    id == 1
-  end
-
   def read?(message)
-    user_channel_messages.find_or_create_by(message:, channel: message.channel).read?
+    user_channel_messages.exists?(message:, read: true)
   end
 
   def read!(message_ids)
@@ -197,19 +100,6 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     message_ids.each do |message_id|
       message = Message.find(message_id)
       user_channel_messages.find_or_create_by(message:, channel: message.channel).update!(read: true)
-    end
-  end
-
-  def absent_for?(match)
-    absences.any? { |absence| absence.covers?(match.calculated_start_datetime, match.calculated_end_datetime) }
-  end
-
-  def not_available_for!(match_or_array)
-    matches = match_or_array if match_or_array.is_a?(Array) || match_or_array.is_a?(ActiveRecord::Relation)
-    matches ||= [match_or_array]
-    matches.each do |match|
-      match_availability = MatchAvailability.find_or_create_by(user: self, match:)
-      match_availability.update!(available: false)
     end
   end
 

@@ -68,7 +68,11 @@ class UsersController < ApplicationController
 
     trainings = Training.of_sections(current_user.sections).where(id: present_ids)
     trainings.each do |training|
-      current_user._set_presence_for!(checked_ids.include?(training.id), training)
+      if checked_ids.include?(training.id)
+        current_user.present_for!(training)
+      else
+        current_user.not_present_for!(training)
+      end
     end
 
     redirect_with(fallback: root_path)

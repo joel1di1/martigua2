@@ -323,8 +323,8 @@ describe User do
     end
   end
 
-  describe '#is_available_for?' do
-    subject { user.is_available_for?(match) }
+  describe '#available_for?' do
+    subject { user.available_for?(match) }
 
     let(:match) { create(:match) }
 
@@ -480,9 +480,9 @@ describe User do
 
     context 'with availability not set' do
       it 'create match_availability' do
-        expect(user.is_available_for?(match)).to be_nil
+        expect(user.available_for?(match)).to be_nil
         expect { user.not_available_for!(match) }.to change(user.match_availabilities, :count).by(1)
-        expect(user).not_to be_is_available_for(match)
+        expect(user).not_to be_available_for(match)
       end
     end
 
@@ -490,19 +490,19 @@ describe User do
       before { create(:match_availability, user:, match:, available: true) }
 
       it 'create match_availability' do
-        expect(user).to be_is_available_for(match)
+        expect(user).to be_available_for(match)
         user.not_available_for!(match)
-        expect(user.reload).not_to be_is_available_for(match)
+        expect(user.reload).not_to be_available_for(match)
       end
     end
 
     context 'with array of matchs' do
       it 'update match_availabilities' do
-        expect(user.reload.is_available_for?(match)).to be_nil
-        expect(user.reload.is_available_for?(other_match)).to be_nil
+        expect(user.reload.available_for?(match)).to be_nil
+        expect(user.reload.available_for?(other_match)).to be_nil
         user.not_available_for!([match, other_match])
-        expect(user.reload).not_to be_is_available_for(match)
-        expect(user.reload).not_to be_is_available_for(other_match)
+        expect(user.reload).not_to be_available_for(match)
+        expect(user.reload).not_to be_available_for(other_match)
       end
     end
   end

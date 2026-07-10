@@ -247,7 +247,7 @@ GEM
       temple (>= 0.8.2)
       thor
       tilt
-    haml-rails (3.0.0)
+    haml-rails (3.1.0)
       actionpack (>= 5.1)
       activesupport (>= 5.1)
       haml (>= 4.0.6)
@@ -602,7 +602,7 @@ GEM
     tailwindcss-ruby (4.3.1-x86_64-linux-gnu)
     temple (0.10.4)
     thor (1.5.0)
-    tilt (2.7.0)
+    tilt (2.8.0)
     timecop (0.9.11)
     timeout (0.6.1)
     trailblazer-option (0.1.2)

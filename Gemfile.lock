@@ -571,7 +571,7 @@ GEM
     simple_form-tailwind (0.2.0)
       railties (>= 7.0)
       simple_form (>= 5.0)
-    simplecov (1.0.2)
+    simplecov (1.0.3)
     simplecov_json_formatter (0.1.4)
     slim (5.2.1)
       temple (~> 0.10.0)

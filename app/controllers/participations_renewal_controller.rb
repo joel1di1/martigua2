@@ -18,7 +18,7 @@ class ParticipationsRenewalController < ApplicationController
   private
 
   def previous_season_members
-    current_section.members(season: Season.current.previous)
+    current_section.members(season: Season.current.previous).distinct
   end
 
   def renew_players

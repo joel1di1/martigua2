@@ -56,5 +56,25 @@ describe 'ParticipationsRenewal' do
         expect(response).to redirect_to(section_participations_renewal_index_path(section))
       end
     end
+
+    context 'when renewing several members and one of them was both a player and a coach' do
+      let(:player_and_coach_from_previous_season) { create(:user) }
+      let(:another_player_from_previous_season) { create(:user) }
+
+      before do
+        section.add_player!(player_and_coach_from_previous_season, season: previous_season)
+        section.add_coach!(player_and_coach_from_previous_season, season: previous_season)
+        section.add_player!(another_player_from_previous_season, season: previous_season)
+      end
+
+      it 'renews every selected player without raising RecordNotFound' do
+        post section_participations_renewal_index_path(section),
+             params: { players_ids: [player_and_coach_from_previous_season.id, another_player_from_previous_season.id] }
+
+        expect(section.reload.players.exists?(player_and_coach_from_previous_season.id)).to be(true)
+        expect(section.reload.players.exists?(another_player_from_previous_season.id)).to be(true)
+        expect(response).to redirect_to(section_users_path(section))
+      end
+    end
   end
 end

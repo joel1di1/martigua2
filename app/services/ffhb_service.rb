@@ -43,7 +43,7 @@ class FfhbService # rubocop:disable Metrics/ClassLength
 
   def fetch_departemental_details
     fetch_smartfire_attributes(
-      'https://www.ffhandball.fr/competitions/saison-2025-2026-21/departemental/',
+      'https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/',
       'competitions---competition-main-menu'
     )
   end
@@ -51,21 +51,21 @@ class FfhbService # rubocop:disable Metrics/ClassLength
   def fetch_comite_details(dep_number)
     comite_hash = list_comites_by_id[dep_number]
     fetch_smartfire_attributes(
-      "https://www.ffhandball.fr/competitions/saison-2025-2026-21/departemental/o-#{comite_hash['libelle'].parameterize}-#{comite_hash['ext_structureId']}/",
+      "https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/o-#{comite_hash['libelle'].parameterize}-#{comite_hash['ext_structureId']}/",
       'competitions---competition-main-menu'
     )
   end
 
   def fetch_competition_details(competition_key)
     fetch_smartfire_attributes(
-      "https://www.ffhandball.fr/competitions/saison-2025-2026-21/departemental/#{competition_key.gsub('_', '-')}/",
+      "https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/#{competition_key.gsub('_', '-')}/",
       'competitions---poule-selector'
     )
   end
 
   def fetch_competition_stats(competition_key, _phase_id, code_pool)
     fetch_smartfire_attributes(
-      "https://www.ffhandball.fr/competitions/saison-2025-2026-21/departemental/#{competition_key.gsub('_',
+      "https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/#{competition_key.gsub('_',
                                                                                                        '-')}/poule-#{code_pool}/statistiques/",
       'competitions---stats-joueurs'
     )
@@ -73,7 +73,7 @@ class FfhbService # rubocop:disable Metrics/ClassLength
 
   def fetch_pool_details(competition_key, code_pool)
     fetch_smartfire_attributes(
-      "https://www.ffhandball.fr/competitions/saison-2025-2026-21/departemental/#{competition_key.gsub('_',
+      "https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/#{competition_key.gsub('_',
                                                                                                        '-')}/poule-#{code_pool}/",
       'competitions---poule-selector'
     )
@@ -81,7 +81,7 @@ class FfhbService # rubocop:disable Metrics/ClassLength
 
   def fetch_journee_details(competition_key, code_pool, journee_number)
     fetch_smartfire_attributes(
-      "https://www.ffhandball.fr/competitions/saison-2025-2026-21/departemental/#{competition_key.gsub('_',
+      "https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/#{competition_key.gsub('_',
                                                                                                        '-')}/poule-#{code_pool}/journee-#{journee_number}/",
       'competitions---rencontre-list'
     )
@@ -89,7 +89,7 @@ class FfhbService # rubocop:disable Metrics/ClassLength
 
   def fetch_match_details(competition_key, code_pool, rencontre_id)
     fetch_smartfire_attributes(
-      "https://www.ffhandball.fr/competitions/saison-2025-2026-21/departemental/#{competition_key.gsub('_',
+      "https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/#{competition_key.gsub('_',
                                                                                                        '-')}/poule-#{code_pool}/rencontre-#{rencontre_id}/",
       'competitions---rematch'
     )
@@ -97,7 +97,7 @@ class FfhbService # rubocop:disable Metrics/ClassLength
 
   def fetch_rencontre_salle(competition_key, code_pool, rencontre_id)
     fetch_smartfire_attributes(
-      "https://www.ffhandball.fr/competitions/saison-2025-2026-21/departemental/#{competition_key.gsub('_',
+      "https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/#{competition_key.gsub('_',
                                                                                                        '-')}/poule-#{code_pool}/rencontre-#{rencontre_id}/",
       'competitions---rencontre-salle'
     )

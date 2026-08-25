@@ -18,6 +18,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
+      - name: Install libvips
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libvips-dev
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -33,6 +38,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+
+      - name: Install libvips
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libvips-dev
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -65,6 +75,14 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
+
+      # Install libvips before `bundle install` so the ruby-vips native
+      # extension (used for Active Storage image variants) can compile
+      - name: Install libvips
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libvips-dev
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:

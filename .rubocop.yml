@@ -12,6 +12,12 @@ AllCops:
   Exclude:
     - "db/schema.rb"
     - "bin/*"
+    - "tmp/**/*"
+    - "log/**/*"
+    - "vendor/**/*"
+    - "node_modules/**/*"
+    - "public/**/*"
+    - "storage/**/*"
 
 Style/Documentation:
   Enabled: false

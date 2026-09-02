@@ -3,4 +3,5 @@
 class Current < ActiveSupport::CurrentAttributes
   attribute :user
   attribute :section
+  attribute :season
 end

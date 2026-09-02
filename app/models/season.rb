@@ -18,9 +18,11 @@ class Season < ApplicationRecord
   end
 
   def self.current
-    return _current if Rails.env.local?
-
-    Rails.cache.fetch(current_cache_key, expires_in: 1.day) { _current }
+    Current.season ||= if Rails.env.local?
+                         _current
+                       else
+                         Rails.cache.fetch(current_cache_key, expires_in: 1.day) { _current }
+                       end
   end
 
   def self.current_cache_key

@@ -13,6 +13,5 @@ class DailyMailsJob
     when 6
       Training.async_send_presence_mail_for_next_week
     end
-    Training.async_send_tig_mail_for_next_training
   end
 end

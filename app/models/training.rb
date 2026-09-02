@@ -31,8 +31,6 @@ class Training < ApplicationRecord
 
   alias_attribute :calculated_start_datetime, :start_datetime
 
-  DUTY_PER_TRAINING = 4
-
   def send_invitations!
     invitations << TrainingInvitation.new
   end
@@ -93,31 +91,6 @@ class Training < ApplicationRecord
     save!
   end
 
-  def next_duties(limit)
-    current_season_start = Season.current.start_date
-    current_season_end = Season.current.end_date
-
-    club_ids = sections.map(&:club_id)
-    join_sql = self.class.send(:sanitize_sql_array, [<<~SQL.squish, current_season_start, current_season_end, club_ids])
-      LEFT OUTER JOIN duty_tasks
-      ON duty_tasks.user_id = users.id
-      AND duty_tasks.realised_at BETWEEN ? AND ?
-      AND duty_tasks.club_id IN (?)
-    SQL
-    present_players
-      .where("email NOT LIKE '%@example.com'")
-      .joins(join_sql)
-      .distinct
-      .select(<<~SQL.squish)
-        users.*,
-        MAX(duty_tasks.realised_at) AS last_duty_date,
-        COALESCE(SUM(duty_tasks.weight), -1) AS sum_duty_tasks_weight
-      SQL
-      .group('users.id')
-      .order(:sum_duty_tasks_weight, :last_duty_date, :authentication_token)
-      .limit(limit)
-  end
-
   def name
     "#{start_datetime.strftime('%d %b')} - #{location&.name}"
   end
@@ -129,26 +102,6 @@ class Training < ApplicationRecord
         UserMailer.send_training_invitation(next_week_trainings.to_a,
                                             user).deliver_later
       end
-    end
-  end
-
-  def self.send_tig_mail_for_next_training(day_range = 2)
-    tomorrow = Date.tomorrow
-    trainings =
-      Training
-      .where(cancelled: [false, nil])
-      .where('start_datetime between ? and ?', tomorrow.to_datetime, (tomorrow + day_range.days).to_datetime)
-      .order(:start_datetime)
-
-    trainings.each do |training|
-      next_duties = training.next_duties(DUTY_PER_TRAINING)
-      next if next_duties.blank?
-      next if training.sections.map(&:id).uniq == [1]
-
-      # if training is in section 1, than add pechou as last next duty
-      cc = training.sections.map(&:id).include?(1) ? User.find(49) : nil
-
-      UserMailer.send_tig_mail_for_training(training, next_duties.to_a, cc).deliver_later
     end
   end
 

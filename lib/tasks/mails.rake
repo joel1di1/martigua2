@@ -12,8 +12,4 @@ namespace :mails do
   task send_for_trainings: :environment do
     Training.async_send_presence_mail_for_next_week
   end
-
-  task send_tig_mail_for_next_training: :environment do
-    Training.async_send_tig_mail_for_next_training
-  end
 end

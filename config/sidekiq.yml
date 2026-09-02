@@ -13,7 +13,7 @@ production:
     cron: '30 11 * * *'
     class: DailyMailsJob
     queue: default
-    description: 'Envoi des mails quotidiens (convocations matchs, entraînements, TIG)'
+    description: 'Envoi des mails quotidiens (convocations matchs, entraînements)'
   ffhb_sync:
     cron: '0 10,19,22 * * *'
     class: FfhbSyncJob

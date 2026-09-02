@@ -32,6 +32,30 @@ describe 'a relative answers for a player' do
     expect(player.reload).to be_present_for(training)
   end
 
+  it 'is welcomed on being added, and answers from that mail' do
+    other_player = create(:user, with_section: section)
+    group.add_user! other_player
+    signin other_player.email, other_player.password
+
+    Sidekiq::Testing.inline! do
+      visit edit_section_user_path(section, other_player)
+      fill_in 'user_contact_email_email', with: 'papa@example.com'
+      click_on 'Ajouter'
+      assert_text 'Email de contact ajouté'
+    end
+
+    mail = ActionMailer::Base.deliveries.last
+    expect(mail.to).to eq ['papa@example.com']
+    expect(mail.subject).to include(other_player.full_name)
+
+    visit mail.body.to_s[/href="(http[^"]*user_token=[^"]*)"/, 1].gsub('&amp;', '&')
+
+    click_on 'Présent'
+    assert_text "m'indiquer absent"
+
+    expect(other_player.reload).to be_present_for(training)
+  end
+
   it 'is copied on the training invitation sent to the player' do
     Sidekiq::Testing.inline! do
       UserMailer.send_training_invitation(training, player).deliver_now

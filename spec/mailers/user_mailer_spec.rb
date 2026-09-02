@@ -69,6 +69,25 @@ RSpec.describe UserMailer do
     end
   end
 
+  describe '#send_contact_email_welcome' do
+    let(:mail) { UserMailer.send_contact_email_welcome(user, 'maman@example.com') }
+
+    it 'goes to the new address alone' do
+      expect(mail.to).to eq ['maman@example.com']
+      expect(mail.cc).to be_nil
+    end
+
+    it 'names the player and carries a sign-in token' do
+      expect(mail.subject).to include(user.full_name)
+      expect(mail.body.to_s).to include(user.full_name)
+      expect(mail.body.to_s).to include('user_token=')
+    end
+
+    it 'points at the login link page for later' do
+      expect(mail.body.to_s).to include(new_login_link_url)
+    end
+  end
+
   describe 'blocked addresses' do
     let(:training) { create(:training) }
 
@@ -89,6 +108,13 @@ RSpec.describe UserMailer do
       delivered = ActionMailer::Base.deliveries.last
       expect(delivered.to).to be_blank
       expect(delivered.cc).to eq ['maman@example.com']
+    end
+
+    it 'cancels the welcome mail entirely, since it has no cc to fall back on' do
+      BlockedAddress.block!('maman@example.com')
+
+      expect { UserMailer.send_contact_email_welcome(user, 'maman@example.com').deliver_now }
+        .not_to change(ActionMailer::Base.deliveries, :count)
     end
 
     it 'drops a blocked relative but keeps the player' do

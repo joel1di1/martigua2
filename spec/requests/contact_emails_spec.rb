@@ -16,6 +16,17 @@ describe 'ContactEmails' do
           .to change(user.contact_emails, :count).by(1)
         expect(user.contact_email_addresses).to eq ['maman@example.com']
       end
+
+      it 'welcomes the new address' do
+        Sidekiq::Testing.inline! do
+          expect { post section_user_contact_emails_path(section, user), params: }
+            .to change(ActionMailer::Base.deliveries, :count).by(1)
+        end
+
+        mail = ActionMailer::Base.deliveries.last
+        expect(mail.to).to eq ['maman@example.com']
+        expect(mail.subject).to include(user.full_name)
+      end
     end
 
     context 'when a coach of the section adds it for a player' do
@@ -50,6 +61,15 @@ describe 'ContactEmails' do
                params: { user_contact_email: { email: 'not-an-email' } }
         end.not_to change(UserContactEmail, :count)
       end
+
+      it 'sends no welcome mail' do
+        Sidekiq::Testing.inline! do
+          expect do
+            post section_user_contact_emails_path(section, user),
+                 params: { user_contact_email: { email: 'not-an-email' } }
+          end.not_to change(ActionMailer::Base.deliveries, :count)
+        end
+      end
     end
   end
 
@@ -62,6 +82,13 @@ describe 'ContactEmails' do
       it 'destroys it' do
         expect { delete section_user_contact_email_path(section, user, contact_email) }
           .to change(user.contact_emails, :count).by(-1)
+      end
+
+      it 'says nothing to the removed address' do
+        Sidekiq::Testing.inline! do
+          expect { delete section_user_contact_email_path(section, user, contact_email) }
+            .not_to change(ActionMailer::Base.deliveries, :count)
+        end
       end
     end
 

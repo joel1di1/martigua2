@@ -92,7 +92,7 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
   def self.send_availability_mail_for_next_weekend
     User.where("email not like '%@example.com'").active_this_season.each do |user|
       next_7_days_matches = user.next_7_days_matches
-      UserMailer.send_match_invitation(next_7_days_matches.to_a, user) unless next_7_days_matches.empty?
+      UserMailer.send_match_invitation(next_7_days_matches.to_a, user).deliver_later unless next_7_days_matches.empty?
     end
   end
 

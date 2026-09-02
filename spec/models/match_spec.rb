@@ -122,6 +122,44 @@ RSpec.describe Match do
     end
   end
 
+  describe '.send_availability_mail_for_next_weekend' do
+    let(:section) { create(:section) }
+    let(:championship) { create(:championship, season: Season.current) }
+    let(:team) { create(:team, with_section: section, enrolled_in: championship) }
+    let(:match) { create(:match, championship:, local_team: team, start_datetime: 2.days.from_now) }
+    let(:nb_users) { [1, 2, 3].sample }
+    let(:users) do
+      (1..nb_users).map { |i| create(:user, with_section: section, email: "joueur#{i}@martigua.test") }
+    end
+
+    before do
+      match
+      users
+    end
+
+    context 'with matches for the users' do
+      it 'sends one mail per user' do
+        Sidekiq::Testing.inline! do
+          expect do
+            Match.send_availability_mail_for_next_weekend
+          end.to change(ActionMailer::Base.deliveries, :count).by(nb_users)
+        end
+      end
+    end
+
+    context 'with no match for the users' do
+      let(:match) { create(:match, championship:, local_team: team, start_datetime: 3.months.from_now) }
+
+      it 'sends nothing' do
+        Sidekiq::Testing.inline! do
+          expect do
+            Match.send_availability_mail_for_next_weekend
+          end.not_to change(ActionMailer::Base.deliveries, :count)
+        end
+      end
+    end
+  end
+
   describe '.burned?' do
     let(:user) { create(:user) }
     let(:section) { create(:section) }

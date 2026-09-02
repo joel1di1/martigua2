@@ -5,8 +5,14 @@ if ! gem list foreman -i --silent; then
   gem install foreman
 fi
 
+# dotenv only reaches the Rails process, so read the worktree's port here in the shell:
+# foreman needs it to pass -p to the server. See bin/new-worktree.
+if [ -z "${PORT:-}" ] && [ -f .env.local ]; then
+  PORT="$(sed -n "s/^PORT=['\"]\{0,1\}\([0-9]\{1,\}\).*/\1/p" .env.local | tail -n 1)"
+fi
+
 # Default to port 3000 if not specified
-export PORT="${PORT:-3001}"
+export PORT="${PORT:-3000}"
 
 # Let the debug gem allow remote connections,
 # but avoid loading until `debugger` is called

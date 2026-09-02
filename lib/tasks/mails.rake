@@ -2,14 +2,7 @@
 
 namespace :mails do
   task send_daily_mails: :environment do
-    today = Time.zone.today
-    case today.cwday
-    when 1
-      Match.async_send_availability_mail_for_next_weekend
-    when 6
-      Training.async_send_presence_mail_for_next_week
-    end
-    Training.async_send_tig_mail_for_next_training
+    DailyMailsJob.new.perform
   end
 
   task send_for_matches: :environment do

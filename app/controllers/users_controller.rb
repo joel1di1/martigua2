@@ -3,6 +3,7 @@
 class UsersController < ApplicationController
   before_action :find_user_by_id, except: :index
   skip_before_action :verify_authenticity_token, only: %i[training_presences match_availabilities]
+  before_action :verify_can_act_for_user, only: %i[training_presences match_availabilities]
 
   def index
     if current_section
@@ -66,12 +67,12 @@ class UsersController < ApplicationController
     present_ids = (params[:present_ids] || []).map(&:to_i)
     checked_ids = (params[:checked_ids] || []).map(&:to_i)
 
-    trainings = Training.of_sections(current_user.sections).where(id: present_ids)
+    trainings = Training.of_sections(@user.sections).where(id: present_ids)
     trainings.each do |training|
       if checked_ids.include?(training.id)
-        current_user.present_for!(training)
+        @user.present_for!(training)
       else
-        current_user.not_present_for!(training)
+        @user.not_present_for!(training)
       end
     end
 
@@ -79,11 +80,6 @@ class UsersController < ApplicationController
   end
 
   def match_availabilities
-    if @user != current_user && !current_user.coach_of?(current_section)
-      render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false)
-      return
-    end
-
     present_ids = (params[:present_ids] || []).map(&:to_i)
     checked_ids = (params[:checked_ids] || []).map(&:to_i)
 
@@ -112,6 +108,14 @@ class UsersController < ApplicationController
   end
 
   protected
+
+  # These two actions are reached from the one-click links in the invitation mails, where the
+  # target user is named in the url. Answering for someone else is only a coach's privilege.
+  def verify_can_act_for_user
+    return if @user == current_user || current_user.coach_of?(current_section)
+
+    render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false)
+  end
 
   def find_user_by_id
     user_key = params[:user_id] ? :user_id : :id

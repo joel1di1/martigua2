@@ -145,6 +145,41 @@ describe 'Users' do
         expect(user.reload).not_to be_present_for(other_training)
       end
     end
+
+    context 'when the url targets another user' do
+      let(:other_user) { create(:user, with_section: section) }
+
+      let(:post_training_presences) do
+        post training_presences_user_path(id: other_user.to_param), params: {
+          user_token: user.generate_token_for(:email_authentication),
+          present_ids: [training1.id], checked_ids: [training1.id]
+        }
+      end
+
+      it 'is forbidden' do
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      it 'does not write the presence to the signed in user' do
+        expect(user.reload).not_to be_present_for(training1)
+        expect(other_user.reload).not_to be_present_for(training1)
+      end
+    end
+
+    context 'when a coach answers for a player of their section' do
+      let(:coach) { create(:user, with_section_as_coach: section) }
+
+      let(:post_training_presences) do
+        post section_user_training_presences_path(section, user), params: {
+          user_token: coach.generate_token_for(:email_authentication),
+          present_ids: [training1.id], checked_ids: [training1.id]
+        }
+      end
+
+      it 'sets the presence of the player' do
+        expect(user.reload).to be_present_for(training1)
+      end
+    end
   end
 
   describe 'POST match_availabilities' do

@@ -66,6 +66,12 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # `ActiveSupport::CurrentAttributes` (see app/models/current.rb) is reset by Rails around every
+  # HTTP request and Active Job execution, but rspec-rails does not wrap plain examples the same
+  # way. Reset it here so memoized per-request state (e.g. `Current.season`) never leaks between
+  # examples.
+  config.after { Current.reset }
 end
 
 Shoulda::Matchers.configure do |config|

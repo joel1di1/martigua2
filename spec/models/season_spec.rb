@@ -63,11 +63,22 @@ RSpec.describe Season do
       end
     end
 
+    it 'does not hit the cache store more than once per request (avoids N+1 cache lookups)' do
+      create(:season, start_date: Date.new(2024, 9, 1), end_date: Date.new(2025, 8, 31))
+
+      expect(Rails.cache).to receive(:fetch).once.and_call_original
+
+      5.times { Season.current }
+    end
+
     it 'recomputes the current season when the day rolls over, without a process restart' do
       Timecop.freeze(Date.new(2024, 7, 31)) do
         create(:season, start_date: Date.new(2023, 8, 1), end_date: Date.new(2024, 7, 31))
         Season.current
       end
+
+      # Simulate a new request/job, which resets per-request memoization in `Current`.
+      Current.reset
 
       Timecop.freeze(Date.new(2024, 8, 1)) do
         expect(Season.current.start_date).to eq(Date.new(2024, 8, 1))
@@ -84,6 +95,9 @@ RSpec.describe Season do
         create(:participation, user: coach, section:, season: old_season, role: Participation::COACH)
         Season.current
       end
+
+      # Simulate a new request/job, which resets per-request memoization in `Current`.
+      Current.reset
 
       Timecop.freeze(Date.new(2024, 8, 1)) do
         new_season = Season.current

@@ -356,7 +356,12 @@ describe User do
       end
 
       context 'when 14 months has passed' do
-        before { Timecop.travel 14.months.from_now }
+        before do
+          Timecop.travel 14.months.from_now
+          # Simulate a new request/job, which resets per-request memoization in `Current`.
+          Current.reset
+        end
+
         after { Timecop.return }
 
         it 'expects users to reset activation' do

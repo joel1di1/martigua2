@@ -9,13 +9,16 @@ module Interceptors
       remove_specific_blocked_addresses!(message)
       remove_wildcard_blocked_addresses!(message)
 
-      message.perform_deliveries = false if message.to.empty?
+      # A player's relatives are copied on their mails, so a blocked player address must not
+      # cancel the copy the parents are entitled to. Only give up when nobody is left.
+      message.perform_deliveries = false if message.to.blank? && message.cc.blank?
     end
 
     def self.remove_specific_blocked_addresses!(message)
-      blocked_addresses = BlockedAddress.where(email: message.to).pluck(:email)
+      recipients = Array(message.to) + Array(message.cc)
+      blocked_addresses = BlockedAddress.where(email: recipients).pluck(:email)
 
-      message.to = message.to - blocked_addresses
+      message.to = message.to - blocked_addresses if message.to.present?
       message.cc = message.cc - blocked_addresses if message.cc.present?
     end
 

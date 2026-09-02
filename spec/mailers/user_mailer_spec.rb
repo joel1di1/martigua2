@@ -69,6 +69,40 @@ RSpec.describe UserMailer do
     end
   end
 
+  describe 'blocked addresses' do
+    let(:training) { create(:training) }
+
+    it 'drops a blocked player from a real delivery' do
+      BlockedAddress.block!(user.email)
+
+      expect { UserMailer.send_training_invitation(training, user).deliver_now }
+        .not_to change(ActionMailer::Base.deliveries, :count)
+    end
+
+    it 'still delivers to the relatives when only the player is blocked' do
+      create(:user_contact_email, user:, email: 'maman@example.com')
+      BlockedAddress.block!(user.email)
+
+      expect { UserMailer.send_training_invitation(training, user).deliver_now }
+        .to change(ActionMailer::Base.deliveries, :count).by(1)
+
+      delivered = ActionMailer::Base.deliveries.last
+      expect(delivered.to).to be_blank
+      expect(delivered.cc).to eq ['maman@example.com']
+    end
+
+    it 'drops a blocked relative but keeps the player' do
+      create(:user_contact_email, user:, email: 'maman@example.com')
+      BlockedAddress.block!('maman@example.com')
+
+      UserMailer.send_training_invitation(training, user).deliver_now
+
+      delivered = ActionMailer::Base.deliveries.last
+      expect(delivered.to).to eq [user.email]
+      expect(delivered.cc).to be_blank
+    end
+  end
+
   describe '#send_section_addition_to_existing_user' do
     let(:section) { create(:section) }
     let(:inviter) { create(:user) }

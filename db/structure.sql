@@ -753,6 +753,39 @@ ALTER SEQUENCE public.eatatjoes_active_storage_variant_records_id_seq OWNED BY p
 
 
 --
+-- Name: eatatjoes_aisle_assignments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.eatatjoes_aisle_assignments (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    aisle_id bigint NOT NULL,
+    item_name character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: eatatjoes_aisle_assignments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.eatatjoes_aisle_assignments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: eatatjoes_aisle_assignments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.eatatjoes_aisle_assignments_id_seq OWNED BY public.eatatjoes_aisle_assignments.id;
+
+
+--
 -- Name: eatatjoes_aisles; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3523,6 +3556,39 @@ ALTER SEQUENCE public.user_channel_messages_id_seq OWNED BY public.user_channel_
 
 
 --
+-- Name: user_contact_emails; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_contact_emails (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    email character varying NOT NULL,
+    label character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: user_contact_emails_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_contact_emails_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_contact_emails_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_contact_emails_id_seq OWNED BY public.user_contact_emails.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3755,6 +3821,13 @@ ALTER TABLE ONLY public.eatatjoes_active_storage_blobs ALTER COLUMN id SET DEFAU
 --
 
 ALTER TABLE ONLY public.eatatjoes_active_storage_variant_records ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_active_storage_variant_records_id_seq'::regclass);
+
+
+--
+-- Name: eatatjoes_aisle_assignments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.eatatjoes_aisle_assignments ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_aisle_assignments_id_seq'::regclass);
 
 
 --
@@ -4304,6 +4377,13 @@ ALTER TABLE ONLY public.user_channel_messages ALTER COLUMN id SET DEFAULT nextva
 
 
 --
+-- Name: user_contact_emails id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_contact_emails ALTER COLUMN id SET DEFAULT nextval('public.user_contact_emails_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4491,6 +4571,14 @@ ALTER TABLE ONLY public.eatatjoes_active_storage_blobs
 
 ALTER TABLE ONLY public.eatatjoes_active_storage_variant_records
     ADD CONSTRAINT eatatjoes_active_storage_variant_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: eatatjoes_aisle_assignments eatatjoes_aisle_assignments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.eatatjoes_aisle_assignments
+    ADD CONSTRAINT eatatjoes_aisle_assignments_pkey PRIMARY KEY (id);
 
 
 --
@@ -5166,6 +5254,14 @@ ALTER TABLE ONLY public.user_channel_messages
 
 
 --
+-- Name: user_contact_emails user_contact_emails_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_contact_emails
+    ADD CONSTRAINT user_contact_emails_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5389,6 +5485,27 @@ CREATE INDEX index_eatatjoes_active_storage_attachments_on_blob_id ON public.eat
 --
 
 CREATE UNIQUE INDEX index_eatatjoes_active_storage_blobs_on_key ON public.eatatjoes_active_storage_blobs USING btree (key);
+
+
+--
+-- Name: index_eatatjoes_aisle_assignments_on_aisle_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_eatatjoes_aisle_assignments_on_aisle_id ON public.eatatjoes_aisle_assignments USING btree (aisle_id);
+
+
+--
+-- Name: index_eatatjoes_aisle_assignments_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_eatatjoes_aisle_assignments_on_user_id ON public.eatatjoes_aisle_assignments USING btree (user_id);
+
+
+--
+-- Name: index_eatatjoes_aisle_assignments_on_user_id_and_item_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_eatatjoes_aisle_assignments_on_user_id_and_item_name ON public.eatatjoes_aisle_assignments USING btree (user_id, item_name);
 
 
 --
@@ -6386,6 +6503,20 @@ CREATE INDEX index_user_channel_messages_on_user_id ON public.user_channel_messa
 
 
 --
+-- Name: index_user_contact_emails_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_contact_emails_on_user_id ON public.user_contact_emails USING btree (user_id);
+
+
+--
+-- Name: index_user_contact_emails_on_user_id_and_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_contact_emails_on_user_id_and_email ON public.user_contact_emails USING btree (user_id, email);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6546,6 +6677,14 @@ ALTER TABLE ONLY public.messages
 
 
 --
+-- Name: eatatjoes_aisle_assignments fk_rails_287dd0d9b9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.eatatjoes_aisle_assignments
+    ADD CONSTRAINT fk_rails_287dd0d9b9 FOREIGN KEY (user_id) REFERENCES public.eatatjoes_users(id);
+
+
+--
 -- Name: championships fk_rails_28cd7f9140; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6578,6 +6717,14 @@ ALTER TABLE ONLY public.resajaaf_active_storage_attachments
 
 
 --
+-- Name: eatatjoes_aisle_assignments fk_rails_325510feb5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.eatatjoes_aisle_assignments
+    ADD CONSTRAINT fk_rails_325510feb5 FOREIGN KEY (aisle_id) REFERENCES public.eatatjoes_aisles(id);
+
+
+--
 -- Name: math_trainer_answers fk_rails_397d14b689; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6607,6 +6754,14 @@ ALTER TABLE ONLY public.eatatjoes_solid_queue_blocked_executions
 
 ALTER TABLE ONLY public.eatatjoes_solid_queue_failed_executions
     ADD CONSTRAINT fk_rails_41d320373c FOREIGN KEY (job_id) REFERENCES public.eatatjoes_solid_queue_jobs(id) ON DELETE CASCADE;
+
+
+--
+-- Name: user_contact_emails fk_rails_477ea98e45; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_contact_emails
+    ADD CONSTRAINT fk_rails_477ea98e45 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -7080,6 +7235,7 @@ ALTER TABLE ONLY public.section_trainings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260903000000'),
 ('20260704000000'),
 ('20260619094233'),
 ('20260619094232'),

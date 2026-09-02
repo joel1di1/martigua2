@@ -16,6 +16,7 @@ class User < ApplicationRecord
 
   has_many :burns, dependent: :destroy
   has_many :club_admin_roles, dependent: :destroy
+  has_many :contact_emails, class_name: 'UserContactEmail', inverse_of: :user, dependent: :destroy
   has_many :participations, dependent: :destroy
   has_many :sections, -> { distinct }, through: :participations, inverse_of: :users
   has_many :duty_tasks, inverse_of: :user, dependent: :destroy
@@ -36,6 +37,11 @@ class User < ApplicationRecord
   end
 
   scope :active_this_season, -> { includes(:participations).where(participations: { season: Season.current }) }
+
+  # Relatives copied on everything this user receives.
+  def contact_email_addresses
+    contact_emails.map(&:email)
+  end
 
   def has_only_one_section?
     sections.one?

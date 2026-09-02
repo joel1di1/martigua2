@@ -71,6 +71,37 @@ describe User do
     end
   end
 
+  describe '#contact_email_addresses' do
+    it 'is empty by default' do
+      expect(user.contact_email_addresses).to be_empty
+    end
+
+    it 'returns the addresses of the relatives' do
+      create(:user_contact_email, user:, email: 'Maman@Example.COM ', label: 'Maman')
+      create(:user_contact_email, user:, email: 'papa@example.com', label: 'Papa')
+
+      expect(user.contact_email_addresses).to contain_exactly('maman@example.com', 'papa@example.com')
+    end
+
+    it 'rejects the same address twice on one user' do
+      create(:user_contact_email, user:, email: 'maman@example.com')
+      duplicate = build(:user_contact_email, user:, email: 'MAMAN@example.com')
+
+      expect(duplicate).not_to be_valid
+    end
+
+    it 'accepts the same address on two users, for a parent of two players' do
+      create(:user_contact_email, user:, email: 'maman@example.com')
+      sibling = create(:user_contact_email, user: create(:user), email: 'maman@example.com')
+
+      expect(sibling).to be_valid
+    end
+
+    it 'rejects a malformed address' do
+      expect(build(:user_contact_email, user:, email: 'not-an-email')).not_to be_valid
+    end
+  end
+
   describe '#short_name' do
     it 'returns nickname or full name' do
       user = create(:user, nickname: nil)

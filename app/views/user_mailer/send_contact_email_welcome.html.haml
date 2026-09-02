@@ -1,0 +1,21 @@
+= "Bonjour,"
+
+%p
+  = "Ton adresse vient d'être ajoutée aux contacts de #{@user.full_name} sur Martigua, le site du club."
+
+%p
+  Tu recevras désormais une copie des convocations aux entrainements et aux matchs qui lui sont envoyées, et tu pourras répondre à sa place — présent, absent, disponible — directement depuis ces emails. Pas de compte ni de mot de passe à retenir.
+
+%p
+  %a{style: "text-decoration: none; background:#428bca;display:inline-block;padding:10px;font-size:14px;margin:10px 0;color:white;", href: root_url(user_token: @token)}
+    = "Voir les prochains rendez-vous de #{@user.full_name}"
+
+%p
+  Ce lien est valable 30 jours. Ne le transmets pas : il donne accès au compte.
+
+%p
+  Tu pourras en demander un nouveau à tout moment ici :
+  %a{href: new_login_link_url}= new_login_link_url
+
+%p
+  = "Si tu penses recevoir ce message par erreur, préviens #{@user.first_name.capitalize}."

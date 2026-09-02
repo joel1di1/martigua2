@@ -139,7 +139,7 @@ RSpec.describe Match do
 
     context 'with matches for the users' do
       it 'sends one mail per user' do
-        Sidekiq::Testing.inline! do
+        Sidekiq.testing!(:inline) do
           expect do
             Match.send_availability_mail_for_next_weekend
           end.to change(ActionMailer::Base.deliveries, :count).by(nb_users)
@@ -151,7 +151,7 @@ RSpec.describe Match do
       let(:match) { create(:match, championship:, local_team: team, start_datetime: 3.months.from_now) }
 
       it 'sends nothing' do
-        Sidekiq::Testing.inline! do
+        Sidekiq.testing!(:inline) do
           expect do
             Match.send_availability_mail_for_next_weekend
           end.not_to change(ActionMailer::Base.deliveries, :count)

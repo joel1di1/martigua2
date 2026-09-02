@@ -69,6 +69,50 @@ RSpec.describe UserMailer do
     end
   end
 
+  describe 'the footer on invitation mails' do
+    let(:training) { create(:training) }
+    let(:match) { create(:match) }
+
+    it 'names the player on the training invitation' do
+      body = UserMailer.send_training_invitation(training, user).body.to_s
+
+      expect(body).to include(user.full_name)
+      expect(body).to include(new_login_link_url)
+    end
+
+    it 'names the player on the match invitation' do
+      body = UserMailer.send_match_invitation(match, user).body.to_s
+
+      expect(body).to include(user.full_name)
+      expect(body).to include(new_login_link_url)
+    end
+
+    it 'is not repeated on the login link mail, which is already one' do
+      body = UserMailer.send_login_link(user, 'maman@example.com').body.to_s
+
+      expect(body).not_to include('Ce message concerne')
+    end
+  end
+
+  describe '#send_contact_email_welcome' do
+    let(:mail) { UserMailer.send_contact_email_welcome(user, 'maman@example.com') }
+
+    it 'goes to the new address alone' do
+      expect(mail.to).to eq ['maman@example.com']
+      expect(mail.cc).to be_nil
+    end
+
+    it 'names the player and carries a sign-in token' do
+      expect(mail.subject).to include(user.full_name)
+      expect(mail.body.to_s).to include(user.full_name)
+      expect(mail.body.to_s).to include('user_token=')
+    end
+
+    it 'points at the login link page for later' do
+      expect(mail.body.to_s).to include(new_login_link_url)
+    end
+  end
+
   describe 'blocked addresses' do
     let(:training) { create(:training) }
 
@@ -89,6 +133,13 @@ RSpec.describe UserMailer do
       delivered = ActionMailer::Base.deliveries.last
       expect(delivered.to).to be_blank
       expect(delivered.cc).to eq ['maman@example.com']
+    end
+
+    it 'cancels the welcome mail entirely, since it has no cc to fall back on' do
+      BlockedAddress.block!('maman@example.com')
+
+      expect { UserMailer.send_contact_email_welcome(user, 'maman@example.com').deliver_now }
+        .not_to change(ActionMailer::Base.deliveries, :count)
     end
 
     it 'drops a blocked relative but keeps the player' do

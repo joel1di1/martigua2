@@ -29,7 +29,15 @@ class UserMailer < ApplicationMailer
   def send_login_link(user, recipient)
     @user = user
     @token = user.generate_token_for(:email_authentication)
-    mail to: recipient, subject: "Ton lien de connexion pour répondre pour #{user.short_name}"
+    mail to: recipient, subject: "Ton lien de connexion pour répondre pour #{user.full_name}"
+  end
+
+  # Sent to a relative's address the moment it is added, so they learn the club writes to
+  # them and that they can answer for the player without an account of their own.
+  def send_contact_email_welcome(user, recipient)
+    @user = user
+    @token = user.generate_token_for(:email_authentication)
+    mail to: recipient, subject: "Tu peux maintenant répondre pour #{user.full_name}"
   end
 
   # TODO: factorize method missing with ApplicationRecord

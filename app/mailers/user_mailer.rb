@@ -26,6 +26,12 @@ class UserMailer < ApplicationMailer
          subject: "#{inviter.full_name} t'a ajouté dans la section #{section.name} de #{section.club.name}"
   end
 
+  def send_login_link(user, recipient)
+    @user = user
+    @token = user.generate_token_for(:email_authentication)
+    mail to: recipient, subject: "Ton lien de connexion pour répondre pour #{user.short_name}"
+  end
+
   # TODO: factorize method missing with ApplicationRecord
   def self.method_missing(method, *, &block)
     if method.to_s.start_with?('async_')

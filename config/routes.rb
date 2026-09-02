@@ -126,6 +126,8 @@ Rails.application.routes.draw do
 
   devise_for :users, except: %i[show]
 
+  resource :login_link, only: %i[new create]
+
   resources :users, only: %i[show edit update] do
     resources :contact_emails, only: %i[create destroy]
     member do

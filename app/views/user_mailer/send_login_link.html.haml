@@ -1,0 +1,11 @@
+= "Bonjour,"
+
+%p
+  = "Voici ton lien de connexion pour répondre aux entrainements et aux matches pour #{@user.short_name}."
+
+%p
+  %a{style: "text-decoration: none; background:#428bca;display:inline-block;padding:10px;font-size:14px;margin:10px 0;color:white;", href: root_url(user_token: @token)}
+    = "Se connecter en tant que #{@user.short_name}"
+
+%p
+  Ce lien est valable 30 jours. Ne le transmets pas : il donne accès au compte.

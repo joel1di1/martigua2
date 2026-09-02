@@ -193,6 +193,10 @@ fr:
     pivot: Pivot
   views:
     counts:
+      absence:
+        zero: "%{count} absence"
+        one: "%{count} absence"
+        other: "%{count} absences"
       burn:
         zero: "%{count} brûlés"
         one: "%{count} brûlé"

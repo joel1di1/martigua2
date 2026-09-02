@@ -46,12 +46,27 @@ describe 'Users' do
   end
 
   describe 'GET edit' do
+    before { sign_in user, scope: :user }
+
     it 'shows edit form' do
-      sign_in user, scope: :user
       get edit_section_user_path(id: user.to_param, section_id: section.to_param)
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:edit)
+    end
+
+    it 'lists the contact emails' do
+      create(:user_contact_email, user:, email: 'maman@example.com', label: 'Maman')
+      get edit_section_user_path(section, user)
+
+      expect(response.body).to include('Emails des proches')
+      expect(response.body).to include('maman@example.com')
+    end
+
+    it 'renders when the player has no relative' do
+      get edit_section_user_path(section, user)
+
+      expect(response.body).to include('Aucun email de proche')
     end
   end
 
@@ -143,6 +158,41 @@ describe 'Users' do
 
       it 'does not set presence for the training' do
         expect(user.reload).not_to be_present_for(other_training)
+      end
+    end
+
+    context 'when the url targets another user' do
+      let(:other_user) { create(:user, with_section: section) }
+
+      let(:post_training_presences) do
+        post training_presences_user_path(id: other_user.to_param), params: {
+          user_token: user.generate_token_for(:email_authentication),
+          present_ids: [training1.id], checked_ids: [training1.id]
+        }
+      end
+
+      it 'is forbidden' do
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      it 'does not write the presence to the signed in user' do
+        expect(user.reload).not_to be_present_for(training1)
+        expect(other_user.reload).not_to be_present_for(training1)
+      end
+    end
+
+    context 'when a coach answers for a player of their section' do
+      let(:coach) { create(:user, with_section_as_coach: section) }
+
+      let(:post_training_presences) do
+        post section_user_training_presences_path(section, user), params: {
+          user_token: coach.generate_token_for(:email_authentication),
+          present_ids: [training1.id], checked_ids: [training1.id]
+        }
+      end
+
+      it 'sets the presence of the player' do
+        expect(user.reload).to be_present_for(training1)
       end
     end
   end

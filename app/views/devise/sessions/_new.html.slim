@@ -48,6 +48,8 @@
                             Se souvenir de moi
                         .text-sm
                           = link_to "Mot de passe oublié ?", new_password_path(:user), class: 'font-medium text-indigo-600 hover:text-indigo-500'
+                      .text-sm.text-center
+                        = link_to "Recevoir un lien de connexion", new_login_link_path, class: 'font-medium text-indigo-600 hover:text-indigo-500'
 
                   </div>
                 </div>

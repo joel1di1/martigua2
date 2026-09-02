@@ -37,5 +37,9 @@ module Martigua2
     config.assets.css_compressor = nil
 
     config.active_job.queue_adapter = :sidekiq
+
+    # Drops BlockedAddress recipients from every outgoing mail. Set here rather than in an
+    # initializer, which runs after the Action Mailer railtie has already read this option.
+    config.action_mailer.interceptors = %w[Interceptors::BlockedAddressInterceptor]
   end
 end

@@ -113,7 +113,7 @@ RSpec.describe Section do
         it { expect { invite_user }.not_to change(User, :count) }
 
         it do
-          Sidekiq::Testing.inline! do
+          Sidekiq.testing!(:inline) do
             expect { invite_user }.to change(ActionMailer::Base.deliveries, :count)
           end
         end

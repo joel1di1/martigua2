@@ -25,7 +25,7 @@ RSpec.describe TrainingInvitation do
     let(:training) { create(:training, with_section: section, with_group: group) }
 
     it 'sends mails to undecided users' do
-      Sidekiq::Testing.inline! do
+      Sidekiq.testing!(:inline) do
         expect { create(:training_invitation, training:) }.to change { ActionMailer::Base.deliveries.count }.by(3)
       end
     end

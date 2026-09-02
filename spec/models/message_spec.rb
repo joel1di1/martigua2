@@ -33,7 +33,7 @@ RSpec.describe Message do
       before { other_user }
 
       it 'expect notifications to be sent' do
-        Sidekiq::Testing.inline! do
+        Sidekiq.testing!(:inline) do
           # expect to have WebPushService called on send_notification_to_all_user_subscriptions
           expect(WebpushService).to receive(:send_notification_to_all_user_subscriptions).once
 

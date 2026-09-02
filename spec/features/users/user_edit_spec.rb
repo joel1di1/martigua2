@@ -41,14 +41,31 @@ describe 'User edit', :devise do
     login_as(coach, scope: :user)
     visit edit_section_user_url(section, user)
     check 'Coach'
-    uncheck 'Player'
-    click_on 'Modifier ce(tte) Utilisateur'
+    uncheck 'Joueur'
+    click_on 'Enregistrer'
 
     expect(page).to have_text 'Prochains matchs'
     user.reload
     expect(user).to be_coach_of(section, season: nil)
     expect(user).not_to be_player_of(section, season: nil)
     # expect(page).to have_content 'You updated your account successfully.'
+  end
+
+  # Scenario: User updates their own identity
+  #   Given I am signed in
+  #   When I change my first name
+  #   Then the profile is updated
+  it 'user updates their identity' do
+    section = create(:section)
+    user = create(:user, with_section: section)
+    login_as(user, scope: :user)
+    visit edit_section_user_url(section, user)
+
+    expect(page).to have_text 'Informations personnelles'
+    fill_in 'Prénom', with: 'Jean-Michel'
+    click_on 'Enregistrer'
+
+    expect(user.reload.first_name).to eq 'Jean-Michel'
   end
 
   # Scenario: User cannot edit another user's profile

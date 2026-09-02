@@ -133,6 +133,39 @@ SimpleForm.setup do |config| # rubocop:disable Metrics/BlockLength
     b.use :hint, wrap_with: { tag: 'p', class: 'mt-2 text-grey-700 text-xs italic' }
   end
 
+  # Neutral wrappers (Tailwind Plus form layouts): no "valid" green highlight, so a form
+  # rendered inside a card keeps quiet gray inputs until something is actually wrong.
+  config.wrappers :neutral_form, tag: 'div', class: '' do |b|
+    b.use :html5
+    b.use :placeholder
+    b.optional :maxlength
+    b.optional :minlength
+    b.optional :pattern
+    b.optional :min_max
+    b.optional :readonly
+    b.use :label, class: 'block text-sm font-medium text-gray-900', error_class: 'text-red-600'
+    b.use :input,
+          class: 'mt-2 block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline-1 ' \
+                 '-outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 ' \
+                 'focus:-outline-offset-2 focus:outline-indigo-600',
+          error_class: 'outline-red-500'
+    b.use :full_error, wrap_with: { tag: 'p', class: 'mt-2 text-sm text-red-600' }
+    b.use :hint, wrap_with: { tag: 'p', class: 'mt-2 text-sm text-gray-500' }
+  end
+
+  config.wrappers :neutral_file, tag: 'div', class: '' do |b|
+    b.use :html5
+    b.optional :readonly
+    b.use :label, class: 'block text-sm font-medium text-gray-900', error_class: 'text-red-600'
+    b.use :input,
+          class: 'mt-2 block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 ' \
+                 'file:bg-indigo-50 file:px-3 file:py-2 file:text-sm file:font-semibold ' \
+                 'file:text-indigo-700 hover:file:bg-indigo-100',
+          error_class: 'text-red-600'
+    b.use :full_error, wrap_with: { tag: 'p', class: 'mt-2 text-sm text-red-600' }
+    b.use :hint, wrap_with: { tag: 'p', class: 'mt-2 text-sm text-gray-500' }
+  end
+
   # The default wrapper to be used by the FormBuilder.
   config.default_wrapper = :vertical_form
 

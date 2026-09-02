@@ -9,11 +9,11 @@ default: &default
 
 development:
   <<: *default
-  database: martigua2_development
+  database: <%= ENV.fetch('DB_NAME_PREFIX', 'martigua2') %>_development
 
 test:
   <<: *default
-  database: martigua2_test<%= ENV['TEST_ENV_NUMBER'] %>
+  database: <%= ENV.fetch('DB_NAME_PREFIX', 'martigua2') %>_test<%= ENV['TEST_ENV_NUMBER'] %>
 
 production:
   url: <%= ENV['DATABASE_URL'] %>

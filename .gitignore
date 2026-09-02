@@ -35,7 +35,7 @@
 !/app/assets/builds/.keep
 
 .DS_Store
-latest.dump*
+*.dump
 
 spec/failures.txt
 .idea/
@@ -44,6 +44,7 @@ coverage
 
 # ignore all local .env files
 .envrc
+.env
 .env.*.local
 .env.local
 

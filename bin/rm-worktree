@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+#
+# Remove a worktree created by bin/new-worktree, along with its databases and Redis
+# namespaces, so its slot can be reused.
+#
+#   bin/rm-worktree <name> [--force]
+#
+# The branch is left alone; delete it yourself with `git branch -d <branch>`.
+#
+set -euo pipefail
+
+PG_HOST="${POSTGRES_HOST:-localhost}"
+PG_PORT="${POSTGRES_PORT:-54321}"
+PG_USER="${POSTGRES_USER:-postgres}"
+REDIS_HOST="${WORKTREE_REDIS_HOST:-localhost}"
+REDIS_PORT="${WORKTREE_REDIS_PORT:-63791}"
+
+# Files bin/new-worktree generates or copies in; they never count as work to preserve.
+GENERATED=(.env.local .env.test.local .envrc config/master.key)
+
+die() { printf '\033[31merror:\033[0m %s\n' "$*" >&2; exit 1; }
+info() { printf '\033[34m==>\033[0m %s\n' "$*"; }
+warn() { printf '\033[33mwarning:\033[0m %s\n' "$*" >&2; }
+
+[ $# -ge 1 ] || die "usage: bin/rm-worktree <name> [--force]"
+
+NAME="$1"
+FORCE=""
+[ "${2:-}" = "--force" ] && FORCE="--force"
+
+MAIN_ROOT="$(dirname "$(git rev-parse --git-common-dir)")"
+MAIN_ROOT="$(cd "$MAIN_ROOT" && pwd)"
+[ -f "$MAIN_ROOT/config/database.yml" ] || die "not inside the martigua2 repository"
+
+SLUG="$(printf '%s' "$NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]\{1,\}/_/g; s/^_//; s/_$//')"
+WT_PATH="$(dirname "$MAIN_ROOT")/$(basename "$MAIN_ROOT")-$SLUG"
+[ -d "$WT_PATH" ] || die "no worktree at $WT_PATH"
+[ "$WT_PATH" = "$MAIN_ROOT" ] && die "refusing to remove the main checkout"
+
+env_value() { sed -n "s/^$1=['\"]\{0,1\}\([^'\"]*\).*/\1/p" "$WT_PATH/.env.local" | tail -n 1; }
+
+SLOT=""
+DB_PREFIX=""
+if [ -f "$WT_PATH/.env.local" ]; then
+  SLOT="$(env_value WORKTREE_SLOT)"
+  DB_PREFIX="$(env_value DB_NAME_PREFIX)"
+fi
+if [ -z "$DB_PREFIX" ]; then
+  # Partially cleaned worktree: fall back to the naming convention.
+  DB_PREFIX="$(basename "$MAIN_ROOT" | tr '[:upper:]-' '[:lower:]_')_$SLUG"
+  warn "$WT_PATH/.env.local has no DB_NAME_PREFIX; assuming $DB_PREFIX"
+fi
+
+DEV_DB="${DB_PREFIX}_development"
+TEST_DB="${DB_PREFIX}_test"
+
+cat <<EOF
+About to remove worktree '$SLUG'${SLOT:+ (slot $SLOT)}:
+  path   $WT_PATH
+  drop   $DEV_DB, $TEST_DB
+EOF
+if [ -n "$SLOT" ]; then
+  echo "  flush  redis db $((SLOT * 2)) and $((SLOT * 2 + 1))"
+else
+  warn "slot unknown, the redis databases will not be flushed"
+fi
+printf 'Continue? [y/N] '
+read -r answer
+case "$answer" in
+  y|Y|yes|YES) ;;
+  *) die "aborted" ;;
+esac
+
+# Check for real work BEFORE deleting anything, so an aborted run leaves the worktree intact.
+# `git worktree remove` refuses while any untracked file is present, and the generated env
+# files are always untracked, so they are filtered out of the check here.
+if [ -z "$FORCE" ]; then
+  leftover="$(git -C "$WT_PATH" status --porcelain)"
+  for f in "${GENERATED[@]}"; do
+    leftover="$(printf '%s\n' "$leftover" | grep -vxF "?? $f" || true)"
+  done
+  if [ -n "$(printf '%s' "$leftover" | tr -d '[:space:]')" ]; then
+    printf '%s\n' "$leftover"
+    die "$WT_PATH still has uncommitted work (shown above); re-run with --force to discard it"
+  fi
+fi
+
+info "dropping databases"
+dropdb --if-exists -h "$PG_HOST" -p "$PG_PORT" -U "$PG_USER" "$DEV_DB"
+# parallel_tests leaves <prefix>_test, _test2, _test3, ... behind
+psql -h "$PG_HOST" -p "$PG_PORT" -U "$PG_USER" -Atqc \
+  "SELECT datname FROM pg_database WHERE datname LIKE '${TEST_DB}%'" |
+  while read -r db; do
+    [ -n "$db" ] && dropdb --if-exists -h "$PG_HOST" -p "$PG_PORT" -U "$PG_USER" "$db"
+  done
+
+if [ -n "$SLOT" ]; then
+  info "flushing redis databases"
+  redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" -n "$((SLOT * 2))" FLUSHDB >/dev/null
+  redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" -n "$((SLOT * 2 + 1))" FLUSHDB >/dev/null
+fi
+
+info "removing worktree"
+for f in "${GENERATED[@]}"; do rm -f "$WT_PATH/$f"; done
+git -C "$MAIN_ROOT" worktree remove $FORCE "$WT_PATH"
+
+printf '\033[32m✓\033[0m worktree %s removed%s\n' "$SLUG" "${SLOT:+, slot $SLOT is free}"

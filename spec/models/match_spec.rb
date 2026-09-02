@@ -331,10 +331,16 @@ RSpec.describe Match do
       let(:match) { create(:match, local_team: team) }
       let(:player) { create(:user, with_section: section) }
 
+      # Freeze time to a safe mid-day moment so that the match factory's
+      # start_datetime (1.week.from_now) and end_datetime (start + 2h) always
+      # fall on the same calendar day, regardless of the time of day the specs run.
       before do
+        Timecop.travel(Time.zone.now.middle_of_day)
         create(:absence, user: player, start_at: match.start_datetime.to_date - 2.days,
                          end_at: match.start_datetime.to_date)
       end
+
+      after { Timecop.return }
 
       it 'counts the player as away, consistently with User#absent_for?' do
         expect(match.aways).to contain_exactly(player)

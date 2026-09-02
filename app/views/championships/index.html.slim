@@ -18,7 +18,7 @@ div class="sm:flex sm:items-center"
           p class="text-sm/6 font-semibold text-gray-900"
             = link_to championship.name, link_url, class: 'hover:text-indigo-600'
           div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500"
-            p class="whitespace-nowrap" = t('views.counts.match', count: championship.matches.count)
+            p class="whitespace-nowrap" = t('views.counts.match', count: @match_counts_by_championship_id.fetch(championship.id, 0))
             svg viewBox="0 0 2 2" class="size-0.5 fill-current"
               circle r="1" cx="1" cy="1"
             p class="truncate" = t('views.counts.team', count: championship.teams.count)

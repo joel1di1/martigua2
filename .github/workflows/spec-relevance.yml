@@ -1,0 +1,53 @@
+name: Spec relevance
+
+# Runs the PR's changed spec files against the base branch code. If a changed
+# spec already passes there, the job fails to flag it as possibly irrelevant.
+# This check is advisory: do NOT add it to the required checks for merging,
+# since adding specs for pre-existing behavior is legitimate.
+
+on:
+  pull_request:
+
+jobs:
+  spec_relevance:
+    name: Spec relevance
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: martigua2_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      # Install Chrome and Chromedriver (needed if changed specs include system specs)
+      - name: Setup Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Set up chromedriver
+        uses: nanasess/setup-chromedriver@v3
+
+      - name: Check spec relevance
+        run: bin/check-spec-relevance "origin/${{ github.base_ref }}"
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/martigua2_test

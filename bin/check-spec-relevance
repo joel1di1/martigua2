@@ -1,0 +1,221 @@
+#!/usr/bin/env bash
+# Checks that specs added or modified on this branch are relevant, at example
+# granularity: changed spec files are run against the base branch's code
+# (without this branch's implementation changes). An example that is NEW on
+# this branch (not present in the base version of the file, matched by full
+# description) and that passes on base code was already green before the
+# change, and is flagged as possibly irrelevant.
+#
+# Examples that already existed on base are ignored, so modified files mixing
+# old and new examples don't produce noise. Limitation: an existing example
+# whose body was modified keeps its description, counts as "old", and is not
+# checked.
+#
+# Usage: bin/check-spec-relevance [base-ref]   (default: origin/main)
+#
+# Exit codes: 0 = no changed specs, or every new example fails on base (relevant)
+#             1 = at least one new example already passes on base
+#
+# Note for local runs: the rspec runs below load the base branch's schema into
+# the shared test database (via maintain_test_schema!). Your next normal
+# bin/rspec run restores the current branch's schema.
+
+set -euo pipefail
+
+base_ref="${1:-origin/main}"
+head_sha="$(git rev-parse HEAD)"
+merge_base="$(git merge-base "$base_ref" "$head_sha")"
+
+echo "Base ref:   $base_ref"
+echo "Merge base: $merge_base"
+echo
+
+# All changed files under spec/ (specs + factories + support) are overlaid on
+# the base code, so a new spec doesn't fail just because its factory is missing.
+changed_spec_dir_files=()
+changed_specs=()
+while IFS= read -r file; do
+  changed_spec_dir_files+=("$file")
+  case "$file" in
+    *_spec.rb) changed_specs+=("$file") ;;
+  esac
+done < <(git diff --name-only --diff-filter=AM "$merge_base" "$head_sha" -- 'spec/')
+
+if [ "${#changed_specs[@]}" -eq 0 ]; then
+  echo "No added or modified spec files compared to $base_ref. Nothing to check."
+  exit 0
+fi
+
+echo "Changed spec files:"
+printf '  %s\n' "${changed_specs[@]}"
+echo
+
+worktree_dir="$(mktemp -d "${TMPDIR:-/tmp}/spec-relevance.XXXXXX")"
+main_repo_dir="$(pwd)"
+trap 'cd "$main_repo_dir" && git worktree remove --force "$worktree_dir" 2>/dev/null || true' EXIT
+
+echo "Creating base-branch worktree in $worktree_dir"
+git worktree add --quiet "$worktree_dir" "$merge_base"
+
+cd "$worktree_dir"
+mkdir -p tmp
+bundle check >/dev/null 2>&1 || bundle install --quiet
+
+# Inventory the examples of the BASE versions of the changed spec files
+# (before overlaying), so new examples can be told apart from old ones.
+# This is a real run, not --dry-run: one-liner examples (it { is_expected... })
+# only get their generated description when actually executed.
+base_examples_file="tmp/spec_relevance_base_examples.txt"
+: > "$base_examples_file"
+base_existing_specs=()
+for spec in "${changed_specs[@]}"; do
+  if git cat-file -e "$merge_base:$spec" 2>/dev/null; then
+    base_existing_specs+=("$spec")
+  fi
+done
+if [ "${#base_existing_specs[@]}" -gt 0 ]; then
+  echo "Listing pre-existing examples (running base versions of modified specs)..."
+  RAILS_ENV=test bundle exec rspec --format json --out tmp/spec_relevance_base.json \
+    "${base_existing_specs[@]}" >/dev/null 2>&1 || true
+  if [ -s tmp/spec_relevance_base.json ]; then
+    ruby -rjson -e '
+      json = JSON.parse(File.read(ARGV[0]))
+      (json["examples"] || []).each do |e|
+        puts "#{e["file_path"].sub(%r{\A\./}, "")}\t#{e["full_description"]}"
+      end
+    ' tmp/spec_relevance_base.json > "$base_examples_file"
+  fi
+fi
+
+# Overlay this branch's spec/ changes onto the base code.
+git -C "$worktree_dir" checkout --quiet "$head_sha" -- "${changed_spec_dir_files[@]}"
+
+if grep -qE 'type:[[:space:]]*:system' "${changed_specs[@]}" 2>/dev/null; then
+  echo "System specs detected, precompiling assets..."
+  bundle exec rake assets:precompile >/dev/null
+fi
+
+# TAG\tFILE\tDESCRIPTION lines
+flagged=()   # new examples passing on base
+relevant=()  # new examples failing on base
+load_error_files=()
+no_new_example_files=()
+
+for spec in "${changed_specs[@]}"; do
+  echo "----------------------------------------------------------------------"
+  echo "Running $spec against base code..."
+  run_json="tmp/spec_relevance_run.json"
+  rm -f "$run_json"
+  RAILS_ENV=test bundle exec rspec --format progress --format json --out "$run_json" "$spec" || true
+
+  if [ ! -s "$run_json" ]; then
+    load_error_files+=("$spec")
+    continue
+  fi
+
+  new_example_count=0
+  file_load_error=0
+  while IFS=$'\t' read -r tag desc; do
+    case "$tag" in
+      LOAD_ERROR) file_load_error=1 ;;
+      PASS_NEW)
+        flagged+=("$spec"$'\t'"$desc")
+        new_example_count=$((new_example_count + 1))
+        ;;
+      FAIL_NEW)
+        relevant+=("$spec"$'\t'"$desc")
+        new_example_count=$((new_example_count + 1))
+        ;;
+      PENDING_NEW) new_example_count=$((new_example_count + 1)) ;;
+    esac
+  done < <(ruby -rjson -e '
+    json = JSON.parse(File.read(ARGV[0]))
+    if json.dig("summary", "errors_outside_of_examples_count").to_i.positive?
+      puts "LOAD_ERROR\t-"
+      exit
+    end
+    base = File.readlines(ARGV[1], chomp: true)
+    spec = ARGV[2]
+    (json["examples"] || []).each do |e|
+      desc = e["full_description"]
+      next if base.include?("#{spec}\t#{desc}")
+
+      tag = { "passed" => "PASS_NEW", "failed" => "FAIL_NEW", "pending" => "PENDING_NEW" }[e["status"]]
+      puts "#{tag}\t#{desc}" if tag
+    end
+  ' "$run_json" "$base_examples_file" "$spec")
+
+  if [ "$file_load_error" -eq 1 ]; then
+    load_error_files+=("$spec")
+  elif [ "$new_example_count" -eq 0 ]; then
+    no_new_example_files+=("$spec")
+  fi
+done
+
+echo
+echo "======================================================================"
+echo "Spec relevance report (new examples run against $base_ref code)"
+echo "======================================================================"
+
+print_examples() {
+  local prefix="$1"; shift
+  local line
+  for line in "$@"; do
+    printf '  %s  %s — %s\n' "$prefix" "${line%%$'\t'*}" "${line#*$'\t'}"
+  done
+}
+
+if [ "${#load_error_files[@]}" -gt 0 ]; then
+  echo "Relevant (file does not even load on base code):"
+  printf '  OK    %s\n' "${load_error_files[@]}"
+fi
+if [ "${#relevant[@]}" -gt 0 ]; then
+  echo "Relevant new examples (fail without this branch's implementation changes):"
+  print_examples "OK  " "${relevant[@]}"
+fi
+if [ "${#no_new_example_files[@]}" -gt 0 ]; then
+  echo "No new examples detected (only pre-existing examples, not checked):"
+  printf '  --    %s\n' "${no_new_example_files[@]}"
+fi
+if [ "${#flagged[@]}" -gt 0 ]; then
+  echo "Possibly irrelevant new examples (already pass without this branch's changes):"
+  print_examples "WARN" "${flagged[@]}"
+fi
+
+if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
+  {
+    echo "## Spec relevance report"
+    echo
+    echo "New examples in changed specs were run against \`$base_ref\` (merge base \`${merge_base:0:12}\`) without this PR's implementation changes."
+    echo
+    echo "| Spec file | Example | Result on base | Verdict |"
+    echo "|---|---|---|---|"
+    for line in ${load_error_files[@]+"${load_error_files[@]}"}; do
+      echo "| \`$line\` | _whole file_ | does not load | ✅ relevant |"
+    done
+    for line in ${relevant[@]+"${relevant[@]}"}; do
+      echo "| \`${line%%$'\t'*}\` | ${line#*$'\t'} | fails | ✅ relevant |"
+    done
+    for line in ${no_new_example_files[@]+"${no_new_example_files[@]}"}; do
+      echo "| \`$line\` | _none new_ | — | ➖ not checked |"
+    done
+    for line in ${flagged[@]+"${flagged[@]}"}; do
+      echo "| \`${line%%$'\t'*}\` | ${line#*$'\t'} | passes | ⚠️ possibly irrelevant |"
+    done
+    if [ "${#flagged[@]}" -gt 0 ]; then
+      echo
+      echo "> ⚠️ Flagged examples already pass without this PR's implementation changes."
+      echo "> This is fine if they intentionally backfill coverage for existing behavior."
+    fi
+  } >> "$GITHUB_STEP_SUMMARY"
+fi
+
+if [ "${#flagged[@]}" -gt 0 ]; then
+  echo
+  echo "Some new examples already pass on $base_ref. If they backfill missing"
+  echo "coverage for existing behavior, this warning can be ignored."
+  exit 1
+fi
+
+echo
+echo "All new examples fail on $base_ref: they exercise this branch's changes."

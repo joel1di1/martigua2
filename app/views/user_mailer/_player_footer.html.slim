@@ -1,0 +1,8 @@
+hr style="margin-top: 24px; border: none; border-top: 1px solid #ddd;"
+p style="font-size: 12px; color: #666;"
+  = "Ce message concerne #{user.full_name}."
+  br
+  ' Si tu le reçois en tant que proche, tu peux répondre à sa place.
+    Pour obtenir un nouveau lien de connexion :
+  a href=new_login_link_url
+    = new_login_link_url

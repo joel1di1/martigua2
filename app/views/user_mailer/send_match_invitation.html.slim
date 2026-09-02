@@ -4,7 +4,7 @@ p
   | Merci d'indiquer ta disponibilité aux matchs suivants :
 
 form action=match_availabilities_user_url(@user.to_param) method="post"
-  input type="hidden" name="user_token" value=@user.generate_token_for(:email_authentication)
+  input type="hidden" name="user_token" value=@user.email_login_token
   table style="width: 600px;border-collapse: collapse;"
     tr style="text-align: left;"
       th style="border: 1px grey solid;" Horaire
@@ -25,8 +25,8 @@ form action=match_availabilities_user_url(@user.to_param) method="post"
     tr
       td colspan="3"
         - non_burned_matches = @matches.select { |match| !match.burned?(@user) }
-        a style="float: left; text-decoration: none; background:#5cb85c;display:inline-block;padding:10px;font-size:14px;margin:10px 10px 0 0;color:white;" href=match_availabilities_user_url(@user.to_param, present_ids: non_burned_matches.map(&:id), checked_ids: non_burned_matches.map(&:id), user_token: @user.generate_token_for(:email_authentication)) method="post" Dispo pour tous !!
-        a style="float: left; text-decoration: none; background:#d9534f;display:inline-block;padding:10px;font-size:14px;margin:10px 10px 0 10px;color:white;" href=match_availabilities_user_url(@user.to_param, present_ids: non_burned_matches.map(&:id), checked_ids: [], user_token: @user.generate_token_for(:email_authentication)) method="post" Dispo pour aucun :(
+        a style="float: left; text-decoration: none; background:#5cb85c;display:inline-block;padding:10px;font-size:14px;margin:10px 10px 0 0;color:white;" href=match_availabilities_user_url(@user.to_param, present_ids: non_burned_matches.map(&:id), checked_ids: non_burned_matches.map(&:id), user_token: @user.email_login_token) method="post" Dispo pour tous !!
+        a style="float: left; text-decoration: none; background:#d9534f;display:inline-block;padding:10px;font-size:14px;margin:10px 10px 0 10px;color:white;" href=match_availabilities_user_url(@user.to_param, present_ids: non_burned_matches.map(&:id), checked_ids: [], user_token: @user.email_login_token) method="post" Dispo pour aucun :(
         button type="submit" style="float: right; background:#428bca;display:inline-block;padding:10px;font-size:14px;margin:10px 0 0 10px;color:white; border: none;" Valider mes dispos
 
 p

@@ -157,7 +157,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user_from_token!
     token = params[:user_token].presence
-    user  = token && User.find_by_token_for(:email_authentication, token)
+    user  = token && User.from_email_login_token(token)
 
     sign_in user if user
   end

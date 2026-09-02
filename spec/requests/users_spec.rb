@@ -131,7 +131,7 @@ describe 'Users' do
 
     let(:post_training_presences) do
       post training_presences_user_path(id: user.to_param), params: {
-        user_token: user.generate_token_for(:email_authentication),
+        user_token: user.email_login_token,
         present_ids: [training1.id, training2.id, training_full.id], checked_ids: [training1.id, training_full.id]
       }
     end
@@ -151,7 +151,7 @@ describe 'Users' do
 
       let(:post_training_presences) do
         post training_presences_user_path(id: user.to_param), params: {
-          user_token: user.generate_token_for(:email_authentication),
+          user_token: user.email_login_token,
           present_ids: [other_training.id], checked_ids: [other_training.id]
         }
       end
@@ -166,7 +166,7 @@ describe 'Users' do
 
       let(:post_training_presences) do
         post training_presences_user_path(id: other_user.to_param), params: {
-          user_token: user.generate_token_for(:email_authentication),
+          user_token: user.email_login_token,
           present_ids: [training1.id], checked_ids: [training1.id]
         }
       end
@@ -186,7 +186,7 @@ describe 'Users' do
 
       let(:post_training_presences) do
         post section_user_training_presences_path(section, user), params: {
-          user_token: coach.generate_token_for(:email_authentication),
+          user_token: coach.email_login_token,
           present_ids: [training1.id], checked_ids: [training1.id]
         }
       end
@@ -202,7 +202,7 @@ describe 'Users' do
     let(:match) { create(:match, championship:) }
     let(:post_match_availabilities) do
       post match_availabilities_user_path(id: user.to_param), params: {
-        user_token: user.generate_token_for(:email_authentication),
+        user_token: user.email_login_token,
         present_ids: [match.id], checked_ids: [match.id]
       }
     end
@@ -220,7 +220,7 @@ describe 'Users' do
 
       let(:post_match_availabilities) do
         post match_availabilities_user_path(id: user.to_param), params: {
-          user_token: user.generate_token_for(:email_authentication),
+          user_token: user.email_login_token,
           present_ids: [other_match.id], checked_ids: [other_match.id]
         }
       end

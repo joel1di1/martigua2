@@ -32,11 +32,38 @@ class User < ApplicationRecord
 
   before_validation :ensure_authentication_token
 
+  # Magic links sent by mail: they log the recipient in for 10 days, then die.
+  generates_token_for :email_login, expires_in: 10.days do
+    authentication_token
+  end
+
+  # Links already in inboxes when the 10-day lifetime shipped: they were signed with the
+  # previous 30-day definition, whose signature no longer matches. They keep working until
+  # the date below; delete this definition, LEGACY_EMAIL_TOKEN_VALID_UNTIL and
+  # .from_legacy_email_token once it is past.
   generates_token_for :email_authentication, expires_in: 30.days do
     authentication_token
   end
 
+  LEGACY_EMAIL_TOKEN_VALID_UNTIL = Time.utc(2026, 9, 18)
+
+  # Resolves a magic link token, new format first, legacy one during the grace period.
+  def self.from_email_login_token(token)
+    find_by_token_for(:email_login, token) || from_legacy_email_token(token)
+  end
+
+  def self.from_legacy_email_token(token)
+    return if Time.current > LEGACY_EMAIL_TOKEN_VALID_UNTIL
+
+    find_by_token_for(:email_authentication, token)
+  end
+  private_class_method :from_legacy_email_token
+
   scope :active_this_season, -> { includes(:participations).where(participations: { season: Season.current }) }
+
+  def email_login_token
+    generate_token_for(:email_login)
+  end
 
   # Relatives copied on everything this user receives.
   def contact_email_addresses

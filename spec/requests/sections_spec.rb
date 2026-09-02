@@ -11,7 +11,7 @@ RSpec.describe 'Sections' do
     context 'when user is authenticated' do
       before do
         club.add_admin!(user)
-        get new_club_section_path(club), params: { user_token: user.generate_token_for(:email_authentication) }
+        get new_club_section_path(club), params: { user_token: user.email_login_token }
       end
 
       it { expect(response).to have_http_status(:success) }
@@ -39,7 +39,7 @@ RSpec.describe 'Sections' do
 
       before do
         get new_club_section_path(club),
-            params: { user_token: another_user.generate_token_for(:email_authentication) }
+            params: { user_token: another_user.email_login_token }
       end
 
       it { expect(response).to have_http_status(:redirect) }
@@ -49,7 +49,7 @@ RSpec.describe 'Sections' do
   describe 'POST /clubs/:club_id/sections' do
     let(:section_attributes) { attributes_for(:section, club: nil) }
     let(:auth_params) do
-      { user_token: user.generate_token_for(:email_authentication) }
+      { user_token: user.email_login_token }
     end
 
     before do

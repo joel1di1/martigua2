@@ -50,24 +50,50 @@ describe User do
     its(:id) { is_expected.not_to be_nil }
   end
 
-  describe 'email_authentication token' do
+  describe 'email login token' do
     it 'resolves back to the user' do
-      token = user.generate_token_for(:email_authentication)
-      expect(User.find_by_token_for(:email_authentication, token)).to eq(user)
+      expect(User.from_email_login_token(user.email_login_token)).to eq(user)
     end
 
-    it 'expires after 30 days' do
-      token = user.generate_token_for(:email_authentication)
-      Timecop.travel 31.days.from_now
-      expect(User.find_by_token_for(:email_authentication, token)).to be_nil
+    it 'expires after 10 days' do
+      token = user.email_login_token
+      Timecop.travel 11.days.from_now
+      expect(User.from_email_login_token(token)).to be_nil
+      Timecop.return
+    end
+
+    it 'is still valid on the 9th day' do
+      token = user.email_login_token
+      Timecop.travel 9.days.from_now
+      expect(User.from_email_login_token(token)).to eq(user)
       Timecop.return
     end
 
     it 'is invalidated when the authentication_token changes' do
-      token = user.generate_token_for(:email_authentication)
+      token = user.email_login_token
       user.update!(authentication_token: SecureRandom.urlsafe_base64(32))
 
-      expect(User.find_by_token_for(:email_authentication, token)).to be_nil
+      expect(User.from_email_login_token(token)).to be_nil
+    end
+
+    it 'rejects a random string' do
+      expect(User.from_email_login_token('not-a-token')).to be_nil
+    end
+  end
+
+  describe 'legacy email login token' do
+    it 'still resolves back to the user during the grace period' do
+      Timecop.travel User::LEGACY_EMAIL_TOKEN_VALID_UNTIL - 1.day
+      token = user.generate_token_for(:email_authentication)
+      expect(User.from_email_login_token(token)).to eq(user)
+      Timecop.return
+    end
+
+    it 'is refused once the grace period is over' do
+      Timecop.travel User::LEGACY_EMAIL_TOKEN_VALID_UNTIL + 1.day
+      token = user.generate_token_for(:email_authentication)
+      expect(User.from_email_login_token(token)).to be_nil
+      Timecop.return
     end
   end
 

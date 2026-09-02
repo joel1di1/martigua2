@@ -8,7 +8,7 @@ RSpec.describe 'Clubs' do
 
   describe 'GET /clubs/:id' do
     before do
-      get club_path(club), params: { user_token: user.generate_token_for(:email_authentication) }
+      get club_path(club), params: { user_token: user.email_login_token }
     end
 
     it { expect(response).to have_http_status(:success) }
@@ -24,7 +24,7 @@ RSpec.describe 'Clubs' do
     end
 
     it 'does not sign in with an expired token' do
-      token = user.generate_token_for(:email_authentication)
+      token = user.email_login_token
       Timecop.travel 31.days.from_now
       get club_path(club), params: { user_token: token }
       Timecop.return

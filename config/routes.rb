@@ -62,6 +62,7 @@ Rails.application.routes.draw do
         post 'confirm_presence' => 'training_presences#confirm_presence'
       end
       resources :absences, only: %i[index create edit update destroy new]
+      resources :contact_emails, only: %i[create destroy]
       match 'training_presences', via: %i[get post]
       match 'match_availabilities', via: %i[get post]
     end
@@ -126,6 +127,7 @@ Rails.application.routes.draw do
   devise_for :users, except: %i[show]
 
   resources :users, only: %i[show edit update] do
+    resources :contact_emails, only: %i[create destroy]
     member do
       match 'training_presences', via: %i[get post]
       match 'match_availabilities', via: %i[get post]

@@ -46,12 +46,27 @@ describe 'Users' do
   end
 
   describe 'GET edit' do
+    before { sign_in user, scope: :user }
+
     it 'shows edit form' do
-      sign_in user, scope: :user
       get edit_section_user_path(id: user.to_param, section_id: section.to_param)
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:edit)
+    end
+
+    it 'lists the contact emails' do
+      create(:user_contact_email, user:, email: 'maman@example.com', label: 'Maman')
+      get edit_section_user_path(section, user)
+
+      expect(response.body).to include('Emails des proches')
+      expect(response.body).to include('maman@example.com')
+    end
+
+    it 'renders when the player has no relative' do
+      get edit_section_user_path(section, user)
+
+      expect(response.body).to include('Aucun email de proche')
     end
   end
 

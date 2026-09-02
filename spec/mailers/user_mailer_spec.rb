@@ -69,6 +69,31 @@ RSpec.describe UserMailer do
     end
   end
 
+  describe 'the footer on invitation mails' do
+    let(:training) { create(:training) }
+    let(:match) { create(:match) }
+
+    it 'names the player on the training invitation' do
+      body = UserMailer.send_training_invitation(training, user).body.to_s
+
+      expect(body).to include(user.full_name)
+      expect(body).to include(new_login_link_url)
+    end
+
+    it 'names the player on the match invitation' do
+      body = UserMailer.send_match_invitation(match, user).body.to_s
+
+      expect(body).to include(user.full_name)
+      expect(body).to include(new_login_link_url)
+    end
+
+    it 'is not repeated on the login link mail, which is already one' do
+      body = UserMailer.send_login_link(user, 'maman@example.com').body.to_s
+
+      expect(body).not_to include('Ce message concerne')
+    end
+  end
+
   describe '#send_contact_email_welcome' do
     let(:mail) { UserMailer.send_contact_email_welcome(user, 'maman@example.com') }
 

@@ -58,10 +58,13 @@ div class="mt-4 flex flex-col"
   - else
     p class="text-sm text-gray-500" Aucun email de proche enregistré.
 
-  = simple_form_for UserContactEmail.new, url: contact_emails_url, html: {class: 'mt-4 flex flex-wrap items-end gap-3'} do |f|
-    = f.input :label, label: 'Lien', placeholder: 'Maman, Papa…', wrapper_html: {class: 'mb-0'}
-    = f.input :email, label: 'Email', placeholder: 'parent@exemple.fr', wrapper_html: {class: 'mb-0'}
-    = f.button :submit, value: 'Ajouter', class: 'inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700'
+  / legacy.css sets `form { display: inline }` app-wide, which beats Tailwind's layered
+  / utilities, so the flex row goes on an inner div rather than on the form itself.
+  = simple_form_for UserContactEmail.new, url: contact_emails_url do |f|
+    div class="mt-4 flex flex-wrap items-end gap-3"
+      = f.input :label, label: 'Lien', placeholder: 'Maman, Papa…', wrapper_html: {class: 'my-0 w-40 shrink-0'}
+      = f.input :email, label: 'Email', placeholder: 'parent@exemple.fr', wrapper_html: {class: 'my-0 flex-1 min-w-64'}
+      = f.button :submit, value: 'Ajouter', class: 'shrink-0 inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700'
 
 div class="relative mt-8"
   div class="absolute inset-0 flex items-center" aria-hidden="true"

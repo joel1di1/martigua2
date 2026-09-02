@@ -145,7 +145,7 @@ E.g. boundary handling of `day.period_start_date`/`period_end_date` differs betw
 
 ## P12 — Convention: migrate remaining HAML views to Slim
 
-- **Status**: todo
+- **Status**: done — batch-converted all 47 remaining HAML views to Slim by hand (the `haml2slim` gem turned hash-style attributes into inline text, so its output was unusable) and removed `haml-rails` from the Gemfile. Kept the legacy Bootstrap classes as-is (class migration is out of scope); used `div class="..."` Slim style per CLAUDE.md. Verified: every one of the 122 Slim templates compiles (`Slim::Template.new`), full suite passes without haml-rails, and the four converted mailer templates were smoke-rendered (`send_match_invitation`, `send_training_invitation`, `send_section_addition_to_existing_user`, `send_tig_mail_for_training`, plus devise `invitation_instructions` via `user.invite!`). Behavioral fix included: in the old `send_match_invitation`/`send_training_invitation` HAML, the "Dispo pour aucun"/"Présent à aucun" links had `user_token:` **outside** the `*_user_url(...)` call (it rendered as a dead HTML attribute), so those links carried no auth token; the token is now inside the URL like the "tous" links. Branch: `chore/p12-haml-to-slim` (stacked on P11). ERB views (16) not in scope of this item.
 - **Priority**: 12
 
 **Details**: 47 HAML files remain vs 75 Slim (plus 16 ERB). Project convention (CLAUDE.md) is Slim with `div class="..."` for Tailwind. Mixing three template engines adds friction.

@@ -105,7 +105,7 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def meeting_datetime
-    super || start_datetime&.send(:-, 1.hour)
+    super || (start_datetime && (start_datetime - 1.hour))
   end
 
   def ffhb_sync!

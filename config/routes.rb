@@ -2,7 +2,7 @@
 
 require 'sidekiq/web'
 
-# rubocop:disable Metrics/BlockLength
+# rubocop:disable-next Metrics/BlockLength
 Rails.application.routes.draw do
   namespace :admin do
     resources :admin_users
@@ -153,4 +153,3 @@ Rails.application.routes.draw do
 
   get '.stimulus', to: 'visitors#stimulus'
 end
-# rubocop:enable Metrics/BlockLength

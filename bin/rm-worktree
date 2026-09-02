@@ -5,6 +5,9 @@
 #
 #   bin/rm-worktree <name> [--force]
 #
+# Called with no arguments, it lists the worktrees available for removal and lets you
+# pick one interactively.
+#
 # The branch is left alone; delete it yourself with `git branch -d <branch>`.
 #
 set -euo pipefail
@@ -22,15 +25,43 @@ die() { printf '\033[31merror:\033[0m %s\n' "$*" >&2; exit 1; }
 info() { printf '\033[34m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[33mwarning:\033[0m %s\n' "$*" >&2; }
 
-[ $# -ge 1 ] || die "usage: bin/rm-worktree <name> [--force]"
-
-NAME="$1"
-FORCE=""
-[ "${2:-}" = "--force" ] && FORCE="--force"
-
 MAIN_ROOT="$(dirname "$(git rev-parse --git-common-dir)")"
 MAIN_ROOT="$(cd "$MAIN_ROOT" && pwd)"
 [ -f "$MAIN_ROOT/config/database.yml" ] || die "not inside the martigua2 repository"
+
+# --- list the removable worktrees and prompt for one when no name was given --------
+list_worktree_slugs() {
+  local prefix="$(basename "$MAIN_ROOT")-"
+  git -C "$MAIN_ROOT" worktree list --porcelain |
+    sed -n 's/^worktree //p' |
+    while read -r path; do
+      [ "$path" = "$MAIN_ROOT" ] && continue
+      case "$(basename "$path")" in
+        "$prefix"*) basename "$path" | sed "s/^$prefix//" ;;
+      esac
+    done
+}
+
+if [ $# -eq 0 ]; then
+  mapfile -t SLUGS < <(list_worktree_slugs)
+  [ ${#SLUGS[@]} -gt 0 ] || die "no worktrees to remove"
+  info "available worktrees:"
+  for i in "${!SLUGS[@]}"; do
+    printf '  %d) %s\n' "$((i + 1))" "${SLUGS[$i]}"
+  done
+  printf 'Remove which one? [1-%d] ' "${#SLUGS[@]}"
+  read -r choice
+  case "$choice" in
+    ''|*[!0-9]*) die "invalid choice" ;;
+  esac
+  [ "$choice" -ge 1 ] && [ "$choice" -le "${#SLUGS[@]}" ] || die "invalid choice"
+  NAME="${SLUGS[$((choice - 1))]}"
+  FORCE=""
+else
+  NAME="$1"
+  FORCE=""
+  [ "${2:-}" = "--force" ] && FORCE="--force"
+fi
 
 SLUG="$(printf '%s' "$NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]\{1,\}/_/g; s/^_//; s/_$//')"
 WT_PATH="$(dirname "$MAIN_ROOT")/$(basename "$MAIN_ROOT")-$SLUG"

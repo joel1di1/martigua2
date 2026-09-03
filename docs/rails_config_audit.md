@@ -118,6 +118,9 @@ existed — the setting was silencing a 404. Added the conventional
 
 ## Deliberately not changed
 
+Each item below has a tracking issue carrying its goal, the reason it was deferred, the work
+required and a definition of done.
+
 ### `config.assets.css_compressor = nil` — kept, comment corrected
 
 This looked like a leftover: it carried a `# TODO: remove when get rid of scss` comment and
@@ -132,7 +135,7 @@ output through libsass, which cannot parse modern CSS and dies on
 `rgb(from red r g b)`. The setting is load-bearing. It is now kept with a comment that says
 why, instead of a TODO that invites the next person to make the same mistake.
 
-### `config/initializers/wrap_parameters.rb` — kept
+### `config/initializers/wrap_parameters.rb` — kept ([#1172](https://github.com/joel1di1/martigua2/issues/1172))
 
 Rails 8.1 no longer generates this file, and the framework default is
 `_wrapper_options.format == []`, i.e. params wrapping **off**. Deleting it would therefore
@@ -140,12 +143,12 @@ not be a no-op: it would stop wrapping JSON request bodies, and the app has JSON
 (`messages`, `matches`, `sections`, `channels`, `webpush_subscriptions`). That is a
 behaviour change, not configuration hygiene, so it needs its own change with request specs.
 
-### `config.active_record.default_timezone = :local` — kept
+### `config.active_record.default_timezone = :local` — kept ([#1173](https://github.com/joel1di1/martigua2/issues/1173))
 
 Legacy (`:utc` is the Rails default), but flipping it reinterprets every timestamp already
 in the database. That is a data migration, not a config change.
 
-### Sprockets → Propshaft — not attempted
+### Sprockets → Propshaft — not attempted ([#1171](https://github.com/joel1di1/martigua2/issues/1171))
 
 Propshaft is the Rails 8 default asset pipeline and this app still runs `sprockets-rails`
 with an `app/assets/config/manifest.js`. The migration is real work with real risk: it
@@ -153,7 +156,7 @@ touches the Administrate engine's assets and the `sassc-rails` dependency above,
 failure mode is visual, so it cannot be signed off by the test suite alone. It is worth
 doing, but as its own change.
 
-### `config/database.yml` production block
+### `config/database.yml` production block ([#1174](https://github.com/joel1di1/martigua2/issues/1174))
 
 The `production:` block sets only `url:` and does not inherit `<<: *default`, so
 `pool: RAILS_MAX_THREADS` is not applied there — the pool size comes from the

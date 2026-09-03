@@ -12,7 +12,7 @@ describe 'Merge a parent account into a player contact email', :devise, :js do
     signin admin.email, admin.password
     expect(page).to have_text 'Connecté(e).'
 
-    visit new_user_merge_path
+    visit new_section_user_merge_path(section)
     select_in_tom_select 'user_merge_source_id', parent.email
     select_in_tom_select 'user_merge_target_id', child.email
     fill_in 'Libellé (optionnel)', with: 'Maman'

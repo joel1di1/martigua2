@@ -150,6 +150,10 @@ Rails.application.routes.draw do
 
   root to: 'visitors#index'
 
+  # Reachable at /up, returns 200 when the app boots with no exceptions, 500 otherwise.
+  # Used by load balancers and uptime monitors (see config.silence_healthcheck_path).
+  get 'up' => 'rails/health#show', as: :rails_health_check
+
   get 'switch_user', to: 'switch_user#set_current_user'
   get 'switch_user/remember_user', to: 'switch_user#remember_user'
   get '.well-known/acme-challenge/4k3hP8fSRgCKf0inS8qYK9LYs8sU10ZMfSiYs8-Mcxg' => 'visitors#letsencrypt'

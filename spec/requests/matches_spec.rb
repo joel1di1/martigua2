@@ -55,6 +55,28 @@ describe 'Matches' do
       end
     end
 
+    # Regression net for ActionController::ParamsWrapper (see
+    # spec/requests/webpush_subscriptions_spec.rb): a JSON request body must still
+    # reach match_params. The controller has no `format.json`, so the request sends
+    # a JSON body with the default Accept header, like a browser fetch would.
+    describe 'PATCH update with a JSON request body' do
+      let(:json_headers) { { 'CONTENT_TYPE' => 'application/json' } }
+
+      it 'updates the match from a nested JSON body' do
+        patch section_championship_match_path(section, championship, match),
+              params: { match: { meeting_location: 'JSON location' } }.to_json, headers: json_headers
+
+        expect(match.reload.meeting_location).to eq('JSON location')
+      end
+
+      it 'updates the match from a flat JSON body, thanks to parameter wrapping' do
+        patch section_championship_match_path(section, championship, match),
+              params: { meeting_location: 'Flat JSON location' }.to_json, headers: json_headers
+
+        expect(match.reload.meeting_location).to eq('Flat JSON location')
+      end
+    end
+
     describe 'DELETE destroy' do
       it 'returns not_found for a match belonging to another section' do
         other_match

@@ -67,6 +67,36 @@ describe 'Messages' do
         expect(response).to have_http_status(:not_found)
       end
     end
+
+    # Regression net for ActionController::ParamsWrapper (see
+    # spec/requests/webpush_subscriptions_spec.rb): a JSON request body must still
+    # reach message_params. The controller has no `format.json`, so the request
+    # sends a JSON body with the default Accept header, like a browser fetch would.
+    context 'with a JSON request body' do
+      let(:json_headers) { { 'CONTENT_TYPE' => 'application/json' } }
+
+      it 'creates a message from a nested JSON body' do
+        expect do
+          post section_channel_messages_path(section, channel),
+               params: { message: { content: 'from json' } }.to_json, headers: json_headers
+        end.to change(Message, :count).by(1)
+
+        expect(Message.last.content.body.to_s).to include('from json')
+        expect(Message.last.channel).to eq(channel)
+        expect(Message.last.user).to eq(user)
+      end
+
+      # Wrapping only picks up real model attributes, and `content` is an ActionText
+      # rich text, so a flat body wraps to an empty hash and message_params raises.
+      it 'rejects a flat JSON body' do
+        expect do
+          post section_channel_messages_path(section, channel),
+               params: { content: 'flat json' }.to_json, headers: json_headers
+        end.not_to change(Message, :count)
+
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
   end
 
   describe 'DELETE destroy' do

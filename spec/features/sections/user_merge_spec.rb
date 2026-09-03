@@ -2,14 +2,12 @@
 
 describe 'Merge a parent account into a player contact email', :devise, :js do
   let(:section) { create(:section) }
-  let(:admin) { create(:user, with_section_as_coach: section) }
+  let(:coach) { create(:user, with_section_as_coach: section) }
   let!(:parent) { create(:user, email: 'maman@example.com', last_name: 'Dupond', with_section: section) }
   let!(:child) { create(:user, first_name: 'Lea', last_name: 'Dupond', with_section: section) }
 
-  before { create(:admin_user, email: admin.email) }
-
   it 'moves the parent address onto the player and deletes the parent account' do
-    signin admin.email, admin.password
+    signin coach.email, coach.password
     expect(page).to have_text 'Connecté(e).'
 
     visit new_section_user_merge_path(section)

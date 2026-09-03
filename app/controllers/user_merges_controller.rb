@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-# Unlisted admin page: turns a parent account into a contact email of their child's account.
-# Reachable at /sections/:section_id/user_merges/new only, by the same admins as the /admin
-# section, and only for two accounts of that section.
+# Unlisted page: turns a parent account into a contact email of their child's account.
+# Reachable at /sections/:section_id/user_merges/new only, by the coachs of that section and
+# by the admins of the /admin section, and only for two members of that section.
 class UserMergesController < ApplicationController
   # Admins are not necessarily members of the section they are cleaning up.
   skip_before_action :verify_user_member_of_section
-  before_action :authenticate_admin
+  before_action :verify_can_merge
 
   def new
     @users = section_users
@@ -28,14 +28,14 @@ class UserMergesController < ApplicationController
 
   private
 
-  # Every account that ever took part in the section, not just this season's: the parent
-  # accounts to fold in are usually old ones that were never renewed.
   def section_users
-    current_section.users.order(:last_name, :first_name)
+    current_section.members.order(:last_name, :first_name)
   end
 
-  # Same rule as the /admin section: an AdminUser row matching the signed-in user's email.
-  def authenticate_admin
+  # The coachs of the section, plus the admins of the /admin section, whose rule is an
+  # AdminUser row matching the signed-in user's email.
+  def verify_can_merge
+    return if current_user&.coach_of?(current_section)
     return if AdminUser.exists?(email: current_user&.email)
 
     render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false)

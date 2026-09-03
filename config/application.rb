@@ -16,7 +16,7 @@ module Martigua2
     config.i18n.default_locale = :fr
 
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 8.0
+    config.load_defaults 8.1
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -33,7 +33,10 @@ module Martigua2
 
     config.active_record.schema_format = :sql
 
-    # TODO: remove when get rid of scss
+    # sassc-rails (pulled in for Administrate's scss) defaults css_compressor to :sass in
+    # every env but development. libsass cannot parse the modern CSS Tailwind 4 emits
+    # (`rgb(from red r g b)`), so leave the Sprockets CSS compressor off: the Tailwind CLI
+    # already outputs minified CSS.
     config.assets.css_compressor = nil
 
     config.active_job.queue_adapter = :sidekiq

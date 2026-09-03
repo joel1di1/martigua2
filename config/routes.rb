@@ -136,6 +136,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Unlisted admin tooling: fold a parent account into a player's contact emails.
+  resources :user_merges, only: %i[new create]
+
   resources :messages, only: [] do
     collection do
       post 'mark_as_read'

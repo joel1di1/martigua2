@@ -1,0 +1,36 @@
+- user_options = @users.map { |user| ["#{user.full_name} - #{user.email}", user.id] }
+- select_classes = 'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
+
+div class="mx-auto max-w-3xl pb-16"
+
+  div class="pt-2"
+    h1 class="text-2xl font-bold text-gray-900 sm:text-3xl sm:tracking-tight" Fusionner un compte parent
+    p class="mt-1 text-sm font-medium text-gray-500" = current_section
+    p class="mt-2 text-sm text-gray-600"
+      | Seuls les membres de cette section pour la saison en cours sont proposés. L'email du compte parent devient un email de contact du joueur choisi, puis le compte parent est supprimé.
+      |  Tout ce qui appartenait au compte parent (participations, messages, présences) est supprimé avec lui.
+
+  = form_with url: section_user_merges_path(current_section), method: :post, scope: :user_merge, class: 'block' do |f|
+    div class="mt-8 overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5"
+      div class="px-4 py-5 sm:p-6"
+        div class="space-y-6"
+          div
+            = f.label :source_id, 'Compte parent à supprimer', class: 'block text-sm font-medium text-gray-900'
+            p class="text-sm text-gray-500" Son email sera récupéré comme email de contact.
+            div class="mt-2"
+              = f.select :source_id, user_options, { include_blank: true }, { data: { controller: 'ts--select' }, class: select_classes, required: true }
+
+          div
+            = f.label :target_id, 'Joueur cible', class: 'block text-sm font-medium text-gray-900'
+            p class="text-sm text-gray-500" Le compte conservé, qui recevra l'email de contact.
+            div class="mt-2"
+              = f.select :target_id, user_options, { include_blank: true }, { data: { controller: 'ts--select' }, class: select_classes, required: true }
+
+          div
+            = f.label :label, 'Libellé (optionnel)', class: 'block text-sm font-medium text-gray-900'
+            p class="text-sm text-gray-500" Par défaut, le nom du compte parent supprimé.
+            div class="mt-2"
+              = f.text_field :label, placeholder: 'Maman', class: select_classes
+
+      div class="flex items-center justify-end gap-x-4 border-t border-gray-900/10 px-4 py-4 sm:px-6"
+        = f.submit 'Fusionner et supprimer le compte', class: 'inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500', data: { turbo_confirm: 'Le compte parent sera définitivement supprimé. Confirmer ?' }

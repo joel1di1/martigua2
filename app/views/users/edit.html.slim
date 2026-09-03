@@ -93,29 +93,37 @@ div class="mx-auto max-w-4xl pb-16"
       p class="mt-1 text-sm text-gray-600"
         | Ces adresses sont en copie de tous les emails envoyés au joueur. Elles permettent à un parent de répondre aux convocations à sa place, sans compte séparé.
 
-      - if @user.contact_emails.any?
-        ul role="list" class="mt-6 divide-y divide-gray-100 border-t border-gray-100"
-          - @user.contact_emails.each do |contact_email|
-            li class="flex items-center justify-between gap-x-6 py-4"
-              div class="min-w-0"
-                - if contact_email.label.present?
-                  p class="text-sm/6 font-semibold text-gray-900"= contact_email.label
-                p class="mt-0.5 truncate text-sm/6 text-gray-500"= contact_email.email
+      - row_grid = 'grid grid-cols-[minmax(5rem,9rem)_1fr_7rem] items-center gap-x-4'
+      - field_classes = 'block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600'
+
+      div class="mt-6 border-t border-gray-100"
+        div class="#{row_grid} border-b border-gray-100 py-2"
+          div class="text-sm font-semibold text-gray-900" Lien
+          div class="text-sm font-semibold text-gray-900" Email
+          span class="sr-only" Actions
+
+        - if @user.contact_emails.empty?
+          p class="border-b border-gray-100 py-3 text-sm/6 text-gray-500" Aucun email de proche enregistré.
+
+        - @user.contact_emails.each do |contact_email|
+          div class="#{row_grid} border-b border-gray-100 py-3"
+            div class="truncate text-sm/6 font-medium text-gray-900"= contact_email.label.presence || '—'
+            div class="truncate text-sm/6 text-gray-500"= contact_email.email
+            div class="flex justify-end"
               - contact_email_url = current_section ? section_user_contact_email_path(current_section, @user, contact_email) : user_contact_email_path(@user, contact_email)
-              = button_to contact_email_url, method: :delete, form: {data: {turbo_confirm: "Supprimer #{contact_email.email} ?"}}, class: "shrink-0 rounded-md p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600"
+              = button_to contact_email_url, method: :delete, form: {data: {turbo_confirm: "Supprimer #{contact_email.email} ?"}}, class: "rounded-md p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600"
                 span class="sr-only" Supprimer
                 svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5"
                   path stroke-linecap="round" stroke-linejoin="round" d=trash_icon_path
-      - else
-        p class="mt-6 rounded-md border border-dashed border-gray-300 px-4 py-6 text-center text-sm text-gray-500" Aucun email de proche enregistré.
 
-      / legacy.css sets `form { display: inline }` app-wide, which beats Tailwind's layered
-      / utilities, so the flex row goes on an inner div rather than on the form itself.
-      = simple_form_for UserContactEmail.new, url: contact_emails_url do |f|
-        div class="mt-6 flex flex-wrap items-end gap-3 border-t border-gray-900/10 pt-6"
-          = f.input :label, wrapper: :neutral_form, label: 'Lien', placeholder: 'Maman, Papa…', wrapper_html: {class: 'w-40 shrink-0'}
-          = f.input :email, wrapper: :neutral_form, label: 'Email', placeholder: 'parent@exemple.fr', wrapper_html: {class: 'flex-1 min-w-64'}
-          = f.button :submit, value: 'Ajouter', class: 'shrink-0 inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500'
+        / legacy.css sets `form { display: inline }` app-wide, which beats Tailwind's layered
+        / utilities, so the grid row goes on an inner div rather than on the form itself.
+        = form_with url: contact_emails_url, scope: :user_contact_email, method: :post do |f|
+          div class="#{row_grid} py-3"
+            = f.text_field :label, placeholder: 'Maman, Papa…', class: field_classes, aria: {label: 'Lien'}
+            = f.email_field :email, placeholder: 'parent@exemple.fr', required: true, class: field_classes, aria: {label: 'Email'}
+            div class="flex justify-end"
+              = f.submit 'Ajouter', class: 'inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500'
 
   / --- Absences -----------------------------------------------------------------
   - if current_section.present?

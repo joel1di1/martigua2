@@ -42,6 +42,37 @@ describe User do
   it { is_expected.to have_many :burns }
   it { is_expected.to have_many :group_memberships }
   it { is_expected.to have_many :groups }
+  it { is_expected.to have_many :messages }
+  it { is_expected.to have_many :selections }
+  it { is_expected.to have_many :match_selections }
+  it { is_expected.to have_many :match_invitations }
+
+  describe '#destroy' do
+    # Deleting an account has to take everything that points at it with it, otherwise the
+    # foreign keys reject the delete.
+    let!(:message) { create(:message, user:) }
+    let!(:selection) { create(:selection, user:) }
+    let!(:match_selection) { create(:match_selection, user:) }
+    let!(:match_invitation) { create(:match_invitation, user:) }
+    let!(:contact_email) { create(:user_contact_email, user:) }
+
+    it 'destroys the records that belong to the account' do
+      user.destroy!
+
+      expect(Message).not_to exist(message.id)
+      expect(Selection).not_to exist(selection.id)
+      expect(MatchSelection).not_to exist(match_selection.id)
+      expect(UserContactEmail).not_to exist(contact_email.id)
+    end
+
+    # A match invitation records that the match was announced, which stays true once the
+    # invitee is gone.
+    it 'keeps the match invitations and detaches them from the account' do
+      user.destroy!
+
+      expect(match_invitation.reload.user_id).to be_nil
+    end
+  end
 
   describe 'authentication token should be generated' do
     subject { create(:user, authentication_token: nil) }

@@ -111,9 +111,6 @@ Rails.application.routes.draw do
     resources :player_stats, only: %i[index]
     resources :participations, only: %i[update]
 
-    # Unlisted admin tooling: fold a parent account into a player's contact emails.
-    resources :user_merges, only: %i[new create]
-
     patch 'player_ffhb_association'
     delete 'dissociate_player'
     delete 'dissociate_all_players'

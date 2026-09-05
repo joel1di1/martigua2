@@ -17,11 +17,7 @@ class User < ApplicationRecord
   has_many :burns, dependent: :destroy
   has_many :club_admin_roles, dependent: :destroy
   has_many :contact_emails, class_name: 'UserContactEmail', inverse_of: :user, dependent: :destroy
-  has_many :messages, dependent: :destroy
   has_many :participations, dependent: :destroy
-  has_many :selections, dependent: :destroy
-  has_many :match_selections, dependent: :destroy
-  has_many :match_invitations, dependent: :nullify
   has_many :sections, -> { distinct }, through: :participations, inverse_of: :users
   has_many :duty_tasks, inverse_of: :user, dependent: :destroy
   has_many :user_championship_stats, inverse_of: :user, dependent: :destroy

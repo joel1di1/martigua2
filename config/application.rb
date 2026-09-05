@@ -33,12 +33,6 @@ module Martigua2
 
     config.active_record.schema_format = :sql
 
-    # sassc-rails (pulled in for Administrate's scss) defaults css_compressor to :sass in
-    # every env but development. libsass cannot parse the modern CSS Tailwind 4 emits
-    # (`rgb(from red r g b)`), so leave the Sprockets CSS compressor off: the Tailwind CLI
-    # already outputs minified CSS.
-    config.assets.css_compressor = nil
-
     config.active_job.queue_adapter = :sidekiq
 
     # Drops BlockedAddress recipients from every outgoing mail. Set here rather than in an

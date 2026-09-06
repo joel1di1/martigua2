@@ -7235,6 +7235,7 @@ ALTER TABLE ONLY public.section_trainings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260905120000'),
 ('20260903000000'),
 ('20260704000000'),
 ('20260619094233'),

@@ -24,7 +24,14 @@ namespace :mails do
     puts "SCW_SECRET_KEY   : #{ENV.fetch('SCW_SECRET_KEY', nil).present? ? '(set)' : '(MISSING)'}"
     puts "SCW_REGION       : #{ENV.fetch('SCW_REGION', Scaleway::TransactionalEmailDelivery::DEFAULT_REGION)}"
 
-    SystemMailer.configuration_test(recipient).deliver_now
-    puts "\nsent to #{recipient}"
+    mail = SystemMailer.deliver_configuration_test!(recipient)
+
+    # BlockedAddress filtering runs on every mail, this one included: say so rather than
+    # reporting a send that never left.
+    if mail.perform_deliveries && mail.to.present?
+      puts "\nsent to #{mail.to.join(', ')}"
+    else
+      puts "\nNOT sent: #{recipient} matches a BlockedAddress entry"
+    end
   end
 end

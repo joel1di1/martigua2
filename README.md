@@ -94,16 +94,28 @@ Before the first send, the sending domain (`martigua.org`) must be added and ver
 Scaleway console (SPF, DKIM and the MX record for DMARC reports), and the `From` address used
 by the mailers (`admin@martigua.org`) must belong to that domain.
 
-To check the configuration of any environment, send yourself a test mail:
+To check the configuration, send yourself a test mail — locally:
 
 ```bash
-heroku run rake "mails:test_config[you@example.com]"
+SCW_PROJECT_ID=<project id> SCW_SECRET_KEY=<secret key> \
+  bin/rails "mails:test_config[toi@gmail.com]"
 ```
 
-It prints the delivery method and the credentials it sees (secret masked) then delivers a
-`SystemMailer#configuration_test` mail. A refusal from the API raises
-`Scaleway::TransactionalEmailDelivery::DeliveryError` with the status and body rather than
-being swallowed.
+or from Heroku, where the two variables are already set:
+
+```bash
+heroku run rake "mails:test_config[toi@gmail.com]"
+```
+
+It prints the delivery method and the credentials it sees (secret masked), then delivers a
+`SystemMailer#configuration_test` mail. The task always sends through Scaleway and always
+raises, whatever the environment configures, since development delivers over SMTP with
+`raise_delivery_errors` off. A refusal from the API surfaces as
+`Scaleway::TransactionalEmailDelivery::DeliveryError` with the status and the body.
+
+Beware of two silent traps when testing: `*@example.com` is in the `BlockedAddress` table, so
+use a real address — the task tells you when the recipient was filtered out — and the address
+you send from must belong to a domain verified in Scaleway.
 
 License
 --

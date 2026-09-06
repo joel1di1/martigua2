@@ -10,8 +10,10 @@ Bundler.require(*Rails.groups)
 
 module Martigua2
   class Application < Rails::Application
+    # Timestamps are stored in UTC (the Rails default) and rendered in Paris. The columns
+    # used to hold Paris wall-clock time under `default_timezone = :local`; the
+    # ConvertTimestampsToUtc migration moved the data, so the setting is gone.
     config.time_zone = 'Paris'
-    config.active_record.default_timezone = :local
 
     config.i18n.default_locale = :fr
 

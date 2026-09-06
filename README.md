@@ -82,13 +82,18 @@ Emails
 
 Production sends through the **Scaleway Transactional Email** HTTP API. The delivery method
 is `Scaleway::TransactionalEmailDelivery`, registered as `:scaleway`; it reads its
-configuration from the environment (`SCW_REGION` is optional, it defaults to `fr-par`):
+configuration from the environment (`SCW_DEFAULT_REGION` is optional, it defaults to `fr-par`):
 
 ```bash
-heroku config:set SCW_PROJECT_ID=<scaleway project id> \
+heroku config:set SCW_DEFAULT_PROJECT_ID=<scaleway project id> \
                   SCW_SECRET_KEY=<api secret key with TransactionalEmailFullAccess>
 heroku config:unset POSTMARK_API_KEY
 ```
+
+The names follow the Scaleway CLI and SDK convention. `SCW_ACCESS_KEY` and
+`SCW_DEFAULT_ORGANIZATION_ID` belong to the same family but the app never reads them: the
+Transactional Email API authenticates with the secret key alone, and the project id is the
+only scope it needs.
 
 Before the first send, the sending domain (`martigua.org`) must be added and verified in the
 Scaleway console (SPF, DKIM and the MX record for DMARC reports), and the `From` address used
@@ -97,7 +102,7 @@ by the mailers (`admin@martigua.org`) must belong to that domain.
 To check the configuration, send yourself a test mail — locally:
 
 ```bash
-SCW_PROJECT_ID=<project id> SCW_SECRET_KEY=<secret key> \
+SCW_DEFAULT_PROJECT_ID=<project id> SCW_SECRET_KEY=<secret key> \
   bin/rails "mails:test_config[toi@gmail.com]"
 ```
 

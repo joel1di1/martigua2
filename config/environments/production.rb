@@ -72,7 +72,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'www.martigua.org', protocol: 'https' }
 
   # Scaleway Transactional Email, through its HTTP API. Credentials are read from
-  # SCW_PROJECT_ID / SCW_SECRET_KEY, see Scaleway::TransactionalEmailDelivery.
+  # SCW_DEFAULT_PROJECT_ID / SCW_SECRET_KEY, see Scaleway::TransactionalEmailDelivery.
   config.action_mailer.delivery_method = :scaleway
   config.action_mailer.raise_delivery_errors = true
   # Enable DNS rebinding protection and other `Host` header attacks.

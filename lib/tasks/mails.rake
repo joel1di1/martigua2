@@ -18,11 +18,11 @@ namespace :mails do
     recipient = args[:recipient] || ENV.fetch('RECIPIENT', nil)
     raise ArgumentError, 'usage: rake mails:test_config[you@example.com]' if recipient.blank?
 
-    puts "environment      : #{Rails.env}"
-    puts "delivery method  : #{Rails.application.config.action_mailer.delivery_method}"
-    puts "SCW_PROJECT_ID   : #{ENV.fetch('SCW_PROJECT_ID', nil).presence || '(MISSING)'}"
-    puts "SCW_SECRET_KEY   : #{ENV.fetch('SCW_SECRET_KEY', nil).present? ? '(set)' : '(MISSING)'}"
-    puts "SCW_REGION       : #{ENV.fetch('SCW_REGION', Scaleway::TransactionalEmailDelivery::DEFAULT_REGION)}"
+    puts "environment            : #{Rails.env}"
+    puts "delivery method        : #{Rails.application.config.action_mailer.delivery_method}"
+    puts "SCW_DEFAULT_PROJECT_ID : #{ENV.fetch('SCW_DEFAULT_PROJECT_ID', nil).presence || '(MISSING)'}"
+    puts "SCW_SECRET_KEY         : #{ENV.fetch('SCW_SECRET_KEY', nil).present? ? '(set)' : '(MISSING)'}"
+    puts "SCW_DEFAULT_REGION     : #{ENV.fetch('SCW_DEFAULT_REGION', Scaleway::TransactionalEmailDelivery::DEFAULT_REGION)}"
 
     mail = SystemMailer.deliver_configuration_test!(recipient)
 

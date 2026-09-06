@@ -18,7 +18,7 @@ class SystemMailer < ApplicationMailer
 
   def configuration_test(recipient)
     @delivery_method = Rails.application.config.action_mailer.delivery_method
-    @region = ENV.fetch('SCW_REGION', Scaleway::TransactionalEmailDelivery::DEFAULT_REGION)
+    @region = ENV.fetch('SCW_DEFAULT_REGION', Scaleway::TransactionalEmailDelivery::DEFAULT_REGION)
     @sent_at = Time.current
 
     mail to: recipient, subject: "[martigua] Test de configuration email (#{Rails.env})"

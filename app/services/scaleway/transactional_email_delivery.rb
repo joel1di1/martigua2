@@ -17,9 +17,9 @@ module Scaleway
 
     def initialize(settings = {})
       @settings = {
-        project_id: ENV.fetch('SCW_PROJECT_ID', nil),
+        project_id: ENV.fetch('SCW_DEFAULT_PROJECT_ID', nil),
         secret_key: ENV.fetch('SCW_SECRET_KEY', nil),
-        region: ENV.fetch('SCW_REGION', DEFAULT_REGION)
+        region: ENV.fetch('SCW_DEFAULT_REGION', DEFAULT_REGION)
       }.merge(settings.symbolize_keys)
     end
 
@@ -36,7 +36,7 @@ module Scaleway
     def check_credentials!
       return if settings[:project_id].present? && settings[:secret_key].present?
 
-      raise DeliveryError, 'missing Scaleway credentials, set SCW_PROJECT_ID and SCW_SECRET_KEY'
+      raise DeliveryError, 'missing Scaleway credentials, set SCW_DEFAULT_PROJECT_ID and SCW_SECRET_KEY'
     end
 
     def uri

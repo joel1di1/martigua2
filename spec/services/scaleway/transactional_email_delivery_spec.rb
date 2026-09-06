@@ -115,7 +115,7 @@ RSpec.describe Scaleway::TransactionalEmailDelivery do
 
       it 'raises before hitting the API' do
         expect { delivery.deliver!(mail) }
-          .to raise_error(described_class::DeliveryError, /SCW_PROJECT_ID/)
+          .to raise_error(described_class::DeliveryError, /SCW_DEFAULT_PROJECT_ID/)
         expect(sent_requests).to be_empty
       end
     end

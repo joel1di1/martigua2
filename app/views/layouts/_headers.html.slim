@@ -4,7 +4,9 @@ meta name="viewport" content="width=device-width,initial-scale=1"
 = csp_meta_tag
 meta name="vapid-public-key" content=ENV.fetch('VAPID_PUBLIC_KEY', 'BHgdMBM2bvdF6k4lkgInRs4QgeBzXohkaO6nOWMdQQji1PLggxT4hDCT02ZJqB6BG-lwUvnkqLZoL2OBnGCZZ6Q=')
 
-= stylesheet_link_tag "application", "tailwind", "data-turbo-track": "reload"
+/ Propshaft has no require_tree, so every stylesheet is linked explicitly, in the order
+  Sprockets used to concatenate them: trix and actiontext first, tailwind last.
+= stylesheet_link_tag "trix", "actiontext", "legacy", "application", "tailwind", "data-turbo-track": "reload"
 
 script src="https://js.sentry-cdn.com/5ece076e22c84413bdaa2ee34bf6a9db.min.js" crossorigin="anonymous"
 

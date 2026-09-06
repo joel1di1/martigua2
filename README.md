@@ -77,6 +77,34 @@ removes the worktree, refusing to run while there is uncommitted work unless giv
 The branch itself is left alone.
 
 
+Emails
+--
+
+Production sends through the **Scaleway Transactional Email** HTTP API. The delivery method
+is `Scaleway::TransactionalEmailDelivery`, registered as `:scaleway`; it reads its
+configuration from the environment (`SCW_REGION` is optional, it defaults to `fr-par`):
+
+```bash
+heroku config:set SCW_PROJECT_ID=<scaleway project id> \
+                  SCW_SECRET_KEY=<api secret key with TransactionalEmailFullAccess>
+heroku config:unset POSTMARK_API_KEY
+```
+
+Before the first send, the sending domain (`martigua.org`) must be added and verified in the
+Scaleway console (SPF, DKIM and the MX record for DMARC reports), and the `From` address used
+by the mailers (`admin@martigua.org`) must belong to that domain.
+
+To check the configuration of any environment, send yourself a test mail:
+
+```bash
+heroku run rake "mails:test_config[you@example.com]"
+```
+
+It prints the delivery method and the credentials it sees (secret masked) then delivers a
+`SystemMailer#configuration_test` mail. A refusal from the API raises
+`Scaleway::TransactionalEmailDelivery::DeliveryError` with the status and body rather than
+being swallowed.
+
 License
 --
 

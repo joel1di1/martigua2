@@ -96,6 +96,7 @@ class Section < ApplicationRecord
 
   def remove_roles!(user, roles, season: Season.current)
     participations.where(user:, role: roles, season:).delete_all
+    group_every_players(season:).remove_user!(user, force: true) if roles.include?(Participation::PLAYER)
   end
 
   def copy_from_previous_season

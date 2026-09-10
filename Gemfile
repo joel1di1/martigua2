@@ -104,3 +104,11 @@ group :test do
   gem 'simplecov_json_formatter', require: false
   gem 'timecop'
 end
+
+# json 3.0 dropped the positional options hash from JSON.parse(source, opts).
+# ActiveSupport::JSON.decode still calls it that way (activesupport 8.1.3.1,
+# active_support/json/decoding.rb:25), so every code path that decodes JSON --
+# including ActiveRecord::TokenFor / find_by_token_for -- raises
+# ArgumentError: wrong number of arguments (given 2, expected 1).
+# Unpin once Rails ships a json 3 compatible ActiveSupport::JSON.decode.
+gem 'json', '< 3'

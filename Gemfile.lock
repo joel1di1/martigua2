@@ -656,6 +656,7 @@ DEPENDENCIES
   image_processing (~> 2.0)
   importmap-rails
   jbuilder
+  json (< 3)
   kaminari
   net-imap
   net-pop

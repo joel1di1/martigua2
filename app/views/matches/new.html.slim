@@ -1,6 +1,7 @@
-<div class="mt-2 md:flex md:items-center md:justify-between">
-  <div class="min-w-0 flex-1">
-    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+- current_step = @wizard_step
+.mt-2.md:flex.md:items-center.md:justify-between
+  .min-w-0.flex-1
+    h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
       'Nouveau match
       - if params[:section_team_id].present?
         '-
@@ -8,106 +9,100 @@
       - if params[:championship_id].present?
         '-
         = Championship.find(params[:championship_id]).name
-    </h2>
-  </div>
-</div>
 
+.mt-8.max-w-2xl
+  = render 'wizard_steps', current_step: current_step
 
+  - if params[:section_team_id].present? && params[:adversary_team_id].present? && (params[:match].present? && params[:match][:championship_id].present? && params[:match][:day_id].present? && params[:match][:location_id].present? )
+    - @match.local_team_id = params[:section_team_id]
+    - @match.visitor_team_id = params[:adversary_team_id]
+    .overflow-hidden.rounded-lg.bg-white.shadow-sm.outline-1.-outline-offset-1.outline-gray-900/5
+      .px-4.py-6.sm:p-8
+        = link_to '‹ Précédent', new_section_match_path(current_section, section_team_id: params[:section_team_id], match: { championship_id: params[:match][:championship_id], day_id: params[:match][:day_id], location_id: params[:match][:location_id] }), class: 'mb-4 inline-block text-sm/6 font-semibold text-gray-700 hover:text-gray-900'
+        = render 'form'
 
-- if params[:section_team_id].present? && params[:adversary_team_id].present? && (params[:match].present? && params[:match][:championship_id].present? && params[:match][:day_id].present? && params[:match][:location_id].present? )
-  - @match.local_team_id = params[:section_team_id]
-  - @match.visitor_team_id = params[:adversary_team_id]
-  = render 'form'
+  - elsif params[:section_team_id].blank?
+    = render 'step_question', title: 'Quelle équipe ?', field_id: 'section_team_id', field_name: 'section_team_id', options: current_section.teams.pluck(:name, :id), hidden: nil, back_path: nil, add_on: nil
 
-- elsif params[:section_team_id].blank?
-  = simple_form_for new_section_match_path(current_section), method: :get do |f|
-    = label_tag :section_team_id, 'Quelle équipe ?', class: 'block my-5 text-lg'
-    = select_tag :section_team_id, options_for_select(current_section.teams.pluck(:name, :id)), class: 'block my-5 text-lg'
-    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
+  - elsif params[:match].blank? || params[:match][:championship_id].blank?
+    - hidden = capture do
+      = hidden_field_tag :section_team_id, params[:section_team_id]
+    - add_on = capture do
+      div data-controller="dropdown"
+        a href="#new-championship-collapse" data-action="dropdown#toggle:stop" aria-expanded="false" class="inline-flex items-center gap-x-1 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+          svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4"
+            path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v5.5h5.5a.75.75 0 010 1.5h-5.5v5.5a.75.75 0 01-1.5 0v-5.5h-5.5a.75.75 0 010-1.5h5.5v-5.5A.75.75 0 0110 3z" clip-rule="evenodd"
+          'Ajouter une compétition
+        #new-championship-collapse.hidden.mt-4 data-dropdown-target="menu"
+          = render 'championships/form'
+    = render 'step_question', title: 'Quelle compétition ?', field_id: 'match_championship_id', field_name: 'match[championship_id]', options: @section_team.championships.of_current_season.pluck(:name, :id), hidden: hidden, back_path: new_section_match_path(current_section), add_on: add_on
 
-- elsif params[:match].blank? || params[:match][:championship_id].blank?
-  = simple_form_for new_section_match_path(current_section), method: :get do |f|
-    = hidden_field_tag :section_team_id, params[:section_team_id]
-    = label_tag 'match[championship_id]', 'Quelle compétition ?', class: 'block my-5 text-lg'
-    = select_tag 'match[championship_id]', options_for_select(@section_team.championships.of_current_season.pluck(:name, :id)), class: 'block my-5 text-lg'
-    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
+  - elsif params[:match].blank? || params[:match][:day_id].blank?
+    - hidden = capture do
+      = hidden_field_tag :section_team_id, params[:section_team_id]
+      = hidden_field_tag 'match[championship_id]', params[:match][:championship_id]
+    - add_on = capture do
+      div data-controller="dropdown"
+        a href="#new-day-collapse" data-action="dropdown#toggle:stop" aria-expanded="false" class="inline-flex items-center gap-x-1 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+          svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4"
+            path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v5.5h5.5a.75.75 0 010 1.5h-5.5v5.5a.75.75 0 01-1.5 0v-5.5h-5.5a.75.75 0 010-1.5h5.5v-5.5A.75.75 0 0110 3z" clip-rule="evenodd"
+          'Ajouter une journée
+        .hidden.mt-4 data-dropdown-target="menu"
+          - @new_day = Day.new(calendar: @championship.calendar)
+          = simple_form_for [current_section, @new_day] do |f|
+            = f.error_notification
+            .form-inputs
+              = hidden_field_tag :_redirect_url, request.original_url
+              = f.input :period_start_date
+              = f.input :name, input_html: { 'data-default-name' => @new_day.name }
+              = f.hidden_field :calendar_id
+            .form-actions.mt-4
+              = f.button :submit, class: 'inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+    = render 'step_question', title: 'Quel jour ?', field_id: 'match_day_id', field_name: 'match[day_id]', options: @championship.calendar.days.pluck(:name, :id), hidden: hidden, back_path: new_section_match_path(current_section, section_team_id: params[:section_team_id]), add_on: add_on
 
-  div data-controller="dropdown"
-    a href="#new-championship-collapse" data-action="dropdown#toggle:stop" aria-expanded="false" class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
-      'Ajouter une compétition
-    #new-championship-collapse data-dropdown-target="menu"
-      = render 'championships/form'
+  - elsif params[:match].blank? || params[:match][:location_id].blank?
+    - hidden = capture do
+      = hidden_field_tag :section_team_id, params[:section_team_id]
+      = hidden_field_tag 'match[championship_id]', params[:match][:championship_id]
+      = hidden_field_tag 'match[day_id]', params[:match][:day_id]
+    - add_on = capture do
+      div data-controller="dropdown"
+        a href="#new-location-collapse" data-action="dropdown#toggle:stop" aria-expanded="false" class="inline-flex items-center gap-x-1 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+          svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4"
+            path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v5.5h5.5a.75.75 0 010 1.5h-5.5v5.5a.75.75 0 01-1.5 0v-5.5h-5.5a.75.75 0 010-1.5h5.5v-5.5A.75.75 0 0110 3z" clip-rule="evenodd"
+          'Ajouter un lieu
+        .hidden.mt-4 data-dropdown-target="menu"
+          - @new_location = Location.new
+          = simple_form_for [current_section, @new_location] do |f|
+            = f.error_notification
+            .form-inputs
+              = hidden_field_tag :_redirect_url, request.original_url
+              = f.input :name
+              = f.input :address
+            .form-actions.mt-4
+              = f.button :submit, class: 'inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+    = render 'step_question', title: 'Quel lieu ?', field_id: 'match_location_id', field_name: 'match[location_id]', options: Location.all.pluck(:name, :id), hidden: hidden, back_path: new_section_match_path(current_section, section_team_id: params[:section_team_id], match: { championship_id: params[:match][:championship_id] }), add_on: add_on
 
-- elsif params[:match].blank? || params[:match][:day_id].blank?
-  = simple_form_for new_section_match_path(current_section), method: :get do |f|
-    = hidden_field_tag :section_team_id, params[:section_team_id]
-    = hidden_field_tag 'match[championship_id]', params[:match][:championship_id]
-    = label_tag 'match[day_id]', 'Quel jour ?', class: 'block my-5 text-lg'
-    = select_tag 'match[day_id]', options_for_select(@championship.calendar.days.pluck(:name, :id)), class: 'block my-5 text-lg'
-    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
-
-  div data-controller='dropdown'
-    a href="#new-day-collapse" data-action='dropdown#toggle:stop' class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
-      'Ajouter une journée
-
-    .hidden data-dropdown-target="menu"
-      - @new_day = Day.new(calendar: @championship.calendar)
-      = simple_form_for [current_section, @new_day] do |f|
-        = f.error_notification
-        .form-inputs
-          = hidden_field_tag :_redirect_url, request.original_url
-          = f.input :period_start_date
-          = f.input :name, input_html: { 'data-default-name' => @new_day.name }
-          = f.hidden_field :calendar_id
-        .form-actions
-          = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
-
-- elsif params[:match].blank? || params[:match][:location_id].blank?
-  = simple_form_for new_section_match_path(current_section), method: :get do |f|
-    = hidden_field_tag :section_team_id, params[:section_team_id]
-    = hidden_field_tag 'match[championship_id]', params[:match][:championship_id]
-    = hidden_field_tag 'match[day_id]', params[:match][:day_id]
-    = label_tag 'match[location_id]', 'Quel lieu ?', class: 'block my-5 text-lg'
-    = select_tag 'match[location_id]', options_for_select(Location.all.pluck(:name, :id)), class: 'block my-5 text-lg'
-    = f.submit 'Next', class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
-
-  div data-controller='dropdown'
-    a href="#new-location-collapse" data-toggle="collapse" data-action='dropdown#toggle:stop' class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
-      'Ajouter un lieu
-
-    .hidden data-dropdown-target="menu"
-      - @new_location = Location.new
-      = simple_form_for [current_section, @new_location] do |f|
-        = f.error_notification
-        .form-inputs
-          = hidden_field_tag :_redirect_url, request.original_url
-          = f.input :name
-          = f.input :address
-        .form-actions
-          = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
-
-- elsif params[:adversary_team_id].blank?
-  = simple_form_for new_section_match_path(current_section), method: :get do |f|
-    = hidden_field_tag :section_team_id, params[:section_team_id]
-    = hidden_field_tag 'match[championship_id]', params[:match][:championship_id]
-    = hidden_field_tag 'match[day_id]', params[:match][:day_id]
-    = hidden_field_tag 'match[location_id]', params[:match][:location_id]
-    = label_tag :adversary_team_id, 'Equipe adverse ?', class: 'block my-5 text-lg'
-    = select_tag :adversary_team_id, options_for_select([[nil,nil]].concat(Team.all.order('name').pluck(:name, :id))), class: 'block w-full rounded-xs cursor-pointer focus:outline-hidden', data: { controller: 'ts--select' }
-    = f.submit 'Next', class: 'mt-2 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
-
-  div data-controller='dropdown'
-    a href="#new-location-collapse" data-toggle="collapse" data-action='dropdown#toggle:stop' class="inline-flex items-center py-1.5 text-xs font-medium text-gray-700 underline"
-      'Ajouter une équipe
-
-    .hidden data-dropdown-target="menu"
-      - @team = Team.new
-      = simple_form_for [current_section, @team] do |f|
-        = hidden_field_tag :championship_id, params[:championship_id]
-        = f.error_notification
-        .form-inputs
-          = hidden_field_tag :_redirect_url, request.original_url
-          = f.input :name
-        .form-actions
-          = f.button :submit, class: 'inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
-
+  - elsif params[:adversary_team_id].blank?
+    - hidden = capture do
+      = hidden_field_tag :section_team_id, params[:section_team_id]
+      = hidden_field_tag 'match[championship_id]', params[:match][:championship_id]
+      = hidden_field_tag 'match[day_id]', params[:match][:day_id]
+      = hidden_field_tag 'match[location_id]', params[:match][:location_id]
+    - add_on = capture do
+      div data-controller="dropdown"
+        a href="#new-adversary-collapse" data-action="dropdown#toggle:stop" aria-expanded="false" class="inline-flex items-center gap-x-1 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+          svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4"
+            path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v5.5h5.5a.75.75 0 010 1.5h-5.5v5.5a.75.75 0 01-1.5 0v-5.5h-5.5a.75.75 0 010-1.5h5.5v-5.5A.75.75 0 0110 3z" clip-rule="evenodd"
+          'Ajouter une équipe
+        .hidden.mt-4 data-dropdown-target="menu"
+          - @team = Team.new
+          = simple_form_for [current_section, @team] do |f|
+            = hidden_field_tag :championship_id, params[:championship_id]
+            = f.error_notification
+            .form-inputs
+              = hidden_field_tag :_redirect_url, request.original_url
+              = f.input :name
+            .form-actions.mt-4
+              = f.button :submit, class: 'inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+    = render 'step_question', title: 'Equipe adverse ?', field_id: 'adversary_team_id', field_name: 'adversary_team_id', options: [[nil, nil]].concat(Team.all.order('name').pluck(:name, :id)), hidden: hidden, back_path: new_section_match_path(current_section, section_team_id: params[:section_team_id], match: { championship_id: params[:match][:championship_id], day_id: params[:match][:day_id] }), add_on: add_on, searchable: true

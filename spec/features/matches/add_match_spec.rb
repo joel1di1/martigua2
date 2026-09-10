@@ -19,7 +19,7 @@ describe 'Add Match', :devise do
 
       assert_text 'Quelle équipe ?'
       select(team.name, from: 'Quelle équipe ?')
-      click_on 'Next'
+      click_on 'Suivant'
 
       assert_text 'Quelle compétition ?'
       click_on 'Ajouter une compétition'
@@ -88,23 +88,23 @@ describe 'Add Match', :devise do
 
       assert_text 'Quelle équipe ?'
       select(team.name, from: 'Quelle équipe ?')
-      click_on 'Next'
+      click_on 'Suivant'
 
       assert_text 'Quelle compétition ?'
       select championship.name, from: 'Quelle compétition ?'
-      click_on 'Next'
+      click_on 'Suivant'
 
       assert_text 'Quel jour ?'
       select day.name, from: 'Quel jour ?'
-      click_on 'Next'
+      click_on 'Suivant'
 
       assert_text 'Quel lieu ?'
       select location.name, from: 'Quel lieu ?'
-      click_on 'Next'
+      click_on 'Suivant'
 
       assert_text 'Equipe adverse ?'
       select adversary_team.name, from: 'adversary_team_id'
-      click_on 'Next'
+      click_on 'Suivant'
 
       assert_text 'Nouveau match'
       assert_text 'Local team'

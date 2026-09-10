@@ -660,7 +660,6 @@ DEPENDENCIES
   parallel_tests
   pdf-reader
   pg
-  postmark-rails
   propshaft
   puma
   rack-attack

@@ -347,5 +347,6 @@ RSpec.describe Section do
     section.update_roles!(user, new_roles)
 
     expect(user.roles_for(section).sort).to eq(new_roles.sort)
+    expect(section.group_every_players.users.include?(user)).to eq(new_roles.include?('player'))
   end
 end

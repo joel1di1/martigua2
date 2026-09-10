@@ -87,7 +87,6 @@ configuration from the environment (`SCW_DEFAULT_REGION` is optional, it default
 ```bash
 heroku config:set SCW_DEFAULT_PROJECT_ID=<scaleway project id> \
                   SCW_SECRET_KEY=<api secret key with TransactionalEmailFullAccess>
-heroku config:unset POSTMARK_API_KEY
 ```
 
 The names follow the Scaleway CLI and SDK convention. `SCW_ACCESS_KEY` and
@@ -99,28 +98,10 @@ Before the first send, the sending domain (`martigua.org`) must be added and ver
 Scaleway console (SPF, DKIM and the MX record for DMARC reports), and the `From` address used
 by the mailers (`admin@martigua.org`) must belong to that domain.
 
-To check the configuration, send yourself a test mail — locally:
-
-```bash
-SCW_DEFAULT_PROJECT_ID=<project id> SCW_SECRET_KEY=<secret key> \
-  bin/rails "mails:test_config[toi@gmail.com]"
-```
-
-or from Heroku, where the two variables are already set:
-
-```bash
-heroku run rake "mails:test_config[toi@gmail.com]"
-```
-
-It prints the delivery method and the credentials it sees (secret masked), then delivers a
-`SystemMailer#configuration_test` mail. The task always sends through Scaleway and always
-raises, whatever the environment configures, since development delivers over SMTP with
-`raise_delivery_errors` off. A refusal from the API surfaces as
-`Scaleway::TransactionalEmailDelivery::DeliveryError` with the status and the body.
-
-Beware of two silent traps when testing: `*@example.com` is in the `BlockedAddress` table, so
-use a real address — the task tells you when the recipient was filtered out — and the address
-you send from must belong to a domain verified in Scaleway.
+A refusal from the API surfaces as `Scaleway::TransactionalEmailDelivery::DeliveryError`,
+carrying the HTTP status and the response body. Note that `Interceptors::BlockedAddressInterceptor` filters
+every outgoing mail, so a recipient listed in `blocked_addresses` (`*@example.com` is) is
+dropped before it ever reaches Scaleway.
 
 License
 --

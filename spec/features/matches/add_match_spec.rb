@@ -12,7 +12,15 @@ describe 'Add Match', :devise do
 
   before { signin_user coach }
 
-  # rubocop:disable RSpec/ExampleLength
+  # The creation of a championship/day/location/team is handled via a Turbo
+  # Stream that updates the wizard's select in place, without leaving the
+  # step. If Turbo hasn't taken over the form yet, the browser falls back to
+  # a full-page redirect that lands directly on the next step instead.
+  def proceed_after_inline_creation(select_label:, option_name:)
+    click_on 'Suivant' if page.has_select?(select_label, selected: option_name, wait: 5)
+  end
+
+  # rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations
   describe 'with non existing items' do
     it 'coach sign in and add new match' do
       click_on 'add-match'
@@ -29,8 +37,9 @@ describe 'Add Match', :devise do
 
       expect do
         click_on 'Créer un(e) Compétition'
-        assert_text 'Compétition créée'
+        expect(page).to have_no_button('Créer un(e) Compétition', wait: 5)
       end.to change(Championship, :count)
+      proceed_after_inline_creation(select_label: 'Quelle compétition ?', option_name: championship_name)
 
       assert_text 'Quel jour ?'
       click_on 'Ajouter une journée'
@@ -40,8 +49,9 @@ describe 'Add Match', :devise do
       fill_in 'day[name]', with: day_name
       expect do
         click_on 'Créer un(e) Journée'
-        assert_text 'Journée créée'
+        expect(page).to have_no_button('Créer un(e) Journée', wait: 5)
       end.to change(Day, :count)
+      proceed_after_inline_creation(select_label: 'Quel jour ?', option_name: day_name)
 
       assert_text 'Quel lieu ?'
       click_on 'Ajouter un lieu'
@@ -49,16 +59,18 @@ describe 'Add Match', :devise do
       fill_in 'location[address]', with: location_address
       expect do
         click_on 'Créer un(e) Lieu'
-        assert_text 'Lieu créé'
+        expect(page).to have_no_button('Créer un(e) Lieu', wait: 5)
       end.to change(Location, :count)
+      proceed_after_inline_creation(select_label: 'Quel lieu ?', option_name: location_name)
 
       assert_text 'Equipe adverse ?'
       click_on 'Ajouter une équipe'
       fill_in 'team[name]', with: adversary_team_name
       expect do
         click_on 'Créer un(e) Équipe'
-        assert_text 'Équipe créée'
+        expect(page).to have_no_button('Créer un(e) Équipe', wait: 5)
       end.to change(Team, :count)
+      proceed_after_inline_creation(select_label: 'Equipe adverse ?', option_name: adversary_team_name)
 
       expect do
         click_on 'Créer un(e) Match'
@@ -121,5 +133,5 @@ describe 'Add Match', :devise do
       expect(match.location.name).to eq(location_name)
     end
   end
-  # rubocop:enable RSpec/ExampleLength
+  # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
 end

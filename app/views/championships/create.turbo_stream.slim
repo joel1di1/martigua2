@@ -1,0 +1,14 @@
+- if @championship.persisted?
+  = turbo_stream.append "match_championship_id" do
+    option value=@championship.id selected="selected"
+      = @championship.name
+
+  = turbo_stream.update "match_championship_id_confirmation" do
+    | ✓ Compétition « #{@championship.name} » créée et sélectionnée.
+
+  = turbo_stream.replace "new-championship-panel" do
+    = render 'matches/new_championship_panel', redirect_url: params[:_redirect_url]
+- else
+  = turbo_stream.replace "new-championship-collapse" do
+    div id="new-championship-collapse" class="mt-4" data-dropdown-target="menu"
+      = render 'championships/form', redirect_url: params[:_redirect_url]

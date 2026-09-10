@@ -12,6 +12,7 @@
         - else
           select id=field_id name=field_name class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:max-w-md sm:text-sm/6"
             = options_for_select(options)
+      div id="#{field_id}_confirmation" class="mt-2 text-sm font-medium text-green-600 empty:hidden"
       .mt-6.flex.items-center.justify-between
         - if back_path
           = link_to '‹ Précédent', back_path, class: 'text-sm/6 font-semibold text-gray-700 hover:text-gray-900'

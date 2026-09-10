@@ -1,0 +1,9 @@
+= turbo_stream.append "adversary_team_id" do
+  option value=@team.id selected="selected"
+    = @team.name
+
+= turbo_stream.update "adversary_team_id_confirmation" do
+  | ✓ Équipe « #{@team.name} » ajoutée et sélectionnée.
+
+= turbo_stream.replace "new-team-panel" do
+  = render 'matches/new_team_panel', redirect_url: params[:_redirect_url], championship_id: params[:championship_id]

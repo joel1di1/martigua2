@@ -1,0 +1,9 @@
+= turbo_stream.append "match_day_id" do
+  option value=@day.id selected="selected"
+    = @day.name
+
+= turbo_stream.update "match_day_id_confirmation" do
+  | ✓ Journée « #{@day.name} » ajoutée et sélectionnée.
+
+= turbo_stream.replace "new-day-panel" do
+  = render 'matches/new_day_panel', calendar: @day.calendar, redirect_url: params[:_redirect_url]

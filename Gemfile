@@ -54,10 +54,6 @@ gem 'web-push'
 # newrelic must be after scout_apm
 gem 'newrelic_rpm'
 
-group :production do
-  gem 'postmark-rails'
-end
-
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem 'image_processing', '~> 2.0'
 gem 'ruby-vips', '~> 2.2'

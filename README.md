@@ -77,6 +77,51 @@ removes the worktree, refusing to run while there is uncommitted work unless giv
 The branch itself is left alone.
 
 
+Emails
+--
+
+Production sends through the **Scaleway Transactional Email** HTTP API. The delivery method
+is `Scaleway::TransactionalEmailDelivery`, registered as `:scaleway`; it reads its
+configuration from the environment (`SCW_DEFAULT_REGION` is optional, it defaults to `fr-par`):
+
+```bash
+heroku config:set SCW_DEFAULT_PROJECT_ID=<scaleway project id> \
+                  SCW_SECRET_KEY=<api secret key with TransactionalEmailFullAccess>
+heroku config:unset POSTMARK_API_KEY
+```
+
+The names follow the Scaleway CLI and SDK convention. `SCW_ACCESS_KEY` and
+`SCW_DEFAULT_ORGANIZATION_ID` belong to the same family but the app never reads them: the
+Transactional Email API authenticates with the secret key alone, and the project id is the
+only scope it needs.
+
+Before the first send, the sending domain (`martigua.org`) must be added and verified in the
+Scaleway console (SPF, DKIM and the MX record for DMARC reports), and the `From` address used
+by the mailers (`admin@martigua.org`) must belong to that domain.
+
+To check the configuration, send yourself a test mail — locally:
+
+```bash
+SCW_DEFAULT_PROJECT_ID=<project id> SCW_SECRET_KEY=<secret key> \
+  bin/rails "mails:test_config[toi@gmail.com]"
+```
+
+or from Heroku, where the two variables are already set:
+
+```bash
+heroku run rake "mails:test_config[toi@gmail.com]"
+```
+
+It prints the delivery method and the credentials it sees (secret masked), then delivers a
+`SystemMailer#configuration_test` mail. The task always sends through Scaleway and always
+raises, whatever the environment configures, since development delivers over SMTP with
+`raise_delivery_errors` off. A refusal from the API surfaces as
+`Scaleway::TransactionalEmailDelivery::DeliveryError` with the status and the body.
+
+Beware of two silent traps when testing: `*@example.com` is in the `BlockedAddress` table, so
+use a real address — the task tells you when the recipient was filtered out — and the address
+you send from must belong to a domain verified in Scaleway.
+
 License
 --
 

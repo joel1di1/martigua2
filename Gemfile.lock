@@ -353,11 +353,6 @@ GEM
     pg (1.6.3)
     pg (1.6.3-arm64-darwin)
     pg (1.6.3-x86_64-linux)
-    postmark (1.25.1)
-      json
-    postmark-rails (0.22.1)
-      actionmailer (>= 3.0.0)
-      postmark (>= 1.21.3, < 2.0)
     pp (0.6.4)
       prettyprint
     prettyprint (0.2.0)
@@ -665,7 +660,6 @@ DEPENDENCIES
   parallel_tests
   pdf-reader
   pg
-  postmark-rails
   propshaft
   puma
   rack-attack

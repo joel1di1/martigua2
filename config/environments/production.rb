@@ -69,8 +69,10 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [:id]
   config.action_mailer.default_url_options = { host: 'www.martigua.org', protocol: 'https' }
 
-  config.action_mailer.delivery_method   = :postmark
-  config.action_mailer.postmark_settings = { api_key: ENV.fetch('POSTMARK_API_KEY', nil) }
+  # Scaleway Transactional Email, through its HTTP API. Credentials are read from
+  # SCW_DEFAULT_PROJECT_ID / SCW_SECRET_KEY, see Scaleway::TransactionalEmailDelivery.
+  config.action_mailer.delivery_method = :scaleway
+  config.action_mailer.raise_delivery_errors = true
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
   #   "example.com",     # Allow requests from example.com

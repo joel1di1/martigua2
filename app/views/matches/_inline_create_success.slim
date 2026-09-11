@@ -1,0 +1,12 @@
+/ Shared pattern for the "create X inline" turbo streams in the new-match funnel:
+/ append the created record as a selected option, show a confirmation message,
+/ then swap the inline-creation panel back to its collapsed state.
+= turbo_stream.append field_id do
+  option value=option_value selected="selected"
+    = option_label
+
+= turbo_stream.update "#{field_id}_confirmation" do
+  | ✓ #{confirmation_text}
+
+= turbo_stream.replace panel_id do
+  = render panel_partial, panel_locals

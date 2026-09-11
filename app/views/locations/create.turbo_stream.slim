@@ -1,9 +1,8 @@
-= turbo_stream.append "match_location_id" do
-  option value=@location.id selected="selected"
-    = @location.name
-
-= turbo_stream.update "match_location_id_confirmation" do
-  | ✓ Lieu « #{@location.name} » ajouté et sélectionné.
-
-= turbo_stream.replace "new-location-panel" do
-  = render 'matches/new_location_panel', redirect_url: params[:_redirect_url]
+= render 'matches/inline_create_success',
+  field_id: 'match_location_id',
+  option_value: @location.id,
+  option_label: @location.name,
+  confirmation_text: "Lieu « #{@location.name} » ajouté et sélectionné.",
+  panel_id: 'new-location-panel',
+  panel_partial: 'matches/new_location_panel',
+  panel_locals: { redirect_url: params[:_redirect_url] }

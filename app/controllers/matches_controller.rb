@@ -137,8 +137,6 @@ class MatchesController < ApplicationController
   # always reflects which question is actually being asked.
   def new_match_wizard_step
     match = params[:match] || {}
-    return 6 if params[:section_team_id].present? && params[:adversary_team_id].present? &&
-                match[:championship_id].present? && match[:day_id].present? && match[:location_id].present?
     return 1 if params[:section_team_id].blank?
     return 2 if match[:championship_id].blank?
     return 3 if match[:day_id].blank?

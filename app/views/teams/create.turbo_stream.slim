@@ -1,9 +1,8 @@
-= turbo_stream.append "adversary_team_id" do
-  option value=@team.id selected="selected"
-    = @team.name
-
-= turbo_stream.update "adversary_team_id_confirmation" do
-  | ✓ Équipe « #{@team.name} » ajoutée et sélectionnée.
-
-= turbo_stream.replace "new-team-panel" do
-  = render 'matches/new_team_panel', redirect_url: params[:_redirect_url], championship_id: params[:championship_id]
+= render 'matches/inline_create_success',
+  field_id: 'adversary_team_id',
+  option_value: @team.id,
+  option_label: @team.name,
+  confirmation_text: "Équipe « #{@team.name} » ajoutée et sélectionnée.",
+  panel_id: 'new-team-panel',
+  panel_partial: 'matches/new_team_panel',
+  panel_locals: { redirect_url: params[:_redirect_url], championship_id: params[:championship_id] }

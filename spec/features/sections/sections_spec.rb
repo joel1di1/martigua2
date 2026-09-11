@@ -28,7 +28,9 @@ describe 'sections admin task', :devise do
       click_on admin.email
       click_on club.name
       expect do
-        click_on "delete-section-#{previous_section.id}"
+        accept_confirm do
+          click_on "delete-section-#{previous_section.id}"
+        end
         assert_text "Section #{previous_section.name} supprimée"
       end.to change(Section, :count).by(-1)
     end

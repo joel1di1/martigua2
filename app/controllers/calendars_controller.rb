@@ -15,7 +15,11 @@ class CalendarsController < ApplicationController
   def create
     @calendar = Calendar.new calendar_params
     @calendar.save!
-    redirect_to section_calendars_path(current_section), notice: 'Calendrier créé'
+
+    respond_to do |format|
+      format.html { redirect_to section_calendars_path(current_section), notice: 'Calendrier créé' }
+      format.turbo_stream
+    end
   end
 
   def update

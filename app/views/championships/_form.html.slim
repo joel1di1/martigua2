@@ -1,4 +1,4 @@
-= simple_form_for [current_section, @championship] do |f|
+= simple_form_for [current_section, @championship], html: { data: { turbo: false } } do |f|
   = f.error_notification
   = hidden_field_tag :_redirect_url, local_assigns.fetch(:redirect_url, request.original_url)
   = hidden_field_tag :default_team_id, params[:section_team_id]

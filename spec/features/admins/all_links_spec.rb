@@ -40,7 +40,7 @@ describe 'Active Admin', :devise do
     admin = create(:user)
     create(:admin_user, email: admin.email)
 
-    signin admin.email, admin.password
+    signin admin.email, admin.password, close_notice: true
     visit '/admin'
 
     expect(page).to have_text 'Users'

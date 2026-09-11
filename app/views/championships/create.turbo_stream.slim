@@ -7,8 +7,8 @@
     | ✓ Compétition « #{@championship.name} » créée et sélectionnée.
 
   = turbo_stream.replace "new-championship-panel" do
-    = render 'matches/new_championship_panel', redirect_url: params[:_redirect_url]
+    = render 'matches/new_championship_panel', redirect_url: params[:_redirect_url], team: Team.find_by(id: params[:default_team_id])
 - else
   = turbo_stream.replace "new-championship-collapse" do
     div id="new-championship-collapse" class="mt-4" data-dropdown-target="menu"
-      = render 'championships/form', redirect_url: params[:_redirect_url]
+      = render 'matches/new_championship_form', redirect_url: params[:_redirect_url], team: Team.find_by(id: params[:default_team_id])

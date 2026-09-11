@@ -28,7 +28,7 @@
     - hidden = capture do
       = hidden_field_tag :section_team_id, params[:section_team_id]
     - add_on = capture do
-      = render 'new_championship_panel', redirect_url: request.original_url
+      = render 'new_championship_panel', redirect_url: request.original_url, team: @section_team
     = render 'step_question', title: 'Quelle compétition ?', field_id: 'match_championship_id', field_name: 'match[championship_id]', options: @section_team.championships.of_current_season.pluck(:name, :id), hidden: hidden, back_path: new_section_match_path(current_section), add_on: add_on
 
   - elsif params[:match].blank? || params[:match][:day_id].blank?

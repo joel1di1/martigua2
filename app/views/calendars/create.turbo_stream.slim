@@ -1,0 +1,6 @@
+= turbo_stream.append "new_championship_calendar_id" do
+  option value=@calendar.id selected="selected"
+    = @calendar.name
+
+= turbo_stream.replace "new-calendar-panel" do
+  = render 'matches/new_calendar_panel'

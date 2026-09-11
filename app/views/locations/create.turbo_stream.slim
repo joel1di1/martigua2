@@ -1,0 +1,8 @@
+= render 'matches/inline_create_success',
+  field_id: 'match_location_id',
+  option_value: @location.id,
+  option_label: @location.name,
+  confirmation_text: "Lieu « #{@location.name} » ajouté et sélectionné.",
+  panel_id: 'new-location-panel',
+  panel_partial: 'matches/new_location_panel',
+  panel_locals: { redirect_url: params[:_redirect_url] }

@@ -38,12 +38,20 @@ class ChampionshipsController < ApplicationController
     if @championship.save
       @championship.enroll_team! Team.find_by(id: params[:default_team_id]) if params[:default_team_id].present?
 
-      redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
-                    fallback: section_championship_path(current_section, @championship),
-                    use_referrer: false,
-                    notice: 'Compétition créée'
+      respond_to do |format|
+        format.html do
+          redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
+                        fallback: section_championship_path(current_section, @championship),
+                        use_referrer: false,
+                        notice: 'Compétition créée'
+        end
+        format.turbo_stream
+      end
     else
-      render :new, status: :unprocessable_content
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_content }
+        format.turbo_stream { render :create, status: :unprocessable_content }
+      end
     end
   end
 

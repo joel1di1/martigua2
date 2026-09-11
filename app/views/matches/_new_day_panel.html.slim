@@ -1,0 +1,16 @@
+div id="new-day-panel" data-controller="dropdown"
+  a href="#new-day-collapse" data-action="dropdown#toggle:stop" aria-expanded="false" class="inline-flex items-center gap-x-1 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+    svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4"
+      path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v5.5h5.5a.75.75 0 010 1.5h-5.5v5.5a.75.75 0 01-1.5 0v-5.5h-5.5a.75.75 0 010-1.5h5.5v-5.5A.75.75 0 0110 3z" clip-rule="evenodd"
+    'Ajouter une journée
+  .hidden.mt-4 data-dropdown-target="menu"
+    - new_day = Day.new(calendar: calendar)
+    = simple_form_for [current_section, new_day] do |f|
+      = f.error_notification
+      = hidden_field_tag :_redirect_url, redirect_url
+      .form-inputs
+        = f.input :period_start_date
+        = f.input :name, input_html: { 'data-default-name' => new_day.name }
+        = f.hidden_field :calendar_id
+      .form-actions.mt-4
+        = f.button :submit, class: 'inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'

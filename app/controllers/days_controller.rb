@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DaysController < ApplicationController
-  respond_to :html, :json
+  respond_to :html, :json, :turbo_stream
 
   def new
     @day = Day.new
@@ -11,9 +11,14 @@ class DaysController < ApplicationController
     @day = Day.new day_params
     @day.save!
 
-    redirect_with(fallback: section_days_path(current_section),
-                  additionnal_params: { 'match[day_id]' => @day.id },
-                  notice: 'Journée créée')
+    respond_to do |format|
+      format.html do
+        redirect_with(fallback: section_days_path(current_section),
+                      additionnal_params: { 'match[day_id]' => @day.id },
+                      notice: 'Journée créée')
+      end
+      format.turbo_stream
+    end
   end
 
   def update

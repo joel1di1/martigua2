@@ -1,0 +1,8 @@
+= render 'matches/inline_create_success',
+  field_id: 'match_day_id',
+  option_value: @day.id,
+  option_label: @day.name,
+  confirmation_text: "Journée « #{@day.name} » ajoutée et sélectionnée.",
+  panel_id: 'new-day-panel',
+  panel_partial: 'matches/new_day_panel',
+  panel_locals: { calendar: @day.calendar, redirect_url: params[:_redirect_url] }

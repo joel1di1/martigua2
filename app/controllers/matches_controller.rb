@@ -36,6 +36,7 @@ class MatchesController < ApplicationController
     @section_team = Team.find_by(id: params[:section_team_id])
     @match = Match.new match_params
     @championship = @match.championship || Championship.new
+    @wizard_step = new_match_wizard_step
 
     return unless params[:adversary_team_id].present? && @championship.persisted?
 
@@ -130,5 +131,18 @@ class MatchesController < ApplicationController
     verify_section_ownership!(:championships, id: @match.championship_id)
   rescue ActiveRecord::RecordNotFound
     catch404
+  end
+
+  # Mirrors the cascading params check in views/matches/new so the step indicator
+  # always reflects which question is actually being asked.
+  def new_match_wizard_step
+    match = params[:match] || {}
+    return 1 if params[:section_team_id].blank?
+    return 2 if match[:championship_id].blank?
+    return 3 if match[:day_id].blank?
+    return 4 if match[:location_id].blank?
+    return 5 if params[:adversary_team_id].blank?
+
+    6
   end
 end

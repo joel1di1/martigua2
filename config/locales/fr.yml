@@ -14,6 +14,9 @@ fr:
         zero: brûlé
         one: brûlé
         other: brûlés
+      calendar:
+        one: Calendrier
+        other: Calendriers
       championship:
         one: Compétition
         other: Compétitions

@@ -15,7 +15,12 @@ class TeamsController < ApplicationController
       championship.enroll_team! @team
     end
 
-    redirect_with additionnal_params: { adversary_team_id: @team.id }, notice: 'Équipe créée'
+    respond_to do |format|
+      format.html do
+        redirect_with additionnal_params: { adversary_team_id: @team.id }, notice: 'Équipe créée'
+      end
+      format.turbo_stream
+    end
   end
 
   private

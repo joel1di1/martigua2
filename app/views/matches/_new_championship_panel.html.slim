@@ -1,0 +1,8 @@
+- @championship = Championship.new
+div id="new-championship-panel" data-controller="dropdown"
+  a href="#new-championship-collapse" data-action="dropdown#toggle:stop" aria-expanded="false" class="inline-flex items-center gap-x-1 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+    svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4"
+      path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v5.5h5.5a.75.75 0 010 1.5h-5.5v5.5a.75.75 0 01-1.5 0v-5.5h-5.5a.75.75 0 010-1.5h5.5v-5.5A.75.75 0 0110 3z" clip-rule="evenodd"
+    'Ajouter une compétition
+  #new-championship-collapse.hidden.mt-4 data-dropdown-target="menu"
+    = render 'matches/new_championship_form', redirect_url: redirect_url, team: team

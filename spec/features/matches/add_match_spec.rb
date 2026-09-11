@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe 'Add Match', :devise do
+describe 'Add Match', :devise, :js do
   let(:coach) { create(:coach) }
   let(:team) { coach.sections.first.teams.sample }
   let(:adversary_team_name) { Faker::Team.name }

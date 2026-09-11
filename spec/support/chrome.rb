@@ -12,11 +12,6 @@ RSpec.configure do |_config|
     Capybara::Selenium::Driver.new(app, browser: :chrome, options:)
   end
 
-  # Capybara::RSpec resets Capybara.current_driver back to Capybara.default_driver
-  # after every example, so default_driver must be set here too - otherwise only
-  # the very first feature example in the whole run gets real Chrome/Turbo and
-  # every other one silently falls back to rack_test (no JS at all).
-  Capybara.default_driver = :selenium_chrome
   Capybara.current_driver = :selenium_chrome
   Capybara.javascript_driver = :selenium_chrome
 end

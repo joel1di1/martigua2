@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe 'sections admin task', :devise do
+describe 'sections admin task', :devise, :js do
   let(:club) { create(:club) }
   let(:previous_section) { create(:section, club:) }
 

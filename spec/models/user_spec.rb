@@ -573,4 +573,13 @@ describe User do
       end
     end
   end
+
+  describe '#send_solid_check_email' do
+    it 'delivers exactly one mail to the user' do
+      expect { user.send_solid_check_email }
+        .to change { ActionMailer::Base.deliveries.count }.by(1)
+
+      expect(ActionMailer::Base.deliveries.last.to).to eq [user.email]
+    end
+  end
 end

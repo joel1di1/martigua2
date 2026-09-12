@@ -18,7 +18,7 @@ describe 'ContactEmails' do
       end
 
       it 'welcomes the new address' do
-        Sidekiq.testing!(:inline) do
+        run_jobs_inline do
           expect { post section_user_contact_emails_path(section, user), params: }
             .to change(ActionMailer::Base.deliveries, :count).by(1)
         end
@@ -63,7 +63,7 @@ describe 'ContactEmails' do
       end
 
       it 'sends no welcome mail' do
-        Sidekiq.testing!(:inline) do
+        run_jobs_inline do
           expect do
             post section_user_contact_emails_path(section, user),
                  params: { user_contact_email: { email: 'not-an-email' } }
@@ -85,7 +85,7 @@ describe 'ContactEmails' do
       end
 
       it 'says nothing to the removed address' do
-        Sidekiq.testing!(:inline) do
+        run_jobs_inline do
           expect { delete section_user_contact_email_path(section, user, contact_email) }
             .not_to change(ActionMailer::Base.deliveries, :count)
         end

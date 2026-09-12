@@ -1,0 +1,15 @@
+h1 Vérification Solid Queue
+
+p
+  | Si tu lis ce message, la chaîne de jobs asynchrones (Solid Queue) et l'envoi d'emails fonctionnent.
+
+ul
+  li
+    strong Environnement :
+    =< Rails.env
+  li
+    strong Delivery method :
+    =< @delivery_method
+  li
+    strong Envoyé à :
+    =< l(@sent_at, format: :long)

@@ -6,7 +6,7 @@ describe 'LoginLinks' do
   let(:notice) { 'Si cette adresse est connue, un lien de connexion vient de vous être envoyé.' }
 
   def post_login_link(email)
-    Sidekiq.testing!(:inline) do
+    run_jobs_inline do
       post login_link_path, params: { email: }
     end
   end

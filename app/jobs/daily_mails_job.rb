@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-class DailyMailsJob
-  include Sidekiq::Job
-
-  sidekiq_options queue: :default
-
+class DailyMailsJob < ApplicationJob
   def perform
     today = Time.zone.today
     case today.cwday

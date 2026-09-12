@@ -13,29 +13,26 @@ describe 'a relative answers for a player' do
   end
 
   it 'gets a login link, signs in as the player and declares the presence' do
-    # `Sidekiq.testing!(:inline) { ... }` only sets the mode for the current
-    # Thread. The real Chrome/Puma server used by feature specs handles the
-    # request on a different Thread, so the block form would leave jobs
-    # merely enqueued (fake mode) instead of running them inline.
-    Sidekiq.testing!(:inline)
+    # `run_jobs_inline` swaps the global queue adapter, so it also affects the
+    # real Chrome/Puma server used by feature specs, which handles the request
+    # on a different Thread than the spec.
+    run_jobs_inline do
+      visit new_login_link_path
+      fill_in 'email', with: 'maman@example.com'
+      click_on 'Envoyer le lien'
 
-    visit new_login_link_path
-    fill_in 'email', with: 'maman@example.com'
-    click_on 'Envoyer le lien'
+      assert_text 'un lien de connexion vient de vous être envoyé'
 
-    assert_text 'un lien de connexion vient de vous être envoyé'
+      mail = ActionMailer::Base.deliveries.last
+      expect(mail.to).to eq ['maman@example.com']
 
-    mail = ActionMailer::Base.deliveries.last
-    expect(mail.to).to eq ['maman@example.com']
+      visit mail.body.decoded[/href="(http[^"]*user_token=[^"]*)"/, 1].gsub('&amp;', '&')
 
-    visit mail.body.decoded[/href="(http[^"]*user_token=[^"]*)"/, 1].gsub('&amp;', '&')
+      click_on 'Présent'
+      assert_text "m'indiquer absent"
 
-    click_on 'Présent'
-    assert_text "m'indiquer absent"
-
-    expect(player.reload).to be_present_for(training)
-  ensure
-    Sidekiq.testing!(:fake)
+      expect(player.reload).to be_present_for(training)
+    end
   end
 
   it 'is welcomed on being added, and answers from that mail' do
@@ -43,33 +40,29 @@ describe 'a relative answers for a player' do
     group.add_user! other_player
     signin other_player.email, other_player.password, close_notice: true
 
-    # See comment above: the block form of `Sidekiq.testing!` is Thread-local
-    # and wouldn't affect the Puma Thread handling this feature spec's request.
-    Sidekiq.testing!(:inline)
+    # See comment above: the queue adapter swap is global and reaches the Puma
+    # Thread handling this feature spec's request.
+    run_jobs_inline do
+      visit edit_section_user_path(section, other_player)
+      fill_in 'user_contact_email_email', with: 'papa@example.com'
+      click_on 'Ajouter'
+      assert_text 'Email de contact ajouté'
 
-    visit edit_section_user_path(section, other_player)
-    fill_in 'user_contact_email_email', with: 'papa@example.com'
-    click_on 'Ajouter'
-    assert_text 'Email de contact ajouté'
+      mail = ActionMailer::Base.deliveries.last
+      expect(mail.to).to eq ['papa@example.com']
+      expect(mail.subject).to include(other_player.full_name)
 
-    mail = ActionMailer::Base.deliveries.last
-    expect(mail.to).to eq ['papa@example.com']
-    expect(mail.subject).to include(other_player.full_name)
+      visit mail.body.decoded[/href="(http[^"]*user_token=[^"]*)"/, 1].gsub('&amp;', '&')
 
-    visit mail.body.decoded[/href="(http[^"]*user_token=[^"]*)"/, 1].gsub('&amp;', '&')
+      click_on 'Présent'
+      assert_text "m'indiquer absent"
 
-    click_on 'Présent'
-    assert_text "m'indiquer absent"
-
-    expect(other_player.reload).to be_present_for(training)
-  ensure
-    Sidekiq.testing!(:fake)
+      expect(other_player.reload).to be_present_for(training)
+    end
   end
 
   it 'is copied on the training invitation sent to the player' do
-    Sidekiq.testing!(:inline) do
-      UserMailer.send_training_invitation(training, player).deliver_now
-    end
+    UserMailer.send_training_invitation(training, player).deliver_now
 
     mail = ActionMailer::Base.deliveries.last
     expect(mail.to).to eq [player.email]

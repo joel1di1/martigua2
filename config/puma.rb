@@ -38,3 +38,6 @@ plugin :tmp_restart
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV['PIDFILE'] if ENV['PIDFILE']
+
+# Run Solid Queue in-process (no dedicated worker dyno). See issue #1191.
+plugin :solid_queue if ENV['SOLID_QUEUE_IN_PUMA'] || Rails.env.development?

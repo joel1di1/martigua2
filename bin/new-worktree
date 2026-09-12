@@ -130,6 +130,12 @@ else
   (cd "$WT_PATH" && bin/rails db:prepare db:seed)
 fi
 
+# --- assets -------------------------------------------------------------------------
+# app/assets/builds is gitignored, so a fresh checkout has no tailwind.css and request
+# specs fail with Propshaft::MissingAssetError until it is built.
+info "building tailwind css"
+(cd "$WT_PATH" && bin/rails tailwindcss:build)
+
 # --- test database -----------------------------------------------------------------
 info "preparing test database $TEST_DB"
 (cd "$WT_PATH" && RAILS_ENV=test bin/rails db:create db:schema:load)

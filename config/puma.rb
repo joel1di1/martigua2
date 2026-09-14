@@ -42,7 +42,16 @@ pidfile ENV['PIDFILE'] if ENV['PIDFILE']
 # Run Solid Queue in-process (no dedicated worker dyno). See issue #1191.
 # In-process is the default everywhere, like production; opt out with
 # SOLID_QUEUE_IN_PUMA=false (e.g. when running a dedicated worker instead).
-plugin :solid_queue if ENV['SOLID_QUEUE_IN_PUMA'] != 'false'
+if ENV['SOLID_QUEUE_IN_PUMA'] != 'false'
+  # The solid_queue plugin requires app preloading: standalone puma evaluates this file
+  # before loading any app (`bundle exec puma -C config/puma.rb`, as Heroku does), while
+  # `rails server` has already booted the app by then. Both the plugin's monitor thread
+  # and its forked supervisor expect ActiveSupport and SolidQueue to be defined, so load
+  # the app here if it isn't yet (the require is a no-op when it already is).
+  require_relative 'environment' unless defined?(SolidQueue)
+
+  plugin :solid_queue
+end
 
 # Dev uses async (thread) mode: fork() inside Puma crashes on macOS
 # (Objective-C fork-safety abort + libpq GSS/XPC segfault).

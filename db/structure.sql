@@ -17,6 +17,13 @@ SET row_security = off;
 
 
 --
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON SCHEMA public IS '';
+
+
+--
 -- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -285,8 +292,8 @@ ALTER SEQUENCE public.admin_users_id_seq OWNED BY public.admin_users.id;
 CREATE TABLE public.ar_internal_metadata (
     key character varying NOT NULL,
     value character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -651,1065 +658,6 @@ CREATE SEQUENCE public.duty_tasks_id_seq
 --
 
 ALTER SEQUENCE public.duty_tasks_id_seq OWNED BY public.duty_tasks.id;
-
-
---
--- Name: eatatjoes_active_storage_attachments; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_active_storage_attachments (
-    id bigint NOT NULL,
-    name character varying NOT NULL,
-    record_type character varying NOT NULL,
-    record_id bigint NOT NULL,
-    blob_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_active_storage_attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_active_storage_attachments_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_active_storage_attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_active_storage_attachments_id_seq OWNED BY public.eatatjoes_active_storage_attachments.id;
-
-
---
--- Name: eatatjoes_active_storage_blobs; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_active_storage_blobs (
-    id bigint NOT NULL,
-    key character varying NOT NULL,
-    filename character varying NOT NULL,
-    content_type character varying,
-    metadata text,
-    service_name character varying NOT NULL,
-    byte_size bigint NOT NULL,
-    checksum character varying,
-    created_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_active_storage_blobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_active_storage_blobs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_active_storage_blobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_active_storage_blobs_id_seq OWNED BY public.eatatjoes_active_storage_blobs.id;
-
-
---
--- Name: eatatjoes_active_storage_variant_records; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_active_storage_variant_records (
-    id bigint NOT NULL,
-    blob_id bigint NOT NULL,
-    variation_digest character varying NOT NULL
-);
-
-
---
--- Name: eatatjoes_active_storage_variant_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_active_storage_variant_records_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_active_storage_variant_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_active_storage_variant_records_id_seq OWNED BY public.eatatjoes_active_storage_variant_records.id;
-
-
---
--- Name: eatatjoes_aisle_assignments; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_aisle_assignments (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    aisle_id bigint NOT NULL,
-    item_name character varying NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_aisle_assignments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_aisle_assignments_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_aisle_assignments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_aisle_assignments_id_seq OWNED BY public.eatatjoes_aisle_assignments.id;
-
-
---
--- Name: eatatjoes_aisles; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_aisles (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    name character varying NOT NULL,
-    "position" integer NOT NULL,
-    color character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_aisles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_aisles_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_aisles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_aisles_id_seq OWNED BY public.eatatjoes_aisles.id;
-
-
---
--- Name: eatatjoes_ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_ar_internal_metadata (
-    key character varying NOT NULL,
-    value character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_identities; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_identities (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    provider character varying,
-    uid character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_identities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_identities_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_identities_id_seq OWNED BY public.eatatjoes_identities.id;
-
-
---
--- Name: eatatjoes_ingredients; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_ingredients (
-    id bigint NOT NULL,
-    name character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_ingredients_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_ingredients_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_ingredients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_ingredients_id_seq OWNED BY public.eatatjoes_ingredients.id;
-
-
---
--- Name: eatatjoes_meal_recipes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_meal_recipes (
-    id bigint NOT NULL,
-    meal_id bigint NOT NULL,
-    recipe_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_meal_recipes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_meal_recipes_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_meal_recipes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_meal_recipes_id_seq OWNED BY public.eatatjoes_meal_recipes.id;
-
-
---
--- Name: eatatjoes_meals; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_meals (
-    id bigint NOT NULL,
-    menu_id bigint NOT NULL,
-    serve_on date,
-    slot integer,
-    guests integer DEFAULT 4,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_meals_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_meals_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_meals_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_meals_id_seq OWNED BY public.eatatjoes_meals.id;
-
-
---
--- Name: eatatjoes_menu_shopping_list_items; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_menu_shopping_list_items (
-    id bigint NOT NULL,
-    menu_id bigint NOT NULL,
-    name character varying,
-    quantity integer,
-    unit character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    aisle_id bigint
-);
-
-
---
--- Name: eatatjoes_menu_shopping_list_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_menu_shopping_list_items_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_menu_shopping_list_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_menu_shopping_list_items_id_seq OWNED BY public.eatatjoes_menu_shopping_list_items.id;
-
-
---
--- Name: eatatjoes_menu_shopping_list_purchased_items; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_menu_shopping_list_purchased_items (
-    id bigint NOT NULL,
-    menu_id bigint NOT NULL,
-    item_name character varying,
-    item_type character varying,
-    purchased boolean DEFAULT false NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_menu_shopping_list_purchased_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_menu_shopping_list_purchased_items_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_menu_shopping_list_purchased_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_menu_shopping_list_purchased_items_id_seq OWNED BY public.eatatjoes_menu_shopping_list_purchased_items.id;
-
-
---
--- Name: eatatjoes_menus; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_menus (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    start_date date,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_menus_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_menus_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_menus_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_menus_id_seq OWNED BY public.eatatjoes_menus.id;
-
-
---
--- Name: eatatjoes_recipe_ingredients; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_recipe_ingredients (
-    id bigint NOT NULL,
-    recipe_id bigint NOT NULL,
-    ingredient_id bigint NOT NULL,
-    amount numeric(8,2),
-    unit character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    canonical_amount numeric(8,2),
-    canonical_unit character varying
-);
-
-
---
--- Name: eatatjoes_recipe_ingredients_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_recipe_ingredients_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_recipe_ingredients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_recipe_ingredients_id_seq OWNED BY public.eatatjoes_recipe_ingredients.id;
-
-
---
--- Name: eatatjoes_recipe_tags; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_recipe_tags (
-    id bigint NOT NULL,
-    recipe_id bigint NOT NULL,
-    tag_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_recipe_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_recipe_tags_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_recipe_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_recipe_tags_id_seq OWNED BY public.eatatjoes_recipe_tags.id;
-
-
---
--- Name: eatatjoes_recipes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_recipes (
-    id bigint NOT NULL,
-    title character varying,
-    description text,
-    instructions text,
-    cook_time integer,
-    servings integer,
-    public boolean DEFAULT false NOT NULL,
-    user_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    origin_url character varying,
-    origin_raw text
-);
-
-
---
--- Name: eatatjoes_recipes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_recipes_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_recipes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_recipes_id_seq OWNED BY public.eatatjoes_recipes.id;
-
-
---
--- Name: eatatjoes_schema_migrations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_schema_migrations (
-    version character varying NOT NULL
-);
-
-
---
--- Name: eatatjoes_shopping_list_photos; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_shopping_list_photos (
-    id bigint NOT NULL,
-    user_id bigint NOT NULL,
-    status integer,
-    ordered_json text,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_shopping_list_photos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_shopping_list_photos_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_shopping_list_photos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_shopping_list_photos_id_seq OWNED BY public.eatatjoes_shopping_list_photos.id;
-
-
---
--- Name: eatatjoes_solid_cable_messages; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_cable_messages (
-    id bigint NOT NULL,
-    channel bytea NOT NULL,
-    payload bytea NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    channel_hash bigint NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_cable_messages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_cable_messages_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_cable_messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_cable_messages_id_seq OWNED BY public.eatatjoes_solid_cable_messages.id;
-
-
---
--- Name: eatatjoes_solid_cache_entries; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_cache_entries (
-    id bigint NOT NULL,
-    key bytea NOT NULL,
-    value bytea NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    key_hash bigint NOT NULL,
-    byte_size integer NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_cache_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_cache_entries_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_cache_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_cache_entries_id_seq OWNED BY public.eatatjoes_solid_cache_entries.id;
-
-
---
--- Name: eatatjoes_solid_queue_blocked_executions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_queue_blocked_executions (
-    id bigint NOT NULL,
-    job_id bigint NOT NULL,
-    queue_name character varying NOT NULL,
-    priority integer DEFAULT 0 NOT NULL,
-    concurrency_key character varying NOT NULL,
-    expires_at timestamp(6) without time zone NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_queue_blocked_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_queue_blocked_executions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_queue_blocked_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_queue_blocked_executions_id_seq OWNED BY public.eatatjoes_solid_queue_blocked_executions.id;
-
-
---
--- Name: eatatjoes_solid_queue_claimed_executions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_queue_claimed_executions (
-    id bigint NOT NULL,
-    job_id bigint NOT NULL,
-    process_id bigint,
-    created_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_queue_claimed_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_queue_claimed_executions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_queue_claimed_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_queue_claimed_executions_id_seq OWNED BY public.eatatjoes_solid_queue_claimed_executions.id;
-
-
---
--- Name: eatatjoes_solid_queue_failed_executions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_queue_failed_executions (
-    id bigint NOT NULL,
-    job_id bigint NOT NULL,
-    error text,
-    created_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_queue_failed_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_queue_failed_executions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_queue_failed_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_queue_failed_executions_id_seq OWNED BY public.eatatjoes_solid_queue_failed_executions.id;
-
-
---
--- Name: eatatjoes_solid_queue_jobs; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_queue_jobs (
-    id bigint NOT NULL,
-    queue_name character varying NOT NULL,
-    class_name character varying NOT NULL,
-    arguments text,
-    priority integer DEFAULT 0 NOT NULL,
-    active_job_id character varying,
-    scheduled_at timestamp(6) without time zone,
-    finished_at timestamp(6) without time zone,
-    concurrency_key character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_queue_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_queue_jobs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_queue_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_queue_jobs_id_seq OWNED BY public.eatatjoes_solid_queue_jobs.id;
-
-
---
--- Name: eatatjoes_solid_queue_pauses; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_queue_pauses (
-    id bigint NOT NULL,
-    queue_name character varying NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_queue_pauses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_queue_pauses_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_queue_pauses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_queue_pauses_id_seq OWNED BY public.eatatjoes_solid_queue_pauses.id;
-
-
---
--- Name: eatatjoes_solid_queue_processes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_queue_processes (
-    id bigint NOT NULL,
-    kind character varying NOT NULL,
-    last_heartbeat_at timestamp(6) without time zone NOT NULL,
-    supervisor_id bigint,
-    pid integer NOT NULL,
-    hostname character varying,
-    metadata text,
-    created_at timestamp(6) without time zone NOT NULL,
-    name character varying NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_queue_processes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_queue_processes_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_queue_processes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_queue_processes_id_seq OWNED BY public.eatatjoes_solid_queue_processes.id;
-
-
---
--- Name: eatatjoes_solid_queue_ready_executions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_queue_ready_executions (
-    id bigint NOT NULL,
-    job_id bigint NOT NULL,
-    queue_name character varying NOT NULL,
-    priority integer DEFAULT 0 NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_queue_ready_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_queue_ready_executions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_queue_ready_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_queue_ready_executions_id_seq OWNED BY public.eatatjoes_solid_queue_ready_executions.id;
-
-
---
--- Name: eatatjoes_solid_queue_recurring_executions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_queue_recurring_executions (
-    id bigint NOT NULL,
-    job_id bigint NOT NULL,
-    task_key character varying NOT NULL,
-    run_at timestamp(6) without time zone NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_queue_recurring_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_queue_recurring_executions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_queue_recurring_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_queue_recurring_executions_id_seq OWNED BY public.eatatjoes_solid_queue_recurring_executions.id;
-
-
---
--- Name: eatatjoes_solid_queue_recurring_tasks; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_queue_recurring_tasks (
-    id bigint NOT NULL,
-    key character varying NOT NULL,
-    schedule character varying NOT NULL,
-    command character varying(2048),
-    class_name character varying,
-    arguments text,
-    queue_name character varying,
-    priority integer DEFAULT 0,
-    static boolean DEFAULT true NOT NULL,
-    description text,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_queue_recurring_tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_queue_recurring_tasks_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_queue_recurring_tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_queue_recurring_tasks_id_seq OWNED BY public.eatatjoes_solid_queue_recurring_tasks.id;
-
-
---
--- Name: eatatjoes_solid_queue_scheduled_executions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_queue_scheduled_executions (
-    id bigint NOT NULL,
-    job_id bigint NOT NULL,
-    queue_name character varying NOT NULL,
-    priority integer DEFAULT 0 NOT NULL,
-    scheduled_at timestamp(6) without time zone NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_queue_scheduled_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_queue_scheduled_executions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_queue_scheduled_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_queue_scheduled_executions_id_seq OWNED BY public.eatatjoes_solid_queue_scheduled_executions.id;
-
-
---
--- Name: eatatjoes_solid_queue_semaphores; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_solid_queue_semaphores (
-    id bigint NOT NULL,
-    key character varying NOT NULL,
-    value integer DEFAULT 1 NOT NULL,
-    expires_at timestamp(6) without time zone NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_solid_queue_semaphores_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_solid_queue_semaphores_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_solid_queue_semaphores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_solid_queue_semaphores_id_seq OWNED BY public.eatatjoes_solid_queue_semaphores.id;
-
-
---
--- Name: eatatjoes_tags; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_tags (
-    id bigint NOT NULL,
-    name character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: eatatjoes_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_tags_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_tags_id_seq OWNED BY public.eatatjoes_tags.id;
-
-
---
--- Name: eatatjoes_users; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.eatatjoes_users (
-    id bigint NOT NULL,
-    email character varying DEFAULT ''::character varying NOT NULL,
-    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
-    reset_password_token character varying,
-    reset_password_sent_at timestamp(6) without time zone,
-    remember_created_at timestamp(6) without time zone,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    name character varying
-);
-
-
---
--- Name: eatatjoes_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.eatatjoes_users_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: eatatjoes_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.eatatjoes_users_id_seq OWNED BY public.eatatjoes_users.id;
 
 
 --
@@ -3001,7 +1949,7 @@ ALTER SEQUENCE public.resajaaf_webpush_subscriptions_id_seq OWNED BY public.resa
 --
 
 CREATE TABLE public.schema_migrations (
-    version character varying(255) NOT NULL
+    version character varying NOT NULL
 );
 
 
@@ -3246,6 +2194,514 @@ CREATE SEQUENCE public.sms_notifications_id_seq
 --
 
 ALTER SEQUENCE public.sms_notifications_id_seq OWNED BY public.sms_notifications.id;
+
+
+--
+-- Name: solid_cable_messages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_cable_messages (
+    id bigint NOT NULL,
+    channel bytea NOT NULL,
+    payload bytea NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    channel_hash bigint NOT NULL
+);
+
+
+--
+-- Name: solid_cable_messages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_cable_messages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_cable_messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_cable_messages_id_seq OWNED BY public.solid_cable_messages.id;
+
+
+--
+-- Name: solid_cache_entries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_cache_entries (
+    id bigint NOT NULL,
+    key bytea NOT NULL,
+    value bytea NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    key_hash bigint NOT NULL,
+    byte_size integer NOT NULL
+);
+
+
+--
+-- Name: solid_cache_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_cache_entries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_cache_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_cache_entries_id_seq OWNED BY public.solid_cache_entries.id;
+
+
+--
+-- Name: solid_queue_batch_executions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_batch_executions (
+    id bigint NOT NULL,
+    job_id bigint NOT NULL,
+    batch_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: solid_queue_batch_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_batch_executions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_batch_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_batch_executions_id_seq OWNED BY public.solid_queue_batch_executions.id;
+
+
+--
+-- Name: solid_queue_batches; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_batches (
+    id bigint NOT NULL,
+    active_job_batch_id character varying,
+    description character varying,
+    on_finish text,
+    on_success text,
+    on_failure text,
+    metadata text,
+    total_jobs integer DEFAULT 0 NOT NULL,
+    completed_jobs integer DEFAULT 0 NOT NULL,
+    failed_jobs integer DEFAULT 0 NOT NULL,
+    enqueued_at timestamp(6) without time zone,
+    finished_at timestamp(6) without time zone,
+    failed_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: solid_queue_batches_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_batches_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_batches_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_batches_id_seq OWNED BY public.solid_queue_batches.id;
+
+
+--
+-- Name: solid_queue_blocked_executions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_blocked_executions (
+    id bigint NOT NULL,
+    job_id bigint NOT NULL,
+    queue_name character varying NOT NULL,
+    priority integer DEFAULT 0 NOT NULL,
+    concurrency_key character varying NOT NULL,
+    expires_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: solid_queue_blocked_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_blocked_executions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_blocked_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_blocked_executions_id_seq OWNED BY public.solid_queue_blocked_executions.id;
+
+
+--
+-- Name: solid_queue_claimed_executions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_claimed_executions (
+    id bigint NOT NULL,
+    job_id bigint NOT NULL,
+    process_id bigint,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: solid_queue_claimed_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_claimed_executions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_claimed_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_claimed_executions_id_seq OWNED BY public.solid_queue_claimed_executions.id;
+
+
+--
+-- Name: solid_queue_failed_executions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_failed_executions (
+    id bigint NOT NULL,
+    job_id bigint NOT NULL,
+    error text,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: solid_queue_failed_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_failed_executions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_failed_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_failed_executions_id_seq OWNED BY public.solid_queue_failed_executions.id;
+
+
+--
+-- Name: solid_queue_jobs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_jobs (
+    id bigint NOT NULL,
+    queue_name character varying NOT NULL,
+    class_name character varying NOT NULL,
+    arguments text,
+    priority integer DEFAULT 0 NOT NULL,
+    active_job_id character varying,
+    scheduled_at timestamp(6) without time zone,
+    finished_at timestamp(6) without time zone,
+    concurrency_key character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    batch_id bigint
+);
+
+
+--
+-- Name: solid_queue_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_jobs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_jobs_id_seq OWNED BY public.solid_queue_jobs.id;
+
+
+--
+-- Name: solid_queue_pauses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_pauses (
+    id bigint NOT NULL,
+    queue_name character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: solid_queue_pauses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_pauses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_pauses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_pauses_id_seq OWNED BY public.solid_queue_pauses.id;
+
+
+--
+-- Name: solid_queue_processes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_processes (
+    id bigint NOT NULL,
+    kind character varying NOT NULL,
+    last_heartbeat_at timestamp(6) without time zone NOT NULL,
+    supervisor_id bigint,
+    pid integer NOT NULL,
+    hostname character varying,
+    metadata text,
+    created_at timestamp(6) without time zone NOT NULL,
+    name character varying NOT NULL
+);
+
+
+--
+-- Name: solid_queue_processes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_processes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_processes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_processes_id_seq OWNED BY public.solid_queue_processes.id;
+
+
+--
+-- Name: solid_queue_ready_executions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_ready_executions (
+    id bigint NOT NULL,
+    job_id bigint NOT NULL,
+    queue_name character varying NOT NULL,
+    priority integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: solid_queue_ready_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_ready_executions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_ready_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_ready_executions_id_seq OWNED BY public.solid_queue_ready_executions.id;
+
+
+--
+-- Name: solid_queue_recurring_executions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_recurring_executions (
+    id bigint NOT NULL,
+    job_id bigint NOT NULL,
+    task_key character varying NOT NULL,
+    run_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: solid_queue_recurring_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_recurring_executions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_recurring_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_recurring_executions_id_seq OWNED BY public.solid_queue_recurring_executions.id;
+
+
+--
+-- Name: solid_queue_recurring_tasks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_recurring_tasks (
+    id bigint NOT NULL,
+    key character varying NOT NULL,
+    schedule character varying NOT NULL,
+    command character varying(2048),
+    class_name character varying,
+    arguments text,
+    queue_name character varying,
+    priority integer DEFAULT 0,
+    static boolean DEFAULT true NOT NULL,
+    description text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: solid_queue_recurring_tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_recurring_tasks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_recurring_tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_recurring_tasks_id_seq OWNED BY public.solid_queue_recurring_tasks.id;
+
+
+--
+-- Name: solid_queue_scheduled_executions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_scheduled_executions (
+    id bigint NOT NULL,
+    job_id bigint NOT NULL,
+    queue_name character varying NOT NULL,
+    priority integer DEFAULT 0 NOT NULL,
+    scheduled_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: solid_queue_scheduled_executions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_scheduled_executions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_scheduled_executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_scheduled_executions_id_seq OWNED BY public.solid_queue_scheduled_executions.id;
+
+
+--
+-- Name: solid_queue_semaphores; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_semaphores (
+    id bigint NOT NULL,
+    key character varying NOT NULL,
+    value integer DEFAULT 1 NOT NULL,
+    expires_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: solid_queue_semaphores_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_semaphores_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_semaphores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_semaphores_id_seq OWNED BY public.solid_queue_semaphores.id;
 
 
 --
@@ -3803,223 +3259,6 @@ ALTER TABLE ONLY public.duty_tasks ALTER COLUMN id SET DEFAULT nextval('public.d
 
 
 --
--- Name: eatatjoes_active_storage_attachments id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_active_storage_attachments ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_active_storage_attachments_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_active_storage_blobs id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_active_storage_blobs ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_active_storage_blobs_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_active_storage_variant_records id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_active_storage_variant_records ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_active_storage_variant_records_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_aisle_assignments id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_aisle_assignments ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_aisle_assignments_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_aisles id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_aisles ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_aisles_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_identities id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_identities ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_identities_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_ingredients id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_ingredients ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_ingredients_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_meal_recipes id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_meal_recipes ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_meal_recipes_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_meals id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_meals ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_meals_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_menu_shopping_list_items id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_menu_shopping_list_items ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_menu_shopping_list_items_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_menu_shopping_list_purchased_items id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_menu_shopping_list_purchased_items ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_menu_shopping_list_purchased_items_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_menus id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_menus ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_menus_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_recipe_ingredients id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_recipe_ingredients ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_recipe_ingredients_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_recipe_tags id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_recipe_tags ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_recipe_tags_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_recipes id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_recipes ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_recipes_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_shopping_list_photos id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_shopping_list_photos ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_shopping_list_photos_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_cable_messages id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_cable_messages ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_cable_messages_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_cache_entries id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_cache_entries ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_cache_entries_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_queue_blocked_executions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_blocked_executions ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_queue_blocked_executions_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_queue_claimed_executions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_claimed_executions ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_queue_claimed_executions_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_queue_failed_executions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_failed_executions ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_queue_failed_executions_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_queue_jobs id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_jobs ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_queue_jobs_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_queue_pauses id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_pauses ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_queue_pauses_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_queue_processes id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_processes ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_queue_processes_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_queue_ready_executions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_ready_executions ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_queue_ready_executions_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_queue_recurring_executions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_recurring_executions ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_queue_recurring_executions_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_queue_recurring_tasks id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_recurring_tasks ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_queue_recurring_tasks_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_queue_scheduled_executions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_scheduled_executions ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_queue_scheduled_executions_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_solid_queue_semaphores id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_semaphores ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_solid_queue_semaphores_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_tags id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_tags ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_tags_id_seq'::regclass);
-
-
---
--- Name: eatatjoes_users id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_users ALTER COLUMN id SET DEFAULT nextval('public.eatatjoes_users_id_seq'::regclass);
-
-
---
 -- Name: enrolled_team_championships id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4314,6 +3553,111 @@ ALTER TABLE ONLY public.sms_notifications ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: solid_cable_messages id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_cable_messages ALTER COLUMN id SET DEFAULT nextval('public.solid_cable_messages_id_seq'::regclass);
+
+
+--
+-- Name: solid_cache_entries id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_cache_entries ALTER COLUMN id SET DEFAULT nextval('public.solid_cache_entries_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_batch_executions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_batch_executions ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_batch_executions_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_batches id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_batches ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_batches_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_blocked_executions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_blocked_executions ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_blocked_executions_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_claimed_executions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_claimed_executions ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_claimed_executions_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_failed_executions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_failed_executions ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_failed_executions_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_jobs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_jobs ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_jobs_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_pauses id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_pauses ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_pauses_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_processes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_processes ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_processes_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_ready_executions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_ready_executions ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_ready_executions_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_recurring_executions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_recurring_executions ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_recurring_executions_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_recurring_tasks id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_recurring_tasks ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_recurring_tasks_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_scheduled_executions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_scheduled_executions ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_scheduled_executions_id_seq'::regclass);
+
+
+--
+-- Name: solid_queue_semaphores id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_semaphores ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_semaphores_id_seq'::regclass);
+
+
+--
 -- Name: starburst_announcement_views id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4547,270 +3891,6 @@ ALTER TABLE ONLY public.days
 
 ALTER TABLE ONLY public.duty_tasks
     ADD CONSTRAINT duty_tasks_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_active_storage_attachments eatatjoes_active_storage_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_active_storage_attachments
-    ADD CONSTRAINT eatatjoes_active_storage_attachments_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_active_storage_blobs eatatjoes_active_storage_blobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_active_storage_blobs
-    ADD CONSTRAINT eatatjoes_active_storage_blobs_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_active_storage_variant_records eatatjoes_active_storage_variant_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_active_storage_variant_records
-    ADD CONSTRAINT eatatjoes_active_storage_variant_records_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_aisle_assignments eatatjoes_aisle_assignments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_aisle_assignments
-    ADD CONSTRAINT eatatjoes_aisle_assignments_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_aisles eatatjoes_aisles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_aisles
-    ADD CONSTRAINT eatatjoes_aisles_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_ar_internal_metadata eatatjoes_ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_ar_internal_metadata
-    ADD CONSTRAINT eatatjoes_ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
--- Name: eatatjoes_identities eatatjoes_identities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_identities
-    ADD CONSTRAINT eatatjoes_identities_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_ingredients eatatjoes_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_ingredients
-    ADD CONSTRAINT eatatjoes_ingredients_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_meal_recipes eatatjoes_meal_recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_meal_recipes
-    ADD CONSTRAINT eatatjoes_meal_recipes_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_meals eatatjoes_meals_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_meals
-    ADD CONSTRAINT eatatjoes_meals_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_menu_shopping_list_items eatatjoes_menu_shopping_list_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_menu_shopping_list_items
-    ADD CONSTRAINT eatatjoes_menu_shopping_list_items_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_menu_shopping_list_purchased_items eatatjoes_menu_shopping_list_purchased_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_menu_shopping_list_purchased_items
-    ADD CONSTRAINT eatatjoes_menu_shopping_list_purchased_items_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_menus eatatjoes_menus_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_menus
-    ADD CONSTRAINT eatatjoes_menus_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_recipe_ingredients eatatjoes_recipe_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_recipe_ingredients
-    ADD CONSTRAINT eatatjoes_recipe_ingredients_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_recipe_tags eatatjoes_recipe_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_recipe_tags
-    ADD CONSTRAINT eatatjoes_recipe_tags_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_recipes eatatjoes_recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_recipes
-    ADD CONSTRAINT eatatjoes_recipes_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_schema_migrations eatatjoes_schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_schema_migrations
-    ADD CONSTRAINT eatatjoes_schema_migrations_pkey PRIMARY KEY (version);
-
-
---
--- Name: eatatjoes_shopping_list_photos eatatjoes_shopping_list_photos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_shopping_list_photos
-    ADD CONSTRAINT eatatjoes_shopping_list_photos_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_cable_messages eatatjoes_solid_cable_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_cable_messages
-    ADD CONSTRAINT eatatjoes_solid_cable_messages_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_cache_entries eatatjoes_solid_cache_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_cache_entries
-    ADD CONSTRAINT eatatjoes_solid_cache_entries_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_queue_blocked_executions eatatjoes_solid_queue_blocked_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_blocked_executions
-    ADD CONSTRAINT eatatjoes_solid_queue_blocked_executions_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_queue_claimed_executions eatatjoes_solid_queue_claimed_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_claimed_executions
-    ADD CONSTRAINT eatatjoes_solid_queue_claimed_executions_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_queue_failed_executions eatatjoes_solid_queue_failed_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_failed_executions
-    ADD CONSTRAINT eatatjoes_solid_queue_failed_executions_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_queue_jobs eatatjoes_solid_queue_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_jobs
-    ADD CONSTRAINT eatatjoes_solid_queue_jobs_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_queue_pauses eatatjoes_solid_queue_pauses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_pauses
-    ADD CONSTRAINT eatatjoes_solid_queue_pauses_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_queue_processes eatatjoes_solid_queue_processes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_processes
-    ADD CONSTRAINT eatatjoes_solid_queue_processes_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_queue_ready_executions eatatjoes_solid_queue_ready_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_ready_executions
-    ADD CONSTRAINT eatatjoes_solid_queue_ready_executions_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_queue_recurring_executions eatatjoes_solid_queue_recurring_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_recurring_executions
-    ADD CONSTRAINT eatatjoes_solid_queue_recurring_executions_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_queue_recurring_tasks eatatjoes_solid_queue_recurring_tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_recurring_tasks
-    ADD CONSTRAINT eatatjoes_solid_queue_recurring_tasks_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_queue_scheduled_executions eatatjoes_solid_queue_scheduled_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_scheduled_executions
-    ADD CONSTRAINT eatatjoes_solid_queue_scheduled_executions_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_solid_queue_semaphores eatatjoes_solid_queue_semaphores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_semaphores
-    ADD CONSTRAINT eatatjoes_solid_queue_semaphores_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_tags eatatjoes_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_tags
-    ADD CONSTRAINT eatatjoes_tags_pkey PRIMARY KEY (id);
-
-
---
--- Name: eatatjoes_users eatatjoes_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_users
-    ADD CONSTRAINT eatatjoes_users_pkey PRIMARY KEY (id);
 
 
 --
@@ -5126,6 +4206,14 @@ ALTER TABLE ONLY public.resajaaf_webpush_subscriptions
 
 
 --
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
 -- Name: scrapped_rankings scrapped_rankings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5179,6 +4267,126 @@ ALTER TABLE ONLY public.selections
 
 ALTER TABLE ONLY public.sms_notifications
     ADD CONSTRAINT sms_notifications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_cable_messages solid_cable_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_cable_messages
+    ADD CONSTRAINT solid_cable_messages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_cache_entries solid_cache_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_cache_entries
+    ADD CONSTRAINT solid_cache_entries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_batch_executions solid_queue_batch_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_batch_executions
+    ADD CONSTRAINT solid_queue_batch_executions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_batches solid_queue_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_batches
+    ADD CONSTRAINT solid_queue_batches_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_blocked_executions solid_queue_blocked_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_blocked_executions
+    ADD CONSTRAINT solid_queue_blocked_executions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_claimed_executions solid_queue_claimed_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_claimed_executions
+    ADD CONSTRAINT solid_queue_claimed_executions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_failed_executions solid_queue_failed_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_failed_executions
+    ADD CONSTRAINT solid_queue_failed_executions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_jobs solid_queue_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_jobs
+    ADD CONSTRAINT solid_queue_jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_pauses solid_queue_pauses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_pauses
+    ADD CONSTRAINT solid_queue_pauses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_processes solid_queue_processes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_processes
+    ADD CONSTRAINT solid_queue_processes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_ready_executions solid_queue_ready_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_ready_executions
+    ADD CONSTRAINT solid_queue_ready_executions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_recurring_executions solid_queue_recurring_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_recurring_executions
+    ADD CONSTRAINT solid_queue_recurring_executions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_recurring_tasks solid_queue_recurring_tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_recurring_tasks
+    ADD CONSTRAINT solid_queue_recurring_tasks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_scheduled_executions solid_queue_scheduled_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_scheduled_executions
+    ADD CONSTRAINT solid_queue_scheduled_executions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_semaphores solid_queue_semaphores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_semaphores
+    ADD CONSTRAINT solid_queue_semaphores_pkey PRIMARY KEY (id);
 
 
 --
@@ -5275,20 +4483,6 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.webpush_subscriptions
     ADD CONSTRAINT webpush_subscriptions_pkey PRIMARY KEY (id);
-
-
---
--- Name: eaj_index_active_storage_attachments_uniqueness; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX eaj_index_active_storage_attachments_uniqueness ON public.eatatjoes_active_storage_attachments USING btree (record_type, record_id, name, blob_id);
-
-
---
--- Name: eaj_index_active_storage_variant_records_uniqueness; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX eaj_index_active_storage_variant_records_uniqueness ON public.eatatjoes_active_storage_variant_records USING btree (blob_id, variation_digest);
 
 
 --
@@ -5471,181 +4665,6 @@ CREATE INDEX index_duty_tasks_on_club_id ON public.duty_tasks USING btree (club_
 --
 
 CREATE INDEX index_duty_tasks_on_user_id ON public.duty_tasks USING btree (user_id);
-
-
---
--- Name: index_eatatjoes_active_storage_attachments_on_blob_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_active_storage_attachments_on_blob_id ON public.eatatjoes_active_storage_attachments USING btree (blob_id);
-
-
---
--- Name: index_eatatjoes_active_storage_blobs_on_key; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_eatatjoes_active_storage_blobs_on_key ON public.eatatjoes_active_storage_blobs USING btree (key);
-
-
---
--- Name: index_eatatjoes_aisle_assignments_on_aisle_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_aisle_assignments_on_aisle_id ON public.eatatjoes_aisle_assignments USING btree (aisle_id);
-
-
---
--- Name: index_eatatjoes_aisle_assignments_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_aisle_assignments_on_user_id ON public.eatatjoes_aisle_assignments USING btree (user_id);
-
-
---
--- Name: index_eatatjoes_aisle_assignments_on_user_id_and_item_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_eatatjoes_aisle_assignments_on_user_id_and_item_name ON public.eatatjoes_aisle_assignments USING btree (user_id, item_name);
-
-
---
--- Name: index_eatatjoes_aisles_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_aisles_on_user_id ON public.eatatjoes_aisles USING btree (user_id);
-
-
---
--- Name: index_eatatjoes_aisles_on_user_id_and_position; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_aisles_on_user_id_and_position ON public.eatatjoes_aisles USING btree (user_id, "position");
-
-
---
--- Name: index_eatatjoes_identities_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_identities_on_user_id ON public.eatatjoes_identities USING btree (user_id);
-
-
---
--- Name: index_eatatjoes_ingredients_on_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_eatatjoes_ingredients_on_name ON public.eatatjoes_ingredients USING btree (name);
-
-
---
--- Name: index_eatatjoes_meal_recipes_on_meal_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_meal_recipes_on_meal_id ON public.eatatjoes_meal_recipes USING btree (meal_id);
-
-
---
--- Name: index_eatatjoes_meal_recipes_on_recipe_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_meal_recipes_on_recipe_id ON public.eatatjoes_meal_recipes USING btree (recipe_id);
-
-
---
--- Name: index_eatatjoes_meals_on_menu_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_meals_on_menu_id ON public.eatatjoes_meals USING btree (menu_id);
-
-
---
--- Name: index_eatatjoes_menu_shopping_list_items_on_aisle_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_menu_shopping_list_items_on_aisle_id ON public.eatatjoes_menu_shopping_list_items USING btree (aisle_id);
-
-
---
--- Name: index_eatatjoes_menu_shopping_list_items_on_menu_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_menu_shopping_list_items_on_menu_id ON public.eatatjoes_menu_shopping_list_items USING btree (menu_id);
-
-
---
--- Name: index_eatatjoes_menu_shopping_list_purchased_items_on_menu_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_menu_shopping_list_purchased_items_on_menu_id ON public.eatatjoes_menu_shopping_list_purchased_items USING btree (menu_id);
-
-
---
--- Name: index_eatatjoes_menus_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_menus_on_user_id ON public.eatatjoes_menus USING btree (user_id);
-
-
---
--- Name: index_eatatjoes_recipe_ingredients_on_ingredient_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_recipe_ingredients_on_ingredient_id ON public.eatatjoes_recipe_ingredients USING btree (ingredient_id);
-
-
---
--- Name: index_eatatjoes_recipe_ingredients_on_recipe_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_recipe_ingredients_on_recipe_id ON public.eatatjoes_recipe_ingredients USING btree (recipe_id);
-
-
---
--- Name: index_eatatjoes_recipe_tags_on_recipe_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_recipe_tags_on_recipe_id ON public.eatatjoes_recipe_tags USING btree (recipe_id);
-
-
---
--- Name: index_eatatjoes_recipe_tags_on_tag_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_recipe_tags_on_tag_id ON public.eatatjoes_recipe_tags USING btree (tag_id);
-
-
---
--- Name: index_eatatjoes_recipes_on_title; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_recipes_on_title ON public.eatatjoes_recipes USING btree (title);
-
-
---
--- Name: index_eatatjoes_recipes_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_recipes_on_user_id ON public.eatatjoes_recipes USING btree (user_id);
-
-
---
--- Name: index_eatatjoes_shopping_list_photos_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_eatatjoes_shopping_list_photos_on_user_id ON public.eatatjoes_shopping_list_photos USING btree (user_id);
-
-
---
--- Name: index_eatatjoes_users_on_email; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_eatatjoes_users_on_email ON public.eatatjoes_users USING btree (email);
-
-
---
--- Name: index_eatatjoes_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_eatatjoes_users_on_reset_password_token ON public.eatatjoes_users USING btree (reset_password_token);
 
 
 --
@@ -6184,231 +5203,266 @@ CREATE INDEX index_sms_notifications_on_section_id ON public.sms_notifications U
 -- Name: index_solid_cable_messages_on_channel; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_cable_messages_on_channel ON public.eatatjoes_solid_cable_messages USING btree (channel);
+CREATE INDEX index_solid_cable_messages_on_channel ON public.solid_cable_messages USING btree (channel);
 
 
 --
 -- Name: index_solid_cable_messages_on_channel_hash; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_cable_messages_on_channel_hash ON public.eatatjoes_solid_cable_messages USING btree (channel_hash);
+CREATE INDEX index_solid_cable_messages_on_channel_hash ON public.solid_cable_messages USING btree (channel_hash);
 
 
 --
 -- Name: index_solid_cable_messages_on_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_cable_messages_on_created_at ON public.eatatjoes_solid_cable_messages USING btree (created_at);
+CREATE INDEX index_solid_cable_messages_on_created_at ON public.solid_cable_messages USING btree (created_at);
 
 
 --
 -- Name: index_solid_cache_entries_on_byte_size; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_cache_entries_on_byte_size ON public.eatatjoes_solid_cache_entries USING btree (byte_size);
+CREATE INDEX index_solid_cache_entries_on_byte_size ON public.solid_cache_entries USING btree (byte_size);
 
 
 --
 -- Name: index_solid_cache_entries_on_key_hash; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solid_cache_entries_on_key_hash ON public.eatatjoes_solid_cache_entries USING btree (key_hash);
+CREATE UNIQUE INDEX index_solid_cache_entries_on_key_hash ON public.solid_cache_entries USING btree (key_hash);
 
 
 --
 -- Name: index_solid_cache_entries_on_key_hash_and_byte_size; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_cache_entries_on_key_hash_and_byte_size ON public.eatatjoes_solid_cache_entries USING btree (key_hash, byte_size);
+CREATE INDEX index_solid_cache_entries_on_key_hash_and_byte_size ON public.solid_cache_entries USING btree (key_hash, byte_size);
+
+
+--
+-- Name: index_solid_queue_batch_executions_on_batch_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_solid_queue_batch_executions_on_batch_id ON public.solid_queue_batch_executions USING btree (batch_id);
+
+
+--
+-- Name: index_solid_queue_batch_executions_on_job_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_solid_queue_batch_executions_on_job_id ON public.solid_queue_batch_executions USING btree (job_id);
+
+
+--
+-- Name: index_solid_queue_batches_on_active_job_batch_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_solid_queue_batches_on_active_job_batch_id ON public.solid_queue_batches USING btree (active_job_batch_id);
+
+
+--
+-- Name: index_solid_queue_batches_on_finished_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_solid_queue_batches_on_finished_at ON public.solid_queue_batches USING btree (finished_at);
 
 
 --
 -- Name: index_solid_queue_blocked_executions_for_maintenance; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_blocked_executions_for_maintenance ON public.eatatjoes_solid_queue_blocked_executions USING btree (expires_at, concurrency_key);
+CREATE INDEX index_solid_queue_blocked_executions_for_maintenance ON public.solid_queue_blocked_executions USING btree (expires_at, concurrency_key);
 
 
 --
 -- Name: index_solid_queue_blocked_executions_for_release; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_blocked_executions_for_release ON public.eatatjoes_solid_queue_blocked_executions USING btree (concurrency_key, priority, job_id);
+CREATE INDEX index_solid_queue_blocked_executions_for_release ON public.solid_queue_blocked_executions USING btree (concurrency_key, priority, job_id);
 
 
 --
 -- Name: index_solid_queue_blocked_executions_on_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solid_queue_blocked_executions_on_job_id ON public.eatatjoes_solid_queue_blocked_executions USING btree (job_id);
+CREATE UNIQUE INDEX index_solid_queue_blocked_executions_on_job_id ON public.solid_queue_blocked_executions USING btree (job_id);
 
 
 --
 -- Name: index_solid_queue_claimed_executions_on_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solid_queue_claimed_executions_on_job_id ON public.eatatjoes_solid_queue_claimed_executions USING btree (job_id);
+CREATE UNIQUE INDEX index_solid_queue_claimed_executions_on_job_id ON public.solid_queue_claimed_executions USING btree (job_id);
 
 
 --
 -- Name: index_solid_queue_claimed_executions_on_process_id_and_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_claimed_executions_on_process_id_and_job_id ON public.eatatjoes_solid_queue_claimed_executions USING btree (process_id, job_id);
+CREATE INDEX index_solid_queue_claimed_executions_on_process_id_and_job_id ON public.solid_queue_claimed_executions USING btree (process_id, job_id);
 
 
 --
 -- Name: index_solid_queue_dispatch_all; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_dispatch_all ON public.eatatjoes_solid_queue_scheduled_executions USING btree (scheduled_at, priority, job_id);
+CREATE INDEX index_solid_queue_dispatch_all ON public.solid_queue_scheduled_executions USING btree (scheduled_at, priority, job_id);
 
 
 --
 -- Name: index_solid_queue_failed_executions_on_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solid_queue_failed_executions_on_job_id ON public.eatatjoes_solid_queue_failed_executions USING btree (job_id);
+CREATE UNIQUE INDEX index_solid_queue_failed_executions_on_job_id ON public.solid_queue_failed_executions USING btree (job_id);
 
 
 --
 -- Name: index_solid_queue_jobs_for_alerting; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_jobs_for_alerting ON public.eatatjoes_solid_queue_jobs USING btree (scheduled_at, finished_at);
+CREATE INDEX index_solid_queue_jobs_for_alerting ON public.solid_queue_jobs USING btree (scheduled_at, finished_at);
 
 
 --
 -- Name: index_solid_queue_jobs_for_filtering; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_jobs_for_filtering ON public.eatatjoes_solid_queue_jobs USING btree (queue_name, finished_at);
+CREATE INDEX index_solid_queue_jobs_for_filtering ON public.solid_queue_jobs USING btree (queue_name, finished_at);
 
 
 --
 -- Name: index_solid_queue_jobs_on_active_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_jobs_on_active_job_id ON public.eatatjoes_solid_queue_jobs USING btree (active_job_id);
+CREATE INDEX index_solid_queue_jobs_on_active_job_id ON public.solid_queue_jobs USING btree (active_job_id);
+
+
+--
+-- Name: index_solid_queue_jobs_on_batch_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_solid_queue_jobs_on_batch_id ON public.solid_queue_jobs USING btree (batch_id);
 
 
 --
 -- Name: index_solid_queue_jobs_on_class_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_jobs_on_class_name ON public.eatatjoes_solid_queue_jobs USING btree (class_name);
+CREATE INDEX index_solid_queue_jobs_on_class_name ON public.solid_queue_jobs USING btree (class_name);
 
 
 --
 -- Name: index_solid_queue_jobs_on_finished_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_jobs_on_finished_at ON public.eatatjoes_solid_queue_jobs USING btree (finished_at);
+CREATE INDEX index_solid_queue_jobs_on_finished_at ON public.solid_queue_jobs USING btree (finished_at);
 
 
 --
 -- Name: index_solid_queue_pauses_on_queue_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solid_queue_pauses_on_queue_name ON public.eatatjoes_solid_queue_pauses USING btree (queue_name);
+CREATE UNIQUE INDEX index_solid_queue_pauses_on_queue_name ON public.solid_queue_pauses USING btree (queue_name);
 
 
 --
 -- Name: index_solid_queue_poll_all; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_poll_all ON public.eatatjoes_solid_queue_ready_executions USING btree (priority, job_id);
+CREATE INDEX index_solid_queue_poll_all ON public.solid_queue_ready_executions USING btree (priority, job_id);
 
 
 --
 -- Name: index_solid_queue_poll_by_queue; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_poll_by_queue ON public.eatatjoes_solid_queue_ready_executions USING btree (queue_name, priority, job_id);
+CREATE INDEX index_solid_queue_poll_by_queue ON public.solid_queue_ready_executions USING btree (queue_name, priority, job_id);
 
 
 --
 -- Name: index_solid_queue_processes_on_last_heartbeat_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_processes_on_last_heartbeat_at ON public.eatatjoes_solid_queue_processes USING btree (last_heartbeat_at);
+CREATE INDEX index_solid_queue_processes_on_last_heartbeat_at ON public.solid_queue_processes USING btree (last_heartbeat_at);
 
 
 --
 -- Name: index_solid_queue_processes_on_name_and_supervisor_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solid_queue_processes_on_name_and_supervisor_id ON public.eatatjoes_solid_queue_processes USING btree (name, supervisor_id);
+CREATE UNIQUE INDEX index_solid_queue_processes_on_name_and_supervisor_id ON public.solid_queue_processes USING btree (name, supervisor_id);
 
 
 --
 -- Name: index_solid_queue_processes_on_supervisor_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_processes_on_supervisor_id ON public.eatatjoes_solid_queue_processes USING btree (supervisor_id);
+CREATE INDEX index_solid_queue_processes_on_supervisor_id ON public.solid_queue_processes USING btree (supervisor_id);
 
 
 --
 -- Name: index_solid_queue_ready_executions_on_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solid_queue_ready_executions_on_job_id ON public.eatatjoes_solid_queue_ready_executions USING btree (job_id);
+CREATE UNIQUE INDEX index_solid_queue_ready_executions_on_job_id ON public.solid_queue_ready_executions USING btree (job_id);
 
 
 --
 -- Name: index_solid_queue_recurring_executions_on_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solid_queue_recurring_executions_on_job_id ON public.eatatjoes_solid_queue_recurring_executions USING btree (job_id);
+CREATE UNIQUE INDEX index_solid_queue_recurring_executions_on_job_id ON public.solid_queue_recurring_executions USING btree (job_id);
 
 
 --
 -- Name: index_solid_queue_recurring_executions_on_task_key_and_run_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solid_queue_recurring_executions_on_task_key_and_run_at ON public.eatatjoes_solid_queue_recurring_executions USING btree (task_key, run_at);
+CREATE UNIQUE INDEX index_solid_queue_recurring_executions_on_task_key_and_run_at ON public.solid_queue_recurring_executions USING btree (task_key, run_at);
 
 
 --
 -- Name: index_solid_queue_recurring_tasks_on_key; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solid_queue_recurring_tasks_on_key ON public.eatatjoes_solid_queue_recurring_tasks USING btree (key);
+CREATE UNIQUE INDEX index_solid_queue_recurring_tasks_on_key ON public.solid_queue_recurring_tasks USING btree (key);
 
 
 --
 -- Name: index_solid_queue_recurring_tasks_on_static; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_recurring_tasks_on_static ON public.eatatjoes_solid_queue_recurring_tasks USING btree (static);
+CREATE INDEX index_solid_queue_recurring_tasks_on_static ON public.solid_queue_recurring_tasks USING btree (static);
 
 
 --
 -- Name: index_solid_queue_scheduled_executions_on_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solid_queue_scheduled_executions_on_job_id ON public.eatatjoes_solid_queue_scheduled_executions USING btree (job_id);
+CREATE UNIQUE INDEX index_solid_queue_scheduled_executions_on_job_id ON public.solid_queue_scheduled_executions USING btree (job_id);
 
 
 --
 -- Name: index_solid_queue_semaphores_on_expires_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_semaphores_on_expires_at ON public.eatatjoes_solid_queue_semaphores USING btree (expires_at);
+CREATE INDEX index_solid_queue_semaphores_on_expires_at ON public.solid_queue_semaphores USING btree (expires_at);
 
 
 --
 -- Name: index_solid_queue_semaphores_on_key; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_solid_queue_semaphores_on_key ON public.eatatjoes_solid_queue_semaphores USING btree (key);
+CREATE UNIQUE INDEX index_solid_queue_semaphores_on_key ON public.solid_queue_semaphores USING btree (key);
 
 
 --
 -- Name: index_solid_queue_semaphores_on_key_and_value; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_solid_queue_semaphores_on_key_and_value ON public.eatatjoes_solid_queue_semaphores USING btree (key, value);
+CREATE INDEX index_solid_queue_semaphores_on_key_and_value ON public.solid_queue_semaphores USING btree (key, value);
 
 
 --
@@ -6581,14 +5635,6 @@ ALTER TABLE ONLY public.groups
 
 
 --
--- Name: eatatjoes_solid_queue_claimed_executions fk_rails_0594824f74; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_claimed_executions
-    ADD CONSTRAINT fk_rails_0594824f74 FOREIGN KEY (job_id) REFERENCES public.eatatjoes_solid_queue_jobs(id) ON DELETE CASCADE;
-
-
---
 -- Name: user_channel_messages fk_rails_06ba0d9ef5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6602,14 +5648,6 @@ ALTER TABLE ONLY public.user_channel_messages
 
 ALTER TABLE ONLY public.player_match_stats
     ADD CONSTRAINT fk_rails_0dd8597d69 FOREIGN KEY (user_id) REFERENCES public.users(id);
-
-
---
--- Name: eatatjoes_menu_shopping_list_items fk_rails_0e17285622; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_menu_shopping_list_items
-    ADD CONSTRAINT fk_rails_0e17285622 FOREIGN KEY (menu_id) REFERENCES public.eatatjoes_menus(id);
 
 
 --
@@ -6677,35 +5715,11 @@ ALTER TABLE ONLY public.messages
 
 
 --
--- Name: eatatjoes_aisle_assignments fk_rails_287dd0d9b9; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_aisle_assignments
-    ADD CONSTRAINT fk_rails_287dd0d9b9 FOREIGN KEY (user_id) REFERENCES public.eatatjoes_users(id);
-
-
---
 -- Name: championships fk_rails_28cd7f9140; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.championships
     ADD CONSTRAINT fk_rails_28cd7f9140 FOREIGN KEY (calendar_id) REFERENCES public.calendars(id);
-
-
---
--- Name: eatatjoes_recipe_ingredients fk_rails_2d0f225b33; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_recipe_ingredients
-    ADD CONSTRAINT fk_rails_2d0f225b33 FOREIGN KEY (recipe_id) REFERENCES public.eatatjoes_recipes(id);
-
-
---
--- Name: eatatjoes_meals fk_rails_2fa179114d; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_meals
-    ADD CONSTRAINT fk_rails_2fa179114d FOREIGN KEY (menu_id) REFERENCES public.eatatjoes_menus(id);
 
 
 --
@@ -6717,11 +5731,11 @@ ALTER TABLE ONLY public.resajaaf_active_storage_attachments
 
 
 --
--- Name: eatatjoes_aisle_assignments fk_rails_325510feb5; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: solid_queue_recurring_executions fk_rails_318a5533ed; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.eatatjoes_aisle_assignments
-    ADD CONSTRAINT fk_rails_325510feb5 FOREIGN KEY (aisle_id) REFERENCES public.eatatjoes_aisles(id);
+ALTER TABLE ONLY public.solid_queue_recurring_executions
+    ADD CONSTRAINT fk_rails_318a5533ed FOREIGN KEY (job_id) REFERENCES public.solid_queue_jobs(id) ON DELETE CASCADE;
 
 
 --
@@ -6733,6 +5747,14 @@ ALTER TABLE ONLY public.math_trainer_answers
 
 
 --
+-- Name: solid_queue_failed_executions fk_rails_39bbc7a631; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_failed_executions
+    ADD CONSTRAINT fk_rails_39bbc7a631 FOREIGN KEY (job_id) REFERENCES public.solid_queue_jobs(id) ON DELETE CASCADE;
+
+
+--
 -- Name: user_championship_stats fk_rails_3c673c75ba; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6741,27 +5763,19 @@ ALTER TABLE ONLY public.user_championship_stats
 
 
 --
--- Name: eatatjoes_solid_queue_blocked_executions fk_rails_3e787450b1; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_blocked_executions
-    ADD CONSTRAINT fk_rails_3e787450b1 FOREIGN KEY (job_id) REFERENCES public.eatatjoes_solid_queue_jobs(id) ON DELETE CASCADE;
-
-
---
--- Name: eatatjoes_solid_queue_failed_executions fk_rails_41d320373c; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_failed_executions
-    ADD CONSTRAINT fk_rails_41d320373c FOREIGN KEY (job_id) REFERENCES public.eatatjoes_solid_queue_jobs(id) ON DELETE CASCADE;
-
-
---
 -- Name: user_contact_emails fk_rails_477ea98e45; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.user_contact_emails
     ADD CONSTRAINT fk_rails_477ea98e45 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: solid_queue_blocked_executions fk_rails_4cd34e2228; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_blocked_executions
+    ADD CONSTRAINT fk_rails_4cd34e2228 FOREIGN KEY (job_id) REFERENCES public.solid_queue_jobs(id) ON DELETE CASCADE;
 
 
 --
@@ -6829,14 +5843,6 @@ ALTER TABLE ONLY public.player_match_stats
 
 
 --
--- Name: eatatjoes_shopping_list_photos fk_rails_66c2971d2b; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_shopping_list_photos
-    ADD CONSTRAINT fk_rails_66c2971d2b FOREIGN KEY (user_id) REFERENCES public.eatatjoes_users(id);
-
-
---
 -- Name: resajaaf_pack_participations fk_rails_6f1c5ddf29; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6853,19 +5859,27 @@ ALTER TABLE ONLY public.resajaaf_active_storage_variant_records
 
 
 --
--- Name: eatatjoes_menu_shopping_list_purchased_items fk_rails_7754c396ee; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_menu_shopping_list_purchased_items
-    ADD CONSTRAINT fk_rails_7754c396ee FOREIGN KEY (menu_id) REFERENCES public.eatatjoes_menus(id);
-
-
---
 -- Name: math_trainer_answer_fights fk_rails_792464e76b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.math_trainer_answer_fights
     ADD CONSTRAINT fk_rails_792464e76b FOREIGN KEY (answer_id) REFERENCES public.math_trainer_answers(id);
+
+
+--
+-- Name: solid_queue_batch_executions fk_rails_7c5e073422; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_batch_executions
+    ADD CONSTRAINT fk_rails_7c5e073422 FOREIGN KEY (batch_id) REFERENCES public.solid_queue_batches(id) ON DELETE CASCADE;
+
+
+--
+-- Name: solid_queue_ready_executions fk_rails_81fcbd66af; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_ready_executions
+    ADD CONSTRAINT fk_rails_81fcbd66af FOREIGN KEY (job_id) REFERENCES public.solid_queue_jobs(id) ON DELETE CASCADE;
 
 
 --
@@ -6893,14 +5907,6 @@ ALTER TABLE ONLY public.resajaaf_events
 
 
 --
--- Name: eatatjoes_solid_queue_scheduled_executions fk_rails_8b672150d0; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_scheduled_executions
-    ADD CONSTRAINT fk_rails_8b672150d0 FOREIGN KEY (job_id) REFERENCES public.eatatjoes_solid_queue_jobs(id) ON DELETE CASCADE;
-
-
---
 -- Name: sms_notifications fk_rails_8bf31290ff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6925,27 +5931,11 @@ ALTER TABLE ONLY public.user_channel_messages
 
 
 --
--- Name: eatatjoes_menus fk_rails_92d5fb6d88; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_menus
-    ADD CONSTRAINT fk_rails_92d5fb6d88 FOREIGN KEY (user_id) REFERENCES public.eatatjoes_users(id);
-
-
---
 -- Name: resajaaf_pack_participations fk_rails_93a450be6e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.resajaaf_pack_participations
     ADD CONSTRAINT fk_rails_93a450be6e FOREIGN KEY (pack_id) REFERENCES public.resajaaf_packs(id);
-
-
---
--- Name: eatatjoes_recipes fk_rails_960f96ecfa; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_recipes
-    ADD CONSTRAINT fk_rails_960f96ecfa FOREIGN KEY (user_id) REFERENCES public.eatatjoes_users(id);
 
 
 --
@@ -6965,19 +5955,11 @@ ALTER TABLE ONLY public.absences
 
 
 --
--- Name: eatatjoes_solid_queue_recurring_executions fk_rails_9c0800efb0; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: solid_queue_claimed_executions fk_rails_9cfe4d4944; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.eatatjoes_solid_queue_recurring_executions
-    ADD CONSTRAINT fk_rails_9c0800efb0 FOREIGN KEY (job_id) REFERENCES public.eatatjoes_solid_queue_jobs(id) ON DELETE CASCADE;
-
-
---
--- Name: eatatjoes_recipe_ingredients fk_rails_a06423a0e9; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_recipe_ingredients
-    ADD CONSTRAINT fk_rails_a06423a0e9 FOREIGN KEY (ingredient_id) REFERENCES public.eatatjoes_ingredients(id);
+ALTER TABLE ONLY public.solid_queue_claimed_executions
+    ADD CONSTRAINT fk_rails_9cfe4d4944 FOREIGN KEY (job_id) REFERENCES public.solid_queue_jobs(id) ON DELETE CASCADE;
 
 
 --
@@ -6986,22 +5968,6 @@ ALTER TABLE ONLY public.eatatjoes_recipe_ingredients
 
 ALTER TABLE ONLY public.days
     ADD CONSTRAINT fk_rails_a3ef261ae8 FOREIGN KEY (calendar_id) REFERENCES public.calendars(id);
-
-
---
--- Name: eatatjoes_aisles fk_rails_a7d07091ee; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_aisles
-    ADD CONSTRAINT fk_rails_a7d07091ee FOREIGN KEY (user_id) REFERENCES public.eatatjoes_users(id);
-
-
---
--- Name: eatatjoes_meal_recipes fk_rails_a998f44eb0; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_meal_recipes
-    ADD CONSTRAINT fk_rails_a998f44eb0 FOREIGN KEY (recipe_id) REFERENCES public.eatatjoes_recipes(id);
 
 
 --
@@ -7029,19 +5995,19 @@ ALTER TABLE ONLY public.math_trainer_card_session_problems
 
 
 --
--- Name: eatatjoes_recipe_tags fk_rails_b6b1af3e1a; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_recipe_tags
-    ADD CONSTRAINT fk_rails_b6b1af3e1a FOREIGN KEY (recipe_id) REFERENCES public.eatatjoes_recipes(id);
-
-
---
 -- Name: math_trainer_fights fk_rails_b854315c26; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.math_trainer_fights
     ADD CONSTRAINT fk_rails_b854315c26 FOREIGN KEY (user_id) REFERENCES public.math_trainer_users(id);
+
+
+--
+-- Name: solid_queue_batch_executions fk_rails_bc9f981155; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_batch_executions
+    ADD CONSTRAINT fk_rails_bc9f981155 FOREIGN KEY (job_id) REFERENCES public.solid_queue_jobs(id) ON DELETE CASCADE;
 
 
 --
@@ -7061,19 +6027,11 @@ ALTER TABLE ONLY public.active_storage_attachments
 
 
 --
--- Name: eatatjoes_active_storage_variant_records fk_rails_c5699e3e98; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: solid_queue_scheduled_executions fk_rails_c4316f352d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.eatatjoes_active_storage_variant_records
-    ADD CONSTRAINT fk_rails_c5699e3e98 FOREIGN KEY (blob_id) REFERENCES public.eatatjoes_active_storage_blobs(id);
-
-
---
--- Name: eatatjoes_recipe_tags fk_rails_c796cfffff; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_recipe_tags
-    ADD CONSTRAINT fk_rails_c796cfffff FOREIGN KEY (tag_id) REFERENCES public.eatatjoes_tags(id);
+ALTER TABLE ONLY public.solid_queue_scheduled_executions
+    ADD CONSTRAINT fk_rails_c4316f352d FOREIGN KEY (job_id) REFERENCES public.solid_queue_jobs(id) ON DELETE CASCADE;
 
 
 --
@@ -7090,14 +6048,6 @@ ALTER TABLE ONLY public.resajaaf_packs
 
 ALTER TABLE ONLY public.messages
     ADD CONSTRAINT fk_rails_c90b5a8a0c FOREIGN KEY (parent_message_id) REFERENCES public.messages(id);
-
-
---
--- Name: eatatjoes_active_storage_attachments fk_rails_c99a711d28; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_active_storage_attachments
-    ADD CONSTRAINT fk_rails_c99a711d28 FOREIGN KEY (blob_id) REFERENCES public.eatatjoes_active_storage_blobs(id);
 
 
 --
@@ -7133,22 +6083,6 @@ ALTER TABLE ONLY public.user_championship_stats
 
 
 --
--- Name: eatatjoes_menu_shopping_list_items fk_rails_cf04ac1cef; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_menu_shopping_list_items
-    ADD CONSTRAINT fk_rails_cf04ac1cef FOREIGN KEY (aisle_id) REFERENCES public.eatatjoes_aisles(id);
-
-
---
--- Name: eatatjoes_identities fk_rails_cf7ab1ba30; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_identities
-    ADD CONSTRAINT fk_rails_cf7ab1ba30 FOREIGN KEY (user_id) REFERENCES public.eatatjoes_users(id);
-
-
---
 -- Name: group_memberships fk_rails_d05778f88b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7165,14 +6099,6 @@ ALTER TABLE ONLY public.math_trainer_answers
 
 
 --
--- Name: eatatjoes_meal_recipes fk_rails_d1719c71b1; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_meal_recipes
-    ADD CONSTRAINT fk_rails_d1719c71b1 FOREIGN KEY (meal_id) REFERENCES public.eatatjoes_meals(id);
-
-
---
 -- Name: resajaaf_participations fk_rails_d529d7027f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7186,14 +6112,6 @@ ALTER TABLE ONLY public.resajaaf_participations
 
 ALTER TABLE ONLY public.calendars
     ADD CONSTRAINT fk_rails_d5af2ea0d7 FOREIGN KEY (season_id) REFERENCES public.seasons(id);
-
-
---
--- Name: eatatjoes_solid_queue_ready_executions fk_rails_d645c693d8; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.eatatjoes_solid_queue_ready_executions
-    ADD CONSTRAINT fk_rails_d645c693d8 FOREIGN KEY (job_id) REFERENCES public.eatatjoes_solid_queue_jobs(id) ON DELETE CASCADE;
 
 
 --
@@ -7235,6 +6153,9 @@ ALTER TABLE ONLY public.section_trainings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260912190252'),
+('20260912190251'),
+('20260912190250'),
 ('20260910055624'),
 ('20260903000000'),
 ('20260704000000'),

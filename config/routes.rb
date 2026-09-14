@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'sidekiq/web'
-
 # rubocop:disable-next Metrics/BlockLength
 Rails.application.routes.draw do
   namespace :admin do
@@ -145,7 +143,7 @@ Rails.application.routes.draw do
   resources :webpush_subscriptions, only: [:create], constraints: { format: :json }
 
   authenticate :user, ->(u) { u.super_admin? } do
-    mount Sidekiq::Web => 'sidekiq'
+    mount MissionControl::Jobs::Engine, at: '/jobs'
   end
 
   root to: 'visitors#index'

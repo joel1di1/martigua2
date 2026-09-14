@@ -33,7 +33,7 @@ module Martigua2
 
     config.active_record.schema_format = :sql
 
-    config.active_job.queue_adapter = :sidekiq
+    config.active_job.queue_adapter = :solid_queue
 
     # Drops BlockedAddress recipients from every outgoing mail. Set here rather than in an
     # initializer, which runs after the Action Mailer railtie has already read this option.

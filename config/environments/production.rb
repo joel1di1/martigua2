@@ -50,7 +50,7 @@ Rails.application.configure do
   config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'info')
 
   # Use a different cache store in production.
-  config.cache_store = :redis_cache_store, { url: ENV.fetch('REDIS_URL', nil) }
+  config.cache_store = :solid_cache_store
   # Prevent health checks from clogging up the logs.
   config.silence_healthcheck_path = '/up'
 

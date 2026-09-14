@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class ActiveRecordAsyncJob
-  include Sidekiq::Job
-
+class ActiveRecordAsyncJob < ApplicationJob
   # instanciate object and call method
   def perform(class_name, object_id, method, *args)
     Rails.logger.debug { "performing #{class_name}##{method} with args #{args.inspect}" }

@@ -113,6 +113,13 @@ class User < ApplicationRecord
     end
   end
 
+  # Smoke test for the Solid Queue migration (issue #1191): enqueued through the async_
+  # dynamic method by `rake solid:check`, delivery happens inside the background job,
+  # matching the existing pattern where deliver_now is called from the model side.
+  def send_solid_check_email
+    SystemMailer.solid_check(self).deliver_now
+  end
+
   protected
 
   def ensure_authentication_token

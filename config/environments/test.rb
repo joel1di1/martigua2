@@ -28,6 +28,12 @@ Rails.application.configure do
   config.action_controller.perform_caching = false
   config.cache_store = :null_store
 
+  # Use the :test adapter so ActiveJob::TestHelper matchers/helpers
+  # (`have_enqueued_job`, `perform_enqueued_jobs`) are available; jobs run
+  # inline where needed through `perform_enqueued_jobs` blocks or the
+  # `run_jobs_inline` helper.
+  config.active_job.queue_adapter = :test
+
   # Render exception templates for rescuable exceptions and raise for other exceptions.
   config.action_dispatch.show_exceptions = :rescuable
 

@@ -38,3 +38,12 @@ plugin :tmp_restart
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV['PIDFILE'] if ENV['PIDFILE']
+
+# Run Solid Queue in-process (no dedicated worker dyno). See issue #1191.
+# In-process is the default everywhere, like production; opt out with
+# SOLID_QUEUE_IN_PUMA=false (e.g. when running a dedicated worker instead).
+plugin :solid_queue if ENV['SOLID_QUEUE_IN_PUMA'] != 'false'
+
+# Dev uses async (thread) mode: fork() inside Puma crashes on macOS
+# (Objective-C fork-safety abort + libpq GSS/XPC segfault).
+solid_queue_mode :async if Rails.env.development?

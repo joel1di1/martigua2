@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-class GueulesdeboisCheckJob
-  include Sidekiq::Job
-
-  sidekiq_options queue: :low
-
+class GueulesdeboisCheckJob < ApplicationJob
   def perform
     scraped = GueulesdeboisScraper.call
     Rails.logger.info "GueulesdeBois: #{scraped.size} événement(s) amuse-gueule trouvé(s) sur le site"

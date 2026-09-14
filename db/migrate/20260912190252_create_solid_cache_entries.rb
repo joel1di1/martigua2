@@ -10,9 +10,9 @@ class CreateSolidCacheEntries < ActiveRecord::Migration[7.2]
       t.datetime 'created_at', null: false
       t.bigint 'key_hash', null: false
       t.integer 'byte_size', null: false
-      t.index ['byte_size'], name: 'mtg_index_solid_cache_entries_on_byte_size'
-      t.index ['key_hash'], name: 'mtg_index_solid_cache_entries_on_key_hash', unique: true
-      t.index %w[key_hash byte_size], name: 'mtg_index_solid_cache_entries_on_key_hash_and_byte_size'
+      t.index ['byte_size'], name: 'index_solid_cache_entries_on_byte_size'
+      t.index ['key_hash'], name: 'index_solid_cache_entries_on_key_hash', unique: true
+      t.index %w[key_hash byte_size], name: 'index_solid_cache_entries_on_key_hash_and_byte_size'
     end
   end
 

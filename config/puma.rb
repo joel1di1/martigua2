@@ -46,4 +46,7 @@ plugin :solid_queue if ENV['SOLID_QUEUE_IN_PUMA'] != 'false'
 
 # Dev uses async (thread) mode: fork() inside Puma crashes on macOS
 # (Objective-C fork-safety abort + libpq GSS/XPC segfault).
-solid_queue_mode :async if Rails.env.development?
+# Rails is not loaded when this file is evaluated by a standalone puma
+# (`bundle exec puma -C config/puma.rb`, as Heroku does), so detect the
+# environment through RAILS_ENV instead of Rails.env.
+solid_queue_mode :async if ENV.fetch('RAILS_ENV', 'development') == 'development'

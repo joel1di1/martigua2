@@ -1,18 +1,19 @@
 # Recurring tasks for Solid Queue (see https://github.com/rails/solid_queue#recurring-tasks).
-# Migrated from config/sidekiq.yml (sidekiq-cron) — same cron expressions, `class` -> `job`.
+# Migrated from config/sidekiq.yml (sidekiq-cron) — same cron expressions. `class` takes an
+# Active Job class, `command` is Ruby code evaluated in the app, `description` is free-form.
 production:
   clear_solid_queue_finished_jobs:
     command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
     schedule: every hour at minute 12
   daily_mails:
-    job: DailyMailsJob
+    class: DailyMailsJob
     schedule: "30 11 * * *"
     description: 'Envoi des mails quotidiens (convocations matchs, entraînements)'
   ffhb_sync:
-    job: FfhbSyncJob
+    class: FfhbSyncJob
     schedule: "0 10,19,22 * * *"
     description: 'Synchronisation FFHB (10h, 19h, 22h UTC)'
   gueulesdebois_check:
-    job: GueulesdeboisCheckJob
+    class: GueulesdeboisCheckJob
     schedule: "45 * * * *"
     description: 'Vérifie les nouveaux événements Amuse-Gueule sur gueulesdebois.fr'

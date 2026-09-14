@@ -40,4 +40,9 @@ plugin :tmp_restart
 pidfile ENV['PIDFILE'] if ENV['PIDFILE']
 
 # Run Solid Queue in-process (no dedicated worker dyno). See issue #1191.
-plugin :solid_queue if ENV['SOLID_QUEUE_IN_PUMA'] || Rails.env.development?
+# Dev uses async (thread) mode: fork() inside Puma crashes on macOS
+# (Objective-C fork-safety abort + libpq GSS/XPC segfault).
+if ENV['SOLID_QUEUE_IN_PUMA'] || Rails.env.development?
+  plugin :solid_queue
+  solid_queue_mode :async if Rails.env.development?
+end

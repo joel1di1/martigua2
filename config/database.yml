@@ -10,10 +10,17 @@ default: &default
 development:
   <<: *default
   database: <%= ENV.fetch('DB_NAME_PREFIX', 'martigua2') %>_development
+  # libpq's default `gssencmode: prefer` uses the Kerberos library, which is
+  # not fork-safe on macOS (XPC) and crashes forked workers with SIGSEGV.
+  gssencmode: disable
+  # Solid Queue runs in-process with Puma in development: Puma threads
+  # + dispatcher + worker threads all share this pool.
+  pool: <%= ENV.fetch('RAILS_MAX_THREADS', 5).to_i + 5 %>
 
 test:
   <<: *default
   database: <%= ENV.fetch('DB_NAME_PREFIX', 'martigua2') %>_test<%= ENV['TEST_ENV_NUMBER'] %>
+  gssencmode: disable
 
 production:
   url: <%= ENV['DATABASE_URL'] %>

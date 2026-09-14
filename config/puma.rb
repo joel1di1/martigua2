@@ -46,16 +46,16 @@ if ENV['SOLID_QUEUE_IN_PUMA'] != 'false'
   # The solid_queue plugin requires app preloading: standalone puma evaluates this file
   # before loading any app (`bundle exec puma -C config/puma.rb`, as Heroku does), while
   # `rails server` has already booted the app by then. Both the plugin's monitor thread
-  # and its forked supervisor expect ActiveSupport and SolidQueue to be defined, so load
+  # and its supervisor expect ActiveSupport and SolidQueue to be defined, so load
   # the app here if it isn't yet (the require is a no-op when it already is).
   require_relative 'environment' unless defined?(SolidQueue)
 
   plugin :solid_queue
-end
 
-# Dev uses async (thread) mode: fork() inside Puma crashes on macOS
-# (Objective-C fork-safety abort + libpq GSS/XPC segfault).
-# Rails is not loaded when this file is evaluated by a standalone puma
-# (`bundle exec puma -C config/puma.rb`, as Heroku does), so detect the
-# environment through RAILS_ENV instead of Rails.env.
-solid_queue_mode :async if ENV.fetch('RAILS_ENV', 'development') == 'development'
+  # Async (thread) mode, in every environment: the plugin's default fork mode
+  # crashes on macOS (Objective-C fork-safety abort + libpq GSS/XPC segfault)
+  # and runs supervisor + dispatcher + worker as extra processes, which
+  # multiplies the dyno memory (~4x) and exhausts small Heroku dynos
+  # (R14/R15). Thread mode runs the whole queue inside this single process.
+  solid_queue_mode :async
+end

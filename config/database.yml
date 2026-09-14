@@ -24,3 +24,6 @@ test:
 
 production:
   url: <%= ENV['DATABASE_URL'] %>
+  # Solid Queue runs in-process with Puma: web, dispatcher and worker
+  # threads all share this pool (worker pool: 3, dispatcher: 1).
+  pool: <%= ENV.fetch('RAILS_MAX_THREADS', 3).to_i + 5 %>

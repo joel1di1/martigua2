@@ -42,11 +42,8 @@ RSpec.describe 'config/puma.rb' do
     expect { load_puma_config }.not_to raise_error
   end
 
-  it 'uses async mode in development (fork crashes on macOS)' do
+  it 'runs the queue in async mode in every environment' do
     expect(with_rails_env('development')[:solid_queue_mode]).to eq(:async)
-  end
-
-  it 'keeps the default fork mode in production' do
-    expect(with_rails_env('production')[:solid_queue_mode]).to be_nil
+    expect(with_rails_env('production')[:solid_queue_mode]).to eq(:async)
   end
 end

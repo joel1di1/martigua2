@@ -2,7 +2,7 @@
     [ [current_section.to_s, current_section], \
       ["Membres", section_users_path(current_section)], \
       ["Entrainements", section_trainings_path(current_section)], \
-      ["Équipes", section_teams_path(current_section)], \
+      (["Équipes", section_teams_path(current_section)] if current_user.coach_of?(current_section) || current_user.admin_of?(current_section.club) || current_user.super_admin?), \
       ["Groupes", section_groups_path(current_section)], \
       ["Compétitions", section_championships_path(current_section)], \
       ["Stats", section_player_stats_path(current_section)], \

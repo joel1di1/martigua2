@@ -11,6 +11,33 @@ describe 'Teams' do
   let(:section_path_param) { { section_id: section.to_param } }
   let(:team_path_param) { { id: team.to_param } }
 
+  describe 'navigation link' do
+    subject(:request) { get section_users_path(section_path_param) }
+
+    context 'when signed in as coach' do
+      before { sign_in coach, scope: :user }
+
+      it 'shows the Équipes nav link' do
+        request
+        expect(response.body).to include('>Équipes<')
+      end
+    end
+
+    context 'when signed in as a regular member' do
+      before { sign_in user, scope: :user }
+
+      it 'does not show the Équipes nav link' do
+        request
+        expect(response.body).not_to include('>Équipes<')
+      end
+
+      it 'can still access the teams index directly' do
+        get section_teams_path(section_path_param)
+        expect(response).to have_http_status(:success)
+      end
+    end
+  end
+
   describe 'GET index' do
     subject(:request) { get section_teams_path(section_path_param) }
 

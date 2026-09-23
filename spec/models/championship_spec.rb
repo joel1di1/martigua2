@@ -106,7 +106,7 @@ RSpec.describe Championship do
   end
 
   describe '#merge_calendar_from' do
-    let(:season) { Season.current }
+    let!(:season) { Season.current }
     let(:target_calendar) { create(:calendar, season:) }
     let(:source_calendar) { create(:calendar, season:) }
     let(:target_championship) { create(:championship, calendar: target_calendar, season:) }

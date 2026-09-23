@@ -47,6 +47,10 @@ fi
 log "bundle install"
 bundle install --quiet --jobs 4
 
+# app/assets/builds is gitignored: without this, every page render fails in specs
+log "building tailwind css"
+bin/rails tailwindcss:build >/dev/null
+
 log "preparing test database"
 RAILS_ENV=test bin/rails db:prepare >/dev/null
 

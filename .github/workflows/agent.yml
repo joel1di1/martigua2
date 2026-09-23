@@ -1,0 +1,48 @@
+name: Agent
+
+# Comment `/agent work` on an issue to start a Managed Agents session on it
+# (refinement, or implementation once the issue has the `good-to-dev` label).
+# See config/managed_agents/.
+
+on:
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: agent-issue-${{ github.event.issue.number }}
+
+jobs:
+  start:
+    # Public repo: only the owner can spend agent budget. Issues only, not PR comments.
+    if: >-
+      github.event.issue.pull_request == null &&
+      startsWith(github.event.comment.body, '/agent work') &&
+      github.event.comment.author_association == 'OWNER'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+
+      - run: gem install anthropic --no-document
+
+      - name: Start session
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          AGENT_GITHUB_TOKEN: ${{ secrets.AGENT_GITHUB_TOKEN }}
+          AGENT_ID: ${{ vars.AGENT_ID }}
+          ENVIRONMENT_ID: ${{ vars.ENVIRONMENT_ID }}
+          VAULT_ID: ${{ vars.VAULT_ID }}
+        run: |
+          ruby script/managed_agents/start_session.rb "${{ github.event.issue.number }}" | tee session.txt
+
+      - name: Acknowledge
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --body "🤖 Agent session started: $(grep -o 'https://[^ ]*' session.txt)"

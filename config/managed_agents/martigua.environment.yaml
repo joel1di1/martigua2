@@ -1,0 +1,5 @@
+name: martigua2
+config:
+  type: cloud
+  networking:
+    type: unrestricted

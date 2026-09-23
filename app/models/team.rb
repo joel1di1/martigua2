@@ -27,4 +27,8 @@ class Team < ApplicationRecord
   def full_name
     "#{name} - [#{club.name}]"
   end
+
+  def matches
+    Match.where(local_team: self).or(Match.where(visitor_team: self))
+  end
 end

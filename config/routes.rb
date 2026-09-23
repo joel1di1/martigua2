@@ -101,7 +101,7 @@ Rails.application.routes.draw do
     resources :calendars, only: %i[index create edit update]
     resources :days, only: [:create]
     resources :locations, only: [:create]
-    resources :teams, only: %i[create show destroy new]
+    resources :teams
     resources :channels do
       resources :messages, only: %i[create destroy]
     end
@@ -115,8 +115,6 @@ Rails.application.routes.draw do
   end
 
   resources :club_admin_roles, only: %i[index show]
-
-  resources :teams, only: %i[index show]
 
   resources :clubs, only: %i[index show] do
     resources :sections, only: %i[index new create destroy edit update]

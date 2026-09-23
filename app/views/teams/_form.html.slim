@@ -1,10 +1,4 @@
 = simple_form_for [current_section, @team] do |f|
   = f.error_notification
-
-  div class="form-inputs"
-    = f.association :club
-    = f.association :sections, selected: current_section&.id
-    = f.input :name
-
-  div class="form-actions"
-    = f.button :submit
+  = f.input :name, label: "Nom de l'équipe", autofocus: true
+  = f.button :submit, value: (@team.persisted? ? 'Enregistrer' : "Ajouter l'équipe"), class: 'btn btn-primary'

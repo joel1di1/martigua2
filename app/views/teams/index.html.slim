@@ -1,21 +1,10 @@
-h1 Listing teams
+.sm:flex.sm:items-center
+  .sm:flex-auto
+    h1.text-xl.font-semibold.text-gray-900= "#{@teams.size} équipes"
 
-table
-  tr
-    th Club
-    th Name
-    th
-    th
-    th
+  - if current_user.coach_of?(current_section)
+    .mt-4.mt-0.ml-16.flex-none
+      = link_to 'Ajouter une équipe', new_section_team_path(current_section), class: 'inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-indigo-700 focus:outline-hidden focus:ring-3 focus:ring-indigo-500 focus:ring-offset-2'
 
-  - @teams.each do |team|
-    tr
-      td = team.club
-      td = team.name
-      td = link_to 'Show', team
-      td = link_to 'Edit', edit_team_path(team)
-      td = link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' }
-
-br
-
-= link_to 'New Team', new_team_path
+.mt-4
+  = render partial: 'teams/teams', object: @teams

@@ -17,13 +17,6 @@ SET row_security = off;
 
 
 --
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON SCHEMA public IS '';
-
-
---
 -- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -292,8 +285,8 @@ ALTER SEQUENCE public.admin_users_id_seq OWNED BY public.admin_users.id;
 CREATE TABLE public.ar_internal_metadata (
     key character varying NOT NULL,
     value character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -1949,7 +1942,7 @@ ALTER SEQUENCE public.resajaaf_webpush_subscriptions_id_seq OWNED BY public.resa
 --
 
 CREATE TABLE public.schema_migrations (
-    version character varying NOT NULL
+    version character varying(255) NOT NULL
 );
 
 
@@ -4203,14 +4196,6 @@ ALTER TABLE ONLY public.resajaaf_users
 
 ALTER TABLE ONLY public.resajaaf_webpush_subscriptions
     ADD CONSTRAINT resajaaf_webpush_subscriptions_pkey PRIMARY KEY (id);
-
-
---
--- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.schema_migrations
-    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
 
 
 --

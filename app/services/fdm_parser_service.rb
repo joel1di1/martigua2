@@ -9,7 +9,7 @@ class FdmParserService
 
   def self.pdf_url_for(fdm_code)
     chars = fdm_code.chars
-    "https://media-ffhb-fdm.ffhandball.fr/fdm/#{chars[0]}/#{chars[1]}/#{chars[2]}/#{chars[3]}/#{fdm_code}.pdf"
+    "https://fdm.fdme.ffhandball.fr/#{chars[0]}/#{chars[1]}/#{chars[2]}/#{chars[3]}/#{fdm_code}.pdf"
   end
 
   def parse

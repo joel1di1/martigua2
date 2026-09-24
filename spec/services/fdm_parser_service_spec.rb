@@ -6,7 +6,7 @@ RSpec.describe FdmParserService do
   describe '.pdf_url_for' do
     it 'builds the correct URL from fdm_code' do
       url = FdmParserService.pdf_url_for('VAGNXUG')
-      expect(url).to eq('https://media-ffhb-fdm.ffhandball.fr/fdm/V/A/G/N/VAGNXUG.pdf')
+      expect(url).to eq('https://fdm.fdme.ffhandball.fr/V/A/G/N/VAGNXUG.pdf')
     end
   end
 

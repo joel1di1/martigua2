@@ -59,7 +59,7 @@ class PlayerStatsController < ApplicationController
     dir = params[:direction] == 'asc' ? :asc : :desc
 
     if col == 'goal_percentage'
-      scope.order(Arel.sql("CASE WHEN SUM(shots) > 0 THEN SUM(goals)::float / SUM(shots) ELSE 0 END #{dir == :asc ? 'ASC' : 'DESC'}"))
+      scope.order(Arel.sql("CASE WHEN (SUM(goals) + SUM(shots)) > 0 THEN SUM(goals)::float / (SUM(goals) + SUM(shots)) ELSE 0 END #{dir == :asc ? 'ASC' : 'DESC'}"))
     elsif col == 'first_name'
       scope.order(first_name: dir, last_name: dir)
     else

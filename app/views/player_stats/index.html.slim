@@ -78,7 +78,7 @@ div class="px-4 sm:px-6 lg:px-8"
             tbody class="divide-y divide-gray-200 bg-white"
               - @aggregated_stats.each do |stat|
                 - participation = @participations_by_user[stat.user_id]
-                - total_attempts = stat.total_goals.to_i + stat.total_shots.to_i
+                - total_attempts = stat.total_shots.to_i + stat.total_seven_meters.to_i
                 - pct = total_attempts.positive? ? (stat.total_goals.to_f / total_attempts * 100).round(0) : nil
                 tr class="hover:bg-gray-50 transition-colors"
                   td class="whitespace-nowrap py-3.5 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3"

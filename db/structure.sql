@@ -1515,7 +1515,8 @@ CREATE TABLE public.player_match_stats (
     two_minutes integer DEFAULT 0,
     disqualifications integer DEFAULT 0,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    team_id bigint
 );
 
 
@@ -5003,6 +5004,13 @@ CREATE UNIQUE INDEX index_player_match_stats_on_match_id_and_player_id ON public
 
 
 --
+-- Name: index_player_match_stats_on_team_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_player_match_stats_on_team_id ON public.player_match_stats USING btree (team_id);
+
+
+--
 -- Name: index_player_match_stats_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5636,6 +5644,14 @@ ALTER TABLE ONLY public.player_match_stats
 
 
 --
+-- Name: player_match_stats fk_rails_56199862e3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.player_match_stats
+    ADD CONSTRAINT fk_rails_56199862e3 FOREIGN KEY (team_id) REFERENCES public.teams(id);
+
+
+--
 -- Name: burns fk_rails_0ff98c47ee; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6138,6 +6154,9 @@ ALTER TABLE ONLY public.section_trainings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260924204039'),
+('20260924204032'),
+('20260924204015'),
 ('20260912190252'),
 ('20260912190251'),
 ('20260912190250'),

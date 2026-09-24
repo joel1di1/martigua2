@@ -93,6 +93,15 @@ RSpec.describe FdmParserService do
         stevens = result.find { |p| p[:last_name] == 'STEVENS' }
         expect(stevens[:player_id]).to eq('6244091101165')
       end
+
+      it 'tags players with the team_index of their roster table' do
+        result = service.parse
+        stevens = result.find { |p| p[:last_name] == 'STEVENS' }
+        cruaud = result.find { |p| p[:last_name] == 'CRUAUD' }
+
+        expect(stevens[:team_index]).to eq(1)
+        expect(cruaud[:team_index]).to eq(2)
+      end
     end
 
     context 'when PDF download fails' do

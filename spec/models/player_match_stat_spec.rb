@@ -6,6 +6,7 @@ RSpec.describe PlayerMatchStat do
   describe 'associations' do
     it { is_expected.to belong_to(:match) }
     it { is_expected.to belong_to(:user).optional }
+    it { is_expected.to belong_to(:team).optional }
   end
 
   describe 'scopes' do
@@ -48,6 +49,17 @@ RSpec.describe PlayerMatchStat do
         expect(PlayerMatchStat.in_date_range(2.weeks.ago, Time.zone.now)).to include(stat)
         expect(PlayerMatchStat.in_date_range(2.weeks.ago, Time.zone.now)).not_to include(other_stat)
       end
+    end
+  end
+
+  describe '.for_teams' do
+    let(:match) { create(:match) }
+    let(:our_stat) { create(:player_match_stat, match:, team: match.local_team) }
+    let(:opponent_stat) { create(:player_match_stat, match:, team: match.visitor_team) }
+
+    it 'returns only stats for the given teams' do
+      expect(PlayerMatchStat.for_teams([match.local_team])).to include(our_stat)
+      expect(PlayerMatchStat.for_teams([match.local_team])).not_to include(opponent_stat)
     end
   end
 end

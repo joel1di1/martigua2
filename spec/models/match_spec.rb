@@ -403,4 +403,35 @@ RSpec.describe Match do
       it { expect(match.calculated_start_datetime).to eq day.period_start_date }
     end
   end
+
+  describe '#sync_player_stats!' do
+    let(:local_team) { create(:team) }
+    let(:visitor_team) { create(:team) }
+    let(:match) { create(:match, local_team:, visitor_team:, fdm_code: 'VAGNXUG', local_score: 25) }
+    let(:parsed_stats) do
+      [
+        { player_id: '1111111111111', first_name: 'home', last_name: 'PLAYER', jersey_number: 1,
+          captain: false, goals: 3, seven_meters: 0, shots: 3, saves: 0, warnings: 0,
+          two_minutes: 0, disqualifications: 0, team_index: 1 },
+        { player_id: '2222222222222', first_name: 'away', last_name: 'PLAYER', jersey_number: 1,
+          captain: false, goals: 2, seven_meters: 0, shots: 4, saves: 0, warnings: 0,
+          two_minutes: 0, disqualifications: 0, team_index: 2 }
+      ]
+    end
+
+    before do
+      allow_any_instance_of(FdmParserService).to receive(:parse).and_return(parsed_stats) # rubocop:disable RSpec/AnyInstance
+      match.sync_player_stats!
+    end
+
+    it 'assigns the local team to players from the first roster table' do
+      stat = PlayerMatchStat.find_by(match:, player_id: '1111111111111')
+      expect(stat.team_id).to eq(local_team.id)
+    end
+
+    it 'assigns the visitor team to players from the second roster table' do
+      stat = PlayerMatchStat.find_by(match:, player_id: '2222222222222')
+      expect(stat.team_id).to eq(visitor_team.id)
+    end
+  end
 end

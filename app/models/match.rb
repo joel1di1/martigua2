@@ -123,6 +123,7 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
       {
         match_id: id,
         player_id: stat[:player_id],
+        team_id: team_id_for_index(stat[:team_index]),
         first_name: stat[:first_name],
         last_name: stat[:last_name],
         jersey_number: stat[:jersey_number],
@@ -153,6 +154,15 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   private
+
+  # The FFHB match sheet always lists the local (home) team's roster first,
+  # then the visitor team's roster (see FdmParserService#parse_page).
+  def team_id_for_index(team_index)
+    case team_index
+    when 1 then local_team_id
+    when 2 then visitor_team_id
+    end
+  end
 
   def link_player_match_stats_to_users(_records)
     linked_ucs = UserChampionshipStat.where(championship: championship).where.not(user_id: nil)

@@ -26,6 +26,7 @@ class PlayerStatsController < ApplicationController
 
   def base_scope
     PlayerMatchStat.where(match_id: Match.where(championship_id: @championships.select(:id)).select(:id))
+                   .for_teams(current_section.teams)
   end
 
   def apply_date_filter(scope)

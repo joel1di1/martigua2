@@ -39,21 +39,27 @@ class FdmParserService
     end
   end
 
+  # Parses the player roster table(s) from the match sheet. Each returned
+  # player hash includes a :team_index (1 or 2) indicating which of the two
+  # roster tables it was found in. The FFHB match sheet always lists the
+  # local (home) team's roster first, then the visitor team's roster.
   def parse_page(text)
     lines = text.lines.map(&:rstrip)
     players = []
 
     header_positions = nil
+    team_index = 0
 
     lines.each do |line|
       if header_positions.nil? && line.include?('Buts') && line.include?('Tirs') && line.include?('Arrets')
         header_positions = extract_header_positions(line)
+        team_index += 1
         next
       end
 
       if header_positions && line.match?(LICENCE_PATTERN) && line.exclude?('Officiel')
         player = parse_player_line(line, header_positions)
-        players << player if player
+        players << player.merge(team_index: team_index) if player
       end
 
       header_positions = nil if line.include?('Officiel Resp') || line.include?('Officiel A')

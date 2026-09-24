@@ -22,8 +22,22 @@ test:
   database: <%= ENV.fetch('DB_NAME_PREFIX', 'martigua2') %>_test<%= ENV['TEST_ENV_NUMBER'] %>
   gssencmode: disable
 
+# Deliberately does not inherit `<<: *default`: that would pull in the local
+# host/port/username/password keys. Rails would merge `url` over them, but the
+# block would then read as if it pointed at a local database. Everything comes
+# from DATABASE_URL (Heroku), except `pool`, which is set explicitly here and
+# must not be left to a `?pool=` param on the URL (Heroku sets none).
 production:
   url: <%= ENV['DATABASE_URL'] %>
-  # Solid Queue runs in-process with Puma: web, dispatcher and worker
-  # threads all share this pool (worker pool: 3, dispatcher: 1).
+  # Solid Queue (plugin :solid_queue, async mode), Solid Cable and Solid Cache
+  # all run in-process with Puma and share this one pool: Puma threads
+  # (RAILS_MAX_THREADS) + 3 queue worker threads + dispatcher + cable
+  # listener / cache expiry / heartbeats, hence the +5 headroom.
+  #
+  # Connection budget (issue #1174, checked 2026-09): RAILS_MAX_THREADS=1,
+  # WEB_CONCURRENCY=1, a single web dyno, no worker dyno, essential-0 plan with
+  # connection_limit 20. Worst case is 6 per web process, 12 while old and new
+  # dynos overlap during a deploy, plus 1 for the release phase and 6 per
+  # one-off `heroku run` console. That is well under 20. Revisit if you raise
+  # RAILS_MAX_THREADS, WEB_CONCURRENCY, JOB_CONCURRENCY or the dyno count.
   pool: <%= ENV.fetch('RAILS_MAX_THREADS', 3).to_i + 5 %>

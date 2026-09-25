@@ -106,7 +106,11 @@ Rails.application.routes.draw do
       resources :messages, only: %i[create destroy]
     end
     resources :events, only: %i[index]
-    resources :player_stats, only: %i[index]
+    resources :player_stats, only: %i[index] do
+      collection do
+        patch 'associate_player'
+      end
+    end
     resources :participations, only: %i[update]
 
     patch 'player_ffhb_association'

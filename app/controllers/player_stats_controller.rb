@@ -20,9 +20,29 @@ class PlayerStatsController < ApplicationController
     @aggregated_stats = aggregate(scope)
     @participations_by_user = load_participations
     @aggregated_stats = filter_by_position(@aggregated_stats) if @position_filter.present?
+    @section_players = current_section.players.order(:first_name, :last_name) if current_user.coach_of?(current_section)
+  end
+
+  def associate_player
+    return head :forbidden unless current_user.coach_of?(current_section)
+
+    user = current_section.players.find(params.expect(:user_id))
+    associate_player_with_user!(user)
+
+    redirect_back_or_to(section_player_stats_path(current_section), notice: "#{user.full_name} a été associé.")
   end
 
   private
+
+  def associate_player_with_user!(user)
+    PlayerMatchStat.where(player_id: params[:player_id]).update_all(user_id: user.id) # rubocop:disable Rails/SkipsModelValidations
+
+    UserChampionshipStat
+      .where(championship: current_section.championships)
+      .where('UPPER(TRIM(last_name)) = ? AND UPPER(TRIM(first_name)) = ?',
+             params[:last_name].to_s.strip.upcase, params[:first_name].to_s.strip.upcase)
+      .update_all(user_id: user.id) # rubocop:disable Rails/SkipsModelValidations
+  end
 
   def base_scope
     PlayerMatchStat.where(match_id: Match.where(championship_id: @championships.select(:id)).select(:id))

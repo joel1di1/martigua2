@@ -116,4 +116,36 @@ RSpec.describe FdmParserService do
       end
     end
   end
+
+  describe '#split_name' do
+    let(:service) { FdmParserService.new('VAGNXUG') }
+
+    def split(full_name)
+      service.send(:split_name, full_name)
+    end
+
+    it 'splits an all-lowercase given name' do
+      expect(split('STEVENS theo')).to eq(%w[STEVENS theo])
+    end
+
+    it 'splits a Title Case given name' do
+      expect(split('CATHELIN Matteo')).to eq(%w[CATHELIN Matteo])
+    end
+
+    it 'splits a multi-word last name' do
+      expect(split('LE PROVOST eliott')).to eq(['LE PROVOST', 'eliott'])
+    end
+
+    it 'splits a multi-word given name' do
+      expect(split('TELLE marie france')).to eq(['TELLE', 'marie france'])
+    end
+
+    it 'keeps apostrophes in a multi-word last name' do
+      expect(split("CHABAILLE D'AUVIGNY alexandre")).to eq(["CHABAILLE D'AUVIGNY", 'alexandre'])
+    end
+
+    it 'returns the full name with a blank given name when it cannot split' do
+      expect(split('MODESTE')).to eq(['MODESTE', ''])
+    end
+  end
 end

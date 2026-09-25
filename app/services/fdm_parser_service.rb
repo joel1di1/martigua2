@@ -114,13 +114,22 @@ class FdmParserService
     }
   end
 
+  # The FFHB match sheet writes the last name in caps, but the given name's
+  # capitalization is inconsistent across matches (all lowercase, or
+  # Title Case). Rather than assume a case for the given name, split on the
+  # first word that isn't fully uppercase (last names may span several
+  # words, e.g. "LE PROVOST" or "CHABAILLE D'AUVIGNY").
   def split_name(full_name)
-    match = full_name.match(/^([A-ZÀ-Ÿ\s-]+?)\s+([a-zà-ÿ].*)$/)
-    if match
-      [match[1].strip, match[2].strip]
-    else
-      [full_name, '']
-    end
+    words = full_name.split(/\s+/)
+    boundary = words.index { |word| !all_caps_word?(word) }
+
+    return [full_name, ''] if boundary.nil? || boundary.zero?
+
+    [words[0...boundary].join(' '), words[boundary..].join(' ')]
+  end
+
+  def all_caps_word?(word)
+    word.match?(/[[:alpha:]]/) && word == word.upcase
   end
 
   def extract_stat(line, start_pos, end_pos)

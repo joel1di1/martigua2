@@ -42,8 +42,11 @@ describe 'User profile page', :devise do
 
     visit section_users_path(section_id: section.to_param)
 
-    # full_name  capitalize all words
-    click_on other.full_name.split.map(&:capitalize).join(' ')
+    # the members list renders the raw first_name/last_name (see
+    # app/views/users/_user.html.erb), not the capitalized `full_name`,
+    # so match on the same raw fields to avoid mismatches when Faker
+    # generates a last name with mixed casing (e.g. "Le roux").
+    click_on "#{other.first_name} #{other.last_name}"
     expect(page).to have_text other.phone_number
     expect(page).to have_current_path(section_user_path(other, section_id: section.to_param))
   end

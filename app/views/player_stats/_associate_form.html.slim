@@ -1,0 +1,8 @@
+= form_with url: associate_player_section_player_stats_path(current_section), method: :patch, data: { controller: 'auto-submit', auto_submit_delay_value: 0 } do
+  = hidden_field_tag :player_id, stat.player_id
+  = hidden_field_tag :first_name, stat.first_name
+  = hidden_field_tag :last_name, stat.last_name
+  = select_tag :user_id, options_from_collection_for_select(players, :id, :full_name),
+               include_blank: 'Associer à…',
+               class: 'mt-1 w-full rounded-md border-gray-300 text-xs py-0.5 px-1 focus:border-indigo-500 focus:ring-indigo-500',
+               data: { action: 'auto-submit#submit' }

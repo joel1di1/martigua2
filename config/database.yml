@@ -29,15 +29,20 @@ test:
 # must not be left to a `?pool=` param on the URL (Heroku sets none).
 production:
   url: <%= ENV['DATABASE_URL'] %>
-  # Solid Queue (plugin :solid_queue, async mode), Solid Cable and Solid Cache
-  # all run in-process with Puma and share this one pool: Puma threads
-  # (RAILS_MAX_THREADS) + 3 queue worker threads + dispatcher + cable
-  # listener / cache expiry / heartbeats, hence the +5 headroom.
+  # As of issue #1204, Solid Queue runs in its own `worker` dyno
+  # (SOLID_QUEUE_IN_PUMA=false on web), not in-process with Puma, to stop the
+  # web dyno from hitting R15. Solid Cable and Solid Cache still run
+  # in-process with Puma and share this pool with Puma's own threads
+  # (RAILS_MAX_THREADS), hence the +5 headroom on the web dyno. The worker
+  # dyno reuses the same `pool` value; it needs enough for the dispatcher +
+  # JOB_CONCURRENCY worker processes' threads (3 each, see config/queue.yml),
+  # which +5 also comfortably covers at the default JOB_CONCURRENCY=1.
   #
   # Connection budget (issue #1174, checked 2026-09): RAILS_MAX_THREADS=1,
-  # WEB_CONCURRENCY=1, a single web dyno, no worker dyno, essential-0 plan with
+  # WEB_CONCURRENCY=1, a single web dyno, essential-0 plan with
   # connection_limit 20. Worst case is 6 per web process, 12 while old and new
   # dynos overlap during a deploy, plus 1 for the release phase and 6 per
-  # one-off `heroku run` console. That is well under 20. Revisit if you raise
-  # RAILS_MAX_THREADS, WEB_CONCURRENCY, JOB_CONCURRENCY or the dyno count.
+  # one-off `heroku run` console. Revisit this budget (and the pool math
+  # above) if you raise RAILS_MAX_THREADS, WEB_CONCURRENCY, JOB_CONCURRENCY,
+  # or the dyno count on either process type.
   pool: <%= ENV.fetch('RAILS_MAX_THREADS', 3).to_i + 5 %>

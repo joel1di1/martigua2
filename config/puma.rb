@@ -39,9 +39,11 @@ plugin :tmp_restart
 # In other environments, only set the PID file if requested.
 pidfile ENV['PIDFILE'] if ENV['PIDFILE']
 
-# Run Solid Queue in-process (no dedicated worker dyno). See issue #1191.
-# In-process is the default everywhere, like production; opt out with
-# SOLID_QUEUE_IN_PUMA=false (e.g. when running a dedicated worker instead).
+# Run Solid Queue in-process by default (handy for single-dyno setups and
+# development, see issue #1191). On Heroku, the `worker` dyno (Procfile,
+# `bin/jobs`) runs the queue instead, so production sets
+# SOLID_QUEUE_IN_PUMA=false to keep jobs out of the web dyno's memory
+# (issue #1204: web dyno was hitting R15 with the queue running in-process).
 if ENV['SOLID_QUEUE_IN_PUMA'] != 'false'
   # The solid_queue plugin requires app preloading: standalone puma evaluates this file
   # before loading any app (`bundle exec puma -C config/puma.rb`, as Heroku does), while

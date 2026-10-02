@@ -3,8 +3,12 @@
 module Ffhb
   # Refreshes a single match from the FFHB: date, day, scores, fdm code and location.
   class MatchSync
-    def initialize(match)
+    # location_cache: ffhb_id => Location hash that can be shared between several
+    # MatchSync runs (e.g. all matches of a championship) to avoid looking up the
+    # same venue once per match.
+    def initialize(match, location_cache: {})
       @match = match
+      @location_cache = location_cache
     end
 
     def call
@@ -25,7 +29,7 @@ module Ffhb
 
     private
 
-    attr_reader :match
+    attr_reader :match, :location_cache
 
     def sync_datetime(match_details)
       return if match_details['rencontre']['date'].blank?
@@ -44,7 +48,7 @@ module Ffhb
       ffhb_id = match_details['rencontre']['equipementId']
       return if ffhb_id.blank?
 
-      match.location = Location.find_by(ffhb_id:) || create_location(ffhb_id)
+      match.location = location_cache[ffhb_id] ||= Location.find_by(ffhb_id:) || create_location(ffhb_id)
     end
 
     def create_location(ffhb_id)

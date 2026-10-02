@@ -108,8 +108,8 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
     super || (start_datetime && (start_datetime - 1.hour))
   end
 
-  def ffhb_sync!
-    Ffhb::MatchSync.new(self).call
+  def ffhb_sync!(location_cache: {})
+    Ffhb::MatchSync.new(self, location_cache:).call
   end
 
   def sync_player_stats!

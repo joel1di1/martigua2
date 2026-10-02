@@ -46,12 +46,22 @@ module Ffhb
     attr_reader :championship
 
     def sync_matches!
+      location_cache = {}
+      preload_match_teams
       championship.matches.each do |match|
-        match.ffhb_sync!
+        match.ffhb_sync!(location_cache:)
       rescue FfhbServiceError => e
         Sentry.capture_exception(e)
         Rails.logger.debug { "Error while syncing match #{match.id}: #{e.message}" }
       end
+    end
+
+    # Preload on the association's own records (not a new relation) so validations on
+    # save! don't load local_team/visitor_team once per match.
+    def preload_match_teams
+      ActiveRecord::Associations::Preloader.new(
+        records: championship.matches.to_a, associations: %i[local_team visitor_team]
+      ).call
     end
 
     def sync_player_stats!
@@ -69,7 +79,8 @@ module Ffhb
 
       # Only consider teams that have sections (i.e., real teams that belong to a club/section)
       # Teams without sections are temporary teams created during championship import
-      linked_enrollments = championship.enrolled_team_championships.select { |etc| etc.team.team_sections.exists? }
+      linked_enrollments = championship.enrolled_team_championships.includes(team: :team_sections)
+                                       .select { |etc| etc.team.team_sections.any? }
       return false if linked_enrollments.empty?
 
       new_matches = build_new_matches(competition_key, pool_id, linked_enrollments)

@@ -11,22 +11,10 @@ class LoginLinksController < ApplicationController
   def new; end
 
   def create
-    email = params[:email].to_s.strip.downcase
-
-    users_reachable_at(email).each do |user|
-      UserMailer.send_login_link(user, email).deliver_later
-    end
+    LoginLinkSender.call(params[:email])
 
     # Always the same answer, so this page cannot be used to probe for known addresses.
     redirect_to new_user_session_path,
                 notice: 'Si cette adresse est connue, un lien de connexion vient de vous être envoyé.'
-  end
-
-  private
-
-  def users_reachable_at(email)
-    return User.none if email.blank?
-
-    User.where(email:).or(User.where(id: UserContactEmail.where(email:).select(:user_id)))
   end
 end

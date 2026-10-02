@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include TokenAuthentication
+
   around_action :log_requests
 
   before_action :set_sentry_context
@@ -153,13 +155,6 @@ class ApplicationController < ActionController::Base
 
   def set_sentry_context
     Sentry.set_user(id: current_user&.id, email: current_user&.email)
-  end
-
-  def authenticate_user_from_token!
-    token = params[:user_token].presence
-    user  = token && User.find_by_token_for(:email_authentication, token)
-
-    sign_in user if user
   end
 
   def set_current_user_in_current

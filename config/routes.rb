@@ -60,7 +60,9 @@ Rails.application.routes.draw do
         post 'confirm_presence' => 'training_presences#confirm_presence'
       end
       resources :absences, only: %i[index create edit update destroy new]
-      resources :contact_emails, only: %i[create destroy]
+      resources :contact_emails, only: %i[create destroy] do
+        post :resend_link, on: :member
+      end
       match 'training_presences', via: %i[get post]
       match 'match_availabilities', via: %i[get post]
     end
@@ -124,12 +126,14 @@ Rails.application.routes.draw do
     resources :sections, only: %i[index new create destroy edit update]
   end
 
-  devise_for :users, except: %i[show]
+  devise_for :users, except: %i[show], controllers: { sessions: 'users/sessions', passwords: 'users/passwords' }
 
   resource :login_link, only: %i[new create]
 
   resources :users, only: %i[show edit update] do
-    resources :contact_emails, only: %i[create destroy]
+    resources :contact_emails, only: %i[create destroy] do
+      post :resend_link, on: :member
+    end
     member do
       match 'training_presences', via: %i[get post]
       match 'match_availabilities', via: %i[get post]

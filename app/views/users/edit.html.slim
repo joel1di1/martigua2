@@ -93,7 +93,7 @@ div class="mx-auto max-w-4xl pb-16"
       p class="mt-1 text-sm text-gray-600"
         | Ces adresses sont en copie de tous les emails envoyés au joueur. Elles permettent à un parent de répondre aux convocations à sa place, sans compte séparé.
 
-      - row_grid = 'grid grid-cols-[minmax(5rem,9rem)_1fr_7rem] items-center gap-x-4'
+      - row_grid = 'grid grid-cols-[minmax(5rem,9rem)_1fr_11rem] items-center gap-x-4'
       - field_classes = 'block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600'
 
       div class="mt-6 border-t border-gray-100"
@@ -108,9 +108,17 @@ div class="mx-auto max-w-4xl pb-16"
         - @user.contact_emails.each do |contact_email|
           div class="#{row_grid} border-b border-gray-100 py-3"
             div class="truncate text-sm/6 font-medium text-gray-900"= contact_email.label.presence || '—'
-            div class="truncate text-sm/6 text-gray-500"= contact_email.email
-            div class="flex justify-end"
+            div class="min-w-0 text-sm/6 text-gray-500"
+              div class="truncate"= contact_email.email
+              div class="text-xs text-gray-400"
+                - if contact_email.last_link_sent_at.present?
+                  = "Dernier lien envoyé il y a #{time_ago_in_words(contact_email.last_link_sent_at)}"
+                - else
+                  | Aucun lien envoyé
+            div class="flex items-center justify-end gap-x-2"
               - contact_email_url = current_section ? section_user_contact_email_path(current_section, @user, contact_email) : user_contact_email_path(@user, contact_email)
+              - resend_url = current_section ? resend_link_section_user_contact_email_path(current_section, @user, contact_email) : resend_link_user_contact_email_path(@user, contact_email)
+              = button_to 'Renvoyer un lien', resend_url, method: :post, class: "rounded-md px-2 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50"
               = button_to contact_email_url, method: :delete, form: {data: {turbo_confirm: "Supprimer #{contact_email.email} ?"}}, class: "rounded-md p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600"
                 span class="sr-only" Supprimer
                 svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5"

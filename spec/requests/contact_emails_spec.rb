@@ -115,4 +115,43 @@ describe 'ContactEmails' do
       end
     end
   end
+
+  describe 'POST resend_link' do
+    let!(:contact_email) { create(:user_contact_email, user:, email: 'maman@example.com') }
+    let(:path) { resend_link_section_user_contact_email_path(section, user, contact_email) }
+
+    context 'when the player asks for it' do
+      before { sign_in(user, scope: :user) }
+
+      it 'mails a sign-in link to the relative and records when' do
+        run_jobs_inline do
+          expect { post path }.to change(ActionMailer::Base.deliveries, :count).by(1)
+        end
+
+        expect(ActionMailer::Base.deliveries.last.to).to eq ['maman@example.com']
+        expect(contact_email.reload.last_link_sent_at).to be_present
+      end
+    end
+
+    context 'when a coach asks for it' do
+      before { sign_in(create(:user, with_section_as_coach: section), scope: :user) }
+
+      it 'records when the link was sent' do
+        post path
+
+        expect(contact_email.reload.last_link_sent_at).to be_present
+      end
+    end
+
+    context 'when another player tries' do
+      before { sign_in(create(:user, with_section: section), scope: :user) }
+
+      it 'is forbidden' do
+        post path
+
+        expect(response).to have_http_status(:forbidden)
+        expect(contact_email.reload.last_link_sent_at).to be_nil
+      end
+    end
+  end
 end

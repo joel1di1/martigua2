@@ -44,6 +44,14 @@ pidfile ENV['PIDFILE'] if ENV['PIDFILE']
 # `bin/jobs`) runs the queue instead, so production sets
 # SOLID_QUEUE_IN_PUMA=false to keep jobs out of the web dyno's memory
 # (issue #1204: web dyno was hitting R15 with the queue running in-process).
+#
+# NOTE: `bin/jobs` (SolidQueue::Cli, used by the `worker` dyno) does not
+# evaluate this file, so the `solid_queue_mode :async` setting below only
+# applies to the in-process (SOLID_QUEUE_IN_PUMA) path. The `worker` dyno
+# needs its own equivalent: the SOLID_QUEUE_SUPERVISOR_MODE=async Heroku
+# config var (default is `fork`, which forks supervisor + dispatcher +
+# worker as separate processes and was causing the same ~4x memory
+# multiplication / continuous R14 on that dyno).
 if ENV['SOLID_QUEUE_IN_PUMA'] != 'false'
   # The solid_queue plugin requires app preloading: standalone puma evaluates this file
   # before loading any app (`bundle exec puma -C config/puma.rb`, as Heroku does), while

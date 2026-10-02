@@ -25,6 +25,13 @@ describe 'Sessions' do
       expect(response.body).to include(hint)
     end
 
+    it 'shows the failure message inline on the login page, not as a fading toast' do
+      post_login(user.email)
+
+      expect(response.body).to include('role="alert"')
+      expect(response.body).not_to include('data-controller="notification"')
+    end
+
     context 'with a relative address' do
       before { create(:user_contact_email, user:, email: 'maman@example.com') }
 

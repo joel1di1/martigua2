@@ -173,7 +173,7 @@ GEM
     devise-i18n (1.16.1)
       devise (>= 5.0.0)
       rails-i18n
-    devise_invitable (2.0.12)
+    devise_invitable (2.0.13)
       actionmailer (>= 5.0)
       devise (>= 4.6)
     diff-lcs (1.6.2)
@@ -435,7 +435,7 @@ GEM
       logger
       prism (>= 1.6.0)
       tsort
-    rdoc (8.0.0)
+    rdoc (8.1.0)
       erb
       prism (>= 1.6.0)
       rbs (>= 4.0.0)

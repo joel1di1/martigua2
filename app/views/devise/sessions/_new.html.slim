@@ -48,8 +48,10 @@
                             Se souvenir de moi
                         .text-sm
                           = link_to "Mot de passe oublié ?", new_password_path(:user), class: 'font-medium text-indigo-600 hover:text-indigo-500'
-                      .text-sm.text-center
-                        = link_to "Recevoir un lien de connexion", new_login_link_path, class: 'font-medium text-indigo-600 hover:text-indigo-500'
+                    div class="mt-6 rounded-md bg-indigo-50 p-4 text-sm text-gray-700"
+                      p class="font-semibold text-gray-900" Parent d'un joueur ?
+                      p class="mt-1" Pas besoin de mot de passe : un lien de connexion suffit pour répondre à sa place.
+                      = link_to "Recevoir un lien de connexion", new_login_link_path, class: 'mt-2 inline-block font-medium text-indigo-600 hover:text-indigo-500'
 
                   </div>
                 </div>

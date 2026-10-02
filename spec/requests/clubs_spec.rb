@@ -20,7 +20,7 @@ RSpec.describe 'Clubs' do
     it 'does not sign in with a garbage token' do
       get club_path(club), params: { user_token: 'not-a-real-token' }
 
-      expect(response).to redirect_to(new_user_session_path)
+      expect(response).to redirect_to(new_login_link_path)
     end
 
     it 'does not sign in with an expired token' do
@@ -29,7 +29,7 @@ RSpec.describe 'Clubs' do
       get club_path(club), params: { user_token: token }
       Timecop.return
 
-      expect(response).to redirect_to(new_user_session_path)
+      expect(response).to redirect_to(new_login_link_path)
     end
   end
 end

@@ -3015,7 +3015,8 @@ CREATE TABLE public.user_contact_emails (
     email character varying NOT NULL,
     label character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    last_link_sent_at timestamp(6) without time zone
 );
 
 
@@ -6154,6 +6155,7 @@ ALTER TABLE ONLY public.section_trainings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261002090000'),
 ('20260924204039'),
 ('20260924204032'),
 ('20260924204015'),

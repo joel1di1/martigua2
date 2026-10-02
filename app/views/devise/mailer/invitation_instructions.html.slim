@@ -23,17 +23,13 @@ p '--------------- VOUS ETES PARENTS -------------------------
 
 p Chers parents,
 
-p Vous êtes invités à vous créer un compte pour votre enfant sur le site Martigua.org.
+p
+  = "#{@resource.first_name} vient d'être invité(e) sur le site Martigua.org."
 
-p Ce site vous permettra de mettre les présences de votre enfant pour les entrainements ainsi que pour les compétitions.
-
-p Cela nous permettra de mettre en place de meilleurs séances en fonction de la présence réelle des enfants, et pour vous d'avoir le calendrier des matchs à venir à jour au maximum.
+p Vous recevez ce message en copie. Vous n'avez pas besoin de créer de compte ni de mot de passe : les emails de convocation (entrainements et matchs) contiennent des liens qui vous permettent de répondre à la place de votre enfant.
 
 p
-  | Cliquez ici :
-  b = link_to "Accepter l'invitation", accept_invitation_url(@resource, invitation_token: @token)
-
-
-p Verifiez que les infos sont les bonnes puis choisissez un Mot de passe et le tour est joué.
+  | Pour voir les prochains rendez-vous ou obtenir un nouveau lien de connexion à tout moment :
+  b = link_to 'Recevoir un lien de connexion', new_login_link_url
 
 p En vous remerciant par avance.

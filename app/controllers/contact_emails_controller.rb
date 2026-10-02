@@ -3,11 +3,11 @@
 class ContactEmailsController < ApplicationController
   before_action :set_user
   before_action :verify_can_edit_user
-  before_action :set_contact_email, only: :destroy
+  before_action :set_contact_email, only: %i[destroy resend_link]
 
   # create now mails an arbitrary address, one per request, where it used to only write a
   # row. Same limit as LoginLinksController, which sends on the same terms.
-  rate_limit to: 10, within: 1.minute, only: :create
+  rate_limit to: 10, within: 1.minute, only: %i[create resend_link]
 
   def create
     @contact_email = @user.contact_emails.new(contact_email_params)
@@ -17,6 +17,7 @@ class ContactEmailsController < ApplicationController
       # Delivery may still be dropped by the blocked-address interceptor, so the notice
       # deliberately does not promise it arrived.
       UserMailer.send_contact_email_welcome(@user, @contact_email.email).deliver_later
+      @contact_email.update!(last_link_sent_at: Time.current)
       redirect_with fallback: edit_user_path_for_user, notice: 'Email de contact ajouté'
     else
       redirect_with fallback: edit_user_path_for_user, alert: @contact_email.errors.full_messages.to_sentence
@@ -26,6 +27,14 @@ class ContactEmailsController < ApplicationController
   def destroy
     @contact_email.destroy!
     redirect_with fallback: edit_user_path_for_user, notice: 'Email de contact supprimé'
+  end
+
+  # Lets the player or a coach send the relative a fresh sign-in link, instead of the relative
+  # having to ask. Same mail the relative would get from the "Recevoir un lien" page.
+  def resend_link
+    UserMailer.send_login_link(@user, @contact_email.email).deliver_later
+    @contact_email.update!(last_link_sent_at: Time.current)
+    redirect_with fallback: edit_user_path_for_user, notice: "Lien de connexion envoyé à #{@contact_email.email}"
   end
 
   private

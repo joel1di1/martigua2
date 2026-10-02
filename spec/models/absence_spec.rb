@@ -12,10 +12,23 @@ RSpec.describe Absence do
   it { is_expected.to validate_inclusion_of(:name).in_array(%w[Blessure Maladie Perso Travail Autre]) }
 
   describe '#update_training_presences' do
-    let(:training) { create(:training, with_section: section) }
+    let(:training) { create(:training, with_section: section, with_group: section.group_every_players) }
 
     before do
       [user, team]
+    end
+
+    context 'when the training is for a group the user is not in' do
+      let(:other_section) { create(:section) }
+      let(:other_training) do
+        create(:training, with_section: other_section, with_group: other_section.group_every_players)
+      end
+
+      it 'leaves the presence unset' do
+        create(:absence, user:, start_at: other_training.start_datetime - 1.day,
+                         end_at: other_training.start_datetime + 2.days)
+        expect(user.present_for?(other_training)).to be_nil
+      end
     end
 
     context 'when user declared nothing' do

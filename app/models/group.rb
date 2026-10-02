@@ -22,6 +22,7 @@ class Group < ApplicationRecord
     raise 'You cannot remove user from system group' if system? && !force
 
     users.delete(user)
+    TrainingPresence.purge_future_non_member(user, trainings)
   end
 
   def copy_to_current_season

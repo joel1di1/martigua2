@@ -21,17 +21,31 @@ RSpec.describe Training do
 
   describe '#nb_presents' do
     context 'with n users present' do
-      before { nb_users.times { create(:user).present_for!(training) } }
+      before { nb_users.times { create(:user, with_section: section, group_ids: [group.id]).present_for!(training) } }
 
       it { expect(training.nb_presents).to eq nb_users }
+    end
+
+    context 'with a user present who is not in the training groups' do
+      before { create(:user).present_for!(training) }
+
+      it { expect(training.nb_presents).to eq 0 }
+      it { expect(training.presents).to be_empty }
     end
   end
 
   describe '#nb_not_presents' do
     context 'with n users not presents' do
-      before { nb_users.times { create(:user).not_present_for!(training) } }
+      before { nb_users.times { create(:user, with_section: section, group_ids: [group.id]).not_present_for!(training) } }
 
       it { expect(training.nb_not_presents).to eq nb_users }
+    end
+
+    context 'with a user not present who is not in the training groups' do
+      before { create(:user).not_present_for!(training) }
+
+      it { expect(training.nb_not_presents).to eq 0 }
+      it { expect(training.not_presents).to be_empty }
     end
   end
 

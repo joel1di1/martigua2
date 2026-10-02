@@ -217,6 +217,45 @@ RSpec.describe Section do
     end
   end
 
+  describe 'training presences cleanup' do
+    let(:user) { create(:user) }
+    let(:future_training) do
+      create(:training, :futur, with_section: section, with_group: section.group_every_players)
+    end
+    let(:past_training) do
+      create(:training, with_section: section, with_group: section.group_every_players, start_datetime: 2.days.ago)
+    end
+
+    before do
+      section.add_player! user
+      section.add_coach! user
+      user.present_for!(future_training)
+      user.present_for!(past_training)
+    end
+
+    describe '#remove_member!' do
+      before { section.remove_member!(user) }
+
+      it { expect(user.present_for?(future_training)).to be_nil }
+      it { expect(user.present_for?(past_training)).to be true }
+    end
+
+    describe '#remove_roles!' do
+      context 'with player role' do
+        before { section.remove_roles!(user, [Participation::PLAYER]) }
+
+        it { expect(user.present_for?(future_training)).to be_nil }
+        it { expect(user.present_for?(past_training)).to be true }
+      end
+
+      context 'with coach role only' do
+        before { section.remove_roles!(user, [Participation::COACH]) }
+
+        it { expect(user.present_for?(future_training)).to be true }
+      end
+    end
+  end
+
   describe '#championships' do
     let(:team1) { create(:team, with_section: section) }
     let(:team2) { create(:team, with_section: section) }

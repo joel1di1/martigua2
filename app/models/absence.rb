@@ -24,8 +24,9 @@ class Absence < ApplicationRecord
   end
 
   def update_training_presences
-    # all training that start between start_at and end_at
-    trainings = Training.with_start_between(start_at, end_at)
+    # trainings of the user's groups that start between start_at and end_at
+    trainings = Training.joins(:groups).where(groups: { id: user.group_ids })
+                        .with_start_between(start_at, end_at).distinct
     user.not_present_for!(trainings)
   end
 

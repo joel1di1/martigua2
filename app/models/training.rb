@@ -36,7 +36,7 @@ class Training < ApplicationRecord
   end
 
   def presents
-    training_presences.includes(:user).where(is_present: true).map(&:user)
+    member_presences.where(is_present: true).map(&:user)
   end
 
   def nb_presents
@@ -44,7 +44,7 @@ class Training < ApplicationRecord
   end
 
   def not_presents
-    training_presences.includes(:user).where(is_present: false).map(&:user)
+    member_presences.where(is_present: false).map(&:user)
   end
 
   def nb_not_presents
@@ -65,6 +65,12 @@ class Training < ApplicationRecord
 
   def users
     User.joins(:groups).where(groups: { id: group_ids })
+  end
+
+  # Presences of the users that belong to the training groups (answers of
+  # users who left the groups are ignored).
+  def member_presences
+    training_presences.includes(:user).where(user_id: users.select(:id))
   end
 
   def repeat_next_week!

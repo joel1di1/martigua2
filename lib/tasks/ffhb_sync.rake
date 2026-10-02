@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 namespace :ffhb do
+  desc 'Enqueue the FFHB sync of every championship of the current season (same as the recurring FfhbSyncJob)'
   task sync: :environment do
-    Championship.where(season: Season.current).where.not(ffhb_key: nil).map(&:async_ffhb_sync!)
+    FfhbSyncJob.perform_later
   end
 
   desc 'Rewrite a renamed FFHB competition slug on a championship and its matches. ' \

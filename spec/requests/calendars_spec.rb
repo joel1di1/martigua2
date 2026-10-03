@@ -22,10 +22,12 @@ describe 'Calendars' do
 
   describe 'GET /sections/:section_id/calendars/:id/edit' do
     let(:calendar) { create(:calendar) }
+    let!(:day) { create(:day, calendar:, name: 'J1 - 16 Sep - 17 Sep', period_start_date: Date.new(2017, 9, 16)) }
 
     before { get edit_section_calendar_path(section, calendar) }
 
     it { expect(response).to have_http_status(:success) }
     it { expect(response.body).to include(calendar.name) }
+    it { expect(response.body).to include(day.name, I18n.l(day.period_start_date, locale: :fr)) }
   end
 end

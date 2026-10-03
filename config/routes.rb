@@ -131,6 +131,7 @@ Rails.application.routes.draw do
   resource :login_link, only: %i[new create]
 
   resources :users, only: %i[show edit update] do
+    resources :absences, only: %i[new create edit update destroy]
     resources :contact_emails, only: %i[create destroy] do
       post :resend_link, on: :member
     end

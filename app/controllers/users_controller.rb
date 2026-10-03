@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   before_action :find_user_by_id, except: :index
   skip_before_action :verify_authenticity_token, only: %i[training_presences match_availabilities]
   before_action :verify_can_act_for_user, only: %i[training_presences match_availabilities]
+  before_action :verify_can_edit_user, only: %i[edit update]
 
   def index
     if current_section
@@ -28,11 +29,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    if current_user != @user && !current_user.coach_of?(current_section)
-      render body: 'Access denied.'
-      return
-    end
-
     if current_section.present? && [params[:coach], params[:player]].compact.empty?
       flash[:error] = 'Gardez un role ou utilisez le bouton supprimer'
       redirect_with(fallback: section_users_path(current_section))

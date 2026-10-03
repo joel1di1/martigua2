@@ -46,13 +46,6 @@ class ContactEmailsController < ApplicationController
     catch404
   end
 
-  # Same rule as UsersController#update: your own profile, or a coach of the section.
-  def verify_can_edit_user
-    return if @user == current_user || current_user.coach_of?(current_section)
-
-    render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false)
-  end
-
   def set_contact_email
     @contact_email = @user.contact_emails.find(params.expect(:id))
   rescue ActiveRecord::RecordNotFound

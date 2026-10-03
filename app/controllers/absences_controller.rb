@@ -2,7 +2,10 @@
 
 class AbsencesController < ApplicationController
   before_action :set_user
+  before_action :verify_can_edit_user, if: -> { @user }
   before_action :set_absence, only: %i[edit update destroy]
+
+  helper_method :user_profile_path
 
   # GET /absences or /absences.json
   def index
@@ -24,7 +27,7 @@ class AbsencesController < ApplicationController
 
     respond_to do |format|
       if @absence.save
-        format.html { redirect_to section_user_path(current_section, @user), notice: 'Blessure créée' }
+        format.html { redirect_to user_profile_path, notice: 'Blessure créée' }
         format.json { render :show, status: :created, location: @absence }
       else
         format.html { render :new, status: :unprocessable_content }
@@ -37,7 +40,7 @@ class AbsencesController < ApplicationController
     respond_to do |format|
       if @absence.update(absence_params)
         format.html do
-          redirect_to section_user_path(current_section, @user), notice: 'Absence was successfully updated.'
+          redirect_to user_profile_path, notice: 'Absence was successfully updated.'
         end
         format.json { render :show, status: :ok, location: @absence }
       else
@@ -53,7 +56,7 @@ class AbsencesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        redirect_with fallback: section_user_path(current_section, @user), notice: 'Absence was successfully destroyed.'
+        redirect_with fallback: user_profile_path, notice: 'Absence was successfully destroyed.'
       end
       format.json { head :no_content }
     end
@@ -69,9 +72,17 @@ class AbsencesController < ApplicationController
   end
 
   def set_user
-    @user = current_section.users.find(params.expect(:user_id)) if params[:user_id]
+    return unless params[:user_id]
+
+    id = params.expect(:user_id)
+    @user = current_section.present? ? current_section.users.find(id) : User.find(id)
   rescue ActiveRecord::RecordNotFound
     catch404
+  end
+
+  # Absences are reachable from the section member page or from the sectionless /users/:id profile.
+  def user_profile_path
+    current_section.present? ? section_user_path(current_section, @user) : user_path(@user)
   end
 
   # Only allow a list of trusted parameters through.

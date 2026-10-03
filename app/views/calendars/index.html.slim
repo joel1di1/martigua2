@@ -1,25 +1,20 @@
-div class="panel panel-default"
-  div class="panel-heading"
-    h3 class="panel-title" Calendriers existants
-  div class="panel-body"
-    div class="table-responsive"
-      table class="table table-hover table-striped"
-        thead
-          tr
-            th Saison
-            th Nom
-        tbody
-          = render @calendars
+div class="sm:flex sm:items-center"
+  div class="sm:flex-auto"
+    h1 class="text-base font-semibold text-gray-900" Calendriers existants
 
-
-p
-  a href="#new-calendar-collapse" data-toggle="collapse"
+div class="mt-6" data-controller="dropdown"
+  a href="#new-calendar-collapse" data-action="dropdown#toggle:stop" aria-expanded="false" class="inline-flex items-center gap-x-1 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+    svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4"
+      path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v5.5h5.5a.75.75 0 010 1.5h-5.5v5.5a.75.75 0 01-1.5 0v-5.5h-5.5a.75.75 0 010-1.5h5.5v-5.5A.75.75 0 0110 3z" clip-rule="evenodd"
     | Créer un nouveau calendrier
+  div id="new-calendar-collapse" class="hidden mt-4 max-w-xl" data-dropdown-target="menu"
+    = render 'form'
 
-div id="new-calendar-collapse" class="row collapse"
-  div class="col-xs-12 col-sm-8 col-md-6"
-    div class="panel panel-default"
-      div class="panel-heading"
-        h3 class="panel-title" Nouveau Calendrier
-      div class="panel-body"
-        = render 'form'
+div class="mt-8 overflow-x-auto"
+  table class="min-w-full divide-y divide-gray-300"
+    thead
+      tr
+        th scope="col" class="py-3.5 pr-3 text-left text-sm font-semibold text-gray-900" Saison
+        th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" Nom
+    tbody class="divide-y divide-gray-200"
+      = render @calendars

@@ -1,3 +1,4 @@
 tr
-  td = calendar.season.name
-  td = link_to calendar.name, edit_section_calendar_path(current_section, calendar)
+  td class="py-4 pr-3 text-sm whitespace-nowrap text-gray-500" = calendar.season.name
+  td class="px-3 py-4 text-sm font-medium text-gray-900"
+    = link_to calendar.name, edit_section_calendar_path(current_section, calendar), class: 'hover:text-indigo-600'

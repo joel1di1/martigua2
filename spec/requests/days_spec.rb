@@ -13,6 +13,21 @@ describe 'Days' do
     sign_in coach, scope: :user
   end
 
+  describe 'POST create from the calendar edit page' do
+    let(:calendar) { create(:calendar) }
+    let(:edit_calendar_path) { edit_section_calendar_path(section, calendar) }
+
+    it 'creates the day and redirects back to the calendar' do
+      expect do
+        post section_days_path(section),
+             params: { _redirect_url: edit_calendar_path,
+                       day: { name: 'J1', period_start_date: '2026-09-12', calendar_id: calendar.id } }
+      end.to change(calendar.days, :count).by(1)
+
+      expect(response.location).to start_with("http://www.example.com#{edit_calendar_path}?")
+    end
+  end
+
   describe 'PATCH update' do
     subject(:do_update) do
       patch section_day_path(section_id: section.to_param, id: day.id), params: { selection_hidden: true }

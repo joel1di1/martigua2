@@ -30,4 +30,25 @@ describe 'Calendars' do
     it { expect(response.body).to include(calendar.name) }
     it { expect(response.body).to include(day.name, I18n.l(day.period_start_date, locale: :fr)) }
   end
+
+  describe 'GET /sections/:section_id/calendars/:id/edit without days' do
+    let(:calendar) { create(:calendar) }
+
+    before { get edit_section_calendar_path(section, calendar) }
+
+    it { expect(response).to have_http_status(:success) }
+    it { expect(response.body).to include('Aucune journée dans ce calendrier.') }
+  end
+
+  describe 'POST /sections/:section_id/calendars' do
+    let(:season) { create(:season) }
+
+    it 'creates the calendar and redirects to the calendar list' do
+      expect do
+        post section_calendars_path(section), params: { calendar: { name: 'Coupe', season_id: season.id } }
+      end.to change(Calendar, :count).by(1)
+
+      expect(response).to redirect_to(section_calendars_path(section))
+    end
+  end
 end

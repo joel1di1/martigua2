@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AbsencesController < ApplicationController
+  include UserEditAuthorization
+
   before_action :set_user
   before_action :verify_can_edit_user, if: -> { @user }
   before_action :set_absence, only: %i[edit update destroy]

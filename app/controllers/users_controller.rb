@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  include UserEditAuthorization
+
   before_action :find_user_by_id, except: :index
   skip_before_action :verify_authenticity_token, only: %i[training_presences match_availabilities]
   before_action :verify_can_act_for_user, only: %i[training_presences match_availabilities]

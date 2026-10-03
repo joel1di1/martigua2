@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ContactEmailsController < ApplicationController
+  include UserEditAuthorization
+
   before_action :set_user
   before_action :verify_can_edit_user
   before_action :set_contact_email, only: %i[destroy resend_link]

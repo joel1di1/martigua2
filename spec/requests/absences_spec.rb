@@ -78,4 +78,78 @@ describe 'Absences' do
       end
     end
   end
+
+  describe 'permissions' do
+    let(:params) { { absence: { start_at: Time.zone.today, end_at: 1.week.from_now.to_date, name: 'Blessure' } } }
+
+    context 'when a plain member acts on a teammate through the section routes' do
+      before { sign_in create(:user, with_section: section), scope: :user }
+
+      it 'forbids new' do
+        get new_section_user_absence_path(section, player)
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      it 'forbids create' do
+        expect { post section_user_absences_path(section, player), params: }.not_to change(Absence, :count)
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      it 'forbids destroy' do
+        absence = create(:absence, user: player)
+        expect { delete section_user_absence_path(section, player, absence) }.not_to change(Absence, :count)
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'when a player manages own absences through the section routes' do
+      before { sign_in player, scope: :user }
+
+      it 'creates the absence' do
+        expect { post section_user_absences_path(section, player), params: }.to change(Absence, :count).by(1)
+        expect(response).to redirect_to(section_user_path(section, player))
+      end
+    end
+
+    context 'when the owner uses the sectionless routes' do
+      before { sign_in player, scope: :user }
+
+      it 'renders new' do
+        get new_user_absence_path(player)
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include(user_absences_path(player))
+      end
+
+      it 'creates the absence' do
+        expect { post user_absences_path(player), params: }.to change(player.absences, :count).by(1)
+        expect(response).to redirect_to(user_path(player))
+      end
+
+      it 'updates the absence' do
+        absence = create(:absence, user: player, name: 'Maladie')
+        patch user_absence_path(player, absence), params: params
+        expect(absence.reload.name).to eq('Blessure')
+        expect(response).to redirect_to(user_path(player))
+      end
+
+      it 'destroys the absence' do
+        absence = create(:absence, user: player)
+        expect { delete user_absence_path(player, absence) }.to change(Absence, :count).by(-1)
+        expect(response).to redirect_to(user_path(player))
+      end
+    end
+
+    context 'when another user uses the sectionless routes' do
+      it 'forbids a coach of the owner section, since no section is given' do
+        expect { post user_absences_path(player), params: }.not_to change(Absence, :count)
+        expect(response).to have_http_status(:forbidden)
+      end
+
+      it 'forbids edit' do
+        absence = create(:absence, user: player)
+        get edit_user_absence_path(player, absence)
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
 end

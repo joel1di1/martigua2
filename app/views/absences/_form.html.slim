@@ -1,4 +1,4 @@
-= simple_form_for([current_section, @user, @absence]) do |f|
+= simple_form_for([current_section, @user, @absence].compact) do |f|
   / name is a select input, with a list of predefined reasons MOTIVES
   = f.input :name, label: 'Motif', as: :select, collection: Absence::MOTIVES
   = f.input :comment, label: 'Commentaire', placeholder: 'Tendinite au poignet gauche / Tour du monde'

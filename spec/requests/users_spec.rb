@@ -43,10 +43,68 @@ describe 'Users' do
       get section_user_path(id: other_user.to_param, section_id: section.to_param)
       expect(response).to have_http_status(:not_found)
     end
+
+    context 'with an absence' do
+      let!(:absence) { create(:absence, user:) }
+
+      it 'links absences to the sectionless routes on the own profile without section' do
+        sign_in user, scope: :user
+        get user_path(user)
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include(new_user_absence_path(user))
+        expect(response.body).to include(edit_user_absence_path(user, absence))
+      end
+
+      it 'links absences to the section routes for a coach' do
+        get section_user_path(section, user)
+
+        expect(response.body).to include(new_section_user_absence_path(section, user))
+        expect(response.body).to include(edit_section_user_absence_path(section, user, absence))
+      end
+
+      it 'lists absences without edit links for a plain member viewing a teammate' do
+        teammate = create(:user, with_section: section)
+        sign_in teammate, scope: :user
+        get section_user_path(section, user)
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).not_to include('Ajouter une absence')
+        expect(response.body).not_to include(edit_section_user_absence_path(section, user, absence))
+        expect(response.body).not_to include(section_user_absence_path(section, user, absence))
+      end
+    end
   end
 
   describe 'GET edit' do
     before { sign_in user, scope: :user }
+
+    it 'shows own edit form without section, with absences management' do
+      get edit_user_path(user)
+
+      expect(response).to have_http_status(:success)
+      expect(response.body).to include(new_user_absence_path(user))
+    end
+
+    it 'is forbidden for a plain member on a teammate' do
+      teammate = create(:user, with_section: section)
+      get edit_section_user_path(section, teammate)
+
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it 'is forbidden on another user without section' do
+      get edit_user_path(create(:user, with_section: section))
+
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it 'succeeds for a coach of the section' do
+      sign_in create(:user, with_section_as_coach: section), scope: :user
+      get edit_section_user_path(section, user)
+
+      expect(response).to have_http_status(:success)
+    end
 
     it 'shows edit form' do
       get edit_section_user_path(id: user.to_param, section_id: section.to_param)
@@ -107,6 +165,18 @@ describe 'Users' do
 
       it 'redirect_to user path' do
         expect(response).to redirect_to(user_path(user))
+      end
+    end
+
+    context 'when a plain member updates a teammate' do
+      let(:teammate) { create(:user, with_section: section) }
+
+      it 'is forbidden and does not update the user' do
+        sign_in user, scope: :user
+        patch section_user_path(section, teammate), params: { user: new_attributes, player: 'player' }
+
+        expect(response).to have_http_status(:forbidden)
+        expect(teammate.reload.first_name).not_to eq(new_attributes[:first_name])
       end
     end
 

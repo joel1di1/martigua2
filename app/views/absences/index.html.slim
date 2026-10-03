@@ -4,11 +4,6 @@ div.w-full
 
   - content_for :title, "Absences"
 
-  - if @user.present?
-    div.flex.justify-between.items-center
-      h1.font-bold.text-4xl Absences
-      = link_to "New absence", new_absence_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium"
-
   #absences.min-w-full.mt-8.flow-root
     div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
       div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"

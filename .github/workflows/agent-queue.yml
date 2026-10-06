@@ -1,0 +1,52 @@
+name: 'Agent: queue rescue and GC'
+
+# Safety net for the session-starting workflows: serves sessions stuck in the self-hosted
+# environment's queue (lost lease, failed runner, session started from the Console), and
+# gives up on those rescued 3 times or queued for more than 24 h, telling their issue or PR.
+# See script/managed_agents/queue.py. GitHub may delay scheduled runs.
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    # Only the check: a rescued session can keep its sandbox job busy for hours.
+    concurrency:
+      group: agent-queue
+    permissions:
+      issues: write
+      pull-requests: write
+    outputs:
+      slots: ${{ steps.queue.outputs.slots }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v10.2.0
+
+      - name: Rescue and GC
+        id: queue
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_ENVIRONMENT_ID: ${{ vars.ENVIRONMENT_ID }}
+          ANTHROPIC_ENVIRONMENT_KEY: ${{ secrets.ANTHROPIC_ENVIRONMENT_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: uv run script/managed_agents/queue.py
+
+  sandbox:
+    needs: check
+    if: needs.check.outputs.slots != '' && needs.check.outputs.slots != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        slot: ${{ fromJSON(needs.check.outputs.slots) }}
+    permissions:
+      contents: read
+    uses: ./.github/workflows/agent-sandbox.yml
+    with:
+      wait: 60
+    secrets:
+      ANTHROPIC_ENVIRONMENT_KEY: ${{ secrets.ANTHROPIC_ENVIRONMENT_KEY }}
+      AGENT_GITHUB_TOKEN: ${{ secrets.AGENT_GITHUB_TOKEN }}

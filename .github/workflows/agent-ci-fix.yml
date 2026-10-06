@@ -1,4 +1,4 @@
-name: Agent CI fix
+name: 'Agent: CI fix'
 
 # When CI fails on an agent branch (agent/*) with an open PR, starts a session that fixes
 # it, with the tail of the failed jobs' logs in its first message. At most MAX_ATTEMPTS

@@ -1,8 +1,9 @@
-name: Agent sandbox
+name: 'Agent: sandbox (shared)'
 
 # Serves one Managed Agents session from the self-hosted environment's queue: prepares the
 # app like CI does, claims a session, then runs the tool-executing worker until the session
-# ends. Called by agent.yml (right after a session is created) and agent-dispatch.yml (sweep).
+# ends. Called by agent.yml and agent-ci-fix.yml (right after they create a session) and by
+# agent-queue.yml (rescue of stuck sessions).
 # The runner VM is the sandbox; it is thrown away with the job.
 
 on:

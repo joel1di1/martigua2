@@ -1,4 +1,4 @@
-name: Agent
+name: 'Agent: issue/PR command'
 
 # `/agent work` on an issue starts a Managed Agents session on it (refinement, or
 # implementation once the issue has the `good-to-dev` label). `/agent fix` on a pull

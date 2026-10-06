@@ -39,6 +39,7 @@ jobs:
           AGENT_ID: ${{ vars.AGENT_ID }}
           ENVIRONMENT_ID: ${{ vars.ENVIRONMENT_ID }}
           VAULT_ID: ${{ vars.VAULT_ID }}
+          WORKSPACE_ID: ${{ vars.WORKSPACE_ID }}
           NUMBER: ${{ github.event.issue.number }}
           IS_PR: ${{ github.event.issue.pull_request != null }}
         run: |

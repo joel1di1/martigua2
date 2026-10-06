@@ -8,9 +8,9 @@
 #   script/managed_agents/start_session.rb --pr 1250       # address feedback on PR #1250
 #   script/managed_agents/start_session.rb --message "Run bin/rspec, report, don't touch GitHub"
 #
-# Needs ANTHROPIC_API_KEY, AGENT_ID, ENVIRONMENT_ID, VAULT_ID (see config/managed_agents/setup.sh)
-# and the anthropic gem (gem install anthropic). Anthropic does not mount the repository on
-# self-hosted environments: the sandbox runner checks it out itself.
+# Needs ANTHROPIC_API_KEY, AGENT_ID, ENVIRONMENT_ID, VAULT_ID (see config/managed_agents/setup.sh),
+# WORKSPACE_ID for the Console link, and the anthropic gem (gem install anthropic). Anthropic does
+# not mount the repository on self-hosted environments: the sandbox runner checks it out itself.
 
 require 'anthropic'
 
@@ -46,4 +46,5 @@ session = client.beta.sessions.create(
 )
 
 puts "Session #{session.id} (#{session.status})"
-puts "Watch: https://platform.claude.com/workspaces/default/sessions/#{session.id}"
+# The session does not say which workspace it is in, and the Console has no link without one.
+puts "Watch: https://platform.claude.com/workspaces/#{ENV.fetch('WORKSPACE_ID', 'default')}/sessions/#{session.id}"

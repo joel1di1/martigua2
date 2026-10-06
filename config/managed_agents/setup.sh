@@ -37,6 +37,7 @@ gh label create to-review --color 5319e7 --description "Agent opened a PR, waiti
 gh variable set AGENT_ID --body "$AGENT_ID"
 gh variable set ENVIRONMENT_ID --body "$ENVIRONMENT_ID"
 gh variable set VAULT_ID --body "$VAULT_ID"
+gh variable set WORKSPACE_ID --body "$(ant profile get workspace_id)"
 gh secret set AGENT_GITHUB_TOKEN --body "$AGENT_GITHUB_TOKEN"
 cat <<EOF
 Now:

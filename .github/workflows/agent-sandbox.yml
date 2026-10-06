@@ -81,7 +81,7 @@ jobs:
           curl -fsSL "https://github.com/anthropics/anthropic-cli/releases/download/v1.38.0/ant_1.38.0_linux_amd64.tar.gz" \
             | sudo tar -xz -C /usr/local/bin ant
 
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.2.0
 
       - name: Claim a session
         id: claim

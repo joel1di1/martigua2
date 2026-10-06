@@ -1,0 +1,108 @@
+name: Agent CI fix
+
+# When CI fails on an agent branch (agent/*) with an open PR, starts a session that fixes
+# it, with the tail of the failed jobs' logs in its first message. At most MAX_ATTEMPTS
+# automatic attempts per PR; after that a human takes over (`/agent fix` still works).
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+concurrency:
+  group: agent-ci-fix-${{ github.event.workflow_run.head_branch }}
+
+env:
+  MAX_ATTEMPTS: 3
+  MARKER: '<!-- agent-ci-fix -->'
+
+jobs:
+  start:
+    if: >-
+      github.event.workflow_run.conclusion == 'failure' &&
+      startsWith(github.event.workflow_run.head_branch, 'agent/') &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      issues: write
+      pull-requests: write
+    outputs:
+      started: ${{ steps.start.outputs.started }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Find the PR and count previous attempts
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$pr" ]; then
+            echo "no open PR for $BRANCH"
+            exit 0
+          fi
+          attempts=$(gh pr view "$pr" --json comments --jq "[.comments[] | select(.body | contains(\"$MARKER\"))] | length")
+          echo "PR #$pr, $attempts previous attempt(s)"
+          echo "number=$pr" >> "$GITHUB_OUTPUT"
+          echo "attempts=$attempts" >> "$GITHUB_OUTPUT"
+
+      - name: Give up
+        if: steps.pr.outputs.number != '' && fromJSON(steps.pr.outputs.attempts) >= fromJSON(env.MAX_ATTEMPTS)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ steps.pr.outputs.number }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          gh pr comment "$PR" --body "🤖 CI is still red ($RUN_URL) after $MAX_ATTEMPTS automatic fix attempts; leaving it to a human. Comment \`/agent fix\` to send the agent again."
+
+      - name: Collect the failed logs
+        if: steps.pr.outputs.number != '' && fromJSON(steps.pr.outputs.attempts) < fromJSON(env.MAX_ATTEMPTS)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          # Lines look like "<job>\t<step>\t<timestamp> <text>": keep job and text.
+          gh run view "$RUN_ID" --log-failed \
+            | awk -F'\t' '{ sub(/^[0-9TZ:.-]+ /, "", $3); print $1 " | " $3 }' \
+            | tail -n 300 > failed.log
+          wc -l failed.log
+
+      - uses: ruby/setup-ruby@v1
+        if: steps.pr.outputs.number != '' && fromJSON(steps.pr.outputs.attempts) < fromJSON(env.MAX_ATTEMPTS)
+        with:
+          ruby-version: .ruby-version
+
+      - name: Start session
+        id: start
+        if: steps.pr.outputs.number != '' && fromJSON(steps.pr.outputs.attempts) < fromJSON(env.MAX_ATTEMPTS)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          AGENT_ID: ${{ vars.AGENT_ID }}
+          ENVIRONMENT_ID: ${{ vars.ENVIRONMENT_ID }}
+          VAULT_ID: ${{ vars.VAULT_ID }}
+          WORKSPACE_ID: ${{ vars.WORKSPACE_ID }}
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ steps.pr.outputs.number }}
+          ATTEMPTS: ${{ steps.pr.outputs.attempts }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          SANDBOX_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gem install anthropic --no-document
+          ruby script/managed_agents/start_session.rb --ci-fix "$PR" "$RUN_URL" failed.log | tee session.txt
+          gh pr comment "$PR" --body "$MARKER
+          🤖 CI failed ($RUN_URL). Fix attempt $((ATTEMPTS + 1))/$MAX_ATTEMPTS: $(grep -o 'https://[^ ]*' session.txt) (runner: $SANDBOX_URL)"
+          echo "started=true" >> "$GITHUB_OUTPUT"
+
+  sandbox:
+    needs: start
+    if: needs.start.outputs.started == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/agent-sandbox.yml
+    with:
+      wait: 300
+    secrets:
+      ANTHROPIC_ENVIRONMENT_KEY: ${{ secrets.ANTHROPIC_ENVIRONMENT_KEY }}
+      AGENT_GITHUB_TOKEN: ${{ secrets.AGENT_GITHUB_TOKEN }}

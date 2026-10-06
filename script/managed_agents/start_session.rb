@@ -6,6 +6,7 @@
 #
 #   script/managed_agents/start_session.rb 1234            # work on issue #1234
 #   script/managed_agents/start_session.rb --pr 1250       # address feedback on PR #1250
+#   script/managed_agents/start_session.rb --ci-fix 1250 <run-url> logs.txt  # fix the red CI of PR #1250
 #   script/managed_agents/start_session.rb --message "Run bin/rspec, report, don't touch GitHub"
 #
 # Needs ANTHROPIC_API_KEY, AGENT_ID, ENVIRONMENT_ID, VAULT_ID (see config/managed_agents/setup.sh),
@@ -26,13 +27,27 @@ when '--pr'
   text = "Address the feedback on PR ##{pr}"
   title = "martigua2 PR ##{pr}"
   metadata = { github_pr: pr.to_s }
+when '--ci-fix'
+  pr = Integer(ARGV[1])
+  run_url = ARGV.fetch(2)
+  logs = File.read(ARGV.fetch(3))
+  text = <<~TEXT
+    Fix the failing CI on PR ##{pr}
+    Failed run: #{run_url}
+    Tail of the failed jobs' logs:
+    ```
+    #{logs}
+    ```
+  TEXT
+  title = "martigua2 PR ##{pr} CI fix"
+  metadata = { github_pr: pr.to_s, ci_run: run_url }
 else
   issue = Integer(ARGV[0])
   text = "Work on issue ##{issue}"
   title = "martigua2 issue ##{issue}"
   metadata = { github_issue: issue.to_s }
 end
-abort 'usage: start_session.rb <issue-number> | --pr <pr-number> | --message "<text>"' if text.to_s.empty?
+abort 'usage: start_session.rb <issue-number> | --pr <pr> | --ci-fix <pr> <run-url> <log-file> | --message "<text>"' if text.to_s.empty?
 
 client = Anthropic::Client.new
 session = client.beta.sessions.create(

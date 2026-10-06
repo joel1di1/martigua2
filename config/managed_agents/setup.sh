@@ -6,17 +6,18 @@
 #
 # To change a prompt later, don't rerun this: edit the YAML, then
 #   ant beta:agents update --agent-id <id> --version <current> < config/managed_agents/<file>.agent.yaml
+# After updating the reviewer, also update the issue lead with
+#   --multiagent "{type: coordinator, agents: [{type: agent, id: <reviewer id>, version: <new version>}]}"
+# since its roster stays pinned to the reviewer version it was saved with.
 set -euo pipefail
 cd "$(dirname "$0")"
 
 : "${AGENT_GITHUB_TOKEN:?export AGENT_GITHUB_TOKEN=<fine-grained PAT> first}"
 
 ENVIRONMENT_ID=$(ant beta:environments create < martigua.environment.yaml --transform id -r)
-ARCHITECT_ID=$(ant beta:agents create < architect.agent.yaml --transform id -r)
-DEVELOPER_ID=$(ant beta:agents create < developer.agent.yaml --transform id -r)
 REVIEWER_ID=$(ant beta:agents create < reviewer.agent.yaml --transform id -r)
 AGENT_ID=$(ant beta:agents create < issue-lead.agent.yaml \
-  --multiagent "{type: coordinator, agents: [$ARCHITECT_ID, $DEVELOPER_ID, $REVIEWER_ID]}" \
+  --multiagent "{type: coordinator, agents: [$REVIEWER_ID]}" \
   --transform id -r)
 
 VAULT_ID=$(ant beta:vaults create --display-name "martigua2 agents" --transform id -r)
@@ -50,5 +51,5 @@ cat <<EOF
 export AGENT_ID=$AGENT_ID
 export ENVIRONMENT_ID=$ENVIRONMENT_ID
 export VAULT_ID=$VAULT_ID
-# architect=$ARCHITECT_ID developer=$DEVELOPER_ID reviewer=$REVIEWER_ID
+# reviewer=$REVIEWER_ID
 EOF

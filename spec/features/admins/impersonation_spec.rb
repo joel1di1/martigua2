@@ -40,8 +40,9 @@ describe 'Admin impersonation', :devise, :js do
 
     switch_to(player)
 
-    expect(page).to have_css '#current-user-email', text: player.email
-    expect(page).to have_css '#impersonation-badge', text: 'Impersonation'
+    expect(page).to have_css '#current-user-email', exact_text: "Connecté en tant que #{player.email}",
+                                                    normalize_ws: true
+    expect(page).to have_css '#impersonation-badge', text: 'Connecté en tant que'
   end
 
   it 'shows readable, name-sorted options' do
@@ -62,7 +63,7 @@ describe 'Admin impersonation', :devise, :js do
     signin_user(admin, close_notice: true)
     open_user_menu(admin)
     switch_to(player)
-    expect(page).to have_css '#impersonation-badge', text: 'Impersonation'
+    expect(page).to have_css '#impersonation-badge', text: 'Connecté en tant que'
 
     open_user_menu(player)
     # a GET that changes the session must not be fired by Turbo on hover

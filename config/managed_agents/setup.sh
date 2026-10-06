@@ -38,7 +38,11 @@ gh variable set AGENT_ID --body "$AGENT_ID"
 gh variable set ENVIRONMENT_ID --body "$ENVIRONMENT_ID"
 gh variable set VAULT_ID --body "$VAULT_ID"
 gh secret set AGENT_GITHUB_TOKEN --body "$AGENT_GITHUB_TOKEN"
-echo "Now run: gh secret set ANTHROPIC_API_KEY   (paste your platform API key)"
+cat <<EOF
+Now:
+  gh secret set ANTHROPIC_API_KEY            (paste your platform API key)
+  gh secret set ANTHROPIC_ENVIRONMENT_KEY    (Console > Environments > martigua2 > Generate environment key)
+EOF
 
 cat <<EOF
 

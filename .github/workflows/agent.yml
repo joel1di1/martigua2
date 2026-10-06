@@ -1,26 +1,28 @@
 name: Agent
 
-# Comment `/agent work` on an issue to start a Managed Agents session on it
-# (refinement, or implementation once the issue has the `good-to-dev` label).
-# See config/managed_agents/.
+# `/agent work` on an issue starts a Managed Agents session on it (refinement, or
+# implementation once the issue has the `good-to-dev` label). `/agent fix` on a pull
+# request starts a session that addresses the feedback on it. The session's tools run in
+# this workflow's runner (agent-sandbox.yml). See config/managed_agents/.
 
 on:
   issue_comment:
     types: [created]
 
 concurrency:
-  group: agent-issue-${{ github.event.issue.number }}
+  group: agent-${{ github.event.issue.number }}
 
 jobs:
   start:
-    # Public repo: only the owner can spend agent budget. Issues only, not PR comments.
+    # Public repo: only the owner can spend agent budget.
     if: >-
-      github.event.issue.pull_request == null &&
-      startsWith(github.event.comment.body, '/agent work') &&
-      github.event.comment.author_association == 'OWNER'
+      github.event.comment.author_association == 'OWNER' &&
+      ((github.event.issue.pull_request == null && startsWith(github.event.comment.body, '/agent work')) ||
+       (github.event.issue.pull_request != null && startsWith(github.event.comment.body, '/agent fix')))
     runs-on: ubuntu-latest
     permissions:
       issues: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v7
 
@@ -34,15 +36,33 @@ jobs:
       - name: Start session
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          AGENT_GITHUB_TOKEN: ${{ secrets.AGENT_GITHUB_TOKEN }}
           AGENT_ID: ${{ vars.AGENT_ID }}
           ENVIRONMENT_ID: ${{ vars.ENVIRONMENT_ID }}
           VAULT_ID: ${{ vars.VAULT_ID }}
+          NUMBER: ${{ github.event.issue.number }}
+          IS_PR: ${{ github.event.issue.pull_request != null }}
         run: |
-          ruby script/managed_agents/start_session.rb "${{ github.event.issue.number }}" | tee session.txt
+          if [ "$IS_PR" = "true" ]; then
+            ruby script/managed_agents/start_session.rb --pr "$NUMBER" | tee session.txt
+          else
+            ruby script/managed_agents/start_session.rb "$NUMBER" | tee session.txt
+          fi
 
       - name: Acknowledge
         env:
           GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          gh issue comment "${{ github.event.issue.number }}" --body "🤖 Agent session started: $(grep -o 'https://[^ ]*' session.txt)"
+          gh issue comment "$NUMBER" --body "🤖 Agent session started: $(grep -o 'https://[^ ]*' session.txt) (runner: $RUN_URL)"
+
+  sandbox:
+    needs: start
+    permissions:
+      contents: read
+    uses: ./.github/workflows/agent-sandbox.yml
+    with:
+      wait: 300
+    secrets:
+      ANTHROPIC_ENVIRONMENT_KEY: ${{ secrets.ANTHROPIC_ENVIRONMENT_KEY }}
+      AGENT_GITHUB_TOKEN: ${{ secrets.AGENT_GITHUB_TOKEN }}

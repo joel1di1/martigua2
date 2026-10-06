@@ -1,5 +1,7 @@
+# Sessions' tools run in GitHub Actions runners (.github/workflows/agent-sandbox.yml).
+# Generate the environment key in the Console (Workspace > Environments > martigua2 >
+# Generate environment key), then:
+#   gh secret set ANTHROPIC_ENVIRONMENT_KEY
 name: martigua2
 config:
-  type: cloud
-  networking:
-    type: unrestricted
+  type: self_hosted

@@ -1,0 +1,104 @@
+name: Agent sandbox
+
+# Serves one Managed Agents session from the self-hosted environment's queue: prepares the
+# app like CI does, claims a session, then runs the tool-executing worker until the session
+# ends. Called by agent.yml (right after a session is created) and agent-dispatch.yml (sweep).
+# The runner VM is the sandbox; it is thrown away with the job.
+
+on:
+  workflow_call:
+    inputs:
+      wait:
+        description: Seconds to wait for a session to show up in the queue
+        type: number
+        default: 0
+    secrets:
+      ANTHROPIC_ENVIRONMENT_KEY:
+        required: true
+      AGENT_GITHUB_TOKEN:
+        required: true
+
+jobs:
+  serve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: read
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 54321:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      # The agents' prompts and the worker use /workspace, as on Anthropic's sandboxes.
+      - name: Create /workspace
+        run: |
+          sudo mkdir -p /workspace
+          sudo chown "$USER" /workspace
+          ln -s "$GITHUB_WORKSPACE" /workspace/martigua2
+
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Pushes made with GITHUB_TOKEN would not trigger CI on the agent's branches.
+      - name: Configure git
+        env:
+          AGENT_GITHUB_TOKEN: ${{ secrets.AGENT_GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "martigua2 agent"
+          git config --global user.email "agent@martigua2.invalid"
+          git config --global credential.helper store
+          printf 'https://x-access-token:%s@github.com\n' "$AGENT_GITHUB_TOKEN" > ~/.git-credentials
+          chmod 600 ~/.git-credentials
+
+      - name: Install libvips
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libvips-dev
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Prepare the app
+        run: |
+          bin/rails tailwindcss:build
+          bin/rails db:prepare
+          env RAILS_ENV=test bin/rails db:prepare
+          echo ok > /workspace/setup.status
+
+      - name: Install ant
+        run: |
+          curl -fsSL "https://github.com/anthropics/anthropic-cli/releases/download/v1.38.0/ant_1.38.0_linux_amd64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin ant
+
+      - uses: astral-sh/setup-uv@v10
+
+      - name: Claim a session
+        id: claim
+        env:
+          ANTHROPIC_ENVIRONMENT_ID: ${{ vars.ENVIRONMENT_ID }}
+          ANTHROPIC_ENVIRONMENT_KEY: ${{ secrets.ANTHROPIC_ENVIRONMENT_KEY }}
+        run: uv run script/managed_agents/claim.py --secret-file "$RUNNER_TEMP/work-secret" --wait "${{ inputs.wait }}"
+
+      # Only the work secret (scoped to this session) reaches the agent's environment.
+      - name: Run the session
+        if: steps.claim.outputs.found == 'true'
+        env:
+          ANTHROPIC_SESSION_ID: ${{ steps.claim.outputs.session_id }}
+          ANTHROPIC_WORK_ID: ${{ steps.claim.outputs.work_id }}
+          ANTHROPIC_ENVIRONMENT_ID: ${{ steps.claim.outputs.environment_id }}
+        run: |
+          ant beta:worker run \
+            --workdir /workspace \
+            --work-secret-file "$RUNNER_TEMP/work-secret" \
+            --max-idle 5m

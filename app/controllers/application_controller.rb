@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   include TokenAuthentication
+  include Impersonation
 
   around_action :log_requests
 

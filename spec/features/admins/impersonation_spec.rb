@@ -11,7 +11,12 @@ describe 'Admin impersonation', :devise, :js do
     create(:user, email: 'joel1di1@gmail.com', first_name: 'alice', last_name: 'admin', nickname: nil,
                   with_section: section)
   end
-  let!(:player) { create(:user, first_name: 'jean', last_name: 'dupont', nickname: nil, with_section: section) }
+  # the email is fixed and sorts before the admin's one: ordering by email and ordering by name
+  # give opposite results, so the "name-sorted" example really exercises available_users.
+  let!(:player) do
+    create(:user, first_name: 'jean', last_name: 'dupont', nickname: nil, email: 'aaa@example.com',
+                  with_section: section)
+  end
 
   def open_user_menu(user)
     click_on user.email
@@ -50,6 +55,8 @@ describe 'Admin impersonation', :devise, :js do
     labels = all('#switch-user-widget .ts-dropdown .option').map(&:text)
 
     expect(labels).to eq ["Alice Admin (#{admin.email})", "Jean Dupont (#{player.email})"]
+    expect(page).to have_no_css '#switch-user-widget .optgroup-header'
+    expect(page).to have_no_css '#scope_identifier optgroup', visible: :all
   end
 
   it 'switches back to the admin account without signing out' do
@@ -59,6 +66,8 @@ describe 'Admin impersonation', :devise, :js do
     expect(page).to have_css '#impersonation-badge'
 
     open_user_menu(player)
+    # a GET that changes the session must not be fired by Turbo on hover
+    expect(page).to have_css '#switch-user-back[data-turbo-prefetch="false"]'
     click_on "Revenir à mon compte (#{admin.email})"
 
     expect(page).to have_text admin.email

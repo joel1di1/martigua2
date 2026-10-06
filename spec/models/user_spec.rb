@@ -161,6 +161,18 @@ describe User do
 
       expect(user.full_name_with_email).to eq 'ghost@example.com'
     end
+
+    it 'falls back to the email when only the last name is set' do
+      user = create(:user, first_name: nil, last_name: 'dupont', email: 'ghost@example.com')
+
+      expect(user.full_name_with_email).to eq 'ghost@example.com'
+    end
+
+    it 'falls back to the email when only the first name is set' do
+      user = create(:user, first_name: 'jean', last_name: nil, email: 'ghost@example.com')
+
+      expect(user.full_name_with_email).to eq 'ghost@example.com'
+    end
   end
 
   describe '#has_only_one_section?' do

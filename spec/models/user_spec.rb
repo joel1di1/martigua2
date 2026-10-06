@@ -143,6 +143,26 @@ describe User do
     end
   end
 
+  describe '#full_name_with_email' do
+    it 'returns the full name and the email' do
+      user = create(:user, first_name: 'jean', last_name: 'dupont', nickname: nil, email: 'jean@example.com')
+
+      expect(user.full_name_with_email).to eq 'Jean Dupont (jean@example.com)'
+    end
+
+    it 'includes the nickname, like full_name does' do
+      user = create(:user, first_name: 'jean', last_name: 'dupont', nickname: 'Jojo', email: 'jean@example.com')
+
+      expect(user.full_name_with_email).to eq 'Jean Dupont - Jojo (jean@example.com)'
+    end
+
+    it 'falls back to the email when the name is incomplete' do
+      user = create(:user, first_name: nil, last_name: nil, email: 'ghost@example.com')
+
+      expect(user.full_name_with_email).to eq 'ghost@example.com'
+    end
+  end
+
   describe '#has_only_one_section?' do
     subject { user.has_only_one_section? }
 

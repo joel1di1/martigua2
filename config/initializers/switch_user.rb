@@ -7,7 +7,7 @@ SwitchUser.setup do |config|
   # available_users is a hash,
   # key is the model name of user (:user, :admin, or any name you use),
   # value is a block that return the users that can be switched.
-  config.available_users = { user: -> { User.order(:email) } }
+  config.available_users = { user: -> { User.order(:last_name, :first_name) } }
 
   # available_users_identifiers is a hash,
   # keys in this hash should match a key in the available_users hash
@@ -20,7 +20,8 @@ SwitchUser.setup do |config|
   # available_users_names is a hash,
   # keys in this hash should match a key in the available_users hash
   # value is the column name which will be displayed in select box
-  config.available_users_names = { user: :email }
+  # (SwitchUser::DataSource::Record#label does `user.send(name)`: a lambda is not supported)
+  config.available_users_names = { user: :full_name_with_email }
 
   # controller_guard is a block,
   # if it returns true, the request will continue,

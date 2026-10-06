@@ -47,7 +47,9 @@
               span.sr-only Open user menu
               span.text-gray-300
                 = current_user.email
-                span
+                - if impersonating?
+                  span id="impersonation-badge" class="ml-2 inline-flex items-center rounded-full bg-amber-400 px-2 py-0.5 text-xs font-semibold text-gray-900" title="Compte d'origine : #{impersonation_original_user.email}"
+                    | Impersonation
           .absolute.right-0.z-10.mt-2.origin-top-right.rounded-md.bg-white.py-1.shadow-lg.ring-1.ring-black.ring-opacity-5.focus:outline-hidden.hidden aria-labelledby="user-menu-button" aria-orientation="vertical" data-dropdown-target="menu" role="menu" tabindex="-1"
             /! Active: "bg-gray-100", Not Active: ""
             - if current_section

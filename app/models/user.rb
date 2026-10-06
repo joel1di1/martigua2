@@ -89,6 +89,15 @@ class User < ApplicationRecord
     full_name
   end
 
+  # Label used by the switch_user impersonation widget (see config/initializers/switch_user.rb).
+  # SwitchUser::DataSource::Record#label calls `user.send(name)`, so this has to be a real method.
+  # first_name / last_name are nullable, and full_name would raise on them: fall back to the email.
+  def full_name_with_email
+    return email if first_name.blank? || last_name.blank?
+
+    "#{full_name} (#{email})"
+  end
+
   def short_name
     nickname.presence || "#{first_name.capitalize} #{last_name.capitalize}"
   end

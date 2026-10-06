@@ -1,0 +1,28 @@
+/ Overrides SwitchUser::Engine's app/views/switch_user/_widget.html.erb.
+/ Locals given by SwitchUserHelper#switch_user_select: option_tags, classes, styles.
+/ option_tags is rebuilt from the same data source to drop the gem's "User" optgroup header.
+/ The current user stays pre-selected: never add a blank option, a blank scope_identifier
+/ makes the gem call provider.logout_all and signs the admin out.
+- original_user = impersonation_original_user
+- user_options = options_for_select(SwitchUser.all_users.map { |record| [record.label, record.scope_id] }, "user_#{current_user.id}")
+
+div id="switch-user-widget" class="border-t border-gray-200 px-4 py-2"
+  = form_with url: switch_user_path, method: :get, data: { controller: "auto-submit", auto_submit_delay_value: 0 } do
+    / No impersonation in progress: remember the current account so we can come back to it.
+    / While impersonating, remember is not sent, so the original admin is never overwritten.
+    - if original_user.blank?
+      = hidden_field_tag :remember, true
+    = label_tag :scope_identifier, "Se connecter en tant que", class: "block text-xs font-medium text-gray-500"
+    = select_tag :scope_identifier, user_options,
+      class: ["mt-1 block w-full min-w-56 rounded-md border-gray-300 text-sm text-gray-700 focus:border-indigo-500 focus:ring-indigo-500", classes],
+      style: styles,
+      data: { controller: "ts--select", action: "auto-submit#submit" }
+
+  - if original_user
+    / turbo_prefetch is disabled: this GET changes the session, a hover must not trigger it.
+    = link_to "Revenir à mon compte (#{original_user.email})",
+      switch_user_path(scope_identifier: "user_#{original_user.id}", remember: false),
+      id: "switch-user-back",
+      class: "mt-2 block rounded-md bg-gray-100 px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-200",
+      role: "menuitem", tabindex: "-1",
+      data: { turbo_prefetch: false }

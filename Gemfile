@@ -32,6 +32,7 @@ gem 'propshaft'
 gem 'puma'
 gem 'rack-attack'
 gem 'rack-cors', require: 'rack/cors'
+gem 'rails-i18n'
 gem 'rails_ping'
 gem 'scout_apm'
 gem 'sentry-rails'
@@ -68,6 +69,7 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'foreman', require: false
+  gem 'i18n-tasks', require: false
   gem 'parallel_tests'
   gem 'rspec-rails'
   gem 'rubocop', require: false

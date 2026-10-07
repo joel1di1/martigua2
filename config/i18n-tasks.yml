@@ -1,0 +1,55 @@
+# i18n-tasks finds missing, unused and non-normalized translations: https://github.com/glebm/i18n-tasks
+# Checked in CI (`Tests` job): `i18n-tasks missing`, `i18n-tasks unused`, `i18n-tasks check-normalized`.
+# Fix formatting with `i18n-tasks normalize`. YAML comments in locale files are not kept by
+# `normalize`, so locale files must not have any (`check-normalized` would fail).
+
+base_locale: fr
+# The app is French-only: gems ship their own English translations.
+locales: [fr]
+
+data:
+  read:
+    - config/locales/%{locale}.yml
+    - config/locales/*.%{locale}.yml
+  # Keeps each scope in its own file, matched from top to bottom.
+  write:
+    - ['activerecord.*', 'config/locales/activerecord.%{locale}.yml']
+    - ['devise.*', 'config/locales/devise.%{locale}.yml']
+    - ['simple_form.*', 'config/locales/simple_form.%{locale}.yml']
+    - ['views.pagination.*', 'config/locales/kaminari.%{locale}.yml']
+    - config/locales/%{locale}.yml
+  # French translations shipped by gems: a key used in the app and only provided by a gem is
+  # not reported as missing. They are never reported as unused and never written to.
+  external:
+    - "<%= Gem.loaded_specs['rails-i18n'].full_gem_path %>/rails/locale/%{locale}.yml"
+    - "<%= Gem.loaded_specs['devise-i18n'].full_gem_path %>/rails/locales/%{locale}.yml"
+  yaml:
+    write:
+      # do not wrap lines at 80 characters
+      line_width: -1
+
+search:
+  paths:
+    - app/
+    - lib/
+  exclude:
+    - app/assets/images
+    - app/assets/fonts
+    - app/assets/videos
+    - app/assets/builds
+
+ignore_missing:
+  # Only the plural is overridden (devise-i18n says "Utilisateur" for it too): `one` comes from devise-i18n.
+  # spec/models/user_spec.rb checks both forms.
+  - 'activerecord.models.user'
+
+# Keys read by Rails and gems without a literal `t('...')` call in the app.
+ignore_unused:
+  # Model names and attribute labels (`model_name.human`, `human_attribute_name`, form labels, error messages).
+  - 'activerecord.*'
+  # Read by Simple Form helpers (`f.error_notification`, required mark, booleans).
+  - 'simple_form.*'
+  # Raised by Devise when the email is unknown (`invalid` is also used by SendsLoginLinks).
+  - 'devise.failure.not_found_in_database'
+  # Used dynamically: t("positions.#{position}").
+  - 'positions.*'

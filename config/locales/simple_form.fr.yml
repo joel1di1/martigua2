@@ -1,5 +1,10 @@
+---
 fr:
   simple_form:
-    labels:
-      user:
-        username: 'User name'
+    error_notification:
+      default_message: 'Veuillez corriger les erreurs ci-dessous :'
+    'no': Non
+    required:
+      mark: "*"
+      text: obligatoire
+    'yes': Oui

@@ -1,0 +1,8 @@
+---
+fr:
+  views:
+    pagination:
+      first: "« Première"
+      last: Dernière »
+      next: Suivante ›
+      previous: "‹ Précédente"

@@ -246,10 +246,24 @@ GEM
     hashery (2.1.2)
     heapy (0.2.0)
       thor
+    highline (3.1.2)
+      reline
     httpclient (2.9.0)
       mutex_m
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
+    i18n-tasks (1.1.2)
+      activesupport (>= 4.0.2)
+      ast (>= 2.1.0)
+      erubi
+      highline (>= 3.0.0)
+      i18n
+      parser (>= 3.2.2.1)
+      prism
+      rails-i18n
+      rainbow (>= 2.2.2, < 4.0)
+      ruby-progressbar (~> 1.8, >= 1.8.1)
+      terminal-table (>= 1.5.1)
     icalendar (2.12.5)
       base64
       ice_cube (~> 0.16)
@@ -585,6 +599,8 @@ GEM
     tailwindcss-ruby (4.3.3-arm64-darwin)
     tailwindcss-ruby (4.3.3-x86_64-linux-gnu)
     temple (0.10.7)
+    terminal-table (4.0.0)
+      unicode-display_width (>= 1.1.1, < 4)
     thor (1.5.0)
     tilt (2.9.0)
     timecop (0.9.11)
@@ -651,6 +667,7 @@ DEPENDENCIES
   faker
   foreman
   google-api-client
+  i18n-tasks
   icalendar
   image_processing (~> 2.0)
   importmap-rails
@@ -672,6 +689,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (~> 8.1)
   rails-controller-testing
+  rails-i18n
   rails_ping
   rspec-its
   rspec-rails

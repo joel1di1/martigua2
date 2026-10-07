@@ -2,7 +2,5 @@
 fr:
   devise:
     failure:
-      # Same wording whether or not the address is known: relatives and accounts without a
-      # password get a link mailed instead (see SendsLoginLinks), and the screen must not tell.
       invalid: "%{authentication_keys} ou mot de passe incorrect. Parent d'un joueur, ou pas de mot de passe ? Si cette adresse est celle d'un proche ou d'un compte sans mot de passe, un lien de connexion vient de lui être envoyé."
       not_found_in_database: "%{authentication_keys} ou mot de passe incorrect. Parent d'un joueur, ou pas de mot de passe ? Si cette adresse est celle d'un proche ou d'un compte sans mot de passe, un lien de connexion vient de lui être envoyé."

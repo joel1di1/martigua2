@@ -1,10 +1,13 @@
-h2.text-4xl
-  'Entrainement du
-  = @training.start_datetime.strftime("%-d/%-m/%Y %-HH%-M")
+h1 class="text-xl font-semibold text-gray-900"
+  'Valider les présences
+h2 class="text-lg text-gray-900"
+  = link_to section_training_path(current_section, @training), class: 'hover:text-indigo-900 underline' do
+    'Entrainement du
+    = l @training.start_datetime, format: :short
+p class="my-3 text-sm text-gray-600"
+  'Cochez les joueurs réellement présents. La réponse donnée par le joueur n'est pas modifiée.
 
-- players_and_color = [[@training.presents.sort_by(&:full_name), :green], [@training.not_presents.sort_by(&:full_name), :red], [@training.presence_not_set.sort_by(&:full_name), :yellow]]
-
-div.w-full
-  - players_and_color.each do |players, color|
-    - players.each do |player|
-      = render partial: 'training_presences/show', locals: { training: @training, player: player, color: color }
+div class="w-full"
+  - [@training.presents, @training.not_presents, @training.presence_not_set].each do |players|
+    - players.sort_by(&:full_name).each do |player|
+      = render partial: 'training_presences/show', locals: { training: @training, player: player, presence: @presences_by_user[player.id] }

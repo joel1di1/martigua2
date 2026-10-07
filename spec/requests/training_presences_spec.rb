@@ -33,6 +33,15 @@ describe 'TrainingPresences' do
       end
     end
 
+    context 'when signed in as player' do
+      before { sign_in player, scope: :user }
+
+      it 'is forbidden' do
+        do_request
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
     context 'when the user does not belong to the current section' do
       let(:other_player) { create(:user, with_section: create(:section)) }
 
@@ -75,6 +84,39 @@ describe 'TrainingPresences' do
              params: { present: 'true' }
         expect(response).to have_http_status(:not_found)
         expect(other_player.training_presences.find_by(training:)).to be_nil
+      end
+    end
+
+    context 'when signed in as club admin' do
+      before { sign_in create(:user, with_club_as_admin: section.club), scope: :user }
+
+      it 'confirms the presence' do
+        do_request
+        expect(player.training_presences.find_by(training:).presence_validated).to be(true)
+      end
+    end
+
+    context 'when signed in as super admin' do
+      before { sign_in create(:user, super_admin: true), scope: :user }
+
+      it 'confirms the presence' do
+        do_request
+        expect(player.training_presences.find_by(training:).presence_validated).to be(true)
+      end
+    end
+
+    context 'when signed in as player' do
+      before { sign_in player, scope: :user }
+
+      it 'is forbidden and does not change an existing presence' do
+        presence = create(:training_presence, user: player, training:, is_present: false)
+        do_request
+        expect(response).to have_http_status(:forbidden)
+        expect(presence.reload.presence_validated).to be_nil
+      end
+
+      it 'does not create any presence' do
+        expect { do_request }.not_to change(TrainingPresence, :count)
       end
     end
   end

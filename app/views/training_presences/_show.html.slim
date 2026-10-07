@@ -1,8 +1,14 @@
 = turbo_frame_tag "presence-player-#{player.id}"
-  .flex.flex-row.w-full class="bg-#{color}-200 py-5 px-4 inline-block border-dashed border-b-2 border-grey-600"
-    .flex-auto
+  div class="flex flex-row items-center w-full py-5 px-4 border-dashed border-b-2 border-grey-600 #{declared_presence_background(presence)}"
+    div class="flex-auto"
       label for="input-checkbox-player-#{player.id}"
         = player.full_name
+      div class="flex flex-row flex-wrap items-center gap-2 text-sm text-gray-700"
+        span = declared_presence_label(presence)
+        - if presence&.presence_validated.nil?
+          span class="text-gray-500" Non validé
+        - else
+          span class="inline-flex items-center rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-800" Validé par le coach
     div
       = simple_form_for player, url: section_user_training_confirm_presence_path(current_section, player, training), method: :post, html: {'data-controller' => 'auto-submit'} do |f|
-        input type='checkbox' class='auto-submit' name='present' value='present' checked=player.was_present?(training) id="input-checkbox-player-#{player.id}" style="width: 30px; height: 30px;" data-action="auto-submit#submit"
+        input type='checkbox' class='auto-submit' name='present' value='present' checked=player.was_present?(training, { [player.id, training.id] => presence }) id="input-checkbox-player-#{player.id}" style="width: 30px; height: 30px;" data-action="auto-submit#submit"

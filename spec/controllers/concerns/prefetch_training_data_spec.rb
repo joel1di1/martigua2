@@ -30,4 +30,16 @@ RSpec.describe PrefetchTrainingData do
   it { expect(controller.nb_presents[training]).to eq 1 }
   it { expect(controller.nb_not_presents[training]).to eq 1 }
   it { expect(controller.nb_no_response[training]).to eq 1 }
+
+  context 'when the coach validated the presences' do
+    before do
+      player.confirm_no_presence!(training)
+      create(:user, with_section: section).confirm_presence!(training)
+      controller.add_training_prefetch_data([training])
+    end
+
+    it { expect(controller.nb_presents[training]).to eq 1 }
+    it { expect(controller.nb_not_presents[training]).to eq 2 }
+    it { expect(controller.nb_no_response[training]).to eq 1 }
+  end
 end

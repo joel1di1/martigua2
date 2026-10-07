@@ -36,7 +36,7 @@ class Training < ApplicationRecord
   end
 
   def presents
-    member_presences.where(is_present: true).map(&:user)
+    member_presences.effectively_present.map(&:user)
   end
 
   def nb_presents
@@ -44,7 +44,7 @@ class Training < ApplicationRecord
   end
 
   def not_presents
-    member_presences.where(is_present: false).map(&:user)
+    member_presences.effectively_absent.map(&:user)
   end
 
   def nb_not_presents

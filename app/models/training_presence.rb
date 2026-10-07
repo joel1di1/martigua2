@@ -16,6 +16,14 @@ class TrainingPresence < ApplicationRecord
   scope :members_of_training_groups, -> { where(GROUP_MEMBER_SQL) }
   scope :non_members_of_training_groups, -> { where.not(GROUP_MEMBER_SQL) }
 
+  # The coach validation, when set, overrides the answer given by the player.
+  scope :effectively_present, lambda {
+    where(presence_validated: true).or(where(presence_validated: nil, is_present: true))
+  }
+  scope :effectively_absent, lambda {
+    where(presence_validated: false).or(where(presence_validated: nil, is_present: false))
+  }
+
   # Answers of a user who is no longer in any group of the given upcoming trainings.
   def self.purge_future_non_member(user, trainings)
     upcoming = trainings.where(start_datetime: Time.current..).reorder(nil).select(:id)

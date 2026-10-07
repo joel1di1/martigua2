@@ -3,12 +3,15 @@
 describe 'Add Match', :devise, :js do
   let(:coach) { create(:coach) }
   let(:team) { coach.sections.first.teams.sample }
-  let(:adversary_team_name) { Faker::Team.name }
-  let(:location_name) { Faker::Address.street_name }
+  # Faker can generate names with consecutive spaces (e.g. "Rang Leo  Hamon"),
+  # which the browser collapses in rendered text, so text matchers would miss
+  # them: squish the generated names.
+  let(:adversary_team_name) { Faker::Team.name.squish }
+  let(:location_name) { Faker::Address.street_name.squish }
   let(:location_address) { Faker::Address.full_address }
-  let(:day_name) { Faker::Company.name }
-  let(:championship_name) { Faker::Company.name }
-  let(:calendar_name) { Faker::Company.name }
+  let(:day_name) { Faker::Company.name.squish }
+  let(:championship_name) { Faker::Company.name.squish }
+  let(:calendar_name) { Faker::Company.name.squish }
 
   before { signin_user coach }
 

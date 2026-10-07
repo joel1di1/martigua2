@@ -38,17 +38,20 @@ def age(timestamp: str) -> timedelta:
     )
 
 
+RETRY_LABELS = {"refine": "agent:refine", "implement": "agent:dev"}
+
+
 def tell_github(metadata: dict[str, str], reason: str) -> None:
     if number := metadata.get("github_pr"):
-        retry = "`/agent fix`"
+        retry = "`agent:dev`"
     elif number := metadata.get("github_issue"):
-        retry = "`/agent work`"
+        retry = f"`{RETRY_LABELS.get(metadata.get('phase', ''), 'agent:refine')}`"
     else:
         return
-    body = f"🤖 Gave up on this agent session: {reason}. Comment {retry} to start a new one."
+    body = f"🤖 Gave up on this agent session: {reason}. Add the {retry} label to start a new one."
     subprocess.run(["gh", "issue", "comment", number, "--body", body], check=False)
     subprocess.run(
-        ["gh", "issue", "edit", number, "--remove-label", "agent-working"], check=False
+        ["script/managed_agents/set_status.sh", number, "agent:stuck"], check=False
     )
 
 

@@ -4,8 +4,9 @@
 # Starts a Managed Agents session on the self-hosted environment and exits. The session
 # waits in the queue until .github/workflows/agent-sandbox.yml claims it and runs its tools.
 #
-#   script/managed_agents/start_session.rb 1234            # work on issue #1234
-#   script/managed_agents/start_session.rb --pr 1250       # address feedback on PR #1250
+#   script/managed_agents/start_session.rb --refine 1234     # refine issue #1234
+#   script/managed_agents/start_session.rb --implement 1234  # implement issue #1234
+#   script/managed_agents/start_session.rb --pr 1250         # address feedback on PR #1250
 #   script/managed_agents/start_session.rb --ci-fix 1250 <run-url> logs.txt  # fix the red CI of PR #1250
 #   script/managed_agents/start_session.rb --message "Run bin/rspec, report, don't touch GitHub"
 #
@@ -41,13 +42,18 @@ when '--ci-fix'
   TEXT
   title = "martigua2 PR ##{pr} CI fix"
   metadata = { github_pr: pr.to_s, ci_run: run_url }
-else
-  issue = Integer(ARGV[0])
-  text = "Work on issue ##{issue}"
-  title = "martigua2 issue ##{issue}"
-  metadata = { github_issue: issue.to_s }
+when '--refine'
+  issue = Integer(ARGV[1])
+  text = "Refine issue ##{issue}"
+  title = "martigua2 issue ##{issue} refinement"
+  metadata = { github_issue: issue.to_s, phase: 'refine' }
+when '--implement'
+  issue = Integer(ARGV[1])
+  text = "Implement issue ##{issue}"
+  title = "martigua2 issue ##{issue} implementation"
+  metadata = { github_issue: issue.to_s, phase: 'implement' }
 end
-abort 'usage: start_session.rb <issue-number> | --pr <pr> | --ci-fix <pr> <run-url> <log-file> | --message "<text>"' if text.to_s.empty?
+abort 'usage: start_session.rb --refine <issue> | --implement <issue> | --pr <pr> | --ci-fix <pr> <run-url> <log-file> | --message "<text>"' if text.to_s.empty?
 
 client = Anthropic::Client.new
 session = client.beta.sessions.create(

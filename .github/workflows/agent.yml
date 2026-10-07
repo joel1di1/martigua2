@@ -1,30 +1,51 @@
-name: 'Agent: issue/PR command'
+name: 'Agent: issue/PR label'
 
-# `/agent work` on an issue starts a Managed Agents session on it (refinement, or
-# implementation once the issue has the `good-to-dev` label). `/agent fix` on a pull
-# request starts a session that addresses the feedback on it. The session's tools run in
-# this workflow's runner (agent-sandbox.yml). See config/managed_agents/.
+# Labels drive the agent (the full list is in config/managed_agents/setup.sh). Adding
+# `agent:refine` to an issue starts its refinement, and `agent:dev` its implementation, or,
+# on a pull request, a session that addresses the feedback on it. The trigger
+# label is replaced with `agent:queued` right away, and with `agent:stuck` if the session
+# cannot be started. The session's tools run in this workflow's runner (agent-sandbox.yml).
+# See config/managed_agents/.
 
 on:
-  issue_comment:
-    types: [created]
+  issues:
+    types: [labeled]
+  pull_request:
+    types: [labeled]
 
+# Only triggers share the per-issue group: other labels (the agent's status changes
+# included) would otherwise queue behind the running session, then replace a pending trigger.
 concurrency:
-  group: agent-${{ github.event.issue.number }}
+  group: >-
+    ${{
+      (github.event.sender.login == github.repository_owner &&
+       ((github.event_name == 'issues' && contains(fromJSON('["agent:refine", "agent:dev"]'), github.event.label.name)) ||
+        (github.event_name == 'pull_request' && github.event.label.name == 'agent:dev' &&
+         github.event.pull_request.head.repo.full_name == github.repository)))
+      && format('agent-{0}', github.event.issue.number || github.event.pull_request.number)
+      || format('agent-ignored-{0}', github.run_id)
+    }}
 
 jobs:
   start:
-    # Public repo: only the owner can spend agent budget.
+    # Public repo: only the owner can spend agent budget. Fork PRs get no secrets.
     if: >-
-      github.event.comment.author_association == 'OWNER' &&
-      ((github.event.issue.pull_request == null && startsWith(github.event.comment.body, '/agent work')) ||
-       (github.event.issue.pull_request != null && startsWith(github.event.comment.body, '/agent fix')))
+      github.event.sender.login == github.repository_owner &&
+      ((github.event_name == 'issues' && contains(fromJSON('["agent:refine", "agent:dev"]'), github.event.label.name)) ||
+       (github.event_name == 'pull_request' && github.event.label.name == 'agent:dev' &&
+        github.event.pull_request.head.repo.full_name == github.repository))
     runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
     steps:
       - uses: actions/checkout@v7
+
+      - name: Mark as queued
+        run: script/managed_agents/set_status.sh "$NUMBER" agent:queued
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -40,22 +61,33 @@ jobs:
           ENVIRONMENT_ID: ${{ vars.ENVIRONMENT_ID }}
           VAULT_ID: ${{ vars.VAULT_ID }}
           WORKSPACE_ID: ${{ vars.WORKSPACE_ID }}
-          NUMBER: ${{ github.event.issue.number }}
-          IS_PR: ${{ github.event.issue.pull_request != null }}
+          LABEL: ${{ github.event.label.name }}
+          IS_PR: ${{ github.event_name == 'pull_request' }}
         run: |
           if [ "$IS_PR" = "true" ]; then
-            ruby script/managed_agents/start_session.rb --pr "$NUMBER" | tee session.txt
+            mode=--pr
+          elif [ "$LABEL" = "agent:refine" ]; then
+            mode=--refine
           else
-            ruby script/managed_agents/start_session.rb "$NUMBER" | tee session.txt
+            mode=--implement
           fi
+          ruby script/managed_agents/start_session.rb "$mode" "$NUMBER" | tee session.txt
 
       - name: Acknowledge
+        # The session runs anyway: a failed comment must not mark it as stuck.
+        continue-on-error: true
         env:
-          GH_TOKEN: ${{ github.token }}
-          NUMBER: ${{ github.event.issue.number }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           gh issue comment "$NUMBER" --body "🤖 Agent session started: $(grep -o 'https://[^ ]*' session.txt) (runner: $RUN_URL)"
+
+      - name: Mark as stuck
+        if: failure()
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          script/managed_agents/set_status.sh "$NUMBER" agent:stuck
+          gh issue comment "$NUMBER" --body "🤖 Could not start the agent session ($RUN_URL)."
 
   sandbox:
     needs: start

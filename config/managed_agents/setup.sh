@@ -29,11 +29,16 @@ auth:
   token: $AGENT_GITHUB_TOKEN
 YAML
 
-gh label create needs-answers --color d93f0b --description "Agent asked questions" --force
-gh label create refined --color 0e8a16 --description "Agent refined the issue, waiting for human review" --force
-gh label create good-to-dev --color 1d76db --description "Human approved the refined issue" --force
-gh label create agent-working --color fbca04 --description "An agent session is running" --force
-gh label create to-review --color 5319e7 --description "Agent opened a PR, waiting for human review" --force
+# Status labels: each issue or PR carries one at a time (script/managed_agents/set_status.sh).
+# Blue ones are added by the human and start a session (.github/workflows/agent.yml).
+gh label create agent:refine --color 1d76db --description "Human: refine this issue (starts the agent)" --force
+gh label create agent:dev --color 1d76db --description "Human: implement this issue, or address the feedback on this PR (starts the agent)" --force
+gh label create agent:queued --color fef2c0 --description "An agent session is starting" --force
+gh label create agent:working --color fbca04 --description "An agent session is running" --force
+gh label create agent:needs-answers --color d93f0b --description "Agent asked questions: answer, then add agent:refine" --force
+gh label create agent:refined --color 0e8a16 --description "Agent refined the issue: review, then add agent:dev" --force
+gh label create agent:review --color 5319e7 --description "Agent opened or updated a PR, waiting for human review" --force
+gh label create agent:stuck --color b60205 --description "The agent gave up or could not start: a human must step in" --force
 
 gh variable set AGENT_ID --body "$AGENT_ID"
 gh variable set ENVIRONMENT_ID --body "$ENVIRONMENT_ID"

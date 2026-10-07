@@ -11,6 +11,12 @@ updates:
     labels:
       - dependencies
       - ruby
+    # One weekly PR for all minor and patch bumps; majors stay separate.
+    groups:
+      bundler-minor-and-patch:
+        update-types:
+          - minor
+          - patch
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
@@ -21,4 +27,10 @@ updates:
       - joel1di1
     labels:
       - dependencies
-      - ruby
+      - github-actions
+    # One weekly PR for all minor and patch bumps; majors stay separate.
+    groups:
+      github-actions-minor-and-patch:
+        update-types:
+          - minor
+          - patch

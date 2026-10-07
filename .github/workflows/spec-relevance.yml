@@ -8,13 +8,22 @@ name: Spec relevance
 on:
   pull_request:
 
+permissions:
+  contents: read
+
+# A newer push on the same PR cancels the check in progress.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   spec_relevance:
     name: Spec relevance
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres
+        # Same major version as production (PostgreSQL 16).
+        image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -32,17 +41,30 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Without libvips, ruby-vips fails to load, every spec errors at load and
+      # bin/check-spec-relevance counts that as "relevant": the check would
+      # always pass without checking anything.
+      - name: Install libvips
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libvips-dev
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
 
-      # Install Chrome and Chromedriver (needed if changed specs include system specs)
-      - name: Setup Chrome
+      # Fails the job if the app can't boot, instead of letting load errors
+      # pass as "relevant" specs.
+      - name: Check that the app boots
         run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
+          bin/rails runner 'puts "App booted (Rails #{Rails.version}, #{Rails.env})"'
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/martigua2_test
 
+      # The runner image already ships Google Chrome (needed if changed specs
+      # include system specs); only chromedriver is set up.
       - name: Set up chromedriver
         uses: nanasess/setup-chromedriver@v3
 

@@ -102,6 +102,37 @@ describe 'Trainings' do
     end
   end
 
+  describe 'GET presence_validation' do
+    subject(:request) { get presence_validation_section_training_path(section_path_param.merge(training_path_param)) }
+
+    context 'when signed in as coach' do
+      before { sign_in coach, scope: :user }
+
+      it 'succeeds' do
+        request
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context 'when signed in as club admin' do
+      before { sign_in create(:user, with_club_as_admin: section.club), scope: :user }
+
+      it 'succeeds' do
+        request
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context 'when signed in as player' do
+      before { sign_in user, scope: :user }
+
+      it 'is forbidden' do
+        request
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
+
   describe 'DELETE cancellation' do
     subject(:request) { delete uncancel_section_training_path(section_path_param.merge(training_path_param)) }
 

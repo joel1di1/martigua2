@@ -2,6 +2,7 @@
 
 class TrainingsController < ApplicationController
   before_action :set_current_training
+  before_action :verify_coach!, only: :presence_validation
   include PrefetchTrainingData
 
   def index
@@ -75,7 +76,7 @@ class TrainingsController < ApplicationController
   end
 
   def presence_validation
-    @players = current_section.players.sort_by(&:full_name)
+    @presences_by_user = @training.training_presences.index_by(&:user_id)
   end
 
   private

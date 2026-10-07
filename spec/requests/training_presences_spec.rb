@@ -33,6 +33,18 @@ describe 'TrainingPresences' do
       end
     end
 
+    context 'when signed in as player' do
+      before do
+        create(:training_presence, user: player, training:, is_present: true)
+        sign_in player, scope: :user
+      end
+
+      it 'is forbidden' do
+        do_request
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
     context 'when the user does not belong to the current section' do
       let(:other_player) { create(:user, with_section: create(:section)) }
 
@@ -75,6 +87,17 @@ describe 'TrainingPresences' do
              params: { present: 'true' }
         expect(response).to have_http_status(:not_found)
         expect(other_player.training_presences.find_by(training:)).to be_nil
+      end
+    end
+
+    context 'when signed in as player' do
+      before { sign_in player, scope: :user }
+
+      it 'is forbidden and does not change any presence' do
+        presence = create(:training_presence, user: player, training:, is_present: false)
+        do_request
+        expect(response).to have_http_status(:forbidden)
+        expect(presence.reload.presence_validated).to be_nil
       end
     end
   end

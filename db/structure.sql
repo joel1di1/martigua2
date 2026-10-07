@@ -3070,7 +3070,8 @@ CREATE TABLE public.users (
     invited_by_id integer,
     invited_by_type character varying(255),
     invitations_count integer DEFAULT 0,
-    super_admin boolean DEFAULT false NOT NULL
+    super_admin boolean DEFAULT false NOT NULL,
+    new_design boolean DEFAULT false NOT NULL
 );
 
 
@@ -6155,6 +6156,7 @@ ALTER TABLE ONLY public.section_trainings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261007120000'),
 ('20261002090000'),
 ('20260924204039'),
 ('20260924204032'),

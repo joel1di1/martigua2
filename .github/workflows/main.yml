@@ -1,3 +1,5 @@
+# Keep the name `CI` and the push trigger on every branch: agent-ci-fix.yml
+# listens to `workflow_run` of this workflow by name.
 name: CI
 
 on:
@@ -5,24 +7,27 @@ on:
     branches:
       - '**'
 
-jobs:
-  # RuboCop is disabled in CI due to hanging issues specific to GitHub Actions environment
-  # RuboCop is enforced locally via pre-commit workflow (see CLAUDE.md)
-  # To reproduce/debug: use ./test-ci-locally.sh with Docker (see CI-DEBUG-README.md)
+permissions:
+  contents: read
 
+# A newer push on the same branch cancels the run in progress, except on main
+# where every commit gets a full run. Cancelled runs conclude as `cancelled`,
+# not `failure`, so they don't start agent-ci-fix.yml.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
   brakeman:
     name: Brakeman Security Scan
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Install libvips
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libvips-dev
-
+      # Static analysis only: bin/brakeman doesn't load the app, so no libvips.
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -34,15 +39,15 @@ jobs:
 
   scan_js:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
 
+      # bin/importmap boots the app, which loads ruby-vips.
       - name: Install libvips
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libvips-dev
+        uses: ./.github/actions/install-libvips
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -53,18 +58,35 @@ jobs:
       - name: Scan for security vulnerabilities in JavaScript dependencies
         run: bin/importmap audit
 
+  rubocop:
+    name: RuboCop
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Lint with RuboCop
+        run: bin/rubocop
+
   tests:
     name: Tests
     runs-on: ubuntu-latest
-    env:
-      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+    timeout-minutes: 10
     services:
       postgres:
-        image: postgres
+        # Same major version as production (PostgreSQL 16).
+        image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: martigua2_test
         ports:
           - 5432:5432
         options: >-
@@ -72,27 +94,18 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
 
-      # Install libvips before `bundle install` so the ruby-vips native
-      # extension (used for Active Storage image variants) can compile
+      # ruby-vips (Active Storage image variants) needs libvips to load.
+      # The runner image already ships Google Chrome, so it isn't reinstalled.
       - name: Install libvips
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libvips-dev
+        uses: ./.github/actions/install-libvips
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-
-      # Install Chrome and Chromedriver
-      - name: Setup Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
 
       - name: Set up chromedriver
         uses: nanasess/setup-chromedriver@v3
@@ -100,12 +113,20 @@ jobs:
       - name: Assets Precompile
         run: bundle exec rake assets:precompile
 
-      - name: Run the tests
-        run: COVERAGE=true bin/rspec
+      # No DATABASE_URL: it would send every process to the same database.
+      # config/database.yml reads POSTGRES_HOST/POSTGRES_PORT and suffixes the
+      # test database with TEST_ENV_NUMBER, so each process gets its own.
+      - name: Create the test databases
+        run: bin/rails parallel:create parallel:load_schema
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/martigua2_test
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
 
-      # does not work on 2025-09-12
-      # - name: Publish coverage data to Code Climate
-      #   uses: paambaati/codeclimate-action@v9.0.0
+      # One process per CPU (parallel_tests' default).
+      - name: Run the tests
+        run: bin/parallel_rspec spec --serialize-stdout --combine-stderr --verbose-rerun-command
+        env:
+          RAILS_ENV: test
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432

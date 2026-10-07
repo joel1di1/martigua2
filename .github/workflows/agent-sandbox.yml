@@ -27,7 +27,7 @@ jobs:
       contents: read
     services:
       postgres:
-        image: postgres
+        image: postgres:16
         env:
           POSTGRES_PASSWORD: postgres
         ports:
@@ -62,9 +62,7 @@ jobs:
           chmod 600 ~/.git-credentials
 
       - name: Install libvips
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq libvips-dev
+        uses: ./.github/actions/install-libvips
 
       - uses: ruby/setup-ruby@v1
         with:

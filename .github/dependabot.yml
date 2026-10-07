@@ -11,8 +11,17 @@ updates:
     labels:
       - dependencies
       - ruby
+    # One weekly PR for all minor and patch bumps; majors stay separate.
+    groups:
+      bundler-minor-and-patch:
+        update-types:
+          - minor
+          - patch
   - package-ecosystem: github-actions
-    directory: "/"
+    # "/" covers .github/workflows; local composite actions need their own entry.
+    directories:
+      - "/"
+      - "/.github/actions/*"
     schedule:
       interval: weekly
       day: "friday"
@@ -21,4 +30,10 @@ updates:
       - joel1di1
     labels:
       - dependencies
-      - ruby
+      - github-actions
+    # One weekly PR for all minor and patch bumps; majors stay separate.
+    groups:
+      github-actions-minor-and-patch:
+        update-types:
+          - minor
+          - patch

@@ -45,9 +45,7 @@ jobs:
       # bin/check-spec-relevance counts that as "relevant": the check would
       # always pass without checking anything.
       - name: Install libvips
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libvips-dev
+        uses: ./.github/actions/install-libvips
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1

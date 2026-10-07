@@ -47,9 +47,7 @@ jobs:
 
       # bin/importmap boots the app, which loads ruby-vips.
       - name: Install libvips
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libvips-dev
+        uses: ./.github/actions/install-libvips
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -102,9 +100,7 @@ jobs:
       # ruby-vips (Active Storage image variants) needs libvips to load.
       # The runner image already ships Google Chrome, so it isn't reinstalled.
       - name: Install libvips
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libvips-dev
+        uses: ./.github/actions/install-libvips
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1

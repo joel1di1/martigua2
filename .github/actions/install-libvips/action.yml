@@ -1,0 +1,30 @@
+name: Install libvips
+description: >-
+  Install the libvips runtime that ruby-vips loads through FFI, from the Actions cache when
+  possible, so a slow or unreachable Ubuntu mirror doesn't stall the job.
+
+runs:
+  using: composite
+  steps:
+    # Only used on a cache miss: fail fast instead of hanging until the job timeout when the
+    # mirrors don't answer (seen with azure.archive.ubuntu.com).
+    - name: Make apt fail fast
+      shell: bash
+      run: |
+        printf '%s\n' 'Acquire::Retries "3";' 'Acquire::http::Timeout "20";' 'Acquire::https::Timeout "20";' \
+          | sudo tee /etc/apt/apt.conf.d/99-ci-timeouts > /dev/null
+
+    # libvips42t64 is the runtime library (Ubuntu 24.04 name); ruby-vips doesn't need the -dev
+    # headers. Bump `version` to rebuild the cache.
+    - name: Install libvips (cached)
+      uses: awalsh128/cache-apt-pkgs-action@553a35bb8ebd9fcabcb1c9451aa4c98e1b4ca8a9 # v1.6.3
+      with:
+        packages: libvips42t64
+        version: 1
+
+    # A cache restore copies the files but doesn't refresh the linker cache.
+    - name: Check that libvips can be loaded
+      shell: bash
+      run: |
+        sudo ldconfig
+        ldconfig -p | grep -q 'libvips.so.42' || { echo '::error::libvips.so.42 not found'; exit 1; }

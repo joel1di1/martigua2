@@ -18,7 +18,10 @@ updates:
           - minor
           - patch
   - package-ecosystem: github-actions
-    directory: "/"
+    # "/" covers .github/workflows; local composite actions need their own entry.
+    directories:
+      - "/"
+      - "/.github/actions/*"
     schedule:
       interval: weekly
       day: "friday"

@@ -1,0 +1,13 @@
+/ items: [[label, path_or_nil], ...] displayed after the root "Groupes" entry.
+nav aria-label="Fil d'Ariane" class="flex"
+  ol role="list" class="flex items-center space-x-2"
+    li
+      = link_to 'Groupes', section_groups_path(current_section), class: 'text-sm font-medium text-gray-500 hover:text-gray-700'
+    - items.each do |label, path|
+      li
+        div class="flex items-center"
+          = heroicon_mini(:chevron_right, css_class: 'size-5 shrink-0 text-gray-400')
+          - if path
+            = link_to label, path, class: 'ml-2 truncate text-sm font-medium text-gray-500 hover:text-gray-700'
+          - else
+            span class="ml-2 truncate text-sm font-medium text-gray-700" aria-current="page"= label

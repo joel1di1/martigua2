@@ -1,0 +1,35 @@
+- nav_id = local_assigns[:nav_id]
+
+div class="flex h-16 shrink-0 items-center gap-x-3"
+  = image_tag 'https://static.wixstatic.com/media/52897d_00efa59c0af84a7eabebd99c94ee77e9.jpg/v1/fill/w_85,h_80,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/52897d_00efa59c0af84a7eabebd99c94ee77e9.jpg', alt: 'Logo Martigua', class: 'h-8 w-auto rounded-md'
+  span class="text-base font-semibold text-gray-900" Martigua
+
+nav id=nav_id class="flex flex-1 flex-col"
+  ul role="list" class="flex flex-1 flex-col gap-y-7"
+    li
+      ul role="list" class="-mx-2 space-y-1"
+        - main_navigation_links.each do |title, path, icon|
+          - current = navigation_link_current?(path)
+          li
+            = link_to path, class: "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold #{current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600'}", aria: { current: (current ? 'page' : nil) } do
+              = heroicon(icon, css_class: "size-6 shrink-0 #{current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600'}")
+              span class="truncate"= icon == :home ? 'Accueil' : title
+
+    - sections = current_user.sections.includes(:club).to_a
+    - if sections.size > 1
+      li
+        div class="text-xs/6 font-semibold text-gray-400" Mes sections
+        ul role="list" class="-mx-2 mt-2 space-y-1"
+          - sections.each do |section|
+            - current = section == current_section
+            li
+              = link_to section_path(section), class: "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold #{current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600'}" do
+                span class="flex size-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium #{current ? 'border-indigo-600 text-indigo-600' : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600'}"
+                  = initials(section.to_s)
+                span class="truncate"= section
+
+    - if current_section
+      li class="mt-auto"
+        = link_to current_section.club, class: 'group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-indigo-600' do
+          = heroicon(:building_office, css_class: 'size-6 shrink-0 text-gray-400 group-hover:text-indigo-600')
+          span class="truncate"= current_section.club

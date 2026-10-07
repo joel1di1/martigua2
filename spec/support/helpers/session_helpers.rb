@@ -15,6 +15,9 @@ module Features
       fill_in 'user[email]', with: email
       fill_in 'Mot de passe', with: password
       click_on 'Se connecter'
+      # With Selenium, click_on returns before the login request completes: wait for Devise's
+      # answer so that a following `visit` doesn't race the redirect.
+      expect(page).to have_text(/Connecté\(e\)\.|ou mot de passe incorrect\./)
 
       click_on 'close-flash-notice' if close_notice
     end

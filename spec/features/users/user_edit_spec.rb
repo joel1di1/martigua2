@@ -39,7 +39,7 @@ describe 'User edit', :devise do
     user = create(:user, with_section: section)
     coach = create(:user, with_section_as_coach: section)
     login_as(coach, scope: :user)
-    visit edit_section_user_url(section, user)
+    visit edit_section_user_path(section, user)
     check 'Coach'
     uncheck 'Joueur'
     click_on 'Enregistrer'
@@ -59,7 +59,7 @@ describe 'User edit', :devise do
     section = create(:section)
     user = create(:user, with_section: section)
     login_as(user, scope: :user)
-    visit edit_section_user_url(section, user)
+    visit edit_section_user_path(section, user)
 
     expect(page).to have_text 'Informations personnelles'
     fill_in 'Prénom', with: 'Jean-Michel'

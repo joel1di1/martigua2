@@ -31,11 +31,11 @@ describe 'player FFHB dissociation', :devise do
   it 'dissociates a player without reloading the page', :js do
     visit_edit_page
 
-    within("turbo-frame#player_#{player.id}") do
-      click_link 'Dissocier'
-      expect(page).to have_select("section[player_#{player.id}]")
-      expect(page).to have_no_button('Dissocier')
-    end
+    # The frame is replaced on dissociation: look it up again instead of staying `within` the old node.
+    within("turbo-frame#player_#{player.id}") { click_link 'Dissocier' }
+
+    expect(page).to have_select("section[player_#{player.id}]")
+    expect(page).to have_no_css("turbo-frame#player_#{player.id} a", text: 'Dissocier')
 
     expect(stat.reload.user_id).to be_nil
   end

@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 describe 'a relative answers for a player' do
+  # Mail links point at the mailer host (www.exemple.com in test): keep only the path and query
+  # so the browser stays on the Capybara server.
+  def sign_in_link_from(mail)
+    URI(mail.body.decoded[/href="(http[^"]*user_token=[^"]*)"/, 1].gsub('&amp;', '&')).request_uri
+  end
+
   let(:section) { create(:section) }
   let(:player) { create(:user, with_section: section) }
   let(:group) { create(:group, section:) }
@@ -26,7 +32,7 @@ describe 'a relative answers for a player' do
       mail = ActionMailer::Base.deliveries.last
       expect(mail.to).to eq ['maman@example.com']
 
-      visit mail.body.decoded[/href="(http[^"]*user_token=[^"]*)"/, 1].gsub('&amp;', '&')
+      visit sign_in_link_from(mail)
 
       click_on 'Présent'
       assert_text "m'indiquer absent"
@@ -52,7 +58,7 @@ describe 'a relative answers for a player' do
       expect(mail.to).to eq ['papa@example.com']
       expect(mail.subject).to include(other_player.full_name)
 
-      visit mail.body.decoded[/href="(http[^"]*user_token=[^"]*)"/, 1].gsub('&amp;', '&')
+      visit sign_in_link_from(mail)
 
       click_on 'Présent'
       assert_text "m'indiquer absent"

@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 class TrainingPresencesController < ApplicationController
+  before_action :verify_coach!, only: %i[show confirm_presence]
   before_action :find_training
   before_action :find_player, only: %i[show confirm_presence]
 
   def show
-    @color = :green if @player.present_for?(@training)
-    @color ||= :red if @player.set_present_for?(@training)
-    @show ||= :yellow
+    @presence = @training.training_presences.find_by(user: @player)
   end
 
   def create

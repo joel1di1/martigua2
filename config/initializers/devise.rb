@@ -297,3 +297,8 @@ Devise.setup do |config|
   config.responder.error_status = :unprocessable_entity
   config.responder.redirect_status = :see_other
 end
+
+# devise_invitable resolves Devise.mailer in an on_load(:action_mailer) hook. If autoloading
+# MartiguaDeviseMailer is what first loads ActionMailer::Base, that hook runs while the constant
+# is still being defined and raises NameError. Loading ActionMailer::Base once booted avoids it.
+Rails.application.config.after_initialize { ActionMailer::Base }

@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   include TokenAuthentication
   include Impersonation
   include NewDesign
+  include CoachAuthorization
 
   around_action :log_requests
 

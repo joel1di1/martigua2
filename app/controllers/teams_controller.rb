@@ -91,15 +91,4 @@ class TeamsController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     catch404
   end
-
-  def verify_coach!
-    return if current_user&.coach_of?(current_section)
-    return if current_user&.admin_of?(current_section&.club)
-    return if current_user&.super_admin?
-
-    respond_to do |format|
-      format.html { render(file: Rails.public_path.join('403.html'), status: :forbidden, layout: false) }
-      format.json { head :forbidden }
-    end
-  end
 end

@@ -18,6 +18,9 @@ describe 'send training invitation', :devise, :js do
     within '#links' do
       click_on 'Entrainements'
     end
+    # The section page lazy-loads its events with the same button id: wait for the trainings
+    # page, otherwise the click can land on the page being replaced and the dialog is lost.
+    expect(page).to have_current_path(section_trainings_path(section), ignore_query: true)
 
     submit_id = "training_invitations_#{training.id}"
     expect do

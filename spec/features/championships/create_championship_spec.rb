@@ -30,6 +30,20 @@ describe 'create championship' do
       expect(championship.teams.count).to eq(1)
       expect(championship.teams.first).to eq(team)
     end
+
+    it 'shows the French error notification when the name is blank' do
+      section = create(:section)
+      coach = create(:user, with_section_as_coach: section)
+
+      signin coach.email, coach.password
+
+      visit new_section_championship_path(section)
+
+      expect do
+        click_on 'Créer un(e) Compétition'
+        assert_text 'Veuillez corriger les erreurs ci-dessous :'
+      end.not_to change(Championship, :count)
+    end
   end
 
   describe 'with ffhb' do

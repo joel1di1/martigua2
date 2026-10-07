@@ -23,4 +23,8 @@ For our shared Rails/Tailwind/Slim/RSpec/Stimulus conventions, read `~/.claude/R
 ## Important Commands
 - **Tests**: `bin/rspec`
 - **Linting**: `bin/rubocop`
+- **i18n** (run in CI, see `config/i18n-tasks.yml`):
+  - `bundle exec i18n-tasks missing`: keys used in the code but not translated
+  - `bundle exec i18n-tasks unused`: translations no longer used
+  - `bundle exec i18n-tasks check-normalized`: locale files formatted as `bundle exec i18n-tasks normalize` writes them (no YAML comments)
 - **Database**: Standard Rails migration commands using `bin/rails`

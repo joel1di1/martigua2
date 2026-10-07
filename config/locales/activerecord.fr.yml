@@ -1,0 +1,36 @@
+---
+fr:
+  activerecord:
+    attributes:
+      championship:
+        calendar: Calendrier
+        name: Nom
+        teams: Équipes
+    models:
+      burn:
+        one: brûlé
+        other: brûlés
+        zero: brûlé
+      calendar:
+        one: Calendrier
+        other: Calendriers
+      championship:
+        one: Compétition
+        other: Compétitions
+      day:
+        one: Journée
+        other: Journées
+      location:
+        one: Lieu
+        other: Lieux
+      match:
+        one: Match
+        other: Matchs
+      section:
+        one: Section
+        other: Sections
+      team:
+        one: Équipe
+        other: Équipes
+      user:
+        other: Utilisateurs

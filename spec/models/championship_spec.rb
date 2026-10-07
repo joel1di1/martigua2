@@ -14,6 +14,14 @@ RSpec.describe Championship do
   it { is_expected.to have_many :matches }
   it { is_expected.to have_many :burns }
 
+  describe '.human_attribute_name' do
+    it 'returns the French labels used in forms and error messages' do
+      expect(Championship.human_attribute_name(:name)).to eq('Nom')
+      expect(Championship.human_attribute_name(:calendar)).to eq('Calendrier')
+      expect(Championship.human_attribute_name(:teams)).to eq('Équipes')
+    end
+  end
+
   describe '.enroll_team!' do
     subject { championship.enroll_team!(team) }
 

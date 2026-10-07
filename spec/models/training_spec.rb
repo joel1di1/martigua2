@@ -55,6 +55,28 @@ RSpec.describe Training do
     it { expect(training.nb_presence_not_set).to eq nb_users }
   end
 
+  describe 'presences validated by the coach' do
+    let(:cheater) { create(:user, with_section: section, group_ids: [group.id]) }
+    let(:silent) { create(:user, with_section: section, group_ids: [group.id]) }
+    let(:honest) { create(:user, with_section: section, group_ids: [group.id]) }
+    let(:excused) { create(:user, with_section: section, group_ids: [group.id]) }
+
+    before do
+      cheater.present_for!(training)
+      cheater.confirm_no_presence!(training)
+      silent.confirm_presence!(training)
+      honest.present_for!(training)
+      excused.not_present_for!(training)
+      excused.confirm_presence!(training)
+    end
+
+    it { expect(training.presents).to contain_exactly(silent, honest, excused) }
+    it { expect(training.not_presents).to contain_exactly(cheater) }
+    it { expect(training.presence_not_set).to be_empty }
+    it { expect(training.nb_presents).to eq 3 }
+    it { expect(training.nb_not_presents).to eq 1 }
+  end
+
   describe '.send_presence_mail_for_next_week' do
     let(:users) { (1..nb_users).map { create(:user, with_section: section, group_ids: [group.id]) } }
 

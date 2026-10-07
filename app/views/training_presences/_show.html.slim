@@ -11,4 +11,4 @@
           span class="inline-flex items-center rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-800" Validé par le coach
     div
       = simple_form_for player, url: section_user_training_confirm_presence_path(current_section, player, training), method: :post, html: {'data-controller' => 'auto-submit'} do |f|
-        input type='checkbox' class='auto-submit' name='present' value='present' checked=player.was_present?(training) id="input-checkbox-player-#{player.id}" style="width: 30px; height: 30px;" data-action="auto-submit#submit"
+        input type='checkbox' class='auto-submit' name='present' value='present' checked=player.was_present?(training, { [player.id, training.id] => presence }) id="input-checkbox-player-#{player.id}" style="width: 30px; height: 30px;" data-action="auto-submit#submit"

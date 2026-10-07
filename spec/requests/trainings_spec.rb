@@ -123,6 +123,15 @@ describe 'Trainings' do
       end
     end
 
+    context 'when signed in as super admin' do
+      before { sign_in create(:user, super_admin: true), scope: :user }
+
+      it 'succeeds' do
+        request
+        expect(response).to have_http_status(:success)
+      end
+    end
+
     context 'when signed in as player' do
       before { sign_in user, scope: :user }
 

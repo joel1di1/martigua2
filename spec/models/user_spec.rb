@@ -6,6 +6,13 @@ describe User do
 
   it { is_expected.to validate_presence_of :email }
 
+  describe '.model_name.human' do
+    it 'uses "Utilisateurs" for the plural, overriding devise-i18n' do
+      expect(User.model_name.human).to eq('Utilisateur')
+      expect(User.model_name.human(count: 2)).to eq('Utilisateurs')
+    end
+  end
+
   describe 'email validation' do
     it 'accepts valid email addresses' do
       valid_emails = %w[user@example.com USER@foo.COM A_US-ER@foo.bar.org first.last@foo.jp alice+bob@baz.cn]

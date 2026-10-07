@@ -11,6 +11,7 @@ describe 'trainings pagination' do
 
     expect(page).to have_link('Suivante ›')
     expect(page).to have_link('Dernière »')
+    expect(page).to have_no_css('.translation_missing')
 
     click_on 'Suivante ›'
 

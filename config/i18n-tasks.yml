@@ -40,6 +40,7 @@ search:
 
 ignore_missing:
   # Only the plural is overridden (devise-i18n says "Utilisateur" for it too): `one` comes from devise-i18n.
+  # spec/models/user_spec.rb checks both forms.
   - 'activerecord.models.user'
 
 # Keys read by Rails and gems without a literal `t('...')` call in the app.

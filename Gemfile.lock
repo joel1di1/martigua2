@@ -109,7 +109,7 @@ GEM
     afm (1.0.0)
     ast (2.4.3)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1292.0)
+    aws-partitions (1.1293.0)
     aws-sdk-core (3.257.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
@@ -122,7 +122,7 @@ GEM
     aws-sdk-kms (1.132.0)
       aws-sdk-core (~> 3, >= 3.256.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.232.3)
+    aws-sdk-s3 (1.233.1)
       aws-sdk-core (~> 3, >= 3.256.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
@@ -173,7 +173,7 @@ GEM
     devise-i18n (1.16.1)
       devise (>= 5.0.0)
       rails-i18n
-    devise_invitable (2.0.13)
+    devise_invitable (2.0.14)
       actionmailer (>= 5.0)
       devise (>= 4.6)
     diff-lcs (1.6.2)
@@ -270,7 +270,7 @@ GEM
       logger
       ostruct
     ice_cube (0.17.0)
-    image_processing (2.1.0)
+    image_processing (2.2.0)
     importmap-rails (2.2.3)
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
@@ -342,7 +342,7 @@ GEM
       net-protocol
     net-protocol (0.4.0)
       timeout
-    net-smtp (0.5.1)
+    net-smtp (0.5.2)
       net-protocol
     newrelic_rpm (10.9.0)
       logger
@@ -354,7 +354,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.4-x86_64-linux-gnu)
       racc (~> 1.4)
-    oj (3.17.6)
+    oj (3.17.7)
       bigdecimal (>= 3.0)
       ostruct (>= 0.2)
     openssl (4.0.2)
@@ -372,9 +372,9 @@ GEM
       afm (>= 0.2.1, < 2)
       hashery (~> 2.0)
       ttfunk
-    pg (1.6.3)
-    pg (1.6.3-arm64-darwin)
-    pg (1.6.3-x86_64-linux)
+    pg (1.7.0)
+    pg (1.7.0-arm64-darwin)
+    pg (1.7.0-x86_64-linux)
     pp (0.6.4)
       prettyprint
     prettyprint (0.2.0)
@@ -564,7 +564,7 @@ GEM
     simple_form-tailwind (0.2.0)
       railties (>= 7.0)
       simple_form (>= 5.0)
-    simplecov (1.3.1)
+    simplecov (1.3.2)
     simplecov_json_formatter (0.1.4)
     slim (5.2.2)
       temple (~> 0.10.0)
@@ -669,7 +669,7 @@ DEPENDENCIES
   google-api-client
   i18n-tasks
   icalendar
-  image_processing (~> 2.0)
+  image_processing (~> 2.2)
   importmap-rails
   jbuilder
   kaminari

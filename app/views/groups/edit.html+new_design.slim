@@ -1,0 +1,16 @@
+= render 'groups/breadcrumbs', items: [[@group.name_was, section_group_path(current_section, @group)], ['Modifier', nil]]
+
+div class="mt-4 border-b border-gray-200 pb-5"
+  h1 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" Modifier le groupe
+  p class="mt-1 text-sm text-gray-500"= @group.name_was
+
+div class="mt-8"
+  = render 'form', submit_label: 'Enregistrer', cancel_path: section_group_path(current_section, @group)
+
+- if current_user.coach_of?(current_section) && !@group.system?
+  div class="mt-10 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-3"
+    div class="px-4 sm:px-0"
+      h2 class="text-base/7 font-semibold text-gray-900" Supprimer le groupe
+      p class="mt-1 text-sm/6 text-gray-600" Les membres ne sont pas supprimés de la section, seulement de ce groupe.
+    div class="flex items-start md:col-span-2"
+      = button_to 'Supprimer ce groupe', section_group_path(current_section, @group), method: :delete, class: 'cursor-pointer rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500', form: { data: { turbo_confirm: "Supprimer le groupe #{@group.name_was} ?" } }

@@ -1,0 +1,43 @@
+- menu_item_class = 'block w-full px-3 py-1 text-left text-sm/6 text-gray-900 focus:bg-gray-50 focus:outline-hidden'
+
+div class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8"
+  button type="button" command="show-modal" commandfor="sidebar" class="-m-2.5 p-2.5 text-gray-700 hover:text-gray-900 lg:hidden"
+    span class="sr-only" Ouvrir le menu
+    = heroicon(:menu)
+
+  div aria-hidden="true" class="h-6 w-px bg-gray-200 lg:hidden"
+
+  div class="flex flex-1 items-center gap-x-4 self-stretch lg:gap-x-6"
+    div class="flex min-w-0 flex-1 items-center"
+      - if current_section
+        p class="truncate text-sm/6 text-gray-500"
+          = current_section.club
+          span class="mx-2 text-gray-300"= '/'
+          span class="font-semibold text-gray-900"= current_section.name
+
+    div class="flex items-center gap-x-4 lg:gap-x-6"
+      = switch_user_select
+
+      div aria-hidden="true" class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200"
+
+      el-dropdown class="relative"
+        button id="user-menu-button" class="relative flex items-center"
+          span class="absolute -inset-1.5"
+          span class="sr-only" Ouvrir le menu utilisateur
+          span class="flex size-8 items-center justify-center rounded-full bg-indigo-600 text-xs font-semibold text-white"
+            = initials("#{current_user.first_name} #{current_user.last_name}")
+          span class="hidden lg:flex lg:items-center"
+            span aria-hidden="true" class="ml-4 text-sm/6 font-semibold text-gray-900"= current_user.full_name
+            = heroicon_mini(:chevron_down, css_class: 'ml-2 size-5 text-gray-400')
+        el-menu anchor="bottom end" popover=true class="w-56 origin-top-right rounded-md bg-white py-2 shadow-lg outline-1 outline-gray-900/5 transition transition-discrete [--anchor-gap:--spacing(2.5)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+          div class="border-b border-gray-100 px-3 pb-2"
+            p class="truncate text-xs text-gray-500"= current_user.email
+          div class="py-1"
+            - if current_section
+              = link_to 'Editer son profil', edit_section_user_path(current_user, section_id: current_section.to_param), class: menu_item_class
+            - else
+              = link_to 'Editer son profil', edit_user_path(current_user), class: menu_item_class
+            = link_to 'Changer de mot de passe', edit_user_registration_path(section_id: current_section), class: menu_item_class
+            = button_to "Revenir à l'ancien design", design_preference_path, method: :patch, params: { new_design: false }, class: menu_item_class
+          div class="border-t border-gray-100 pt-1"
+            = button_to 'Déconnexion', destroy_user_session_path, method: :delete, class: menu_item_class

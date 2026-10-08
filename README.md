@@ -13,7 +13,7 @@ Project notes and conventions are in [`CLAUDE.md`](CLAUDE.md): read it before co
 
 Prerequisites: the Ruby version from `.ruby-version`, Docker, libvips (`brew install vips`),
 Chrome for the JS feature specs (`SHOW_BROWSER=1` to watch them), PostgreSQL client tools
-16+ (`brew install libpq`) and `redis-cli` for the restore and worktree scripts, and the
+16+ (`brew install libpq`) for the restore and worktree scripts, and the
 Heroku CLI with access to the app to restore production data.
 
 ```bash

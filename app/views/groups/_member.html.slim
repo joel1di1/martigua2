@@ -1,0 +1,50 @@
+- can_edit = coach || current_user.admin_of?(current_section.club)
+- removable = can_edit && !group.system?
+
+li class="flex items-center justify-between gap-x-6 px-4 py-4 sm:px-6"
+  div class="flex min-w-0 gap-x-4"
+    - if user.avatar.attached?
+      = image_tag rails_storage_proxy_path(user.avatar.variant(:portrait)), alt: '', class: 'size-10 flex-none rounded-full bg-gray-50 object-cover outline -outline-offset-1 outline-black/5'
+    - else
+      span class="flex size-10 flex-none items-center justify-center rounded-full bg-gray-100 text-sm font-medium text-gray-600"
+        = initials("#{user.first_name} #{user.last_name}")
+    div class="min-w-0 flex-auto"
+      p class="text-sm/6 font-semibold text-gray-900"
+        = link_to section_user_path(current_section, user), class: 'hover:underline' do
+          = "#{user.first_name.to_s.capitalize} #{user.last_name.to_s.capitalize}"
+          - if user.nickname.present?
+            span class="ml-1 font-normal text-gray-500"= "« #{user.nickname} »"
+      p class="mt-1 flex flex-wrap gap-x-3 text-xs/5 text-gray-500"
+        - if user.email.present?
+          = mail_to user.email, class: 'truncate hover:underline'
+        - if user.phone_number.present?
+          = link_to user.phone_number, "tel:#{user.phone_number}", class: 'hover:underline'
+
+  div class="flex shrink-0 items-center gap-x-6"
+    div class="hidden sm:flex sm:flex-col sm:items-end"
+      div class="flex gap-x-1"
+        - member_roles(user, current_section).each do |role|
+          = role_badge(role)
+      - if @last_trainings.any?
+        div class="mt-1.5 flex gap-x-0.5"
+          - @last_trainings.each do |training|
+            - present = user.was_present?(training, @presences_by_user_and_training)
+            span class="size-2.5 rounded-xs #{present ? 'bg-green-500' : 'bg-gray-300'}" title="#{l(training.start_datetime.to_date, format: :short)} : #{present ? 'présent' : 'absent'}"
+    - if can_edit
+      el-dropdown class="relative flex-none"
+        button class="relative block text-gray-500 hover:text-gray-900"
+          span class="absolute -inset-2.5"
+          span class="sr-only"= "Options pour #{user.full_name}"
+          = heroicon_mini(:ellipsis_vertical)
+        el-menu anchor="bottom end" popover=true class="w-44 origin-top-right rounded-md bg-white py-2 shadow-lg outline outline-gray-900/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+          = link_to section_user_path(current_section, user), class: 'block px-3 py-1 text-sm/6 text-gray-900 focus:bg-gray-50 focus:outline-hidden' do
+            | Voir le profil
+            span class="sr-only"= ", #{user.full_name}"
+          - if can_edit
+            = link_to edit_section_user_path(current_section, user, returns_to: request.path), class: 'block px-3 py-1 text-sm/6 text-gray-900 focus:bg-gray-50 focus:outline-hidden' do
+              | Modifier
+              span class="sr-only"= ", #{user.full_name}"
+          - if removable
+            = button_to section_group_user_path(current_section, group, user), method: :delete, class: 'block w-full px-3 py-1 text-left text-sm/6 text-red-600 focus:bg-gray-50 focus:outline-hidden', form: { data: { turbo_confirm: "Retirer #{user.full_name} du groupe ?" } } do
+              | Retirer du groupe
+              span class="sr-only"= ", #{user.full_name}"

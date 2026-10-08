@@ -24,3 +24,4 @@ pin '@stimulus-components/notification', to: '@stimulus-components--notification
 pin 'tom-select', to: 'https://ga.jspm.io/npm:tom-select@2.4.3/dist/esm/tom-select.js' # @2.4.3 base ESM via JSPM
 pin '@orchidjs/sifter', to: 'https://ga.jspm.io/npm:@orchidjs/sifter@1.1.0/dist/esm/sifter.js' # @1.1.0
 pin '@orchidjs/unicode-variants', to: 'https://ga.jspm.io/npm:@orchidjs/unicode-variants@1.1.2/dist/esm/index.js' # @1.1.2
+pin '@tailwindplus/elements', to: '@tailwindplus--elements.js' # @1.0.22

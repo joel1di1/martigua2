@@ -1,5 +1,5 @@
 = turbo_frame_tag dom_id(participation, :position) do
   = form_with model: participation, url: section_participation_path(current_section, participation), method: :patch, data: { controller: 'auto-submit', auto_submit_delay_value: 0 } do |f|
-    div class="inline-grid grid-cols-1"
+    div class="inline-grid"
       = f.select :main_position, Participation::POSITIONS.map { |p| [t("positions.#{p}"), p] }, { include_blank: '-' }, class: 'col-start-1 row-start-1 appearance-none rounded-md bg-white py-1 pr-7 pl-2 text-xs text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600', data: { action: 'auto-submit#submit' }
       = render 'player_stats/chevron', size_classes: 'mr-1.5 size-3.5'

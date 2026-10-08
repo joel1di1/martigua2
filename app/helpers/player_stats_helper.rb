@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module PlayerStatsHelper
+  FILTER_PARAMS = %i[championship_id match_id position start_date end_date].freeze
+
+  def player_stats_filters_active?
+    FILTER_PARAMS.any? { |name| params[name].present? }
+  end
+
   def sort_link(label, column, current_sort, current_direction)
     is_active = current_sort == column
     new_direction = is_active && current_direction == 'desc' ? 'asc' : 'desc'

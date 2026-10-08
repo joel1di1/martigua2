@@ -1,0 +1,76 @@
+name: 'Agent: project board'
+
+# Keeps the project board (vars.PROJECT_NUMBER, one card per issue) in step with the
+# agent:* labels (config/managed_agents/setup.sh), the merge of the issue's PR and the Heroku
+# deploy. agent:queued and agent:working don't move cards: the label shows on the card.
+# Labels added to an agent PR move the issues it closes. See script/managed_agents/board.sh.
+
+on:
+  issues:
+    types: [opened, reopened, closed, labeled]
+  pull_request:
+    types: [labeled]
+  deployment_status:
+
+concurrency:
+  group: agent-board
+
+jobs:
+  move:
+    if: >-
+      (github.event_name != 'deployment_status' ||
+       (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'martigua2')) &&
+      (github.event.action != 'labeled' ||
+       contains(fromJSON('["agent:refine", "agent:needs-answers", "agent:refined", "agent:dev", "agent:review", "agent:stuck"]'), github.event.label.name)) &&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      # User-owned projects only accept a classic token with the project scope.
+      GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+      PROJECT_OWNER: ${{ github.repository_owner }}
+      PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Move the cards
+        env:
+          EVENT: ${{ github.event_name }}
+          ACTION: ${{ github.event.action }}
+          LABEL: ${{ github.event.label.name }}
+          ISSUE: ${{ github.event.issue.number }}
+          PR: ${{ github.event.pull_request.number }}
+          STATE_REASON: ${{ github.event.issue.state_reason }}
+          DEPLOY_SHA: ${{ github.event.deployment.sha }}
+        run: |
+          board=script/managed_agents/board.sh
+          case "$EVENT/$ACTION" in
+            deployment_status/*) $board deployed "$DEPLOY_SHA" ;;
+            issues/opened | issues/reopened) $board move "$ISSUE" Idea ;;
+            issues/closed)
+              if [ "$STATE_REASON" = completed ]; then
+                $board move "$ISSUE" Merged
+              else
+                $board archive "$ISSUE"
+              fi
+              ;;
+            */labeled)
+              case "$LABEL" in
+                agent:refine) status=Refining ;;
+                agent:needs-answers) status="Needs answers" ;;
+                agent:refined) status=Refined ;;
+                agent:dev) status="In dev" ;;
+                agent:review) status="In review" ;;
+                agent:stuck) status=Stuck ;;
+              esac
+              if [ -n "$PR" ]; then
+                issues=$(gh pr view "$PR" --json closingIssuesReferences --jq '.closingIssuesReferences[].number')
+              else
+                issues=$ISSUE
+              fi
+              for issue in $issues; do
+                $board move "$issue" "$status"
+              done
+              ;;
+          esac

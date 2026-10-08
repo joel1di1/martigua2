@@ -1,8 +1,9 @@
 name: 'Agent: queue rescue and GC'
 
 # Safety net for the session-starting workflows: serves sessions stuck in the self-hosted
-# environment's queue (lost lease, failed runner, session started from the Console), and
-# gives up on those rescued 3 times or queued for more than 24 h, telling their issue or PR.
+# environment's queue (lost lease, failed runner, session started from the Console), gives
+# up on those rescued 3 times or queued for more than 24 h, telling their issue or PR, and
+# moves issues and PRs left on `agent:working` by an ended session to `agent:stuck`.
 # See script/managed_agents/queue_rescue.py. GitHub may delay scheduled runs.
 
 on:

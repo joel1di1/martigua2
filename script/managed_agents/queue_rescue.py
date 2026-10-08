@@ -13,6 +13,10 @@ For each queued session:
 - otherwise: given up. The work item is stopped, the session archived, and the linked
   issue or PR told so.
 
+Then any open issue or PR still labelled `agent:working` whose latest session is neither
+running nor active within STALE_AFTER (budget reached, crash, agent forgot its label) is
+given up too: commented and moved to `agent:stuck`.
+
 Writes `slots` (a JSON array with one entry per sandbox run to start) to $GITHUB_OUTPUT.
 Needs ANTHROPIC_API_KEY, ANTHROPIC_ENVIRONMENT_ID, ANTHROPIC_ENVIRONMENT_KEY, and GH_TOKEN
 for the GitHub comments.
@@ -30,6 +34,8 @@ RESCUE_AFTER = timedelta(minutes=10)
 GIVE_UP_AFTER = timedelta(hours=24)
 MAX_RESCUES = 3
 MAX_PARALLEL_RUNS = 5
+# Well past the sandbox worker's 5 min idle stop (agent-sandbox.yml --max-idle).
+STALE_AFTER = timedelta(minutes=15)
 
 
 def age(timestamp: str) -> timedelta:
@@ -53,6 +59,61 @@ def tell_github(metadata: dict[str, str], reason: str) -> None:
     subprocess.run(
         ["script/managed_agents/set_status.sh", number, "agent:stuck"], check=False
     )
+
+
+def stale_working(
+    items: list[dict], sessions: list
+) -> list[tuple[dict[str, str], str]]:
+    """The issues/PRs (GitHub JSON) labelled agent:working that no live session serves, as
+    (metadata, reason). `sessions` is newest first."""
+    latest = {}
+    for session in sessions:
+        meta = session.metadata or {}
+        latest.setdefault(meta.get("github_pr") or meta.get("github_issue"), session)
+    stale = []
+    for item in items:
+        number = str(item["number"])
+        session = latest.get(number)
+        if session is None:
+            key = "github_pr" if "pull_request" in item else "github_issue"
+            stale.append(({key: number}, "no agent session found for it"))
+        elif session.status not in ("running", "rescheduling") and (
+            datetime.now(timezone.utc) - session.updated_at >= STALE_AFTER
+        ):
+            reason = f"session {session.id} ended ({session.status}) while this was still `agent:working`"
+            stale.append((dict(session.metadata), reason))
+    return stale
+
+
+def working_items() -> list[dict]:
+    # The issues endpoint lists pull requests too.
+    return json.loads(
+        subprocess.run(
+            [
+                "gh",
+                "api",
+                "repos/{owner}/{repo}/issues?labels=agent:working&state=open&per_page=100",
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout
+    )
+
+
+async def give_up_stale_working(api: AsyncAnthropic) -> None:
+    items = working_items()
+    if not items:
+        return
+    since = datetime.now(timezone.utc) - timedelta(days=3)
+    sessions = [
+        s async for s in api.beta.sessions.list(created_at_gte=since, order="desc")
+    ]
+    for metadata, reason in stale_working(items, sessions):
+        print(
+            f"giving up on #{metadata.get('github_pr') or metadata.get('github_issue')}: {reason}"
+        )
+        tell_github(metadata, reason)
 
 
 async def main() -> int:
@@ -96,6 +157,7 @@ async def main() -> int:
                 f"{label} left for the next run ({MAX_PARALLEL_RUNS} rescues already)"
             )
 
+    await give_up_stale_working(api)
     print(f"{rescued} sandbox run(s) to start")
     return rescued
 

@@ -22,11 +22,25 @@ describe 'Add Match', :devise, :js do
   # text instead, which works regardless of the field's own visibility). If
   # Turbo hasn't taken over the form yet, the browser falls back to a
   # full-page redirect that lands directly on the next step instead.
-  def proceed_after_inline_creation(confirmation_text:)
-    click_on 'Suivant' if page.has_text?(confirmation_text, wait: 5)
+  #
+  # Waiting for the submit button to disappear is not enough: Turbo disables
+  # the submitter while the request is in flight, so a plain `have_no_button`
+  # passes before the server has created the record. Each stream action is
+  # also applied on its own animation frame, so the confirmation can show up
+  # before the panel collapses; clicking 'Suivant' in between can miss the
+  # button when the page height shrinks under the cursor.
+  def create_inline(model, button:, confirmation_text:, next_step:)
+    expect do
+      click_on button
+      expect(page).to have_text(confirmation_text).or have_text(next_step)
+    end.to change(model, :count)
+    return unless page.has_text?(confirmation_text, wait: 0)
+
+    expect(page).to have_no_button(button, disabled: :all)
+    click_on 'Suivant'
   end
 
-  # rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations
+  # rubocop:disable RSpec/ExampleLength
   describe 'with non existing items' do
     it 'coach sign in and add new match' do
       click_on 'add-match'
@@ -44,11 +58,9 @@ describe 'Add Match', :devise, :js do
       click_on 'Créer un(e) Calendrier'
       expect(page).to have_select('Calendrier', selected: calendar_name, wait: 5)
 
-      expect do
-        click_on 'Créer un(e) Compétition'
-        expect(page).to have_no_button('Créer un(e) Compétition', wait: 5)
-      end.to change(Championship, :count)
-      proceed_after_inline_creation(confirmation_text: "✓ Compétition « #{championship_name} » créée et sélectionnée.")
+      create_inline(Championship, button: 'Créer un(e) Compétition',
+                                  confirmation_text: "✓ Compétition « #{championship_name} » créée et sélectionnée.",
+                                  next_step: 'Quel jour ?')
 
       assert_text 'Quel jour ?'
       click_on 'Ajouter une journée'
@@ -56,30 +68,24 @@ describe 'Add Match', :devise, :js do
       select('octobre', from: 'day_period_start_date_2i')
       select(2024, from: 'day_period_start_date_1i')
       fill_in 'day[name]', with: day_name
-      expect do
-        click_on 'Créer un(e) Journée'
-        expect(page).to have_no_button('Créer un(e) Journée', wait: 5)
-      end.to change(Day, :count)
-      proceed_after_inline_creation(confirmation_text: "✓ Journée « #{day_name} » ajoutée et sélectionnée.")
+      create_inline(Day, button: 'Créer un(e) Journée',
+                         confirmation_text: "✓ Journée « #{day_name} » ajoutée et sélectionnée.",
+                         next_step: 'Quel lieu ?')
 
       assert_text 'Quel lieu ?'
       click_on 'Ajouter un lieu'
       fill_in 'location[name]', with: location_name
       fill_in 'location[address]', with: location_address
-      expect do
-        click_on 'Créer un(e) Lieu'
-        expect(page).to have_no_button('Créer un(e) Lieu', wait: 5)
-      end.to change(Location, :count)
-      proceed_after_inline_creation(confirmation_text: "✓ Lieu « #{location_name} » ajouté et sélectionné.")
+      create_inline(Location, button: 'Créer un(e) Lieu',
+                              confirmation_text: "✓ Lieu « #{location_name} » ajouté et sélectionné.",
+                              next_step: 'Equipe adverse ?')
 
       assert_text 'Equipe adverse ?'
       click_on 'Ajouter une équipe'
       fill_in 'team[name]', with: adversary_team_name
-      expect do
-        click_on 'Créer un(e) Équipe'
-        expect(page).to have_no_button('Créer un(e) Équipe', wait: 5)
-      end.to change(Team, :count)
-      proceed_after_inline_creation(confirmation_text: "✓ Équipe « #{adversary_team_name} » ajoutée et sélectionnée.")
+      create_inline(Team, button: 'Créer un(e) Équipe',
+                          confirmation_text: "✓ Équipe « #{adversary_team_name} » ajoutée et sélectionnée.",
+                          next_step: 'Par défault, une heure avant')
 
       expect do
         click_on 'Créer un(e) Match'
@@ -142,5 +148,5 @@ describe 'Add Match', :devise, :js do
       expect(match.location.name).to eq(location_name)
     end
   end
-  # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
+  # rubocop:enable RSpec/ExampleLength
 end

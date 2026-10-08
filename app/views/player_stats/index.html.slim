@@ -7,44 +7,45 @@ div class="px-4 sm:px-6 lg:px-8"
       h1 class="text-2xl font-bold text-gray-900" Statistiques joueurs
 
   / Filters
-  div class="mt-6 bg-gray-50 rounded-xl p-5 border border-gray-200"
+  - field_classes = 'block w-full rounded-md bg-white px-3 py-2 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600'
+  div class="mt-6 rounded-lg bg-white p-4 shadow-sm ring-1 ring-gray-900/5 sm:p-5"
     = form_tag section_player_stats_path(current_section), method: :get do
       div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4 items-end"
-        div class="col-span-2 sm:col-span-1"
-          label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5" Compétition
-          select name="championship_id" class="w-full rounded-lg border-gray-300 bg-white shadow-xs text-sm focus:border-indigo-500 focus:ring-indigo-500"
-            option value="" Toutes
-            - @championships.each do |champ|
-              option value=champ.id selected=(@championship&.id == champ.id) = champ.name
+        = render layout: 'player_stats/filter_select', locals: { id: 'filter_championship_id', name: 'championship_id', label: 'Compétition' } do
+          option value="" Toutes
+          - @championships.each do |champ|
+            option value=champ.id selected=(@championship&.id == champ.id) = champ.name
 
-        div class="col-span-2 sm:col-span-1"
-          label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5" Match
-          select name="match_id" class="w-full rounded-lg border-gray-300 bg-white shadow-xs text-sm focus:border-indigo-500 focus:ring-indigo-500"
-            option value="" Tous
-            - @matches.each do |match|
-              - match_label = "#{match.local_team.name} vs #{match.visitor_team.name} (#{match.date})"
-              option value=match.id selected=(params[:match_id].to_s == match.id.to_s) = match_label
+        = render layout: 'player_stats/filter_select', locals: { id: 'filter_match_id', name: 'match_id', label: 'Match' } do
+          option value="" Tous
+          - @matches.each do |match|
+            - match_label = "#{match.local_team.name} vs #{match.visitor_team.name} (#{match.date})"
+            option value=match.id selected=(params[:match_id].to_s == match.id.to_s) = match_label
 
-        div class="col-span-2 sm:col-span-1"
-          label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5" Poste
-          select name="position" class="w-full rounded-lg border-gray-300 bg-white shadow-xs text-sm focus:border-indigo-500 focus:ring-indigo-500"
-            option value="" Tous
-            - Participation::POSITIONS.each do |pos|
-              option value=pos selected=(@position_filter == pos) = t("positions.#{pos}")
+        = render layout: 'player_stats/filter_select', locals: { id: 'filter_position', name: 'position', label: 'Poste' } do
+          option value="" Tous
+          - Participation::POSITIONS.each do |pos|
+            option value=pos selected=(@position_filter == pos) = t("positions.#{pos}")
 
         div
-          label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5" Du
-          input type="date" name="start_date" value=params[:start_date] class="w-full rounded-lg border-gray-300 bg-white shadow-xs text-sm focus:border-indigo-500 focus:ring-indigo-500"
+          label for="filter_start_date" class="block text-sm/6 font-medium text-gray-900" Du
+          input type="date" id="filter_start_date" name="start_date" value=params[:start_date] class="mt-1 #{field_classes}"
 
         div
-          label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5" Au
-          input type="date" name="end_date" value=params[:end_date] class="w-full rounded-lg border-gray-300 bg-white shadow-xs text-sm focus:border-indigo-500 focus:ring-indigo-500"
+          label for="filter_end_date" class="block text-sm/6 font-medium text-gray-900" Au
+          input type="date" id="filter_end_date" name="end_date" value=params[:end_date] class="mt-1 #{field_classes}"
 
-        div class="col-span-2 sm:col-span-1 flex items-end"
-          button type="submit" class="w-full inline-flex justify-center items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 transition-colors"
-            svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1.5"
+        div class="col-span-2 sm:col-span-1 flex items-center gap-2"
+          button type="submit" class="inline-flex flex-1 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="mr-1.5 size-4"
               path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
             | Filtrer
+          - if player_stats_filters_active?
+            / Icon only at xl, where the 6 columns leave too little room for the text next to "Filtrer"
+            = link_to section_player_stats_path(current_section), title: 'Réinitialiser', class: 'inline-flex items-center justify-center self-stretch gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600' do
+              svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="size-4 text-gray-500"
+                path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"
+              span class="xl:sr-only" Réinitialiser
 
   / Stats table
   div class="mt-6 flow-root"

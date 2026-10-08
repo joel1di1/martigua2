@@ -1,0 +1,8 @@
+= render 'groups/breadcrumbs', items: [['Nouveau groupe', nil]]
+
+div class="mt-4 border-b border-gray-200 pb-5"
+  h1 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight" Nouveau groupe
+  p class="mt-1 text-sm text-gray-500"= "Saison #{Season.current}"
+
+div class="mt-8"
+  = render 'form', submit_label: 'Créer le groupe', cancel_path: section_groups_path(current_section)

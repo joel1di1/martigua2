@@ -22,6 +22,7 @@ For our shared Rails/Tailwind/Slim/RSpec/Stimulus conventions, read `~/.claude/R
 
 ## Important Commands
 - **Tests**: `bin/rspec`
+- **Worktrees**: always `bin/new-worktree <name> [branch]`, never raw `git worktree add` (it sets up an isolated DB and port)
 - **Linting**: `bin/rubocop`
 - **i18n** (run in CI, see `config/i18n-tasks.yml`):
   - `bundle exec i18n-tasks missing`: keys used in the code but not translated

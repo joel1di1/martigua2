@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 class GroupsController < ApplicationController
+  offers_new_design
+
   before_action :find_group
 
   def index
-    @groups = current_section.groups.where(season: Season.current).order(:system, :name)
+    @groups = current_section.groups.where(season: Season.current).includes(:group_memberships).order(:system, :name)
   end
 
   def show
-    @users = @group.users.includes(:participations, :groups)
+    @users = @group.users.includes(:participations, :groups, avatar_attachment: :blob).order(:first_name, :last_name)
     @last_trainings, @presences_by_user_and_training = prepare_training_presences(current_section, @users)
   end
 

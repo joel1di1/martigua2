@@ -6,6 +6,10 @@ fr:
         calendar: Calendrier
         name: Nom
         teams: Équipes
+      group:
+        color: Couleur
+        description: Description
+        name: Nom
     models:
       burn:
         one: brûlé

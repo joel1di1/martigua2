@@ -129,6 +129,7 @@ Rails.application.routes.draw do
   devise_for :users, except: %i[show], controllers: { sessions: 'users/sessions', passwords: 'users/passwords' }
 
   resource :login_link, only: %i[new create]
+  resource :design_preference, only: :update
 
   resources :users, only: %i[show edit update] do
     resources :absences, only: %i[new create edit update destroy]

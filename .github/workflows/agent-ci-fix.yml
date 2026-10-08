@@ -3,7 +3,7 @@ name: 'Agent: CI fix'
 # When CI fails on an agent branch (agent/*) with an open PR, starts a session that fixes
 # it, with the tail of the failed jobs' logs in its first message. At most MAX_ATTEMPTS
 # automatic attempts per PR; after that the PR gets `agent:stuck` and a human takes over
-# (the `agent:dev` label still works).
+# (the `agent:dev!` label still works).
 
 on:
   workflow_run:
@@ -57,7 +57,7 @@ jobs:
           RUN_URL: ${{ github.event.workflow_run.html_url }}
         run: |
           script/managed_agents/set_status.sh "$PR" agent:stuck
-          gh pr comment "$PR" --body "🤖 CI is still red ($RUN_URL) after $MAX_ATTEMPTS automatic fix attempts; leaving it to a human. Add the \`agent:dev\` label to send the agent again."
+          gh pr comment "$PR" --body "🤖 CI is still red ($RUN_URL) after $MAX_ATTEMPTS automatic fix attempts; leaving it to a human. Add the \`agent:dev!\` label to send the agent again."
 
       - name: Collect the failed logs
         if: steps.pr.outputs.number != '' && fromJSON(steps.pr.outputs.attempts) < fromJSON(env.MAX_ATTEMPTS)

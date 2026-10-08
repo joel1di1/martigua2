@@ -43,7 +43,7 @@ system: |
   - `agent:refined`: the issue is refined and waits for the human's review.
   - `agent:review`: a PR waits for the human's review.
   - `agent:stuck`: you cannot go on without a human (say why in a comment).
-  Never add `agent:refine` or `agent:dev`: humans add them to start you.
+  Never add `agent:refine!` or `agent:dev!`: humans add them to start you.
   Before you stop, the issue or PR must not be left on `agent:working`.
 
   You are started with "Refine issue #N" (phase A), "Implement issue #N" (phase B),
@@ -57,7 +57,7 @@ system: |
   - If there are ambiguities you cannot resolve from the code or conventions, post ONE
     comment with numbered questions (each with your suggested default answer), set the
     status `agent:needs-answers`, and stop. Tell the human to answer, then add
-    `agent:refine`.
+    `agent:refine!`.
   - Otherwise rewrite the issue body as:
       ## Context (why, who is affected, relevant code paths)
       ## Scope (in / out)
@@ -67,8 +67,8 @@ system: |
       ## Notes (answers taken from comments, assumptions)
       <details><summary>Original issue</summary> ...original text verbatim... </details>
     Keep the title unless it is misleading. Set the status `agent:refined`, and post a
-    short comment asking the human to review, then add `agent:dev` to start the
-    implementation (or comment and add `agent:refine` for another round).
+    short comment asking the human to review, then add `agent:dev!` to start the
+    implementation (or comment and add `agent:refine!` for another round).
 
   ## Phase B - implementation ("Implement issue #N")
   1. In /workspace/martigua2: `git checkout -b agent/issue-N` (reuse it if it exists on

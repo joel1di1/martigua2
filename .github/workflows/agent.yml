@@ -1,7 +1,7 @@
 name: 'Agent: issue/PR label'
 
 # Labels drive the agent (the full list is in config/managed_agents/setup.sh). Adding
-# `agent:refine` to an issue starts its refinement, and `agent:dev` its implementation, or,
+# `agent:refine!` to an issue starts its refinement, and `agent:dev!` its implementation, or,
 # on a pull request, a session that addresses the feedback on it. The trigger
 # label is replaced with `agent:queued` right away, and with `agent:stuck` if the session
 # cannot be started. The session's tools run in this workflow's runner (agent-sandbox.yml).
@@ -19,8 +19,8 @@ concurrency:
   group: >-
     ${{
       (github.event.sender.login == github.repository_owner &&
-       ((github.event_name == 'issues' && contains(fromJSON('["agent:refine", "agent:dev"]'), github.event.label.name)) ||
-        (github.event_name == 'pull_request' && github.event.label.name == 'agent:dev' &&
+       ((github.event_name == 'issues' && contains(fromJSON('["agent:refine!", "agent:dev!"]'), github.event.label.name)) ||
+        (github.event_name == 'pull_request' && github.event.label.name == 'agent:dev!' &&
          github.event.pull_request.head.repo.full_name == github.repository)))
       && format('agent-{0}', github.event.issue.number || github.event.pull_request.number)
       || format('agent-ignored-{0}', github.run_id)
@@ -31,8 +31,8 @@ jobs:
     # Public repo: only the owner can spend agent budget. Fork PRs get no secrets.
     if: >-
       github.event.sender.login == github.repository_owner &&
-      ((github.event_name == 'issues' && contains(fromJSON('["agent:refine", "agent:dev"]'), github.event.label.name)) ||
-       (github.event_name == 'pull_request' && github.event.label.name == 'agent:dev' &&
+      ((github.event_name == 'issues' && contains(fromJSON('["agent:refine!", "agent:dev!"]'), github.event.label.name)) ||
+       (github.event_name == 'pull_request' && github.event.label.name == 'agent:dev!' &&
         github.event.pull_request.head.repo.full_name == github.repository))
     runs-on: ubuntu-latest
     permissions:
@@ -66,7 +66,7 @@ jobs:
         run: |
           if [ "$IS_PR" = "true" ]; then
             mode=--pr
-          elif [ "$LABEL" = "agent:refine" ]; then
+          elif [ "$LABEL" = "agent:refine!" ]; then
             mode=--refine
           else
             mode=--implement

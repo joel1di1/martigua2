@@ -21,7 +21,7 @@ jobs:
       (github.event_name != 'deployment_status' ||
        (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'martigua2')) &&
       (github.event.action != 'labeled' ||
-       contains(fromJSON('["agent:refine", "agent:needs-answers", "agent:refined", "agent:dev", "agent:review", "agent:stuck"]'), github.event.label.name)) &&
+       contains(fromJSON('["agent:refine!", "agent:needs-answers", "agent:refined", "agent:dev!", "agent:review", "agent:stuck"]'), github.event.label.name)) &&
       (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     permissions:
@@ -57,10 +57,10 @@ jobs:
               ;;
             */labeled)
               case "$LABEL" in
-                agent:refine) status=Refining ;;
+                agent:refine!) status=Refining ;;
                 agent:needs-answers) status="Needs answers" ;;
                 agent:refined) status=Refined ;;
-                agent:dev) status="In dev" ;;
+                agent:dev!) status="In dev" ;;
                 agent:review) status="In review" ;;
                 agent:stuck) status=Stuck ;;
               esac

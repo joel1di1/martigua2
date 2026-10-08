@@ -6,13 +6,15 @@ The app behind [www.martigua.org](https://www.martigua.org): it manages handball
 sections, teams, players, trainings and matches.
 
 Rails 8 on Ruby (version in `.ruby-version`), PostgreSQL, Slim, Tailwind, Hotwire
-(Turbo + Stimulus), Solid Queue / Cache / Cable, RSpec. Conventions and testing rules are
-in [`CLAUDE.md`](CLAUDE.md): read it before contributing.
+(Turbo + Stimulus), Solid Queue / Cache / Cable, RSpec.
+Project notes and conventions are in [`CLAUDE.md`](CLAUDE.md): read it before contributing.
 
 ## Setup
 
-Prerequisites: the Ruby version from `.ruby-version`, Docker, libvips (`brew install vips`)
-and Chrome for the system specs.
+Prerequisites: the Ruby version from `.ruby-version`, Docker, libvips (`brew install vips`),
+Chrome for the JS feature specs (`SHOW_BROWSER=1` to watch them), PostgreSQL client tools
+16+ (`brew install libpq`) and `redis-cli` for the restore and worktree scripts, and the
+Heroku CLI with access to the app to restore production data.
 
 ```bash
 docker compose up -d   # Postgres on localhost:54321
@@ -24,15 +26,16 @@ bin/setup              # bundle install, db:prepare, then starts bin/dev
 | Command | What it does |
 |---------|--------------|
 | `bin/dev` | Rails server and Tailwind watcher, on http://localhost:3000 |
-| `bin/rspec` | Test suite (`bin/parallel_rspec spec` to use every CPU) |
+| `bin/rspec` | Test suite |
+| `bin/parallel_rspec spec` | Test suite on every CPU (once before: `RAILS_ENV=test bin/rails parallel:create parallel:load_schema`) |
 | `bin/rubocop` | Lint (`-A` to autocorrect) |
-| `bundle exec i18n-tasks missing` / `unused` / `check-normalized` | i18n checks, also run in CI |
+| `bundle exec i18n-tasks missing` / `unused` / `check-normalized` | i18n checks, run them before pushing |
 
 ## Restore the production database locally
 
 ```bash
-heroku pg:backups:capture
-heroku pg:backups:download
+heroku pg:backups:capture -a martigua2
+heroku pg:backups:download -a martigua2
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -p 54321 -U postgres -d martigua2_development latest.dump
 bin/rails db:environment:set RAILS_ENV=development
 bin/rails db:migrate
@@ -43,7 +46,7 @@ bin/rails db:migrate
 ```bash
 bin/new-worktree my-feature   # ../martigua2-my_feature, branch my-feature
 cd ../martigua2-my_feature
-bin/dev                       # http://localhost:3010
+bin/dev                       # http://localhost:3010 for the first worktree (the script prints it)
 bin/rm-worktree my-feature    # drops its databases and removes the worktree
 ```
 
@@ -60,7 +63,8 @@ migrations run on release (see `Procfile`).
 
 Issues and pull requests can be handed to the coding agent with labels: `agent:refine!` on
 an issue to refine it, `agent:dev!` on an issue to implement it or on a pull request to address
-its review. See `.github/workflows/agent.yml` and `config/managed_agents/`.
+its review. Only labels added by the repository owner start it. See
+`.github/workflows/agent.yml` and `config/managed_agents/`.
 
 ## License
 

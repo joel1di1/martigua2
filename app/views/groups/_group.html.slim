@@ -1,0 +1,35 @@
+- members_count = group.group_memberships.size
+- manageable = coach && !group.system?
+
+li class="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6 sm:first:rounded-t-xl sm:last:rounded-b-xl"
+  div class="flex min-w-0 gap-x-4"
+    div class="flex size-12 flex-none items-center justify-center rounded-lg bg-gray-100 text-sm font-semibold text-gray-600" style=group_swatch_style(group)
+      = initials(group.name)
+    div class="min-w-0 flex-auto"
+      p class="flex items-center gap-x-2 text-sm/6 font-semibold text-gray-900"
+        = link_to section_group_path(current_section, group), class: 'truncate' do
+          span class="absolute inset-x-0 -top-px bottom-0"
+          = group.name
+        - if group.system?
+          = pill_badge('Automatique')
+      p class="mt-1 truncate text-xs/5 text-gray-500"
+        = group.description.presence || 'Pas de description'
+
+  div class="flex shrink-0 items-center gap-x-4"
+    p class="hidden text-sm/6 text-gray-900 sm:block"
+      = pluralize(members_count, 'membre', plural: 'membres')
+    - if manageable
+      el-dropdown class="relative flex-none"
+        button class="relative block text-gray-500 hover:text-gray-900"
+          span class="absolute -inset-2.5"
+          span class="sr-only"= "Options pour #{group.name}"
+          = heroicon_mini(:ellipsis_vertical)
+        el-menu anchor="bottom end" popover=true class="w-36 origin-top-right rounded-md bg-white py-2 shadow-lg outline outline-gray-900/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+          = link_to edit_section_group_path(current_section, group), class: 'block px-3 py-1 text-sm/6 text-gray-900 focus:bg-gray-50 focus:outline-hidden' do
+            | Modifier
+            span class="sr-only"= ", #{group.name}"
+          = button_to section_group_path(current_section, group), method: :delete, class: 'block w-full px-3 py-1 text-left text-sm/6 text-red-600 focus:bg-gray-50 focus:outline-hidden', form: { data: { turbo_confirm: "Supprimer le groupe #{group.name} ?" } } do
+            | Supprimer
+            span class="sr-only"= ", #{group.name}"
+    - else
+      = heroicon_mini(:chevron_right, css_class: 'size-5 flex-none text-gray-400')

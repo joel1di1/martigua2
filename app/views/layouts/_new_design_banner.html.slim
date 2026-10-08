@@ -1,0 +1,10 @@
+- if user_signed_in? && new_design_available? && !new_design?
+  div id="new-design-banner" class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 bg-indigo-600 px-6 py-2.5"
+    p class="text-sm/6 text-white"
+      strong class="font-semibold" Nouveau design
+      svg viewBox="0 0 2 2" aria-hidden="true" class="mx-2 inline size-0.5 fill-current"
+        circle r="1" cx="1" cy="1"
+      | Cette page existe dans un nouveau design. Envie de le tester ? Vous pourrez revenir à l'ancien depuis votre profil.
+    = button_to design_preference_path, method: :patch, params: { new_design: true }, class: 'cursor-pointer rounded-full bg-white px-3.5 py-1 text-sm font-semibold text-indigo-600 shadow-xs hover:bg-indigo-50' do
+      | Essayer le nouveau design
+      span aria-hidden="true"= ' →'

@@ -1,0 +1,59 @@
+- coach = current_user.coach_of?(current_section)
+- manageable = coach && !@group.system?
+- primary_button = 'inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+- secondary_button = 'inline-flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50'
+
+= render 'groups/breadcrumbs', items: [[@group.name, nil]]
+
+div class="mt-4 md:flex md:items-center md:justify-between"
+  div class="flex min-w-0 flex-1 items-center gap-x-4"
+    div class="flex size-14 flex-none items-center justify-center rounded-xl bg-gray-100 text-lg font-semibold text-gray-600" style=group_swatch_style(@group)
+      = initials(@group.name)
+    div class="min-w-0"
+      div class="flex items-center gap-x-3"
+        h1 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"= @group.name
+        - if @group.system?
+          = pill_badge('Automatique')
+      - if @group.description.present?
+        p class="mt-1 text-sm text-gray-500"= @group.description
+  - if manageable
+    div class="mt-4 flex md:mt-0 md:ml-4"
+      = link_to edit_section_group_path(current_section, @group), class: secondary_button do
+        = heroicon(:pencil_square, css_class: '-ml-0.5 size-5 text-gray-400')
+        | Modifier
+
+- if manageable
+  div class="mt-8 bg-white px-4 py-5 shadow-xs outline-1 outline-gray-900/5 sm:rounded-xl sm:p-6"
+    h2 class="text-base font-semibold text-gray-900" Ajouter un membre
+    p class="mt-1 text-sm text-gray-500" Choisissez un membre de la section à ajouter à ce groupe.
+    = form_tag section_group_add_users_path(current_section, @group), class: 'mt-4 sm:flex sm:items-center sm:gap-x-3' do
+      div class="w-full sm:max-w-sm"
+        = label_tag 'user_id', 'Membre', class: 'sr-only'
+        = select_tag 'user_id', options_from_collection_for_select(current_section.members.distinct.order(:first_name, :last_name) - @users, :id, :full_name), include_blank: true, data: { controller: 'ts--select' }, class: 'w-full'
+      button type="submit" class="#{primary_button} mt-3 w-full justify-center sm:mt-0 sm:w-auto"
+        = heroicon(:user_plus, css_class: '-ml-0.5 size-5')
+        | Ajouter
+
+div class="mt-8 bg-white shadow-xs outline-1 outline-gray-900/5 sm:rounded-xl"
+  div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 px-4 py-5 sm:px-6"
+    h2 class="text-base font-semibold text-gray-900"
+      = pluralize(@users.size, 'membre', plural: 'membres')
+    - if @last_trainings.any?
+      p class="flex items-center gap-x-3 text-xs text-gray-500"
+        span Présences aux #{@last_trainings.size} derniers entrainements
+        span class="inline-flex items-center gap-x-1"
+          span class="size-2 rounded-xs bg-green-500"
+          | présent
+        span class="inline-flex items-center gap-x-1"
+          span class="size-2 rounded-xs bg-gray-300"
+          | absent
+
+  - if @users.empty?
+    div class="px-6 py-12 text-center"
+      = heroicon(:users, css_class: 'mx-auto size-12 text-gray-400')
+      h3 class="mt-2 text-sm font-semibold text-gray-900" Aucun membre
+      - if manageable
+        p class="mt-1 text-sm text-gray-500" Ajoutez des membres avec le formulaire ci-dessus.
+  - else
+    ul role="list" class="divide-y divide-gray-100"
+      = render partial: 'groups/member', collection: @users, as: :user, locals: { group: @group, coach: }

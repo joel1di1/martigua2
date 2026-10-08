@@ -6,7 +6,9 @@ meta name="vapid-public-key" content=ENV.fetch('VAPID_PUBLIC_KEY', 'BHgdMBM2bvdF
 
 / Propshaft has no require_tree, so every stylesheet is linked explicitly, in the order
   Sprockets used to concatenate them: trix and actiontext first, tailwind last.
-= stylesheet_link_tag "trix", "actiontext", "legacy", "application", "tailwind", "data-turbo-track": "reload"
+  The app_shell layout (new design) skips legacy.css: its unlayered rules override Tailwind utilities.
+- stylesheets = local_assigns.fetch(:legacy_css, true) ? %w[trix actiontext legacy application tailwind] : %w[trix actiontext application tailwind]
+= stylesheet_link_tag(*stylesheets, "data-turbo-track": "reload")
 
 script src="https://js.sentry-cdn.com/5ece076e22c84413bdaa2ee34bf6a9db.min.js" crossorigin="anonymous"
 

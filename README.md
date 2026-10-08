@@ -1,41 +1,34 @@
-[![Maintainability](https://api.codeclimate.com/v1/badges/f023a142fab9d17c0d7b/maintainability)](https://codeclimate.com/github/joel1di1/martigua2/maintainability)
+# Martigua2
 
-[![Test Coverage](https://api.codeclimate.com/v1/badges/f023a142fab9d17c0d7b/test_coverage)](https://codeclimate.com/github/joel1di1/martigua2/test_coverage)
+[![CI](https://github.com/joel1di1/martigua2/actions/workflows/main.yml/badge.svg)](https://github.com/joel1di1/martigua2/actions/workflows/main.yml)
 
-Martigua2
-=========
+The app behind [www.martigua.org](https://www.martigua.org): it manages handball clubs, their
+sections, teams, players, trainings and matches.
 
-Code of the amazing site www.martigua.org
+Rails 8 on Ruby (version in `.ruby-version`), PostgreSQL, Slim, Tailwind, Hotwire
+(Turbo + Stimulus), Solid Queue / Cache / Cable, RSpec. Conventions and testing rules are
+in [`CLAUDE.md`](CLAUDE.md): read it before contributing.
 
-Contributing
---
+## Setup
 
-If you make improvements to this application, please share with others.
+Prerequisites: the Ruby version from `.ruby-version`, Docker, libvips (`brew install vips`)
+and Chrome for the system specs.
 
--   Fork the project on GitHub.
--   Make your feature addition or bug fix.
--   Commit with Git.
--   Send the author a pull request.
+```bash
+docker compose up -d   # Postgres on localhost:54321
+bin/setup              # bundle install, db:prepare, then starts bin/dev
+```
 
-If you add functionality to this application, create an alternative
-implementation, or build an application that is similar, please contact
-me and I’ll add a note to the README so that others can find your work.
+## Daily commands
 
-Dev Setup
---
+| Command | What it does |
+|---------|--------------|
+| `bin/dev` | Rails server and Tailwind watcher, on http://localhost:3000 |
+| `bin/rspec` | Test suite (`bin/parallel_rspec spec` to use every CPU) |
+| `bin/rubocop` | Lint (`-A` to autocorrect) |
+| `bundle exec i18n-tasks missing` / `unused` / `check-normalized` | i18n checks, also run in CI |
 
-1. sur mac c'est quand même plus facile
-2. Install homebrew : https://brew.sh/
-3. Install rvm or rbenv
-4. git clone ...
-5. bundle
-6. docker-compose up
-7. rails db:reset
-8. rspec
-
-
-Restore production database locally
---
+## Restore the production database locally
 
 ```bash
 heroku pg:backups:capture
@@ -45,65 +38,30 @@ bin/rails db:environment:set RAILS_ENV=development
 bin/rails db:migrate
 ```
 
-
-Working on several branches in parallel
---
-
-`bin/new-worktree <name>` creates a git worktree with its own Postgres database, its own
-Redis database index and its own port, so you can run several checkouts side by side against
-the single shared docker-compose stack.
+## Several branches in parallel
 
 ```bash
-bin/new-worktree ma-feature      # -> ../martigua2-ma_feature, branch ma-feature
-cd ../martigua2-ma_feature
-bin/dev                          # http://localhost:3010
+bin/new-worktree my-feature   # ../martigua2-my_feature, branch my-feature
+cd ../martigua2-my_feature
+bin/dev                       # http://localhost:3010
+bin/rm-worktree my-feature    # drops its databases and removes the worktree
 ```
 
-Each worktree gets a slot (1 to 7), which fixes its settings:
+Each worktree gets its own databases and port against the shared docker-compose stack, and
+starts from `latest.dump` when that file is at the root of the main checkout. Details are
+at the top of `bin/new-worktree`.
 
-| slot | database | redis db (dev / test) | port |
-|------|----------|-----------------------|------|
-| main | `martigua2_development` | 0 / 1 | 3000 |
-| 1    | `martigua2_<name>_development` | 2 / 3 | 3010 |
-| 2    | `martigua2_<name>_development` | 4 / 5 | 3020 |
+## Deployment
 
-The script copies the gitignored files a fresh checkout is missing (`.env.local`, `.envrc`,
-`config/master.key`), appends the slot settings to `.env.local`, writes `.env.test.local`
-(dotenv ignores `.env.local` in the test env), and restores `latest.dump` into the new
-database when that file is present at the root of the main checkout.
+Production runs on Heroku: a `web` dyno (Puma) and a `worker` dyno (Solid Queue), with
+migrations run on release (see `Procfile`).
 
-`bin/rm-worktree <name>` tears it down: it drops the databases, flushes the redis indexes and
-removes the worktree, refusing to run while there is uncommitted work unless given `--force`.
-The branch itself is left alone.
+## Agent workflow
 
+Issues and pull requests can be handed to the coding agent with labels: `agent:refine!` on
+an issue to refine it, `agent:dev!` on an issue to implement it or on a pull request to address
+its review. See `.github/workflows/agent.yml` and `config/managed_agents/`.
 
-Emails
---
-
-Production sends through the **Scaleway Transactional Email** HTTP API. The delivery method
-is `Scaleway::TransactionalEmailDelivery`, registered as `:scaleway`; it reads its
-configuration from the environment (`SCW_DEFAULT_REGION` is optional, it defaults to `fr-par`):
-
-```bash
-heroku config:set SCW_DEFAULT_PROJECT_ID=<scaleway project id> \
-                  SCW_SECRET_KEY=<api secret key with TransactionalEmailFullAccess>
-```
-
-The names follow the Scaleway CLI and SDK convention. `SCW_ACCESS_KEY` and
-`SCW_DEFAULT_ORGANIZATION_ID` belong to the same family but the app never reads them: the
-Transactional Email API authenticates with the secret key alone, and the project id is the
-only scope it needs.
-
-Before the first send, the sending domain (`martigua.org`) must be added and verified in the
-Scaleway console (SPF, DKIM and the MX record for DMARC reports), and the `From` address used
-by the mailers (`admin@martigua.org`) must belong to that domain.
-
-A refusal from the API surfaces as `Scaleway::TransactionalEmailDelivery::DeliveryError`,
-carrying the HTTP status and the response body. Note that `Interceptors::BlockedAddressInterceptor` filters
-every outgoing mail, so a recipient listed in `blocked_addresses` (`*@example.com` is) is
-dropped before it ever reaches Scaleway.
-
-License
---
+## License
 
 MIT

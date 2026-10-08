@@ -49,8 +49,8 @@ bin/rails db:migrate
 Working on several branches in parallel
 --
 
-`bin/new-worktree <name>` creates a git worktree with its own Postgres database, its own
-Redis database index and its own port, so you can run several checkouts side by side against
+`bin/new-worktree <name>` creates a git worktree with its own Postgres database and its
+own port, so you can run several checkouts side by side against
 the single shared docker-compose stack.
 
 ```bash
@@ -61,19 +61,18 @@ bin/dev                          # http://localhost:3010
 
 Each worktree gets a slot (1 to 7), which fixes its settings:
 
-| slot | database | redis db (dev / test) | port |
-|------|----------|-----------------------|------|
-| main | `martigua2_development` | 0 / 1 | 3000 |
-| 1    | `martigua2_<name>_development` | 2 / 3 | 3010 |
-| 2    | `martigua2_<name>_development` | 4 / 5 | 3020 |
+| slot | database | port |
+|------|----------|------|
+| main | `martigua2_development` | 3000 |
+| 1    | `martigua2_<name>_development` | 3010 |
+| 2    | `martigua2_<name>_development` | 3020 |
 
 The script copies the gitignored files a fresh checkout is missing (`.env.local`, `.envrc`,
 `config/master.key`), appends the slot settings to `.env.local`, writes `.env.test.local`
 (dotenv ignores `.env.local` in the test env), and restores `latest.dump` into the new
 database when that file is present at the root of the main checkout.
 
-`bin/rm-worktree <name>` tears it down: it drops the databases, flushes the redis indexes and
-removes the worktree, refusing to run while there is uncommitted work unless given `--force`.
+`bin/rm-worktree <name>` tears it down: it drops the databases and removes the worktree, refusing to run while there is uncommitted work unless given `--force`.
 The branch itself is left alone.
 
 

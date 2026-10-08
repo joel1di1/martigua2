@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# Remove a worktree created by bin/new-worktree, along with its databases and Redis
-# namespaces, so its slot can be reused.
+# Remove a worktree created by bin/new-worktree, along with its databases, so its slot
+# can be reused.
 #
 #   bin/rm-worktree <name> [--force]
 #
@@ -15,8 +15,6 @@ set -euo pipefail
 PG_HOST="${POSTGRES_HOST:-localhost}"
 PG_PORT="${POSTGRES_PORT:-54321}"
 PG_USER="${POSTGRES_USER:-postgres}"
-REDIS_HOST="${WORKTREE_REDIS_HOST:-localhost}"
-REDIS_PORT="${WORKTREE_REDIS_PORT:-63791}"
 
 # Files bin/new-worktree generates or copies in; they never count as work to preserve.
 GENERATED=(.env.local .env.test.local .envrc config/master.key)
@@ -90,11 +88,6 @@ About to remove worktree '$SLUG'${SLOT:+ (slot $SLOT)}:
   path   $WT_PATH
   drop   $DEV_DB, $TEST_DB
 EOF
-if [ -n "$SLOT" ]; then
-  echo "  flush  redis db $((SLOT * 2)) and $((SLOT * 2 + 1))"
-else
-  warn "slot unknown, the redis databases will not be flushed"
-fi
 printf 'Continue? [y/N] '
 read -r answer
 case "$answer" in
@@ -124,12 +117,6 @@ psql -h "$PG_HOST" -p "$PG_PORT" -U "$PG_USER" -Atqc \
   while read -r db; do
     [ -n "$db" ] && dropdb --if-exists -h "$PG_HOST" -p "$PG_PORT" -U "$PG_USER" "$db"
   done
-
-if [ -n "$SLOT" ]; then
-  info "flushing redis databases"
-  redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" -n "$((SLOT * 2))" FLUSHDB >/dev/null
-  redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" -n "$((SLOT * 2 + 1))" FLUSHDB >/dev/null
-fi
 
 info "removing worktree"
 for f in "${GENERATED[@]}"; do rm -f "$WT_PATH/$f"; done

@@ -27,9 +27,10 @@ jobs:
     permissions:
       contents: read
     env:
-      # User-owned projects only accept a classic token with the project scope.
+      # User-owned projects only accept a classic token with the project scope. @me (the
+      # token's owner) spares gh the owner lookup, which needs read:org.
       GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
-      PROJECT_OWNER: ${{ github.repository_owner }}
+      PROJECT_OWNER: "@me"
       PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}
     steps:
       - uses: actions/checkout@v7

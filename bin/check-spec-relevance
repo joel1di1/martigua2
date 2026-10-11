@@ -6,10 +6,15 @@
 # description) and that passes on base code was already green before the
 # change, and is flagged as possibly irrelevant.
 #
+# Unnamed examples (`it { ... }`, `its(:x) { ... }`) get a description generated
+# from runtime values (random factory data, ids, timestamps) that changes on
+# every run, so they are matched by their group description + source line.
+#
 # Examples that already existed on base are ignored, so modified files mixing
-# old and new examples don't produce noise. Limitation: an existing example
+# old and new examples don't produce noise. Limitations: an existing example
 # whose body was modified keeps its description, counts as "old", and is not
-# checked.
+# checked; same for an unnamed example whose source line is identical to
+# another one in the same group.
 #
 # Usage: bin/check-spec-relevance [base-ref]   (default: origin/main)
 #
@@ -54,6 +59,20 @@ worktree_dir="$(mktemp -d "${TMPDIR:-/tmp}/spec-relevance.XXXXXX")"
 main_repo_dir="$(pwd)"
 trap 'cd "$main_repo_dir" && git worktree remove --force "$worktree_dir" 2>/dev/null || true' EXIT
 
+# Ruby helper shared by the inventory and the check: the key identifying an
+# example across the base and branch runs.
+example_key_rb=$(cat <<'RUBY'
+UNNAMED_EXAMPLE = /\A\s*(?:it|specify|example|its\([^)]*\))\s*(?:\{|do\b)/
+SOURCES = Hash.new { |h, path| h[path] = File.readlines(path) }
+def example_key(e)
+  line = SOURCES[e["file_path"]][e["line_number"] - 1].to_s
+  return e["full_description"] unless line.match?(UNNAMED_EXAMPLE)
+
+  "#{e["full_description"].delete_suffix(e["description"]).strip} #{line.strip}"
+end
+RUBY
+)
+
 echo "Creating base-branch worktree in $worktree_dir"
 git worktree add --quiet "$worktree_dir" "$merge_base"
 
@@ -78,10 +97,10 @@ if [ "${#base_existing_specs[@]}" -gt 0 ]; then
   RAILS_ENV=test bundle exec rspec --format json --out tmp/spec_relevance_base.json \
     "${base_existing_specs[@]}" >/dev/null 2>&1 || true
   if [ -s tmp/spec_relevance_base.json ]; then
-    ruby -rjson -e '
+    ruby -rjson -e "$example_key_rb"'
       json = JSON.parse(File.read(ARGV[0]))
       (json["examples"] || []).each do |e|
-        puts "#{e["file_path"].sub(%r{\A\./}, "")}\t#{e["full_description"]}"
+        puts "#{e["file_path"].sub(%r{\A\./}, "")}\t#{example_key(e)}"
       end
     ' tmp/spec_relevance_base.json > "$base_examples_file"
   fi
@@ -128,7 +147,7 @@ for spec in "${changed_specs[@]}"; do
         ;;
       PENDING_NEW) new_example_count=$((new_example_count + 1)) ;;
     esac
-  done < <(ruby -rjson -e '
+  done < <(ruby -rjson -e "$example_key_rb"'
     json = JSON.parse(File.read(ARGV[0]))
     if json.dig("summary", "errors_outside_of_examples_count").to_i.positive?
       puts "LOAD_ERROR\t-"
@@ -138,7 +157,7 @@ for spec in "${changed_specs[@]}"; do
     spec = ARGV[2]
     (json["examples"] || []).each do |e|
       desc = e["full_description"]
-      next if base.include?("#{spec}\t#{desc}")
+      next if base.include?("#{spec}\t#{example_key(e)}")
 
       tag = { "passed" => "PASS_NEW", "failed" => "FAIL_NEW", "pending" => "PENDING_NEW" }[e["status"]]
       puts "#{tag}\t#{desc}" if tag

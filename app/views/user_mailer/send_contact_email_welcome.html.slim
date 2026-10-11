@@ -20,3 +20,8 @@ p
 
 p
   = "Si tu penses recevoir ce message par erreur, préviens #{@user.first_name.capitalize}."
+
+p
+  ' Ce que Martigua fait de tes données personnelles, et comment ne plus recevoir ces emails :
+  a href=privacy_url
+    = privacy_url

@@ -78,6 +78,7 @@ RSpec.describe UserMailer do
 
       expect(body).to include(user.full_name)
       expect(body).to include(new_login_link_url)
+      expect(body).to include(privacy_url)
     end
 
     it 'names the player on the match invitation' do
@@ -96,6 +97,10 @@ RSpec.describe UserMailer do
 
   describe '#send_contact_email_welcome' do
     let(:mail) { UserMailer.send_contact_email_welcome(user, 'maman@example.com') }
+
+    it 'links to the privacy page, relatives being data subjects too' do
+      expect(mail.body.to_s).to include(privacy_url)
+    end
 
     it 'goes to the new address alone' do
       expect(mail.to).to eq ['maman@example.com']

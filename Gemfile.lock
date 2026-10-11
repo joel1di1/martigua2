@@ -344,8 +344,6 @@ GEM
       timeout
     net-smtp (0.5.2)
       net-protocol
-    newrelic_rpm (10.9.0)
-      logger
     nio4r (2.7.5)
     nokogiri (1.19.4)
       mini_portile2 (~> 2.8.2)
@@ -536,8 +534,6 @@ GEM
       ffi (~> 1.12)
       logger
     rubyzip (3.7.0)
-    scout_apm (6.3.1)
-      parser
     securerandom (0.4.1)
     selenium-webdriver (4.49.0)
       base64 (~> 0.2)
@@ -677,7 +673,6 @@ DEPENDENCIES
   net-imap
   net-pop
   net-smtp
-  newrelic_rpm
   oj
   parallel_tests
   pdf-reader
@@ -703,7 +698,6 @@ DEPENDENCIES
   ruby-lsp
   ruby-lsp-rspec
   ruby-vips (~> 2.2)
-  scout_apm
   sentry-rails
   sentry-ruby
   shoulda-matchers

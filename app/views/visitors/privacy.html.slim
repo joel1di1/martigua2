@@ -1,0 +1,59 @@
+- h2_class = 'mt-8 text-lg font-semibold text-gray-900'
+
+div class="mx-auto max-w-3xl pb-16 text-sm/6 text-gray-700 [&_p]:mt-3 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5"
+  h1 class="text-2xl font-bold text-gray-900" Mentions légales et confidentialité
+
+  h2 class=h2_class Éditeur et responsable des données
+  p
+    | Martigua (www.martigua.org) est édité à titre personnel et non commercial par Benoit Lafontaine, qui est aussi responsable du traitement des données personnelles.
+  p
+    | Contact : 
+    = mail_to 'admin@martigua.org', nil, class: 'text-indigo-600 hover:text-indigo-500'
+
+  h2 class=h2_class Hébergeur
+  p Heroku (Salesforce, Inc.), 415 Mission Street, 3rd Floor, San Francisco, CA 94105, États-Unis. Téléphone : +1 415 901 7000. Les données sont hébergées dans la région européenne de Heroku.
+
+  h2 class=h2_class Données collectées
+  ul
+    li Identité et contact : prénom, nom, surnom, email, téléphone, photo de profil.
+    li Emails des proches (parents) ajoutés pour recevoir les convocations.
+    li Vie du club : sections, équipes, groupes, présences aux entraînements, disponibilités et sélections pour les matchs, absences, tâches, messages.
+    li Statistiques de match importées de la FFHB.
+    li Connexion : dates de connexion et abonnements aux notifications. Les adresses IP ne sont pas conservées.
+  p
+    | Les motifs et commentaires d'absence sont visibles par les coachs : n'y indiquez pas d'information médicale.
+
+  h2 class=h2_class Pourquoi et sur quelle base
+  p
+    | Ces données servent uniquement à organiser la vie du club : convocations, entraînements, matchs, communication entre membres. Ce traitement repose sur l'intérêt légitime du club à organiser son activité pour ses membres. Aucune donnée n'est vendue, ni utilisée pour de la publicité.
+
+  h2 class=h2_class Qui y a accès
+  p
+    | Les membres de votre section voient votre nom, votre email et votre téléphone. Les coachs et administrateurs du club voient en plus les présences, disponibilités et absences.
+  p Prestataires techniques qui traitent des données pour le compte de Martigua :
+  ul
+    li Heroku (Salesforce, Inc.) : hébergement de l'application et de la base de données, sur des serveurs situés dans l'Union européenne.
+    li Amazon Web Services (stockage à Paris) : photos de profil et fichiers.
+    li Scaleway (France) : envoi des emails.
+    li Sentry (États-Unis) : détection des erreurs et mesure des performances.
+    li Google, Apple, Mozilla : acheminement des notifications push vers votre navigateur, si vous les avez activées.
+  p
+    | Les transferts vers les États-Unis sont encadrés par le Data Privacy Framework UE–États-Unis et les clauses contractuelles types de la Commission européenne.
+
+  h2 class=h2_class Durée de conservation
+  p
+    | Les données sont conservées tant que votre compte existe. Quand vous le supprimez, elles sont effacées immédiatement, puis disparaissent des sauvegardes au fil de leur renouvellement.
+
+  h2 class=h2_class Cookies
+  p
+    | Martigua n'utilise que les cookies nécessaires à son fonctionnement (session, « se souvenir de moi »). Aucun cookie publicitaire ni de mesure d'audience : aucun consentement n'est donc demandé.
+
+  h2 class=h2_class Vos droits
+  p
+    | Vous pouvez accéder à vos données, les corriger, les effacer, vous opposer à leur traitement ou en demander une copie. La plupart de ces actions se font depuis « Editer son profil », y compris la suppression du compte. Pour le reste, écrivez à 
+    = mail_to 'admin@martigua.org', nil, class: 'text-indigo-600 hover:text-indigo-500'
+    | . Réponse sous un mois.
+  p
+    | Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL (
+    = link_to 'www.cnil.fr', 'https://www.cnil.fr', class: 'text-indigo-600 hover:text-indigo-500'
+    | ).

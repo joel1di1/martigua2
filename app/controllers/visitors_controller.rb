@@ -9,5 +9,7 @@ class VisitorsController < ApplicationController
     redirect_to section_path(current_user.sections.first) if current_user.sections.size.positive?
   end
 
+  def privacy; end
+
   def stimulus; end
 end

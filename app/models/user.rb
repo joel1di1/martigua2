@@ -40,6 +40,9 @@ class User < ApplicationRecord
     authentication_token
   end
 
+  # Data minimisation (RGPD): Devise trackable keeps sign-in dates and counts, never IPs.
+  def extract_ip_from(_request) = nil
+
   scope :active_this_season, -> { includes(:participations).where(participations: { season: Season.current }) }
 
   # Relatives copied on everything this user receives.

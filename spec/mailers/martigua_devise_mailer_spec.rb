@@ -33,5 +33,9 @@ RSpec.describe MartiguaDeviseMailer do
 
       expect(mail.cc).to eq ['maman@example.com']
     end
+
+    it 'links to the privacy page' do
+      expect(mail.body.to_s).to include(privacy_url)
+    end
   end
 end

@@ -34,7 +34,6 @@ gem 'rack-attack'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rails-i18n'
 gem 'rails_ping'
-gem 'scout_apm'
 gem 'sentry-rails'
 gem 'sentry-ruby'
 gem 'simple_form'
@@ -51,9 +50,6 @@ gem 'tailwindcss-rails', '~> 4.6'
 gem 'turbo-rails'
 gem 'watir'
 gem 'web-push'
-
-# newrelic must be after scout_apm
-gem 'newrelic_rpm'
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem 'image_processing', '~> 2.2'

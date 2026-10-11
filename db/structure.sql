@@ -6156,6 +6156,7 @@ ALTER TABLE ONLY public.section_trainings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261011120000'),
 ('20261007120000'),
 ('20261002090000'),
 ('20260924204039'),

@@ -155,6 +155,7 @@ Rails.application.routes.draw do
   end
 
   root to: 'visitors#index'
+  get 'confidentialite' => 'visitors#privacy', as: :privacy
 
   # Reachable at /up, returns 200 when the app boots with no exceptions, 500 otherwise.
   # Used by load balancers and uptime monitors (see config.silence_healthcheck_path).

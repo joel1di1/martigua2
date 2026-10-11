@@ -180,3 +180,14 @@ div class="mx-auto max-w-4xl pb-16"
     - else
       div class="border-t border-gray-900/10 px-4 py-6 sm:px-6"
         p class="rounded-md border border-dashed border-gray-300 px-4 py-6 text-center text-sm text-gray-500" Aucune absence enregistrée.
+
+  / --- Account deletion ---------------------------------------------------------
+  - if @user == current_user
+    div id="account-deletion" class="mt-8 overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5"
+      div class="flex flex-wrap items-center justify-between gap-4 px-4 py-5 sm:p-6"
+        div
+          h2 class="text-base font-semibold text-gray-900" Supprimer mon compte
+          p class="mt-1 text-sm text-gray-600"
+            | Efface définitivement votre compte et toutes vos données (présences, absences, messages, statistiques). 
+            = link_to 'Confidentialité', privacy_path, class: 'font-medium text-indigo-600 hover:text-indigo-500'
+        = button_to 'Supprimer mon compte', user_registration_path, method: :delete, form: { data: { turbo_confirm: 'Supprimer définitivement votre compte et toutes vos données ?' } }, class: 'shrink-0 rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500'

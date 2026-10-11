@@ -36,7 +36,9 @@ describe 'Championships' do
     describe 'response' do
       before { do_request }
 
-      it { expect(response).to redirect_to(section_championship_path(section, Championship.last)) }
+      it 'response is expected to redirect to section_championship_path(section, Championship.last)' do
+        expect(response).to redirect_to(section_championship_path(section, Championship.last))
+      end
     end
   end
 
@@ -83,8 +85,13 @@ describe 'Championships' do
         patch section_championship_path(section, championship), params: params
       end
 
-      it { expect(response).to redirect_to(section_championship_path(section, championship)) }
-      it { expect(championship.reload.name).to eq(new_championship_params[:name]) }
+      it 'response is expected to redirect to section_championship_path(section, championship)' do
+        expect(response).to redirect_to(section_championship_path(section, championship))
+      end
+
+      it 'championship.reload.name is expected to eq new_championship_params[:name]' do
+        expect(championship.reload.name).to eq(new_championship_params[:name])
+      end
     end
 
     context 'when the championship belongs to another section' do
@@ -96,7 +103,10 @@ describe 'Championships' do
       end
 
       it { expect(response).to have_http_status(:not_found) }
-      it { expect(championship.reload.name).not_to eq(new_championship_params[:name]) }
+
+      it 'championship.reload.name is expected not to eq new_championship_params[:name]' do
+        expect(championship.reload.name).not_to eq(new_championship_params[:name])
+      end
     end
   end
 end

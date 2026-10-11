@@ -16,7 +16,10 @@ RSpec.describe Absence do
       let(:end_at) { Date.parse('2026-09-14') }
 
       it { expect(absence.covers?(period_start, period_end)).to be true }
-      it { expect(Absence.covering(period_start, period_end)).to include(absence) }
+
+      it 'Absence.covering(period_start, period_end) is expected to include absence' do
+        expect(Absence.covering(period_start, period_end)).to include(absence)
+      end
     end
 
     context 'when the absence starts on the day of the period' do
@@ -24,7 +27,10 @@ RSpec.describe Absence do
       let(:end_at) { Date.parse('2026-09-13') }
 
       it { expect(absence.covers?(period_start, period_end)).to be true }
-      it { expect(Absence.covering(period_start, period_end)).to include(absence) }
+
+      it 'Absence.covering(period_start, period_end) is expected to include absence' do
+        expect(Absence.covering(period_start, period_end)).to include(absence)
+      end
     end
 
     context 'when the absence ends on the day of the period' do
@@ -32,7 +38,10 @@ RSpec.describe Absence do
       let(:end_at) { Date.parse('2026-09-12') }
 
       it { expect(absence.covers?(period_start, period_end)).to be true }
-      it { expect(Absence.covering(period_start, period_end)).to include(absence) }
+
+      it 'Absence.covering(period_start, period_end) is expected to include absence' do
+        expect(Absence.covering(period_start, period_end)).to include(absence)
+      end
     end
 
     context 'when the absence starts after the period' do
@@ -40,7 +49,10 @@ RSpec.describe Absence do
       let(:end_at) { Date.parse('2026-09-14') }
 
       it { expect(absence.covers?(period_start, period_end)).to be false }
-      it { expect(Absence.covering(period_start, period_end)).not_to include(absence) }
+
+      it 'Absence.covering(period_start, period_end) is expected not to include absence' do
+        expect(Absence.covering(period_start, period_end)).not_to include(absence)
+      end
     end
 
     context 'with a multi-day period, when the absence overlaps the start only' do
@@ -49,7 +61,10 @@ RSpec.describe Absence do
       let(:end_at) { Date.parse('2026-09-12') }
 
       it { expect(absence.covers?(period_start, multi_day_end)).to be false }
-      it { expect(Absence.covering(period_start, multi_day_end)).not_to include(absence) }
+
+      it 'Absence.covering(period_start, multi_day_end) is expected not to include absence' do
+        expect(Absence.covering(period_start, multi_day_end)).not_to include(absence)
+      end
     end
 
     context 'with a multi-day period, when the absence overlaps the end only' do
@@ -58,7 +73,10 @@ RSpec.describe Absence do
       let(:end_at) { Date.parse('2026-09-14') }
 
       it { expect(absence.covers?(period_start, multi_day_end)).to be false }
-      it { expect(Absence.covering(period_start, multi_day_end)).not_to include(absence) }
+
+      it 'Absence.covering(period_start, multi_day_end) is expected not to include absence' do
+        expect(Absence.covering(period_start, multi_day_end)).not_to include(absence)
+      end
     end
   end
 end

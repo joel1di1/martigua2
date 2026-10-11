@@ -21,26 +21,53 @@ RSpec.describe Section do
     let(:user) { create(:user) }
 
     context 'with a new player' do
-      it { expect(subject.players).to contain_exactly(user) }
-      it { expect(subject.group_everybody.users).to contain_exactly(user) }
-      it { expect(subject.group_every_players.users).to contain_exactly(user) }
+      it 'subject.players is expected to contain exactly user' do
+        expect(subject.players).to contain_exactly(user)
+      end
+
+      it 'subject.group_everybody.users is expected to contain exactly user' do
+        expect(subject.group_everybody.users).to contain_exactly(user)
+      end
+
+      it 'subject.group_every_players.users is expected to contain exactly user' do
+        expect(subject.group_every_players.users).to contain_exactly(user)
+      end
     end
 
     context 'with an already player' do
       before { section.add_player!(user) }
 
-      it { expect(subject.players).to contain_exactly(user) }
-      it { expect(subject.group_everybody.users).to contain_exactly(user) }
-      it { expect(subject.group_every_players.users).to contain_exactly(user) }
+      it 'subject.players is expected to contain exactly user' do
+        expect(subject.players).to contain_exactly(user)
+      end
+
+      it 'subject.group_everybody.users is expected to contain exactly user' do
+        expect(subject.group_everybody.users).to contain_exactly(user)
+      end
+
+      it 'subject.group_every_players.users is expected to contain exactly user' do
+        expect(subject.group_every_players.users).to contain_exactly(user)
+      end
     end
 
     context 'with an already coach' do
       before { section.add_coach!(user) }
 
-      it { expect(subject.players).to contain_exactly(user) }
-      it { expect(subject.coachs).to contain_exactly(user) }
-      it { expect(subject.group_everybody.users).to contain_exactly(user) }
-      it { expect(subject.group_every_players.users).to contain_exactly(user) }
+      it 'subject.players is expected to contain exactly user' do
+        expect(subject.players).to contain_exactly(user)
+      end
+
+      it 'subject.coachs is expected to contain exactly user' do
+        expect(subject.coachs).to contain_exactly(user)
+      end
+
+      it 'subject.group_everybody.users is expected to contain exactly user' do
+        expect(subject.group_everybody.users).to contain_exactly(user)
+      end
+
+      it 'subject.group_every_players.users is expected to contain exactly user' do
+        expect(subject.group_every_players.users).to contain_exactly(user)
+      end
     end
   end
 
@@ -50,29 +77,49 @@ RSpec.describe Section do
     let(:user) { create(:user) }
 
     context 'with a new user' do
-      it { expect(subject.coachs).to contain_exactly(user) }
+      it 'subject.coachs is expected to contain exactly user' do
+        expect(subject.coachs).to contain_exactly(user)
+      end
 
-      it { expect(subject.group_everybody.users).to contain_exactly(user) }
+      it 'subject.group_everybody.users is expected to contain exactly user' do
+        expect(subject.group_everybody.users).to contain_exactly(user)
+      end
+
       it { expect(subject.group_every_players.users).to be_empty }
     end
 
     context 'with an already coach' do
       before { section.add_coach!(user) }
 
-      it { expect(subject.coachs).to contain_exactly(user) }
+      it 'subject.coachs is expected to contain exactly user' do
+        expect(subject.coachs).to contain_exactly(user)
+      end
 
-      it { expect(subject.group_everybody.users).to contain_exactly(user) }
+      it 'subject.group_everybody.users is expected to contain exactly user' do
+        expect(subject.group_everybody.users).to contain_exactly(user)
+      end
+
       it { expect(subject.group_every_players.users).to be_empty }
     end
 
     context 'with an already player' do
       before { section.add_player!(user) }
 
-      it { expect(subject.players).to contain_exactly(user) }
-      it { expect(subject.coachs).to contain_exactly(user) }
+      it 'subject.players is expected to contain exactly user' do
+        expect(subject.players).to contain_exactly(user)
+      end
 
-      it { expect(subject.group_everybody.users).to contain_exactly(user) }
-      it { expect(subject.group_every_players.users).to contain_exactly(user) }
+      it 'subject.coachs is expected to contain exactly user' do
+        expect(subject.coachs).to contain_exactly(user)
+      end
+
+      it 'subject.group_everybody.users is expected to contain exactly user' do
+        expect(subject.group_everybody.users).to contain_exactly(user)
+      end
+
+      it 'subject.group_every_players.users is expected to contain exactly user' do
+        expect(subject.group_every_players.users).to contain_exactly(user)
+      end
     end
   end
 
@@ -127,7 +174,9 @@ RSpec.describe Section do
         user
       end
 
-      it { expect { invite_user }.to raise_exception "Inviter (#{coach.email}) is not coach of #{section}" }
+      it 'raises because the inviter is not coach' do
+        expect { invite_user }.to raise_exception "Inviter (#{coach.email}) is not coach of #{section}"
+      end
     end
   end
 
@@ -136,7 +185,9 @@ RSpec.describe Section do
     let!(:training_3_week_from_now) { create(:training, with_section: section, start_datetime: 3.weeks.from_now) }
     let!(:training_1_week_from_now) { create(:training, with_section: section, start_datetime: 1.week.from_now) }
 
-    it { expect(section.next_trainings).to contain_exactly(training_1_week_from_now, training_3_week_from_now) }
+    it 'section.next_trainings is expected to contain exactly training_1_week_from_now, training_3_week_from_now' do
+      expect(section.next_trainings).to contain_exactly(training_1_week_from_now, training_3_week_from_now)
+    end
   end
 
   describe '.create' do
@@ -195,10 +246,21 @@ RSpec.describe Section do
         remove_user!
       end
 
-      it { expect(section.users).not_to include(user) }
-      it { expect(section.group_everybody.users).not_to include(user) }
-      it { expect(section.group_every_players.users).not_to include(user) }
-      it { expect(group.users.reload).not_to include(user) }
+      it 'section.users is expected not to include user' do
+        expect(section.users).not_to include(user)
+      end
+
+      it 'section.group_everybody.users is expected not to include user' do
+        expect(section.group_everybody.users).not_to include(user)
+      end
+
+      it 'section.group_every_players.users is expected not to include user' do
+        expect(section.group_every_players.users).not_to include(user)
+      end
+
+      it 'group.users.reload is expected not to include user' do
+        expect(group.users.reload).not_to include(user)
+      end
     end
 
     context 'with user in section for a specific season' do
@@ -210,10 +272,21 @@ RSpec.describe Section do
         remove_user!
       end
 
-      it { expect(section.group_everybody.users).not_to include(user) }
-      it { expect(section.group_every_players.users).not_to include(user) }
-      it { expect(section.group_everybody(season: other_season).users).to include(user) }
-      it { expect(section.group_every_players(season: other_season).users).to include(user) }
+      it 'section.group_everybody.users is expected not to include user' do
+        expect(section.group_everybody.users).not_to include(user)
+      end
+
+      it 'section.group_every_players.users is expected not to include user' do
+        expect(section.group_every_players.users).not_to include(user)
+      end
+
+      it 'section.group_everybody(season: other_season).users is expected to include user' do
+        expect(section.group_everybody(season: other_season).users).to include(user)
+      end
+
+      it 'section.group_every_players(season: other_season).users is expected to include user' do
+        expect(section.group_every_players(season: other_season).users).to include(user)
+      end
     end
   end
 
@@ -269,7 +342,9 @@ RSpec.describe Section do
       championship2.enroll_team!(team2)
     end
 
-    it { expect(section.championships).to contain_exactly(championship1, championship2) }
+    it 'section.championships is expected to contain exactly championship1, championship2' do
+      expect(section.championships).to contain_exactly(championship1, championship2)
+    end
   end
 
   describe '#members' do
@@ -294,13 +369,17 @@ RSpec.describe Section do
     context 'without specify season' do
       subject { section.members }
 
-      it { is_expected.to match_array current_season_members }
+      it 'is expected to match array current_season_members' do
+        expect(subject).to match_array current_season_members
+      end
     end
 
     context 'with specified season' do
       subject { section.members(season: previous_season) }
 
-      it { is_expected.to match_array previous_season_members }
+      it 'is expected to match array previous_season_members' do
+        expect(subject).to match_array previous_season_members
+      end
     end
   end
 
@@ -310,7 +389,7 @@ RSpec.describe Section do
     let(:task) { DutyTask::TASKS.keys.sample }
 
     context 'with duties taks accomplished' do
-      it {
+      it 'picks the users who did the task least recently' do
         user1, user2, user3, user4, old_user = create_list(:user, 5, with_section: section)
         user1.realised_task!(task, 1.day.ago, section.club)
         user2.realised_task!(task, 2.days.ago, section.club)
@@ -321,18 +400,18 @@ RSpec.describe Section do
         old_user.participations.update_all(season_id: create(:season, start_date: 3.years.ago).id) # rubocop:disable Rails/SkipsModelValidations
 
         expect(next_duties).to contain_exactly(user4, user3, user2)
-      }
+      end
     end
 
     context 'with one users who never did any' do
-      it {
+      it 'picks first the user who never did the task' do
         user1, user2, user3, user4 = create_list(:user, 4, with_section: section)
         user1.realised_task!(task, 1.day.ago, section.club)
         user2.realised_task!(task, 2.days.ago, section.club)
         user3.realised_task!(task, 3.days.ago, section.club)
 
         expect(next_duties).to contain_exactly(user4, user3, user2)
-      }
+      end
     end
   end
 
@@ -345,7 +424,9 @@ RSpec.describe Section do
       let!(:calendar1) { create(:calendar) }
       let!(:calendar2) { create(:calendar) }
 
-      it { expect(calendars).to eq [calendar1, calendar2] }
+      it 'calendars is expected to eq [calendar1, calendar2]' do
+        expect(calendars).to eq [calendar1, calendar2]
+      end
     end
   end
 
@@ -355,7 +436,9 @@ RSpec.describe Section do
     let(:section) { create(:section) }
 
     context 'with existing general channel' do
-      it { is_expected.to eq general_channel }
+      it 'is expected to eq general_channel' do
+        expect(subject).to eq general_channel
+      end
     end
 
     context 'without existing general channel' do

@@ -25,7 +25,10 @@ describe 'Section User Invitations' do
       end
 
       it { expect { do_post }.to change(SectionUserInvitation, :count).by(1) }
-      it { expect(do_post).to redirect_to(new_section_section_user_invitation_path(section_id: section.to_param)) }
+
+      it 'do_post is expected to redirect to new_section_section_user_invitation_path(section_id: section.to_param)' do
+        expect(do_post).to redirect_to(new_section_section_user_invitation_path(section_id: section.to_param))
+      end
     end
   end
 end

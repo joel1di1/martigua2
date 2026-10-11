@@ -29,11 +29,15 @@ RSpec.describe BlockedAddress do
     context 'when email is blocked' do
       before { create(:blocked_address, email:) }
 
-      it { expect(BlockedAddress).to be_blocked(email) }
+      it 'BlockedAddress is expected to be blocked email' do
+        expect(BlockedAddress).to be_blocked(email)
+      end
     end
 
     context 'when email is not blocked' do
-      it { expect(BlockedAddress).not_to be_blocked(email) }
+      it 'BlockedAddress is expected not to be blocked email' do
+        expect(BlockedAddress).not_to be_blocked(email)
+      end
     end
   end
 end

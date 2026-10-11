@@ -314,7 +314,9 @@ describe 'Users' do
       describe 'response' do
         before { do_request }
 
-        it { expect(response).to redirect_to(section_users_path(section)) }
+        it 'response is expected to redirect to section_users_path(section)' do
+          expect(response).to redirect_to(section_users_path(section))
+        end
       end
     end
 
@@ -335,7 +337,9 @@ describe 'Users' do
       describe 'response' do
         before { do_request }
 
-        it { expect(response).to redirect_to(section_group_path(section, group)) }
+        it 'response is expected to redirect to section_group_path(section, group)' do
+          expect(response).to redirect_to(section_group_path(section, group))
+        end
       end
     end
 

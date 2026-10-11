@@ -26,13 +26,17 @@ RSpec.describe Championship do
     subject { championship.enroll_team!(team) }
 
     context 'with new team' do
-      it { expect(subject.enrolled_teams).to contain_exactly(team) }
+      it 'subject.enrolled_teams is expected to contain exactly team' do
+        expect(subject.enrolled_teams).to contain_exactly(team)
+      end
     end
 
     context 'with already enrolled team' do
       before { championship.enroll_team!(team) }
 
-      it { expect(subject.enrolled_teams).to contain_exactly(team) }
+      it 'subject.enrolled_teams is expected to contain exactly team' do
+        expect(subject.enrolled_teams).to contain_exactly(team)
+      end
     end
   end
 
@@ -63,7 +67,9 @@ RSpec.describe Championship do
       championship.unburn!(player2)
     end
 
-    it { expect(championship.burned_players).to contain_exactly(player1, player3) }
+    it 'championship.burned_players is expected to contain exactly player1, player3' do
+      expect(championship.burned_players).to contain_exactly(player1, player3)
+    end
   end
 
   describe '#sibling_championship_ids' do

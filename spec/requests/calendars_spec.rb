@@ -17,7 +17,10 @@ describe 'Calendars' do
     before { get section_calendars_path(section) }
 
     it { expect(response).to have_http_status(:success) }
-    it { expect(response.body).to include(calendar1.name, calendar2.name) }
+
+    it 'response.body is expected to include calendar1.name, calendar2.name' do
+      expect(response.body).to include(calendar1.name, calendar2.name)
+    end
   end
 
   describe 'GET /sections/:section_id/calendars/:id/edit' do
@@ -27,7 +30,11 @@ describe 'Calendars' do
     before { get edit_section_calendar_path(section, calendar) }
 
     it { expect(response).to have_http_status(:success) }
-    it { expect(response.body).to include(calendar.name) }
+
+    it 'response.body is expected to include calendar.name' do
+      expect(response.body).to include(calendar.name)
+    end
+
     it { expect(response.body).to include(day.name, I18n.l(day.period_start_date, locale: :fr)) }
   end
 

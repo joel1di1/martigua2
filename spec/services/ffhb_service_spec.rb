@@ -80,9 +80,15 @@ RSpec.describe FfhbService do
         let!(:linked_calendar) { create(:calendar, name: "Championnat #{Season.current}") }
         let!(:existing_day) { create(:day, calendar: linked_calendar, name: 'WE du 24 sept. au 25 sept') }
 
-        it { expect(calendar).to eq linked_calendar }
+        it 'calendar is expected to eq linked_calendar' do
+          expect(calendar).to eq linked_calendar
+        end
+
         it { expect(calendar.name).to eq "Championnat #{Season.current}" }
-        it { expect(calendar.days).to include existing_day }
+
+        it 'calendar.days is expected to include existing_day' do
+          expect(calendar.days).to include existing_day
+        end
       end
     end
 
@@ -118,7 +124,10 @@ RSpec.describe FfhbService do
                                              team_links:, linked_calendar:)
           end
 
-          it { expect(enrolled_teams.map(&:team)).to include(my_team) }
+          it 'enrolled_teams.map(&:team) is expected to include my_team' do
+            expect(enrolled_teams.map(&:team)).to include(my_team)
+          end
+
           it { expect(enrolled_teams.find { |etc| etc.team == my_team }.enrolled_name).to eq 'MARTIGUA SCL' }
 
           it { expect(championship.matches.size).to eq(22) }

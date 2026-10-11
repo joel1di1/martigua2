@@ -21,7 +21,9 @@ RSpec.describe Season do
 
       let!(:only_season) { create(:season, start_date: Time.zone.today - 1.month) }
 
-      it { is_expected.to eq only_season }
+      it 'is expected to eq only_season' do
+        expect(subject).to eq only_season
+      end
     end
 
     context 'with one old season' do
@@ -107,7 +109,9 @@ RSpec.describe Season do
   end
 
   describe '#to_s' do
-    it { expect(season.to_s).to eq "#{season.start_date.year}-#{season.end_date.year}" }
+    it 'is the start and end years' do
+      expect(season.to_s).to eq "#{season.start_date.year}-#{season.end_date.year}"
+    end
   end
 
   describe '#previous' do

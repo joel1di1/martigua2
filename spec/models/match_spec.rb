@@ -16,13 +16,17 @@ RSpec.describe Match do
     context 'with specified start_datetime' do
       let(:start_datetime) { 1.week.from_now }
 
-      it { expect(match.date).to eq start_datetime.to_fs(:short) }
+      it 'match.date is expected to eq start_datetime.to_fs(:short)' do
+        expect(match.date).to eq start_datetime.to_fs(:short)
+      end
     end
 
     context 'with no start_datetime specified' do
       let(:start_datetime) { nil }
 
-      it { expect(match.date).to eq day.name }
+      it 'match.date is expected to eq day.name' do
+        expect(match.date).to eq day.name
+      end
     end
   end
 
@@ -40,7 +44,7 @@ RSpec.describe Match do
         section.add_player!(player)
       end
 
-      it { is_expected.to include(player) }
+      it('is expected to include player') { is_expected.to include(player) }
     end
 
     context 'with user not participating in the current season but in the previous' do
@@ -48,7 +52,7 @@ RSpec.describe Match do
         section.add_player!(player, season: previous_season)
       end
 
-      it { is_expected.not_to include(player) }
+      it('is expected not to include player') { is_expected.not_to include(player) }
     end
 
     context 'with user participating in the current season and the previous' do
@@ -57,7 +61,7 @@ RSpec.describe Match do
         section.add_player!(player)
       end
 
-      it { is_expected.to include(player) }
+      it('is expected to include player') { is_expected.to include(player) }
     end
   end
 
@@ -104,14 +108,18 @@ RSpec.describe Match do
       let(:meeting_datetime) { 1.day.from_now }
       let(:start_datetime) { 2.days.from_now }
 
-      it { expect(datetime).to eq(meeting_datetime) }
+      it 'datetime is expected to eq meeting_datetime' do
+        expect(datetime).to eq(meeting_datetime)
+      end
     end
 
     context 'with meeting_datetime not specified and start_datetime specified' do
       let(:meeting_datetime) { nil }
       let(:start_datetime) { 2.days.from_now }
 
-      it { expect(datetime).to eq(start_datetime - 1.hour) }
+      it 'datetime is expected to eq start_datetime - 1.hour' do
+        expect(datetime).to eq(start_datetime - 1.hour)
+      end
     end
 
     context 'with meeting_datetime not specified and start_datetime not specified' do
@@ -289,11 +297,20 @@ RSpec.describe Match do
         [player, player_sick]
       end
 
-      it { expect(match.aways).to contain_exactly(player_sick) }
-      it { expect(match.availables).to contain_exactly(player) }
+      it 'match.aways is expected to contain exactly player_sick' do
+        expect(match.aways).to contain_exactly(player_sick)
+      end
+
+      it 'match.availables is expected to contain exactly player' do
+        expect(match.availables).to contain_exactly(player)
+      end
+
       it { expect(match.nb_availables).to eq 1 }
       it { expect(match.nb_not_availables).to eq 1 }
-      it { expect(match.not_availables).to contain_exactly(player_sick) }
+
+      it 'match.not_availables is expected to contain exactly player_sick' do
+        expect(match.not_availables).to contain_exactly(player_sick)
+      end
     end
 
     context 'with absence matching exact match boundaries using end_datetime' do
@@ -394,13 +411,17 @@ RSpec.describe Match do
     context 'with start_datetime specified' do
       let(:start_datetime) { 2.days.from_now }
 
-      it { expect(match.calculated_start_datetime).to eq start_datetime }
+      it 'match.calculated_start_datetime is expected to eq start_datetime' do
+        expect(match.calculated_start_datetime).to eq start_datetime
+      end
     end
 
     context 'with start_datetime not specified' do
       let(:start_datetime) { nil }
 
-      it { expect(match.calculated_start_datetime).to eq day.period_start_date }
+      it 'match.calculated_start_datetime is expected to eq day.period_start_date' do
+        expect(match.calculated_start_datetime).to eq day.period_start_date
+      end
     end
   end
 

@@ -16,14 +16,20 @@ RSpec.describe Group do
 
   describe 'add_user!' do
     context 'with new user' do
-      it { expect(group.add_user!(user).users).to include(user) }
+      it 'group.add_user!(user).users is expected to include user' do
+        expect(group.add_user!(user).users).to include(user)
+      end
+
       it { expect { group.add_user!(user) }.to change { group.users.count }.by(1) }
     end
 
     context 'with already added user' do
       before { group.add_user!(user) }
 
-      it { expect(group.add_user!(user).users).to include(user) }
+      it 'group.add_user!(user).users is expected to include user' do
+        expect(group.add_user!(user).users).to include(user)
+      end
+
       it { expect { group.add_user!(user) }.not_to(change { group.users.count }) }
     end
   end

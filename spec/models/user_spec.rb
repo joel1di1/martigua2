@@ -274,9 +274,18 @@ describe User do
     context 'with one participation' do
       let!(:participation) { create(:participation, user:) }
 
-      it { expect(display).to include(participation.section.club.name) }
-      it { expect(display).to include(participation.section.name) }
-      it { expect(display).to include(participation.role) }
+      it 'display is expected to include participation.section.club.name' do
+        expect(display).to include(participation.section.club.name)
+      end
+
+      it 'display is expected to include participation.section.name' do
+        expect(display).to include(participation.section.name)
+      end
+
+      it 'display is expected to include participation.role' do
+        expect(display).to include(participation.role)
+      end
+
       it { expect(display).to include(participation.season.to_s) }
     end
   end
@@ -292,7 +301,9 @@ describe User do
       describe 'user availability' do
         before { set_presence }
 
-        it { expect(user).to be_present_for(training) }
+        it 'user is expected to be present for training' do
+          expect(user).to be_present_for(training)
+        end
       end
 
       describe 'double presence set' do
@@ -346,13 +357,17 @@ describe User do
     context 'without a true response' do
       let!(:training_presence) { create(:training_presence, training:, user:, is_present: true) }
 
-      it { expect(user).to be_present_for(training) }
+      it 'user is expected to be present for training' do
+        expect(user).to be_present_for(training)
+      end
     end
 
     context 'without a false response' do
       let!(:training_presence) { create(:training_presence, training:, user:, is_present: false) }
 
-      it { expect(user).not_to be_present_for(training) }
+      it 'user is expected not to be present for training' do
+        expect(user).not_to be_present_for(training)
+      end
     end
   end
 
@@ -360,7 +375,9 @@ describe User do
     let(:club) { create(:club) }
 
     context 'with other club' do
-      it { expect(user).not_to be_admin_of(club) }
+      it 'user is expected not to be admin of club' do
+        expect(user).not_to be_admin_of(club)
+      end
     end
 
     context 'with club nil' do
@@ -370,7 +387,9 @@ describe User do
     context 'with club as admin' do
       before { club.add_admin!(user) }
 
-      it { expect(user).to be_admin_of(club) }
+      it 'user is expected to be admin of club' do
+        expect(user).to be_admin_of(club)
+      end
     end
   end
 
@@ -387,25 +406,33 @@ describe User do
     before { training }
 
     context 'when user is training group and training date is next week' do
-      it { expect(user.next_week_trainings).to include(training) }
+      it 'user.next_week_trainings is expected to include training' do
+        expect(user.next_week_trainings).to include(training)
+      end
     end
 
     context 'when date is passed' do
       let(:training_date) { 1.day.ago }
 
-      it { expect(user.next_week_trainings).not_to include(training) }
+      it 'user.next_week_trainings is expected not to include training' do
+        expect(user.next_week_trainings).not_to include(training)
+      end
     end
 
     context 'when date is in 2 weeks' do
       let(:training_date) { 16.days.from_now }
 
-      it { expect(user.next_week_trainings).not_to include(training) }
+      it 'user.next_week_trainings is expected not to include training' do
+        expect(user.next_week_trainings).not_to include(training)
+      end
     end
 
     context 'when user is not in training groups' do
       let(:user_group_ids) { [] }
 
-      it { expect(user.next_week_trainings).not_to include(training) }
+      it 'user.next_week_trainings is expected not to include training' do
+        expect(user.next_week_trainings).not_to include(training)
+      end
     end
 
     context 'when user is in 2 training groups' do
@@ -413,13 +440,18 @@ describe User do
       let(:user_group_ids) { [group.id, group2.id] }
       let(:training_group_ids) { [group.id, group2.id] }
 
-      it { expect(user.next_week_trainings).to include(training) }
+      it 'user.next_week_trainings is expected to include training' do
+        expect(user.next_week_trainings).to include(training)
+      end
+
       it { expect(user.next_week_trainings.count).to eq 1 }
 
       context 'when user is away' do
         before { create(:absence, user:, start_at: training_date - 2.weeks, end_at: training_date + 2.weeks) }
 
-        it { expect(user.reload.next_week_trainings).not_to include(training) }
+        it 'user.reload.next_week_trainings is expected not to include training' do
+          expect(user.reload.next_week_trainings).not_to include(training)
+        end
       end
     end
   end

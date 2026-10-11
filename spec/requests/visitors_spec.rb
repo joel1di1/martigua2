@@ -19,7 +19,9 @@ RSpec.describe 'Visitors' do
         get '/'
       end
 
-      it { expect(response).to redirect_to(section_path(user.sections.first)) }
+      it 'response is expected to redirect to section_path(user.sections.first)' do
+        expect(response).to redirect_to(section_path(user.sections.first))
+      end
     end
   end
 end

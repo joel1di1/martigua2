@@ -138,7 +138,7 @@ describe 'Teams' do
         expect(team.reload.name).to eq('Nouveau nom')
       end
 
-      it { is_expected.to redirect_to(section_teams_path(section_path_param)) }
+      it('is expected to redirect to section_teams_path(section_path_param)') { is_expected.to redirect_to(section_teams_path(section_path_param)) }
     end
 
     context 'when signed in as a regular member' do
@@ -167,7 +167,7 @@ describe 'Teams' do
         expect { request }.to change(Team, :count).by(-1)
       end
 
-      it { is_expected.to redirect_to(section_teams_path(section_path_param)) }
+      it('is expected to redirect to section_teams_path(section_path_param)') { is_expected.to redirect_to(section_teams_path(section_path_param)) }
 
       context 'when the team already has matches' do
         before { create(:match, local_team: team) }

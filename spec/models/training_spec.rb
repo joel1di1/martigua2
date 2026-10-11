@@ -23,7 +23,9 @@ RSpec.describe Training do
     context 'with n users present' do
       before { nb_users.times { create(:user, with_section: section, group_ids: [group.id]).present_for!(training) } }
 
-      it { expect(training.nb_presents).to eq nb_users }
+      it 'training.nb_presents is expected to eq nb_users' do
+        expect(training.nb_presents).to eq nb_users
+      end
     end
 
     context 'with a user present who is not in the training groups' do
@@ -38,7 +40,9 @@ RSpec.describe Training do
     context 'with n users not presents' do
       before { nb_users.times { create(:user, with_section: section, group_ids: [group.id]).not_present_for!(training) } }
 
-      it { expect(training.nb_not_presents).to eq nb_users }
+      it 'training.nb_not_presents is expected to eq nb_users' do
+        expect(training.nb_not_presents).to eq nb_users
+      end
     end
 
     context 'with a user not present who is not in the training groups' do
@@ -52,7 +56,9 @@ RSpec.describe Training do
   describe '#nb_presence_not_set' do
     before { nb_users.times { create(:user, with_section: section, group_ids: [group.id]) } }
 
-    it { expect(training.nb_presence_not_set).to eq nb_users }
+    it 'training.nb_presence_not_set is expected to eq nb_users' do
+      expect(training.nb_presence_not_set).to eq nb_users
+    end
   end
 
   describe 'presences validated by the coach' do
@@ -70,8 +76,14 @@ RSpec.describe Training do
       excused.confirm_presence!(training)
     end
 
-    it { expect(training.presents).to contain_exactly(silent, honest, excused) }
-    it { expect(training.not_presents).to contain_exactly(cheater) }
+    it 'training.presents is expected to contain exactly silent, honest, excused' do
+      expect(training.presents).to contain_exactly(silent, honest, excused)
+    end
+
+    it 'training.not_presents is expected to contain exactly cheater' do
+      expect(training.not_presents).to contain_exactly(cheater)
+    end
+
     it { expect(training.presence_not_set).to be_empty }
     it { expect(training.nb_presents).to eq 3 }
     it { expect(training.nb_not_presents).to eq 1 }
@@ -89,23 +101,23 @@ RSpec.describe Training do
     context 'with trainings for users' do
       let(:trainings) { [training] }
 
-      it {
+      it 'sends one mail per user' do
         run_jobs_inline do
           expect do
             Training.send_presence_mail_for_next_week
           end.to change(ActionMailer::Base.deliveries, :count).by(nb_users)
         end
-      }
+      end
     end
 
     context 'with no trainings for users' do
       let(:trainings) { [] }
 
-      it {
+      it 'sends no mail' do
         expect do
           Training.send_presence_mail_for_next_week
         end.not_to change(ActionMailer::Base.deliveries, :count)
-      }
+      end
     end
   end
 
@@ -126,7 +138,9 @@ RSpec.describe Training do
 
     let(:days) { [now + 6.days, now + 7.days, now + 12.days] }
 
-    it { expect(Training.with_start_on(days)).to eq trainings[2..4] }
+    it 'Training.with_start_on(days) is expected to eq trainings[2..4]' do
+      expect(Training.with_start_on(days)).to eq trainings[2..4]
+    end
   end
 
   describe 'users' do
@@ -135,13 +149,17 @@ RSpec.describe Training do
     context 'with user not in training group' do
       let(:group_ids) { [] }
 
-      it { expect(training.users).not_to include(user) }
+      it 'training.users is expected not to include user' do
+        expect(training.users).not_to include(user)
+      end
     end
 
     context 'with user in training group' do
       let(:group_ids) { [group.id] }
 
-      it { expect(training.users).to include(user) }
+      it 'training.users is expected to include user' do
+        expect(training.users).to include(user)
+      end
     end
   end
 
@@ -155,14 +173,14 @@ RSpec.describe Training do
   end
 
   describe '#repeat_next_week!' do
-    subject { training.repeat_next_week! }
+    subject(:next_week_training) { training.repeat_next_week! }
 
-    its(:start_datetime) { is_expected.to eq(training.start_datetime + 1.week) }
-    its(:end_datetime) { is_expected.to eq(training.end_datetime + 1.week) }
-    its(:sections) { is_expected.to eq(training.sections) }
-    its(:groups) { is_expected.to eq(training.groups) }
-    its(:location) { is_expected.to eq(training.location) }
-    its(:max_capacity) { is_expected.to eq(training.max_capacity) }
+    it('start_datetime is one week later') { expect(next_week_training.start_datetime).to eq(training.start_datetime + 1.week) }
+    it('end_datetime is one week later') { expect(next_week_training.end_datetime).to eq(training.end_datetime + 1.week) }
+    it('sections are copied') { expect(next_week_training.sections).to eq(training.sections) }
+    it('groups are copied') { expect(next_week_training.groups).to eq(training.groups) }
+    it('location is copied') { expect(next_week_training.location).to eq(training.location) }
+    it('max_capacity is copied') { expect(next_week_training.max_capacity).to eq(training.max_capacity) }
   end
 
   describe '#repeat_until!' do
@@ -170,7 +188,9 @@ RSpec.describe Training do
     let(:nb_weeks) { rand(2..6) }
     let(:end_date) { nb_weeks.weeks.from_now }
 
-    it { expect { training.repeat_until!(end_date) }.to change(Training, :count).by(nb_weeks - 1) }
+    it 'creates nb_weeks - 1 trainings' do
+      expect { training.repeat_until!(end_date) }.to change(Training, :count).by(nb_weeks - 1)
+    end
   end
 
   describe 'cancel uncancel' do
@@ -187,7 +207,10 @@ RSpec.describe Training do
         before { training.cancel!(reason:) }
 
         it { is_expected.to be_truthy }
-        it { expect(training.cancel_reason).to eq reason }
+
+        it 'training.cancel_reason is expected to eq reason' do
+          expect(training.cancel_reason).to eq reason
+        end
 
         context 'when uncancelled' do
           before { training.uncancel! }
@@ -222,6 +245,8 @@ RSpec.describe Training do
   end
 
   describe '#calculated_start_datetime' do
-    it { expect(training.calculated_start_datetime).to eq training.start_datetime }
+    it 'training.calculated_start_datetime is expected to eq training.start_datetime' do
+      expect(training.calculated_start_datetime).to eq training.start_datetime
+    end
   end
 end

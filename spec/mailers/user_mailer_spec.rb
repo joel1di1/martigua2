@@ -14,7 +14,9 @@ RSpec.describe UserMailer do
     context 'with 1 training' do
       let(:trainings) { training1 }
 
-      it { expect(mail.body).to match(training1.start_datetime.strftime('%A %-d %HH%M')) }
+      it 'shows the training date' do
+        expect(mail.body).to match(training1.start_datetime.strftime('%A %-d %HH%M'))
+      end
     end
 
     context 'without contact email' do

@@ -55,7 +55,7 @@ describe 'Trainings' do
     context 'with existing training' do
       before { sign_in user, scope: :user }
 
-      it { is_expected.to redirect_to(section_training_path(section_path_param.merge(training_path_param))) }
+      it('is expected to redirect to section_training_path(section_path_param.merge(training_path_param))') { is_expected.to redirect_to(section_training_path(section_path_param.merge(training_path_param))) }
     end
   end
 
@@ -83,7 +83,7 @@ describe 'Trainings' do
 
     before { sign_in coach, scope: :user }
 
-    it { is_expected.to redirect_to(section_trainings_path(section_path_param)) }
+    it('is expected to redirect to section_trainings_path(section_path_param)') { is_expected.to redirect_to(section_trainings_path(section_path_param)) }
   end
 
   describe 'POST cancellation' do
@@ -94,7 +94,7 @@ describe 'Trainings' do
 
     before { sign_in coach, scope: :user }
 
-    it { is_expected.to redirect_to(section_training_path(section_path_param.merge(training_path_param))) }
+    it('is expected to redirect to section_training_path(section_path_param.merge(training_path_param))') { is_expected.to redirect_to(section_training_path(section_path_param.merge(training_path_param))) }
 
     it 'marks the training as cancelled' do
       request
@@ -155,6 +155,6 @@ describe 'Trainings' do
       expect(training.reload).not_to be_cancelled
     end
 
-    it { is_expected.to redirect_to(section_training_path(section_path_param.merge(training_path_param))) }
+    it('is expected to redirect to section_training_path(section_path_param.merge(training_path_param))') { is_expected.to redirect_to(section_training_path(section_path_param.merge(training_path_param))) }
   end
 end

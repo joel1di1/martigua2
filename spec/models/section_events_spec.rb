@@ -12,7 +12,9 @@ RSpec.describe Section do
     context 'with trainings' do
       let!(:training) { create(:training, with_section: section, start_datetime: 2.days.from_now) }
 
-      it { expect(next_events).to eq [training] }
+      it 'next_events is expected to eq [training]' do
+        expect(next_events).to eq [training]
+      end
     end
 
     context 'with trainings before and after time window' do
@@ -25,7 +27,9 @@ RSpec.describe Section do
     context 'with matches' do
       let!(:match) { create(:match, local_team: team, start_datetime: 2.days.from_now) }
 
-      it { expect(next_events).to eq [match] }
+      it 'next_events is expected to eq [match]' do
+        expect(next_events).to eq [match]
+      end
     end
 
     context 'with match without specific time' do
@@ -33,7 +37,9 @@ RSpec.describe Section do
       let!(:no_time_match) { create(:match, local_team: team, start_datetime: nil, end_datetime: nil, day:) }
       let!(:match) { create(:match, local_team: team, start_datetime: 3.days.from_now) }
 
-      it { expect(next_events).to eq [no_time_match, match] }
+      it 'next_events is expected to eq [no_time_match, match]' do
+        expect(next_events).to eq [no_time_match, match]
+      end
     end
 
     context 'with matches before and after time window' do
@@ -48,7 +54,9 @@ RSpec.describe Section do
       let!(:first_training) { create(:training, with_section: section, start_datetime: 1.day.from_now) }
       let!(:match) { create(:match, local_team: team, start_datetime: 2.days.from_now) }
 
-      it { expect(next_events).to eq [first_training, match, second_training] }
+      it 'next_events is expected to eq [first_training, match, second_training]' do
+        expect(next_events).to eq [first_training, match, second_training]
+      end
     end
   end
 end

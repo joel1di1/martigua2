@@ -45,6 +45,33 @@ class User < ApplicationRecord
 
   scope :active_this_season, -> { includes(:participations).where(participations: { season: Season.current }) }
 
+  ANONYMIZED_EMAIL_DOMAIN = 'anonymized.invalid'
+
+  # RGPD retention: no section membership, sign-in nor account creation since `cutoff`.
+  scope :inactive_since, lambda { |cutoff|
+    where(super_admin: false, created_at: [nil, ...cutoff], current_sign_in_at: [nil, ...cutoff])
+      .where.not(id: Participation.joins(:season).where(seasons: { end_date: cutoff.. }).select(:user_id))
+      .where.not('email LIKE ?', "%@#{ANONYMIZED_EMAIL_DOMAIN}")
+  }
+
+  def self.anonymize_inactive!
+    inactive_since(3.years.ago).find_each(&:anonymize!)
+  end
+
+  # Keeps the sports history (participations, presences, selections, stats) under an anonymous
+  # name; drops what identifies the person or a third party.
+  def anonymize!
+    transaction do
+      [absences, contact_emails, webpush_subscriptions, club_admin_roles].each(&:destroy_all)
+      player_match_stats.update_all(first_name: nil, last_name: nil) # rubocop:disable Rails/SkipsModelValidations
+      user_championship_stats.update_all(first_name: nil, last_name: nil) # rubocop:disable Rails/SkipsModelValidations
+      update!(first_name: 'Ancien', last_name: "Membre #{id}", nickname: nil, phone_number: nil,
+              email: "anonyme-#{id}@#{ANONYMIZED_EMAIL_DOMAIN}", password: SecureRandom.hex(32),
+              authentication_token: SecureRandom.urlsafe_base64(32), invitation_token: nil, reset_password_token: nil)
+    end
+    avatar.purge
+  end
+
   # Relatives copied on everything this user receives.
   def contact_email_addresses
     contact_emails.map(&:email)

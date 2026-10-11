@@ -17,3 +17,7 @@ production:
     class: GueulesdeboisCheckJob
     schedule: "45 * * * *"
     description: 'Vérifie les nouveaux événements Amuse-Gueule sur gueulesdebois.fr'
+  anonymize_inactive_users:
+    command: "User.anonymize_inactive!"
+    schedule: "0 4 1 * *"
+    description: 'RGPD : anonymise les comptes sans inscription ni connexion depuis 3 ans'

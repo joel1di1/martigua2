@@ -26,8 +26,8 @@ module Interceptors
       # retrieve all wildcard blocked addresses
       wildcard_blocked_addresses = BlockedAddress.where('email LIKE ?', '*%').pluck(:email)
 
-      # retrieve all wildcard blocked domains, removing the *
-      wildcard_blocked_domains = wildcard_blocked_addresses.pluck(1..)
+      # retrieve all wildcard blocked domains, removing the *; anonymized accounts are never mailed
+      wildcard_blocked_domains = wildcard_blocked_addresses.pluck(1..) << "@#{User::ANONYMIZED_EMAIL_DOMAIN}"
 
       # remove all blocked addresses matching the wildcard blocked domains
       message.to = message.to.select do |address|

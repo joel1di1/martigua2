@@ -23,6 +23,14 @@ RSpec.describe Interceptors::BlockedAddressInterceptor do
       it { expect(message.perform_deliveries).to be true }
     end
 
+    context 'when the email is sent to an anonymized account' do
+      let(:message) { Mail.new(to: 'anonyme-1@anonymized.invalid') }
+
+      before { Interceptors::BlockedAddressInterceptor.delivering_email(message) }
+
+      it { expect(message.perform_deliveries).to be false }
+    end
+
     context 'when the blocked address is the only recipient but relatives are in copy' do
       let(:message) { Mail.new(to: email, cc: 'maman@example.com') }
 

@@ -76,6 +76,33 @@ jobs:
       - name: Lint with RuboCop
         run: bin/rubocop
 
+  qlty:
+    name: Qlty (code quality report)
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Install Qlty
+        uses: qltysh/qlty-action/install@v2
+
+      # Informational: --no-fail keeps existing findings from failing CI,
+      # which would trigger agent-ci-fix.yml. Drop it once the backlog is clean.
+      - name: Qlty check
+        run: qlty check --all --no-fail --summary
+
+      - name: Qlty maintainability metrics
+        run: qlty metrics --all --max-depth=2 --sort complexity --limit 20
+
   tests:
     name: Tests
     runs-on: ubuntu-latest

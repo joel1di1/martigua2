@@ -26,7 +26,6 @@ exclude_patterns = [
   "**/bower_components/**",
   "**/build/**",
   "**/cache/**",
-  "**/config/**",
   "**/db/**",
   "**/deps/**",
   "**/dist/**",

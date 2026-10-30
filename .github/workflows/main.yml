@@ -81,6 +81,8 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # Informational: a Qlty install or plugin error must not turn main red.
+    continue-on-error: true
 
     steps:
       - name: Checkout code
@@ -98,7 +100,7 @@ jobs:
       # Informational: --no-fail keeps existing findings from failing CI,
       # which would trigger agent-ci-fix.yml. Drop it once the backlog is clean.
       - name: Qlty check
-        run: qlty check --all --no-fail --summary
+        run: qlty check --all --no-fail
 
       - name: Qlty maintainability metrics
         run: qlty metrics --all --max-depth=2 --sort complexity --limit 20

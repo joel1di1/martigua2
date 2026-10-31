@@ -67,7 +67,8 @@ jobs:
         uses: nanasess/setup-chromedriver@v3
 
       - name: Check spec relevance
-        run: bin/check-spec-relevance "origin/${{ github.base_ref }}"
+        run: bin/check-spec-relevance "origin/$BASE_REF"
         env:
+          BASE_REF: ${{ github.base_ref }}
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/martigua2_test

@@ -20,7 +20,7 @@ if ! command -v pg_ctlcluster >/dev/null || ! dpkg -s libvips-dev >/dev/null 2>&
 fi
 
 # Postgres on the port expected by config/database.yml (54321), user postgres/postgres
-PG_VERSION=$(ls /etc/postgresql | sort -V | tail -1)
+PG_VERSION=$(find /etc/postgresql -mindepth 1 -maxdepth 1 -printf "%f\n" | sort -V | tail -1)
 PG_CONF="/etc/postgresql/$PG_VERSION/main/postgresql.conf"
 if ! grep -q "^port = 54321" "$PG_CONF"; then
   $SUDO sed -i "s/^port = .*/port = 54321/" "$PG_CONF"
@@ -52,11 +52,13 @@ log "building tailwind css"
 bin/rails tailwindcss:build >/dev/null
 
 log "preparing test database"
-RAILS_ENV=test bin/rails db:prepare >/dev/null
+RAILS_ENV="test" bin/rails db:prepare >/dev/null
 
 # Persist env for the rest of the session
 if [ -n "${CLAUDE_ENV_FILE:-}" ]; then
+  # shellcheck disable=SC2016 # written literally, evaluated by the session shell
   command -v rbenv >/dev/null && echo 'eval "$(rbenv init - bash)"' >> "$CLAUDE_ENV_FILE"
+  # shellcheck disable=SC2016 # written literally, evaluated by the session shell
   command -v mise >/dev/null && echo 'eval "$(mise activate bash)"' >> "$CLAUDE_ENV_FILE"
 fi
 

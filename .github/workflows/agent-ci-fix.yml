@@ -5,8 +5,12 @@ name: 'Agent: CI fix'
 # automatic attempts per PR; after that the PR gets `agent:stuck` and a human takes over
 # (the `agent:dev!` label still works).
 
+# Safe use of workflow_run (zizmor/dangerous-triggers): the job only runs for failed CI on
+# same-repo agent/* branches (see the `if:` below), never for forks; it checks out the
+# default branch (not PR code), has narrow permissions, and passes event values via env
+# instead of interpolating them into scripts.
 on:
-  workflow_run:
+  workflow_run: # zizmor: ignore[dangerous-triggers]
     workflows: [CI]
     types: [completed]
 

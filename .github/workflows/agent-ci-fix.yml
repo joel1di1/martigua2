@@ -71,7 +71,7 @@ jobs:
             | tail -n 300 > failed.log
           wc -l failed.log
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@de492cf36cbab201753d720ce4f4e336cd688c94 # v1
         if: steps.pr.outputs.number != '' && fromJSON(steps.pr.outputs.attempts) < fromJSON(env.MAX_ATTEMPTS)
         with:
           ruby-version: .ruby-version

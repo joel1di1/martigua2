@@ -29,7 +29,7 @@ jobs:
 
       # Static analysis only: bin/brakeman doesn't load the app, so no libvips.
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@de492cf36cbab201753d720ce4f4e336cd688c94 # v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
@@ -50,7 +50,7 @@ jobs:
         uses: ./.github/actions/install-libvips
 
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@de492cf36cbab201753d720ce4f4e336cd688c94 # v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
@@ -68,7 +68,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@de492cf36cbab201753d720ce4f4e336cd688c94 # v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
@@ -89,13 +89,13 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@de492cf36cbab201753d720ce4f4e336cd688c94 # v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
 
       - name: Install Qlty
-        uses: qltysh/qlty-action/install@v2
+        uses: qltysh/qlty-action/install@ebcd284bf32e36a030afe15f1e136c7be08b9506 # v2
 
       # Informational: --no-fail keeps existing findings from failing CI,
       # which would trigger agent-ci-fix.yml. Drop it once the backlog is clean.
@@ -135,12 +135,12 @@ jobs:
         uses: ./.github/actions/install-libvips
 
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@de492cf36cbab201753d720ce4f4e336cd688c94 # v1
         with:
           bundler-cache: true
 
       - name: Set up chromedriver
-        uses: nanasess/setup-chromedriver@v3
+        uses: nanasess/setup-chromedriver@e913548694400f275b4070efcd90f47dbbc8914c # v3
 
       - name: Assets Precompile
         run: bundle exec rake assets:precompile
@@ -169,7 +169,7 @@ jobs:
       - name: Upload coverage to Qlty
         if: github.ref == 'refs/heads/main'
         continue-on-error: true
-        uses: qltysh/qlty-action/coverage@v2
+        uses: qltysh/qlty-action/coverage@ebcd284bf32e36a030afe15f1e136c7be08b9506 # v2
         with:
           oidc: true
           files: coverage/.resultset.json

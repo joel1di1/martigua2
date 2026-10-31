@@ -48,7 +48,7 @@ jobs:
         run: script/managed_agents/set_status.sh "$NUMBER" agent:queued
 
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@de492cf36cbab201753d720ce4f4e336cd688c94 # v1
         with:
           ruby-version: .ruby-version
 

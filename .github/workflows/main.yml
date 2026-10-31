@@ -109,6 +109,9 @@ jobs:
     name: Tests
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write # Qlty coverage upload via OIDC (tokenless)
     services:
       postgres:
         # Same major version as production (PostgreSQL 16).
@@ -159,3 +162,14 @@ jobs:
           RAILS_ENV: test
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
+          # simplecov (spec_helper.rb) merges the parallel workers; only main is measured.
+          COVERAGE: ${{ github.ref == 'refs/heads/main' }}
+
+      # Informational: needs the repo to be added on qlty.sh; must not turn main red.
+      - name: Upload coverage to Qlty
+        if: github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: qltysh/qlty-action/coverage@v2
+        with:
+          oidc: true
+          files: coverage/.resultset.json

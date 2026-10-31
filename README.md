@@ -1,6 +1,8 @@
 # Martigua2
 
 [![CI](https://github.com/joel1di1/martigua2/actions/workflows/main.yml/badge.svg)](https://github.com/joel1di1/martigua2/actions/workflows/main.yml)
+[![Maintainability](https://qlty.sh/gh/joel1di1/projects/martigua2/maintainability.svg)](https://qlty.sh/gh/joel1di1/projects/martigua2)
+[![Code Coverage](https://qlty.sh/gh/joel1di1/projects/martigua2/coverage.svg)](https://qlty.sh/gh/joel1di1/projects/martigua2)
 
 The app behind [www.martigua.org](https://www.martigua.org): it manages handball clubs, their
 sections, teams, players, trainings and matches.

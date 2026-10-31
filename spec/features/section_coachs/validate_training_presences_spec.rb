@@ -26,7 +26,8 @@ describe 'Validate training presences', :devise, :js do
     click_on '1 présents / 0 absents / 1 sans réponse'
     click_on 'Valider les présences'
 
-    expect(page).to have_text("Entrainement du #{I18n.l(training.start_datetime, format: :short)}")
+    # The show page also says "Entrainement du ...", so wait on a heading only the validation page has
+    expect(page).to have_css('h1', text: 'Valider les présences')
 
     within("#presence-player-#{cheater.id}") do
       expect(page).to have_text('A dit présent').and have_no_text('Validé par le coach')

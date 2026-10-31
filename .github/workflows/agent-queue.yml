@@ -24,6 +24,8 @@ jobs:
       slots: ${{ steps.queue.outputs.slots }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - uses: astral-sh/setup-uv@v10.3.2
 

@@ -32,6 +32,8 @@ jobs:
       started: ${{ steps.start.outputs.started }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Find the PR and count previous attempts
         id: pr

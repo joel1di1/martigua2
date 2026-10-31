@@ -23,7 +23,7 @@ jobs:
     services:
       postgres:
         # Same major version as production (PostgreSQL 16).
-        image: postgres:16
+        image: postgres:16@sha256:1beaa3084eee2676f20a9cd9928f0bf2c5bf674f8e49f81017912183d377c61c
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -37,7 +37,7 @@ jobs:
           --health-retries 5
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
           fetch-depth: 0

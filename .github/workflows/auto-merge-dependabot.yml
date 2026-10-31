@@ -1,13 +1,14 @@
 name: Dependabot auto-merge
 on: pull_request
 
-permissions:
-  pull-requests: write
-  contents: write
+permissions: {}
 
 jobs:
   dependabot:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write # gh pr merge --auto
+      contents: write # required by auto-merge to merge the PR
     if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
     steps:
       - name: Dependabot metadata

@@ -17,8 +17,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Cheap pre-check: use the same spec selection as bin/check-spec-relevance.
+  changed_specs:
+    name: Detect changed specs
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      any: ${{ steps.detect.outputs.any }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: List added or modified spec files
+        id: detect
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          merge_base="$(git merge-base "origin/$BASE_REF" HEAD)"
+          changed_files="$(git diff --name-only --diff-filter=AM "$merge_base" HEAD -- 'spec/')"
+          changed="$(printf '%s\n' "$changed_files" | grep '_spec\.rb$' || true)"
+          if [ -n "$changed" ]; then
+            echo "Changed spec files:"
+            echo "$changed"
+            echo "any=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No added or modified spec files: skipping the spec relevance check."
+            echo "any=false" >> "$GITHUB_OUTPUT"
+          fi
+
   spec_relevance:
     name: Spec relevance
+    needs: changed_specs
+    if: needs.changed_specs.outputs.any == 'true'
     runs-on: ubuntu-latest
     services:
       postgres:

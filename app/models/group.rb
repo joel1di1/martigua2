@@ -24,10 +24,4 @@ class Group < ApplicationRecord
     users.delete(user)
     TrainingPresence.purge_future_non_member(user, trainings)
   end
-
-  def copy_to_current_season
-    Group.create!(section:, season: Season.current,
-                  name:, system:, users:,
-                  color:, description:, role:)
-  end
 end

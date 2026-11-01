@@ -16,8 +16,4 @@ class Participation < ApplicationRecord
   validates :main_position, inclusion: { in: POSITIONS }, allow_nil: true
 
   scope :coachs, -> { where(role: COACH) }
-
-  def renew!
-    Participation.create!(user:, section:, role:, season: Season.current)
-  end
 end

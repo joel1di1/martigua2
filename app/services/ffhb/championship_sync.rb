@@ -77,13 +77,9 @@ module Ffhb
       _, _, competition_key, _phase_id, pool_id = championship.ffhb_key.split
       return false if competition_key.blank? || pool_id.blank?
 
-      # Only consider teams that have sections (i.e., real teams that belong to a club/section)
-      # Teams without sections are temporary teams created during championship import
-      linked_enrollments = championship.enrolled_team_championships.includes(team: :team_sections)
-                                       .select { |etc| etc.team.team_sections.any? }
       return false if linked_enrollments.empty?
 
-      new_matches = build_new_matches(competition_key, pool_id, linked_enrollments)
+      new_matches = build_new_matches(competition_key, pool_id)
       return false if new_matches.empty?
 
       new_matches.each(&:save!)
@@ -95,26 +91,40 @@ module Ffhb
       false
     end
 
-    def build_new_matches(competition_key, pool_id, linked_enrollments)
+    # Only consider teams that have sections (i.e., real teams that belong to a club/section)
+    # Teams without sections are temporary teams created during championship import
+    def linked_enrollments
+      @linked_enrollments ||= championship.enrolled_team_championships.includes(team: :team_sections)
+                                          .select { |etc| etc.team.team_sections.any? }
+    end
+
+    def linked_team_ids
+      @linked_team_ids ||= linked_enrollments.map(&:ffhb_team_id)
+    end
+
+    def enrollments_by_ffhb_id
+      @enrollments_by_ffhb_id ||= championship.enrolled_team_championships.index_by(&:ffhb_team_id)
+    end
+
+    def existing_ffhb_keys
+      @existing_ffhb_keys ||= championship.matches.pluck(:ffhb_key).to_set
+    end
+
+    def build_new_matches(competition_key, pool_id)
       pool_details = FfhbService.instance.fetch_pool_details(competition_key, pool_id)
       journees = Oj.load(pool_details['selected_poule']['journees'])
-
-      existing_ffhb_keys = championship.matches.pluck(:ffhb_key).to_set
-      enrollments_by_ffhb_id = championship.enrolled_team_championships.index_by(&:ffhb_team_id)
-      linked_team_ids = linked_enrollments.map(&:ffhb_team_id)
 
       journees.flat_map do |journee|
         journee_details = FfhbService.instance.fetch_journee_details(competition_key, pool_id,
                                                                      journee['journee_numero'])
 
         journee_details['rencontres'].filter_map do |match_data|
-          build_match(match_data, journee, competition_key, pool_id,
-                      existing_ffhb_keys:, enrollments_by_ffhb_id:, linked_team_ids:)
+          build_match(match_data, journee, competition_key, pool_id)
         end
       end
     end
 
-    def build_match(match_data, journee, competition_key, pool_id, existing_ffhb_keys:, enrollments_by_ffhb_id:, linked_team_ids:) # rubocop:disable Metrics/ParameterLists
+    def build_match(match_data, journee, competition_key, pool_id)
       # Only process matches involving our teams
       return unless linked_team_ids.intersect?([match_data['equipe1Id'], match_data['equipe2Id']])
 

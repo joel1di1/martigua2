@@ -4,6 +4,11 @@ module Ffhb
   # Syncs a championship with the FFHB: adds newly scheduled matches,
   # refreshes every match (date, score, location), then player stats.
   class ChampionshipSync
+    # Per-run snapshot of what build_match needs, built once so every call sees the same values.
+    SyncContext = Data.define(:competition_key, :pool_id, :existing_ffhb_keys,
+                              :enrollments_by_ffhb_id, :linked_team_ids)
+    private_constant :SyncContext
+
     def initialize(championship)
       @championship = championship
     end
@@ -99,30 +104,30 @@ module Ffhb
       pool_details = FfhbService.instance.fetch_pool_details(competition_key, pool_id)
       journees = Oj.load(pool_details['selected_poule']['journees'])
 
-      existing_ffhb_keys = championship.matches.pluck(:ffhb_key).to_set
-      enrollments_by_ffhb_id = championship.enrolled_team_championships.index_by(&:ffhb_team_id)
-      linked_team_ids = linked_enrollments.map(&:ffhb_team_id)
+      context = SyncContext.new(
+        competition_key:, pool_id:,
+        existing_ffhb_keys: championship.matches.pluck(:ffhb_key).to_set,
+        enrollments_by_ffhb_id: championship.enrolled_team_championships.index_by(&:ffhb_team_id),
+        linked_team_ids: linked_enrollments.map(&:ffhb_team_id)
+      )
 
       journees.flat_map do |journee|
         journee_details = FfhbService.instance.fetch_journee_details(competition_key, pool_id,
                                                                      journee['journee_numero'])
 
-        journee_details['rencontres'].filter_map do |match_data|
-          build_match(match_data, journee, competition_key, pool_id,
-                      existing_ffhb_keys:, enrollments_by_ffhb_id:, linked_team_ids:)
-        end
+        journee_details['rencontres'].filter_map { |match_data| build_match(match_data, journee, context) }
       end
     end
 
-    def build_match(match_data, journee, competition_key, pool_id, existing_ffhb_keys:, enrollments_by_ffhb_id:, linked_team_ids:) # rubocop:disable Metrics/ParameterLists
+    def build_match(match_data, journee, context)
       # Only process matches involving our teams
-      return unless linked_team_ids.intersect?([match_data['equipe1Id'], match_data['equipe2Id']])
+      return unless context.linked_team_ids.intersect?([match_data['equipe1Id'], match_data['equipe2Id']])
 
-      match_ffhb_key = "#{competition_key} #{pool_id} #{match_data['ext_rencontreId']}"
-      return if existing_ffhb_keys.include?(match_ffhb_key)
+      match_ffhb_key = "#{context.competition_key} #{context.pool_id} #{match_data['ext_rencontreId']}"
+      return if context.existing_ffhb_keys.include?(match_ffhb_key)
 
-      local_enrolled = enrollments_by_ffhb_id[match_data['equipe1Id']]
-      visitor_enrolled = enrollments_by_ffhb_id[match_data['equipe2Id']]
+      local_enrolled = context.enrollments_by_ffhb_id[match_data['equipe1Id']]
+      visitor_enrolled = context.enrollments_by_ffhb_id[match_data['equipe2Id']]
       return if local_enrolled.blank? || visitor_enrolled.blank?
 
       Match.new(

@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# chromedriver raises UnknownError "Node with given id does not belong to the document" when a page
+# swap lands mid-lookup. Capybara only retries stale-element errors, so retry this exact message too
+# (the node was never acted on, so retrying a click or a fill is safe). Other UnknownErrors still fail fast.
+module RetryDetachedNode
+  DETACHED_NODE = 'Node with given id does not belong to the document'
+
+  def catch_error?(error, errors = nil)
+    super || (error.is_a?(Selenium::WebDriver::Error::UnknownError) && error.message.include?(DETACHED_NODE))
+  end
+end
+Capybara::Node::Base.prepend(RetryDetachedNode)
+
 RSpec.configure do |_config|
   Capybara.register_driver :selenium_chrome do |app|
     options = Selenium::WebDriver::Chrome::Options.new

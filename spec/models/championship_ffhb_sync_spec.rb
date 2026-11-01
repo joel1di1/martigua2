@@ -62,6 +62,16 @@ RSpec.describe Championship do
         championship.reload
         expect(championship.matches.size).to eq(22)
       end
+
+      it 'does not create duplicates when the same sync instance runs twice' do
+        championship.matches.where.not(id: championship.matches.first.id).destroy_all
+        sync = Ffhb::ChampionshipSync.new(championship.reload)
+
+        sync.call
+        sync.call
+
+        expect(championship.reload.matches.size).to eq(22)
+      end
     end
   end
 

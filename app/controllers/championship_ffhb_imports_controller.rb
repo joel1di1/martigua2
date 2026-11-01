@@ -10,8 +10,10 @@ class ChampionshipFfhbImportsController < ApplicationController
   def create
     import_form = Ffhb::ImportForm.new(params)
     if import_form.complete? && params[:team_links].present?
-      @championship = Championship.create_from_ffhb!(**import_form.to_params, team_links: team_links_params,
-                                                                              linked_calendar:)
+      @championship = Championship.create_from_ffhb!(
+        **import_form.to_params.slice(:code_comite, :code_competition, :code_pool),
+        team_links: team_links_params, linked_calendar:
+      )
       redirect_with additionnal_params: { 'match[championship_id]' => @championship.id },
                     fallback: section_championship_path(current_section, @championship),
                     use_referrer: false,

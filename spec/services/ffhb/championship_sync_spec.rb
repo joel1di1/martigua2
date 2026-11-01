@@ -10,9 +10,9 @@ RSpec.describe Ffhb::ChampionshipSync do
     let(:my_team) { create(:team, with_section: section) }
     let(:championship) do
       Championship.create_from_ffhb!(
-        type_competition: 'D', code_comite: 94,
+        code_comite: 94,
         code_competition: '16-ans-m-2-eme-division-territoriale-94-75-23229',
-        phase_id: '41894', code_pool: '128335',
+        code_pool: '128335',
         team_links: { '1589702' => my_team.id }, linked_calendar: nil
       )
     end

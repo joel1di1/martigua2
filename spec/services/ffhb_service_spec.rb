@@ -88,7 +88,7 @@ RSpec.describe FfhbService do
 
     describe '#build_championship' do
       subject(:championship) do
-        ffhb_instance.build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:,
+        ffhb_instance.build_championship(code_comite:, code_competition:, code_pool:,
                                          team_links:, linked_calendar:)
       end
 
@@ -114,7 +114,7 @@ RSpec.describe FfhbService do
           subject(:enrolled_teams) { championship.enrolled_team_championships }
 
           let(:championship) do
-            ffhb_instance.build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:,
+            ffhb_instance.build_championship(code_comite:, code_competition:, code_pool:,
                                              team_links:, linked_calendar:)
           end
 

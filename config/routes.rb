@@ -70,7 +70,6 @@ Rails.application.routes.draw do
       resources :selections, only: [:index]
     end
     resources :calendars, only: %i[index create edit update]
-    resources :days, only: [:create]
     resources :locations, only: [:create]
     resources :teams
     resources :channels do
@@ -132,8 +131,4 @@ Rails.application.routes.draw do
 
   get 'switch_user', to: 'switch_user#set_current_user'
   get 'switch_user/remember_user', to: 'switch_user#remember_user'
-  get '.well-known/acme-challenge/4k3hP8fSRgCKf0inS8qYK9LYs8sU10ZMfSiYs8-Mcxg' => 'visitors#letsencrypt'
-  get '.well-known/acme-challenge/DNyCHVFZJQpss-fIqj5vX317OwOjUfwRklgsSJMAJXo-Mcxg' => 'visitors#letsencrypt'
-
-  get '.stimulus', to: 'visitors#stimulus'
 end

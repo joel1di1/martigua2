@@ -3,10 +3,6 @@
 class DaysController < ApplicationController
   respond_to :html, :json, :turbo_stream
 
-  def new
-    @day = Day.new
-  end
-
   def create
     @day = Day.new day_params
     @day.save!

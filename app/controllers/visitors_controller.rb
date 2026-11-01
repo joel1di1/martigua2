@@ -10,6 +10,4 @@ class VisitorsController < ApplicationController
   end
 
   def privacy; end
-
-  def stimulus; end
 end

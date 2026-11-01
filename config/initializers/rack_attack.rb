@@ -58,7 +58,7 @@ Rack::Attack.throttle('logins/email', limit: 5, period: 20.seconds) do |req|
   end
 end
 
-SUSPICIOUS_PATH_FRAGMENTS = %w[/etc/passwd wp-admin wp-login].freeze
+suspicious_path_fragments = %w[/etc/passwd wp-admin wp-login].freeze
 
 # Block suspicious requests for '/etc/password' or wordpress specific paths.
 # After 3 blocked requests in 10 minutes, block all requests from that IP for 15 minutes.
@@ -69,7 +69,7 @@ Rack::Attack.blocklist('fail2ban pentesters') do |req|
     # The count for the IP is incremented if the return value is truthy
     CGI.unescape(req.query_string).include?('/etc/passwd') ||
       req.path.end_with?('.php') ||
-      SUSPICIOUS_PATH_FRAGMENTS.any? { |fragment| req.path.include?(fragment) }
+      suspicious_path_fragments.any? { |fragment| req.path.include?(fragment) }
   end
 end
 

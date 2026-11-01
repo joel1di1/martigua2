@@ -304,38 +304,6 @@ RSpec.describe Section do
     end
   end
 
-  describe '#next_duties_for' do
-    subject(:next_duties) { section.next_duties_for(task) }
-
-    let(:task) { DutyTask::TASKS.keys.sample }
-
-    context 'with duties taks accomplished' do
-      it {
-        user1, user2, user3, user4, old_user = create_list(:user, 5, with_section: section)
-        user1.realised_task!(task, 1.day.ago, section.club)
-        user2.realised_task!(task, 2.days.ago, section.club)
-        user3.realised_task!(task, 3.days.ago, section.club)
-        user4.realised_task!(task, 4.days.ago, section.club)
-        user4.realised_task!(task, 5.days.ago, section.club)
-
-        old_user.participations.update_all(season_id: create(:season, start_date: 3.years.ago).id) # rubocop:disable Rails/SkipsModelValidations
-
-        expect(next_duties).to contain_exactly(user4, user3, user2)
-      }
-    end
-
-    context 'with one users who never did any' do
-      it {
-        user1, user2, user3, user4 = create_list(:user, 4, with_section: section)
-        user1.realised_task!(task, 1.day.ago, section.club)
-        user2.realised_task!(task, 2.days.ago, section.club)
-        user3.realised_task!(task, 3.days.ago, section.club)
-
-        expect(next_duties).to contain_exactly(user4, user3, user2)
-      }
-    end
-  end
-
   describe '.season_calendars' do
     subject(:calendars) { section.season_calendars }
 

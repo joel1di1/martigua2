@@ -132,14 +132,6 @@ class User < ApplicationRecord
     nickname.presence || "#{first_name.capitalize} #{last_name.capitalize}"
   end
 
-  def realised_task!(task_key, realised_at, club)
-    duty_tasks.create!(key: task_key, realised_at:, club:)
-  end
-
-  def last_time_duty(task_key)
-    duty_tasks.where(key: task_key).order(realised_at: :desc).first&.realised_at
-  end
-
   def read?(message)
     user_channel_messages.exists?(message:, read: true)
   end
@@ -150,13 +142,6 @@ class User < ApplicationRecord
       message = Message.find(message_id)
       user_channel_messages.find_or_create_by(message:, channel: message.channel).update!(read: true)
     end
-  end
-
-  # Smoke test for the Solid Queue migration (issue #1191): enqueued through the async_
-  # dynamic method by `rake solid:check`, delivery happens inside the background job,
-  # matching the existing pattern where deliver_now is called from the model side.
-  def send_solid_check_email
-    SystemMailer.solid_check(self).deliver_now
   end
 
   protected

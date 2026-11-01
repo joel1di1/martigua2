@@ -37,10 +37,6 @@ class FfhbService # rubocop:disable Metrics/ClassLength
     raise FfhbServiceError, e.message
   end
 
-  def save_results_in_file(filename, json_content)
-    Rails.root.join('spec/fixtures/ffhb/2023', filename).write(json_content.to_json)
-  end
-
   def fetch_departemental_details
     fetch_smartfire_attributes(
       'https://www.ffhandball.fr/competitions/saison-2026-2027-22/departemental/',

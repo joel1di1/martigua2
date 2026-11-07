@@ -487,34 +487,6 @@ describe User do
     end
   end
 
-  describe '#realised_task!' do
-    let(:task) { DutyTask::TASKS.keys.sample }
-
-    it 'create a duty_task' do
-      expect { user.realised_task!(task, 1.day.ago, section.club) }.to(change { user.duty_tasks.reload.count })
-    end
-  end
-
-  describe '#last_time_duty' do
-    let(:task) { DutyTask::TASKS.keys.sample }
-
-    context 'when the user never realised the task' do
-      it { expect(user.last_time_duty(task)).to be_nil }
-    end
-
-    context 'when the user realised the task multiple times' do
-      before do
-        user.realised_task!(task, 3.days.ago, section.club)
-        user.realised_task!(task, 1.day.ago, section.club)
-        user.realised_task!(task, 2.days.ago, section.club)
-      end
-
-      it 'returns the most recent realised_at' do
-        expect(user.last_time_duty(task)).to be_within(1.second).of(1.day.ago)
-      end
-    end
-  end
-
   describe 'validates presence on trainings' do
     subject(:was_present) { user.was_present?(training) }
 
@@ -610,15 +582,6 @@ describe User do
         expect(user.reload).not_to be_available_for(match)
         expect(user.reload).not_to be_available_for(other_match)
       end
-    end
-  end
-
-  describe '#send_solid_check_email' do
-    it 'delivers exactly one mail to the user' do
-      expect { user.send_solid_check_email }
-        .to change { ActionMailer::Base.deliveries.count }.by(1)
-
-      expect(ActionMailer::Base.deliveries.last.to).to eq [user.email]
     end
   end
 end

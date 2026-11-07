@@ -290,10 +290,8 @@ RSpec.describe Match do
       end
 
       it { expect(match.aways).to contain_exactly(player_sick) }
-      it { expect(match.availables).to contain_exactly(player) }
       it { expect(match.nb_availables).to eq 1 }
       it { expect(match.nb_not_availables).to eq 1 }
-      it { expect(match.not_availables).to contain_exactly(player_sick) }
     end
 
     context 'with absence matching exact match boundaries using end_datetime' do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class Match < ApplicationRecord
   belongs_to :championship
   belongs_to :location, optional: true
   belongs_to :day
@@ -57,24 +57,12 @@ class Match < ApplicationRecord # rubocop:disable Metrics/ClassLength
     )
   end
 
-  def availables
-    User.where(id: availability_summary.available_user_ids).to_a
-  end
-
   def nb_availables
     availability_summary.available_user_ids.size
   end
 
-  def not_availables
-    User.where(id: availability_summary.not_available_user_ids).to_a
-  end
-
   def aways
     users.joins(:absences).merge(Absence.covering(calculated_start_datetime, calculated_end_datetime))
-  end
-
-  def nb_aways
-    aways.count
   end
 
   def nb_not_availables

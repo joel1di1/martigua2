@@ -21,10 +21,6 @@ class User < ApplicationRecord
       training_presences.where(training:).first.try(:is_present)
     end
 
-    def set_present_for?(training)
-      !training_presences.where(training:).first.is_present.nil?
-    end
-
     def was_present?(training, presences_by_user_and_training = nil)
       training_presence = if presences_by_user_and_training.present?
                             presences_by_user_and_training[[id, training.id]]

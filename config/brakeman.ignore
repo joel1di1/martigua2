@@ -1,28 +1,4 @@
 {
-  "ignored_warnings": [
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "06022f089dec9194f9d9b0ed569e628b715cd1d4f7ac19ae3a2a0d9173f105be",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/section.rb",
-      "line": 113,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "users.joins(\"#{\"LEFT OUTER JOIN \\\"duty_tasks\\\" ON \\\"duty_tasks\\\".\\\"user_id\\\" = \\\"users\\\".\\\"id\\\" AND \\\"duty_tasks\\\".\\\"key\\\" =\"} '#{Arel.sql(task_key.to_s)}'\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Section",
-        "method": "next_duties_for"
-      },
-      "user_input": "Arel.sql(task_key.to_s)",
-      "confidence": "Weak",
-      "cwe_id": [
-        89
-      ],
-      "note": "Actually not user input"
-    }
-  ],
+  "ignored_warnings": [],
   "brakeman_version": "8.0.5"
 }

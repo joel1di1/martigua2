@@ -99,28 +99,6 @@ class Section < ApplicationRecord
     group_every_players(season:).remove_user!(user, force: true) if roles.include?(Participation::PLAYER)
   end
 
-  def copy_from_previous_season
-    current_season = Season.current
-    previous_season = current_season.previous
-    players(season: previous_season).each do |player|
-      add_player! player
-    end
-    coachs(season: previous_season).each do |coach|
-      add_coach! coach
-    end
-    Group.where(season: previous_season, section: self).find_each(&:copy_to_current_season)
-  end
-
-  def next_duties_for(task_key)
-    left_join = 'LEFT OUTER JOIN "duty_tasks" ON "duty_tasks"."user_id" = "users"."id" AND "duty_tasks"."key" ='
-    users.joins("#{left_join} '#{Arel.sql(task_key.to_s)}'")
-         .where(participations: { season_id: Season.current.id })
-         .select("users.id, users.*, coalesce(max(duty_tasks.realised_at), '1900-01-01') as last_realised_at")
-         .group('users.id')
-         .order(:last_realised_at, :authentication_token)
-         .limit(3)
-  end
-
   def update_roles!(user, roles = [])
     existing_roles = user.roles_for(self)
     remove_roles!(user, existing_roles - roles)

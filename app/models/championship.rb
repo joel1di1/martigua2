@@ -138,13 +138,4 @@ class Championship < ApplicationRecord
     parts = ffhb_key.to_s.split
     self.competition_key = parts[2] if parts.size >= 3
   end
-
-  def find_match_by_team_names(event_team_names)
-    match_teams =
-      event_team_names.map do |team_name|
-        enrolled_team_championships.find { |enrolled_team| enrolled_team.enrolled_name == team_name }
-      end.map(&:team)
-
-    matches.find { |match| match.local_team == match_teams.first && match.visitor_team == match_teams.second }
-  end
 end

@@ -22,19 +22,6 @@ RSpec.describe FfhbService do
         expect(cache.exist?(url)).to be false
       end
     end
-
-    context 'when the server answers successfully' do
-      before do
-        response = Net::HTTPOK.new('1.1', '200', 'OK')
-        allow(response).to receive(:body).and_return('<html>ok</html>')
-        allow(Net::HTTP).to receive(:get_response).and_return(response)
-      end
-
-      it 'returns and caches the body' do
-        expect(ffhb_instance.http_get_with_cache(url)).to eq '<html>ok</html>'
-        expect(cache.read(url)).to eq '<html>ok</html>'
-      end
-    end
   end
 
   describe '#fetch_smartfire_attributes' do

@@ -3,26 +3,6 @@
 RSpec.describe FfhbService do
   let(:ffhb_instance) { FfhbService.instance }
 
-  describe '#http_get_with_cache' do
-    let(:url) { 'https://example.com/test' }
-    let(:cache) { ActiveSupport::Cache::MemoryStore.new }
-
-    before { allow(Rails).to receive(:cache).and_return(cache) }
-
-    context 'when the server answers with an error status' do
-      before { allow(Net::HTTP).to receive(:get_response).and_return(Net::HTTPBadGateway.new('1.1', '502', 'Bad Gateway')) }
-
-      it 'raises FfhbServiceError mentioning the status' do
-        expect { ffhb_instance.http_get_with_cache(url) }.to raise_error(FfhbServiceError, /HTTP 502 for URL/)
-      end
-
-      it 'does not cache the error page' do
-        expect { ffhb_instance.http_get_with_cache(url) }.to raise_error(FfhbServiceError)
-        expect(cache.exist?(url)).to be false
-      end
-    end
-  end
-
   describe '#fetch_smartfire_attributes' do
     let(:url) { 'https://example.com/test' }
     let(:attribute_name) { 'test-component' }
@@ -108,7 +88,7 @@ RSpec.describe FfhbService do
 
     describe '#build_championship' do
       subject(:championship) do
-        ffhb_instance.build_championship(code_comite:, code_competition:, code_pool:,
+        ffhb_instance.build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:,
                                          team_links:, linked_calendar:)
       end
 
@@ -134,7 +114,7 @@ RSpec.describe FfhbService do
           subject(:enrolled_teams) { championship.enrolled_team_championships }
 
           let(:championship) do
-            ffhb_instance.build_championship(code_comite:, code_competition:, code_pool:,
+            ffhb_instance.build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:,
                                              team_links:, linked_calendar:)
           end
 

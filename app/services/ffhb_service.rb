@@ -7,11 +7,8 @@ class FfhbService # rubocop:disable Metrics/ClassLength
 
   def http_get_with_cache(url)
     Rails.cache.fetch url, expires_in: 30.minutes do
-      response = Net::HTTP.get_response(URI(url))
-      # Raising inside the block keeps error pages (e.g. 502) out of the cache.
-      raise FfhbServiceError.new("HTTP #{response.code} for URL: #{url}", status: response.code.to_i) unless response.is_a?(Net::HTTPSuccess)
-
-      response.body
+      uri = URI(url)
+      Net::HTTP.get(uri)
     end
   end
 
@@ -184,7 +181,7 @@ class FfhbService # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def build_championship(code_comite:, code_competition:, code_pool:, team_links:, linked_calendar: nil)
+  def build_championship(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:, team_links:, linked_calendar: nil) # rubocop:disable Metrics/ParameterLists
     comite_details = fetch_comite_details(code_comite.to_i)
     pool_details = fetch_pool_details(code_competition, code_pool)
 

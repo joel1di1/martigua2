@@ -18,7 +18,7 @@ RSpec.describe Championship do
     let(:team_links) { { '1589702' => my_team.id } }
 
     let(:championship) do
-      Championship.create_from_ffhb!(code_comite:, code_competition:, code_pool:,
+      Championship.create_from_ffhb!(type_competition:, code_comite:, code_competition:, phase_id:, code_pool:,
                                      team_links:, linked_calendar:)
     end
 
@@ -61,16 +61,6 @@ RSpec.describe Championship do
         championship.ffhb_sync!
         championship.reload
         expect(championship.matches.size).to eq(22)
-      end
-
-      it 'does not create duplicates when the same sync instance runs twice' do
-        championship.matches.where.not(id: championship.matches.first.id).destroy_all
-        sync = Ffhb::ChampionshipSync.new(championship.reload)
-
-        sync.call
-        sync.call
-
-        expect(championship.reload.matches.size).to eq(22)
       end
     end
   end

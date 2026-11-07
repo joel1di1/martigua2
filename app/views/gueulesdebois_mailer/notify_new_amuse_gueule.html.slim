@@ -1,0 +1,15 @@
+p Bonjour !
+
+p
+  | Un ou plusieurs nouveaux événements "Amuse-Gueule" viennent d'apparaître sur
+  |
+  a href="https://www.gueulesdebois.fr/events" Gueules de Bois
+  | .
+
+ul
+  - @new_events.each do |event|
+    li
+      a href="https://www.gueulesdebois.fr#{event.event_url}"
+        = event.title
+
+p Dépêche-toi, les places partent vite !

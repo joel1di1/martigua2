@@ -64,6 +64,12 @@ module Ffhb
     end
 
     def capture_sync_failure(error)
+      # A 5xx means the FFHB is down, not that the match is gone: the next sync will retry.
+      if error.server_error?
+        Rails.logger.warn "FFHB unavailable while syncing match #{match.id}: #{error.message}"
+        return
+      end
+
       Sentry.capture_message(
         'FFHB sync failed for match - possibly deleted match (team banished?)',
         level: :warning,

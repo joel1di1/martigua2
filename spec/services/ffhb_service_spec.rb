@@ -17,8 +17,7 @@ RSpec.describe FfhbService do
       end
 
       it 'does not cache the error page' do
-        ffhb_instance.http_get_with_cache(url)
-      rescue FfhbServiceError
+        expect { ffhb_instance.http_get_with_cache(url) }.to raise_error(FfhbServiceError)
         expect(cache.exist?(url)).to be false
       end
     end

@@ -1,0 +1,6 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# We don't write comments or docstrings except in exceptional cases.
+reviews:
+  pre_merge_checks:
+    docstrings:
+      mode: "off"

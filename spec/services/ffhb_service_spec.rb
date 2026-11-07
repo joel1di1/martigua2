@@ -3,6 +3,40 @@
 RSpec.describe FfhbService do
   let(:ffhb_instance) { FfhbService.instance }
 
+  describe '#http_get_with_cache' do
+    let(:url) { 'https://example.com/test' }
+    let(:cache) { ActiveSupport::Cache::MemoryStore.new }
+
+    before { allow(Rails).to receive(:cache).and_return(cache) }
+
+    context 'when the server answers with an error status' do
+      before { allow(Net::HTTP).to receive(:get_response).and_return(Net::HTTPBadGateway.new('1.1', '502', 'Bad Gateway')) }
+
+      it 'raises FfhbServiceError mentioning the status' do
+        expect { ffhb_instance.http_get_with_cache(url) }.to raise_error(FfhbServiceError, /HTTP 502 for URL/)
+      end
+
+      it 'does not cache the error page' do
+        ffhb_instance.http_get_with_cache(url)
+      rescue FfhbServiceError
+        expect(cache.exist?(url)).to be false
+      end
+    end
+
+    context 'when the server answers successfully' do
+      before do
+        response = Net::HTTPOK.new('1.1', '200', 'OK')
+        allow(response).to receive(:body).and_return('<html>ok</html>')
+        allow(Net::HTTP).to receive(:get_response).and_return(response)
+      end
+
+      it 'returns and caches the body' do
+        expect(ffhb_instance.http_get_with_cache(url)).to eq '<html>ok</html>'
+        expect(cache.read(url)).to eq '<html>ok</html>'
+      end
+    end
+  end
+
   describe '#fetch_smartfire_attributes' do
     let(:url) { 'https://example.com/test' }
     let(:attribute_name) { 'test-component' }

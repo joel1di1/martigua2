@@ -7,8 +7,11 @@ class FfhbService # rubocop:disable Metrics/ClassLength
 
   def http_get_with_cache(url)
     Rails.cache.fetch url, expires_in: 30.minutes do
-      uri = URI(url)
-      Net::HTTP.get(uri)
+      response = Net::HTTP.get_response(URI(url))
+      # Raising inside the block keeps error pages (e.g. 502) out of the cache.
+      raise FfhbServiceError.new("HTTP #{response.code} for URL: #{url}", status: response.code.to_i) unless response.is_a?(Net::HTTPSuccess)
+
+      response.body
     end
   end
 

@@ -103,7 +103,7 @@ jobs:
           bundler-cache: true
 
       - name: Install Qlty
-        uses: qltysh/qlty-action/install@ebcd284bf32e36a030afe15f1e136c7be08b9506 # v2
+        uses: qltysh/qlty-action/install@0ff2178667bf8eb28ed0013a7ef54857a24d4056 # v2
 
       # Informational: --no-fail keeps existing findings from failing CI,
       # which would trigger agent-ci-fix.yml. Drop it once the backlog is clean.
@@ -179,7 +179,7 @@ jobs:
       - name: Upload coverage to Qlty
         if: github.ref == 'refs/heads/main'
         continue-on-error: true
-        uses: qltysh/qlty-action/coverage@ebcd284bf32e36a030afe15f1e136c7be08b9506 # v2
+        uses: qltysh/qlty-action/coverage@0ff2178667bf8eb28ed0013a7ef54857a24d4056 # v2
         with:
           oidc: true
           files: coverage/.resultset.json

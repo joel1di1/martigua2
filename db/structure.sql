@@ -239,46 +239,6 @@ ALTER SEQUENCE public.active_storage_variant_records_id_seq OWNED BY public.acti
 
 
 --
--- Name: admin_users; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.admin_users (
-    id integer NOT NULL,
-    email character varying(255) DEFAULT ''::character varying NOT NULL,
-    encrypted_password character varying(255) DEFAULT ''::character varying NOT NULL,
-    reset_password_token character varying(255),
-    reset_password_sent_at timestamp without time zone,
-    remember_created_at timestamp without time zone,
-    sign_in_count integer DEFAULT 0 NOT NULL,
-    current_sign_in_at timestamp without time zone,
-    last_sign_in_at timestamp without time zone,
-    current_sign_in_ip character varying(255),
-    last_sign_in_ip character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: admin_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.admin_users_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: admin_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.admin_users_id_seq OWNED BY public.admin_users.id;
-
-
---
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3171,13 +3131,6 @@ ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAU
 
 
 --
--- Name: admin_users id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.admin_users ALTER COLUMN id SET DEFAULT nextval('public.admin_users_id_seq'::regclass);
-
-
---
 -- Name: blocked_addresses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3783,14 +3736,6 @@ ALTER TABLE ONLY public.active_storage_blobs
 
 ALTER TABLE ONLY public.active_storage_variant_records
     ADD CONSTRAINT active_storage_variant_records_pkey PRIMARY KEY (id);
-
-
---
--- Name: admin_users admin_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.admin_users
-    ADD CONSTRAINT admin_users_pkey PRIMARY KEY (id);
 
 
 --
@@ -4534,20 +4479,6 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 --
 
 CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.active_storage_variant_records USING btree (blob_id, variation_digest);
-
-
---
--- Name: index_admin_users_on_email; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_admin_users_on_email ON public.admin_users USING btree (email);
-
-
---
--- Name: index_admin_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON public.admin_users USING btree (reset_password_token);
 
 
 --
@@ -6156,6 +6087,7 @@ ALTER TABLE ONLY public.section_trainings
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261031120000'),
 ('20261011120000'),
 ('20261007120000'),
 ('20261002090000'),

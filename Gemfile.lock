@@ -168,9 +168,9 @@ GEM
     devise-i18n (1.16.1)
       devise (>= 5.0.0)
       rails-i18n
-    devise_invitable (2.0.14)
-      actionmailer (>= 5.0)
-      devise (>= 4.6)
+    devise_invitable (3.1.0)
+      actionmailer (>= 7.0)
+      devise (>= 5.0)
     diff-lcs (1.6.2)
     dotenv (3.2.0)
     dotenv-rails (3.2.0)
